@@ -1,0 +1,16 @@
+# Deploy
+
+Environments (all on the Contabo VPS, `ssh deploy@erp.fbs-host.com`; repo /opt/frappe_docker):
+
+| Site | Compose project | Role |
+|---|---|---|
+| erp.fbs-host.com (+ erp-test) | `erpnext` (owns nginx-proxy + acme) | old live system, hk10. Not touched by the rebuild until go-live. |
+| erp-staging.fbs-host.com | `erpnext-staging` | old staging, hk15 |
+| **hcl-erp.fbs-host.com** | `hcl-erp` (`~/gitops/hcl-erp.yaml` + `hcl-erp.env`, chmod 600) | rebuilt system. Up: `cd /opt/frappe_docker && docker compose -p hcl-erp --env-file ~/gitops/hcl-erp.env -f ~/gitops/hcl-erp.yaml up -d` |
+
+The hcl-erp stack copies the staging pattern: own DB, Redis and volumes; only the frontend joins
+`erpnext_default` so nginx-proxy can route it; backend/websocket use the aliases
+`hcl-backend` / `hcl-websocket` so they never collide with production's `backend`.
+
+Image: `build_image.sh <tag>` builds `hk/erpnext-hrms:<tag>` from versions.env + the app at that git tag.
+The app is cloned over HTTPS from github.com/franciscobarria-oss/happyconcepts (the Frappe app inside is named `happy_kitchen`).
