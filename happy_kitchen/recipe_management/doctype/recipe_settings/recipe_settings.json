@@ -1,0 +1,221 @@
+{
+ "actions": [],
+ "creation": "2026-10-01 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "pricing_section",
+  "buying_price_list",
+  "selling_price_list",
+  "column_break_pricing",
+  "target_food_cost_pct",
+  "default_labour_rate",
+  "recost_on_price_change",
+  "packaging_item_groups",
+  "overheads_section",
+  "default_overheads",
+  "branding_section",
+  "brand_name",
+  "brand_logo",
+  "brand_tagline",
+  "column_break_brand",
+  "primary_color",
+  "accent_color",
+  "desk_theme",
+  "print_footer",
+  "usage_section",
+  "default_warehouse",
+  "create_stock_entry_on_submit",
+  "stock_take_section",
+  "variance_tolerance_pct",
+  "column_break_stock_take",
+  "stock_take_sync_stock"
+ ],
+ "fields": [
+  {
+   "fieldname": "pricing_section",
+   "fieldtype": "Section Break",
+   "label": "Pricing"
+  },
+  {
+   "fieldname": "buying_price_list",
+   "fieldtype": "Link",
+   "label": "Buying Price List",
+   "options": "Price List",
+   "default": "Standard Buying",
+   "reqd": 1
+  },
+  {
+   "fieldname": "selling_price_list",
+   "fieldtype": "Link",
+   "label": "Selling Price List",
+   "options": "Price List",
+   "default": "Standard Selling"
+  },
+  {
+   "fieldname": "column_break_pricing",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "target_food_cost_pct",
+   "fieldtype": "Percent",
+   "label": "Target Food Cost %",
+   "default": "30",
+   "description": "Used for the suggested selling price."
+  },
+  {
+   "fieldname": "default_labour_rate",
+   "fieldtype": "Currency",
+   "label": "Default Labour Rate ($/hr)"
+  },
+  {
+   "fieldname": "recost_on_price_change",
+   "fieldtype": "Check",
+   "label": "Re-cost recipes when an Item Price changes",
+   "default": "1"
+  },
+  {
+   "fieldname": "packaging_item_groups",
+   "fieldtype": "Table MultiSelect",
+   "label": "Packaging Item Groups",
+   "options": "Recipe Packaging Group",
+   "description": "Items in these groups (or their sub-groups) count as Packaging."
+  },
+  {
+   "fieldname": "overheads_section",
+   "fieldtype": "Section Break",
+   "label": "Default Overheads & Services",
+   "description": "Copied into every new recipe. Edit them per recipe as needed."
+  },
+  {
+   "fieldname": "default_overheads",
+   "fieldtype": "Table",
+   "label": "Default Overheads",
+   "options": "Recipe Overhead"
+  },
+  {
+   "fieldname": "branding_section",
+   "fieldtype": "Section Break",
+   "label": "Branding (A4 recipe print)"
+  },
+  {
+   "fieldname": "brand_name",
+   "fieldtype": "Data",
+   "label": "Brand Name",
+   "default": "Happy Concepts"
+  },
+  {
+   "fieldname": "brand_logo",
+   "fieldtype": "Attach Image",
+   "label": "Logo"
+  },
+  {
+   "fieldname": "brand_tagline",
+   "fieldtype": "Data",
+   "label": "Tagline"
+  },
+  {
+   "fieldname": "column_break_brand",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "primary_color",
+   "fieldtype": "Color",
+   "label": "Primary Colour",
+   "default": "#4472C4"
+  },
+  {
+   "fieldname": "accent_color",
+   "fieldtype": "Color",
+   "label": "Accent Colour",
+   "default": "#FFF2CC"
+  },
+  {
+   "fieldname": "desk_theme",
+   "fieldtype": "Check",
+   "label": "Happy Concepts desk theme",
+   "default": "0",
+   "description": "Brown / blush Happy Concepts colours and Oswald headings on every screen, in Light and Dark. Untick to go back to the standard look. Applies after each user reloads the page."
+  },
+  {
+   "fieldname": "print_footer",
+   "fieldtype": "Small Text",
+   "label": "Print Footer",
+   "default": "Confidential - for Happy Concepts internal use only / 機密文件 - 只供內部使用"
+  },
+  {
+   "fieldname": "usage_section",
+   "fieldtype": "Section Break",
+   "label": "Usage & Inventory"
+  },
+  {
+   "fieldname": "default_warehouse",
+   "fieldtype": "Link",
+   "label": "Default Production Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "create_stock_entry_on_submit",
+   "fieldtype": "Check",
+   "label": "Create draft Material Issue when a Production Log is submitted"
+  },
+  {
+   "fieldname": "stock_take_section",
+   "fieldtype": "Section Break",
+   "label": "Stock Take & Inventory Variance"
+  },
+  {
+   "fieldname": "variance_tolerance_pct",
+   "fieldtype": "Percent",
+   "label": "Variance Tolerance %",
+   "default": "2",
+   "description": "Ingredients whose actual usage differs from expected usage by more than this (either way) are flagged in the Inventory Variance report."
+  },
+  {
+   "fieldname": "column_break_stock_take",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "stock_take_sync_stock",
+   "fieldtype": "Check",
+   "label": "Update ERPNext stock when a count is approved",
+   "default": "1",
+   "description": "Approving a Stock Take posts a Stock Reconciliation so ERPNext stock matches the count."
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-10-13 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Recipe Management",
+ "name": "Recipe Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1,
+   "write": 1,
+   "create": 1
+  },
+  {
+   "role": "Manufacturing Manager",
+   "read": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1,
+   "write": 1,
+   "create": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

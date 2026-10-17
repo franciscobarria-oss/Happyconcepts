@@ -1,0 +1,67 @@
+{
+ "actions": [],
+ "creation": "2026-10-01 12:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "service",
+  "basis",
+  "rate",
+  "amount",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "service",
+   "fieldtype": "Data",
+   "label": "Service / Expense",
+   "reqd": 1,
+   "in_list_view": 1,
+   "columns": 3
+  },
+  {
+   "fieldname": "basis",
+   "fieldtype": "Select",
+   "label": "Basis",
+   "options": "Per Batch\nPer Unit\n% of Ingredient Cost\n% of Labour Cost\nPer Labour Hour",
+   "default": "Per Batch",
+   "reqd": 1,
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Float",
+   "label": "Rate (per basis)",
+   "in_list_view": 1,
+   "columns": 2,
+   "description": "$ for Per Batch / Per Unit / Per Labour Hour, or % for the percentage bases."
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "label": "Amount / Batch",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Data",
+   "label": "Notes"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-10-13 16:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Recipe Management",
+ "name": "Recipe Overhead",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

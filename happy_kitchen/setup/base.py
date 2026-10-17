@@ -11,6 +11,7 @@ def apply():
 	settings()
 	uoms()
 	company = frappe.defaults.get_global_default("company")
+	abbr = None
 	if company:
 		abbr = frappe.db.get_value("Company", company, "abbr")
 		warehouses(company, abbr)
@@ -18,6 +19,7 @@ def apply():
 	roles()
 	role_profiles()
 	hide_desktop_icons()
+	recipe_settings(company and abbr)
 	frappe.db.commit()
 	frappe.clear_cache()
 
@@ -110,3 +112,19 @@ def hide_desktop_icons():
 	for name in d.HIDDEN_DESKTOP_ICONS:
 		if frappe.db.exists("Desktop Icon", name):
 			frappe.db.set_value("Desktop Icon", name, "hidden", 1)
+
+
+def recipe_settings(abbr):
+	if not frappe.db.exists("DocType", "Recipe Settings"):
+		return
+	s = frappe.get_single("Recipe Settings")
+	if not s.packaging_item_groups:
+		for name in d.RECIPE_PACKAGING_GROUPS:
+			if frappe.db.exists("Item Group", name):
+				s.append("packaging_item_groups", {"item_group": name})
+	if abbr and not s.default_warehouse:
+		wh = d.with_abbr(d.DEFAULT_WAREHOUSE, abbr)
+		if frappe.db.exists("Warehouse", wh):
+			s.default_warehouse = wh
+	s.flags.ignore_mandatory = True
+	s.save(ignore_permissions=True)
