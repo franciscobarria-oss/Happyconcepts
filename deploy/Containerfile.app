@@ -5,14 +5,18 @@ ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 
 USER root
-RUN apt-get update && apt-get install -y --no-install-recommends fonts-noto-cjk git \
+RUN apt-get update && apt-get install -y --no-install-recommends fonts-noto-cjk git openssh-client \
  && rm -rf /var/lib/apt/lists/*
 
 USER frappe
 WORKDIR /home/frappe/frappe-bench
 ARG HK_REF
-ARG HK_REPO=https://github.com/franciscobarria-oss/happyconcepts
-RUN git clone --depth 1 --branch "${HK_REF}" "${HK_REPO}" apps/happy_kitchen \
+# The repo is private: the clone uses the server's read-only deploy key through `docker build --ssh`,
+# so no key or token ends up in the image.
+ARG HK_REPO=git@github.com:franciscobarria-oss/happyconcepts.git
+RUN --mount=type=ssh,uid=1000 mkdir -p -m 0700 ~/.ssh \
+ && ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null \
+ && git clone --depth 1 --branch "${HK_REF}" "${HK_REPO}" apps/happy_kitchen \
  && rm -rf apps/happy_kitchen/.git
 RUN (./env/bin/pip --version >/dev/null 2>&1 && ./env/bin/pip install --no-cache-dir -e apps/happy_kitchen \
      || uv pip install --python ./env/bin/python -e apps/happy_kitchen) \

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Build hk/erpnext-hrms:<app tag> on the server. Usage: deploy/build_image.sh v1.0.0
 # 1) base image (frappe + erpnext + hrms at the pinned versions), only if missing
-# 2) layer 2 with happy_kitchen cloned from github.com/franciscobarria-oss/happyconcepts at the given tag
+# 2) layer 2 with happy_kitchen cloned from the private repo franciscobarria-oss/happyconcepts at the given tag,
+#    using the server's read-only deploy key ~/.ssh/happyconcepts_deploy
 set -euo pipefail
 HK_REF="${1:?usage: build_image.sh <happy_kitchen tag or branch>}"
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -23,7 +24,8 @@ JSON
 	rm -f "$APPS_JSON"
 fi
 
-DOCKER_BUILDKIT=1 docker build \
+KEY="${HK_DEPLOY_KEY:-$HOME/.ssh/happyconcepts_deploy}"
+DOCKER_BUILDKIT=1 docker build --ssh default="$KEY" \
 	--build-arg BASE_IMAGE="$BASE" --build-arg HK_REF="$HK_REF" \
 	-t "hk/erpnext-hrms:${HK_REF}" -f "$HERE/Containerfile.app" "$HERE"
 echo "Built hk/erpnext-hrms:${HK_REF} on ${BASE}"

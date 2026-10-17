@@ -13,4 +13,4 @@ The hcl-erp stack copies the staging pattern: own DB, Redis and volumes; only th
 `hcl-backend` / `hcl-websocket` so they never collide with production's `backend`.
 
 Image: `build_image.sh <tag>` builds `hk/erpnext-hrms:<tag>` from versions.env + the app at that git tag.
-The app is cloned over HTTPS from github.com/franciscobarria-oss/happyconcepts (the Frappe app inside is named `happy_kitchen`).
+The app is cloned from the private repo github.com/franciscobarria-oss/happyconcepts (the Frappe app inside is named `happy_kitchen`) with the server's read-only deploy key `~/.ssh/happyconcepts_deploy` (public half added under the repo's Settings > Deploy keys).
