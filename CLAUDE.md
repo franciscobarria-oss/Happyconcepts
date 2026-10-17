@@ -11,6 +11,8 @@ Guidance for Claude Code working in this repository: the `happy_kitchen` Frappe 
 - `deploy/`: image build (`build_image.sh`, `versions.env`), environments in `deploy/README.md`.
 
 ## Rules
+- Never hard-code the company name. Use `frappe.defaults.get_global_default("company")` (or a setting) and the company's `abbr` for "… - HK" names.
+- Base setup lives in `setup/base_data.py` (plain data, tested) and `setup/base.py` (applies it, idempotent; run by after_install and the `base_setup` patch).
 - Everything installs from code: DocTypes, custom fields (fixtures or patches), roles, workspaces, blocks (files), form scripts (`public/js` via `doctype_js`), print formats, settings defaults. No Client Scripts or hand-typed setup in the database.
 - Labels in code are English; Chinese goes in `translations/zh-TW.csv`, generated from `translations/zh_tw_source.py`. Print formats and the Clock In kiosk stay bilingual.
 - Pure maths lives in plain Python modules with unit tests; each feature also gets a rolled-back end-to-end test on the rebuild site.

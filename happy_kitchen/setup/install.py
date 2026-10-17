@@ -1,8 +1,8 @@
-"""Runs once after `bench install-app happy_kitchen`.
+"""Runs once after `bench install-app happy_kitchen`. Every step is idempotent, because the
+same functions are re-run from patches on existing sites."""
 
-Base setup (settings, UOMs, warehouses, roles...) is added here in P3. Every step must be
-idempotent, because the same functions are re-run from patches on existing sites."""
+from happy_kitchen.setup import base
 
 
 def after_install():
-	pass
+	base.apply()
