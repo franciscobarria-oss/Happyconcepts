@@ -5,6 +5,7 @@
 #    using the server's read-only deploy key ~/.ssh/happyconcepts_deploy
 set -euo pipefail
 HK_REF="${1:?usage: build_image.sh <happy_kitchen tag or branch>}"
+TAG="${HK_TAG:-${HK_REF//\//-}}"  # docker tags can't contain "/" (branch names)
 HERE="$(cd "$(dirname "$0")" && pwd)"
 source "$HERE/versions.env"
 FRAPPE_DOCKER="${FRAPPE_DOCKER:-/opt/frappe_docker}"
@@ -27,5 +28,5 @@ fi
 KEY="${HK_DEPLOY_KEY:-$HOME/.ssh/happyconcepts_deploy}"
 DOCKER_BUILDKIT=1 docker build --ssh default="$KEY" \
 	--build-arg BASE_IMAGE="$BASE" --build-arg HK_REF="$HK_REF" \
-	-t "hk/erpnext-hrms:${HK_REF}" -f "$HERE/Containerfile.app" "$HERE"
-echo "Built hk/erpnext-hrms:${HK_REF} on ${BASE}"
+	-t "hk/erpnext-hrms:${TAG}" -f "$HERE/Containerfile.app" "$HERE"
+echo "Built hk/erpnext-hrms:${TAG} from ${HK_REF} on ${BASE}"
