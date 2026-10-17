@@ -18,8 +18,9 @@ RUN --mount=type=ssh,uid=1000 mkdir -p -m 0700 ~/.ssh \
  && ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null \
  && git clone --depth 1 --branch "${HK_REF}" "${HK_REPO}" apps/happy_kitchen \
  && rm -rf apps/happy_kitchen/.git
+# Assets are baked into /home/frappe/frappe-bench/assets in v16 images; the entrypoint links sites/assets to it.
 RUN (./env/bin/pip --version >/dev/null 2>&1 && ./env/bin/pip install --no-cache-dir -e apps/happy_kitchen \
      || uv pip install --python ./env/bin/python -e apps/happy_kitchen) \
- && ln -sfn ../apps/happy_kitchen/happy_kitchen/public sites/assets/happy_kitchen \
+ && ln -sfn /home/frappe/frappe-bench/apps/happy_kitchen/happy_kitchen/public assets/happy_kitchen \
  && (grep -qx happy_kitchen sites/apps.txt || echo happy_kitchen >> sites/apps.txt) \
  && ./env/bin/python -c "import erpnext, hrms, barcode, happy_kitchen.hooks; print('import ok')"
