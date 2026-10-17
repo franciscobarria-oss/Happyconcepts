@@ -2,6 +2,10 @@
 // quantities must be whole multiples of Item "Order in Multiples Of" (blocks save), and the order
 // must reach Supplier "Minimum Order Amount" before submit. Here we only warn early on save.
 frappe.ui.form.on("Purchase Order", {
+	refresh(frm) {
+		if (frm.doc.docstatus !== 1 || frm.doc.per_received >= 100 || ["Closed", "On Hold"].includes(frm.doc.status)) return;
+		frm.add_custom_button(__("Receive Delivery"), () => frappe.set_route("receive-delivery", frm.doc.name)).addClass("btn-primary");
+	},
 	async after_save(frm) {
 		if (frm.doc.docstatus !== 0 || !frm.doc.supplier) return;
 		const r = await frappe.db.get_value("Supplier", frm.doc.supplier, "hk_min_order_amount");
