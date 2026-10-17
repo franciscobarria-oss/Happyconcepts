@@ -9,6 +9,8 @@ import importlib
 INSTALL_PATCHES = [
 	"happy_kitchen.patches.base_setup",
 	"happy_kitchen.patches.supplier_moq_fields",
+	"happy_kitchen.patches.item_recipe_link_fields",
+	"happy_kitchen.patches.stock_take_defaults",
 ]
 
 
