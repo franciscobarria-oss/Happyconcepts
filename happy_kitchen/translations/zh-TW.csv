@@ -159,6 +159,7 @@ Details,詳情
 Differs from Order,與訂單不符
 Don't print labels for this item,此項目不列印標籤
 Done,完成
+Draft {0} created. Check it and submit it to send.,已建立草稿 {0}。請檢查後提交發送。
 Drawing the label...,正在生成標籤…
 Each changed recipe is re-costed and gets a comment. Products with labels will need their label checked again.,每個已更改的食譜會重新計算成本並加上備註。有標籤的產品需要重新檢查標籤。
 Each recipe's quantity is multiplied by this. Keep 1 to use the same amount (e.g. 0.8 if the new product is stronger).,每個食譜的用量會乘以此數。保持 1 即用量不變（例如新產品味道較濃可用 0.8）。
@@ -209,6 +210,7 @@ Gross Qty (issue),毛用量（發料）
 HK Clock In,HK 打卡
 HK Team Roster,HK 團隊更表
 HK Team Today,HK 今日團隊
+HK Today,HK 今日
 "HK$ per hour (Fixed), or how many times the person's own hourly wage (1.5 = time and a half).",每小時港幣（固定），或員工本身時薪的倍數（1.5 = 一點五倍）。
 Happening today,今日進行中
 Happy Concepts desk theme,Happy Concepts 介面主題
@@ -376,6 +378,7 @@ Nothing logged this week.,本週未有生產紀錄。
 Nothing to copy,沒有可複製的更次
 Nothing to make for today's orders.,今日訂單不需生產。
 Nothing to order for the next 3 days.,未來3日不需訂貨。
+Nothing to order.,沒有需要訂購的項目。
 Nothing to receive today or tomorrow.,今明兩日沒有收貨。
 Nothing was received. Enter the quantity that arrived for at least one line.,未有收貨。請最少輸入一行的實收數量。
 Nothing yet.,暫無記錄。
@@ -731,6 +734,7 @@ Yield,份量
 Yield %,可用率
 Yield Loss,可用率損耗
 Yield Unit,份量單位
+You can't create purchase orders.,你沒有權限建立採購單。
 You replaced <b>{0}</b> with <b>{1}</b>. {0} is also used in {2} other recipes. Replace it there too?,你已將 <b>{0}</b> 取代為 <b>{1}</b>。{0} 亦用於另外 {2} 個食譜。是否一併取代？
 "You submitted this count, so another approver has to approve or reject it.",此盤點由你提交，須由另一位審批人批准或退回。
 and {0} more,另有 {0} 張
@@ -738,6 +742,7 @@ archived,已封存
 batch,批
 batch cost,每批成本
 batches,批
+batches · {0} of {1} recipes done,批 · 已完成 {0} / {1} 個食譜
 could not be saved,無法儲存
 doesn't use {0},沒有使用 {0}
 due,到期
@@ -765,6 +770,7 @@ short {0},欠 {0}
 some already on order,部分已訂購
 suggested price,建議售價
 target {0}%,目標 {0}%
+today,今日
 units,件
 vs Cheapest %,對比最便宜 %
 vs Last Paid,對比上次
@@ -779,6 +785,8 @@ waiting for the printer,等待打印機
 {0} already has a price from {1}. Edit it on the Item Price list instead.,{0} 已有來自 {1} 的價格。請在物品價格列表中修改。
 {0} archived recipes are left as they were.,{0} 個已封存食譜保持不變。
 {0} batches,{0} 批
+{0} batches · short {1},{0} 批 · 欠 {1}
+{0} batches · {1} still to make,{0} 批 · 尚需製作 {1}
 {0} clocked in,{0} 人已打卡
 {0} differs from the order,{0} 與訂單不符
 {0} doesn't exist or is disabled.,{0} 不存在或已停用。
@@ -798,7 +806,11 @@ waiting for the printer,等待打印機
 "{0} ingredients have no pack size on their Item yet, so they are counted in loose units only.",{0} 項材料的物品尚未設定包裝規格，只會以散裝數量盤點。
 {0} is not an approved stock take,{0} 不是已批准的盤點
 {0} isn't used in any active recipe.,{0} 沒有用於任何使用中的食譜。
+{0} jobs,{0} 個工作
+{0} label jobs waiting for a check,{0} 個標籤工作待檢查
+{0} late,{0} 個逾期
 {0} line(s) differ from the order. Stock is received at the ordered price; the differences are flagged on the receipt for the office.,{0} 行與訂單不符。貨品按訂單價格入庫，差異會標記在收貨單上交辦公室跟進。
+{0} lines,{0} 行
 {0} logs since Monday,週一至今 {0} 份紀錄
 {0} logs · HK$ {1} ingredients,{0} 份紀錄 · 材料 HK$ {1}
 {0} of {1} counted,已盤點 {0} / {1}
@@ -810,6 +822,8 @@ waiting for the printer,等待打印機
 {0} requests,{0} 個申請
 "{0} requires a minimum order of {1}. This order is {2}, so {3} more is needed.",{0} 的最低訂貨額為 {1}。此訂單為 {2}，尚欠 {3}。
 {0} shifts copied,已複製 {0} 個更次
+{0} · {1} lines{2},{0} · {1} 行{2}
 {0}% delivered,已送貨 {0}%
+{0}% received,已收貨 {0}%
 "{0}, counted {1}",{0}，盤點日期 {1}
 {0}: a count can't be negative,{0}：盤點數量不能為負數
