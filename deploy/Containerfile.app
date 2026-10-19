@@ -14,12 +14,18 @@ ARG HK_REF
 # The repo is private: the clone uses the server's read-only deploy key through `docker build --ssh`,
 # so no key or token ends up in the image.
 ARG HK_REPO=git@github.com:franciscobarria-oss/happyconcepts.git
+# The commit the branch/tag points at (build_image.sh reads it with git ls-remote). A new commit
+# changes this arg, so BuildKit can't reuse an old clone when the branch name stays the same.
+ARG HK_COMMIT=
 RUN --mount=type=ssh,uid=1000 mkdir -p -m 0700 ~/.ssh \
  && ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null \
  && git clone --depth 1 --branch "${HK_REF}" "${HK_REPO}" apps/happy_kitchen \
+ && if [ -n "${HK_COMMIT}" ]; then test "$(git -C apps/happy_kitchen rev-parse HEAD)" = "${HK_COMMIT}" \
+      || { echo "clone is not at ${HK_COMMIT}"; exit 1; }; fi \
  && rm -rf apps/happy_kitchen/.git
+# Assets are baked into /home/frappe/frappe-bench/assets in v16 images; the entrypoint links sites/assets to it.
 RUN (./env/bin/pip --version >/dev/null 2>&1 && ./env/bin/pip install --no-cache-dir -e apps/happy_kitchen \
      || uv pip install --python ./env/bin/python -e apps/happy_kitchen) \
- && ln -sfn ../apps/happy_kitchen/happy_kitchen/public sites/assets/happy_kitchen \
+ && ln -sfn /home/frappe/frappe-bench/apps/happy_kitchen/happy_kitchen/public assets/happy_kitchen \
  && (grep -qx happy_kitchen sites/apps.txt || echo happy_kitchen >> sites/apps.txt) \
  && ./env/bin/python -c "import erpnext, hrms, barcode, happy_kitchen.hooks; print('import ok')"

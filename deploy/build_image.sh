@@ -5,6 +5,7 @@
 #    using the server's read-only deploy key ~/.ssh/happyconcepts_deploy
 set -euo pipefail
 HK_REF="${1:?usage: build_image.sh <happy_kitchen tag or branch>}"
+TAG="${HK_TAG:-${HK_REF//\//-}}"  # docker tags can't contain "/" (branch names)
 HERE="$(cd "$(dirname "$0")" && pwd)"
 source "$HERE/versions.env"
 FRAPPE_DOCKER="${FRAPPE_DOCKER:-/opt/frappe_docker}"
@@ -25,7 +26,13 @@ JSON
 fi
 
 KEY="${HK_DEPLOY_KEY:-$HOME/.ssh/happyconcepts_deploy}"
+HK_REPO="git@github.com:franciscobarria-oss/happyconcepts.git"
+# Pin the build to the commit the ref points at now, so a moved branch is always cloned again.
+HK_COMMIT=$(GIT_SSH_COMMAND="ssh -i $KEY -o IdentitiesOnly=yes" git ls-remote "$HK_REPO" \
+	"refs/heads/$HK_REF" "refs/tags/$HK_REF" | awk -v r="$HK_REF" '{c[$2]=$1}
+	END { b="refs/heads/" r; t="refs/tags/" r; if (b in c) print c[b]; else if ((t "^{}") in c) print c[t "^{}"]; else print c[t] }')
+[ -n "$HK_COMMIT" ] || { echo "No branch or tag $HK_REF in $HK_REPO" >&2; exit 1; }
 DOCKER_BUILDKIT=1 docker build --ssh default="$KEY" \
-	--build-arg BASE_IMAGE="$BASE" --build-arg HK_REF="$HK_REF" \
-	-t "hk/erpnext-hrms:${HK_REF}" -f "$HERE/Containerfile.app" "$HERE"
-echo "Built hk/erpnext-hrms:${HK_REF} on ${BASE}"
+	--build-arg BASE_IMAGE="$BASE" --build-arg HK_REF="$HK_REF" --build-arg HK_COMMIT="$HK_COMMIT" \
+	-t "hk/erpnext-hrms:${TAG}" -f "$HERE/Containerfile.app" "$HERE"
+echo "Built hk/erpnext-hrms:${TAG} from ${HK_REF} (${HK_COMMIT:0:7}) on ${BASE}"
