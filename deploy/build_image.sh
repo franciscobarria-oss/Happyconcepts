@@ -26,7 +26,13 @@ JSON
 fi
 
 KEY="${HK_DEPLOY_KEY:-$HOME/.ssh/happyconcepts_deploy}"
+HK_REPO="git@github.com:franciscobarria-oss/happyconcepts.git"
+# Pin the build to the commit the ref points at now, so a moved branch is always cloned again.
+HK_COMMIT=$(GIT_SSH_COMMAND="ssh -i $KEY -o IdentitiesOnly=yes" git ls-remote "$HK_REPO" \
+	"refs/heads/$HK_REF" "refs/tags/$HK_REF" | awk -v r="$HK_REF" '{c[$2]=$1}
+	END { b="refs/heads/" r; t="refs/tags/" r; if (b in c) print c[b]; else if ((t "^{}") in c) print c[t "^{}"]; else print c[t] }')
+[ -n "$HK_COMMIT" ] || { echo "No branch or tag $HK_REF in $HK_REPO" >&2; exit 1; }
 DOCKER_BUILDKIT=1 docker build --ssh default="$KEY" \
-	--build-arg BASE_IMAGE="$BASE" --build-arg HK_REF="$HK_REF" \
+	--build-arg BASE_IMAGE="$BASE" --build-arg HK_REF="$HK_REF" --build-arg HK_COMMIT="$HK_COMMIT" \
 	-t "hk/erpnext-hrms:${TAG}" -f "$HERE/Containerfile.app" "$HERE"
-echo "Built hk/erpnext-hrms:${TAG} from ${HK_REF} on ${BASE}"
+echo "Built hk/erpnext-hrms:${TAG} from ${HK_REF} (${HK_COMMIT:0:7}) on ${BASE}"
