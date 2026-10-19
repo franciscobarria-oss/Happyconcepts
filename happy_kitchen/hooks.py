@@ -33,6 +33,7 @@ doctype_js = {
 	"Supplier": "public/js/supplier.js",
 	"Purchase Order": "public/js/purchase_order.js",
 	"Item": "public/js/item.js",
+	"Purchase Receipt": "public/js/purchase_receipt.js",
 }
 
 jinja = {

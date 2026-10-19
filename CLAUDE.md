@@ -55,3 +55,8 @@ Guidance for Claude Code working in this repository: the `happy_kitchen` Frappe 
   It is posted as Administrator (approver named in the remarks): approvers must not post reconciliations by hand, and ERPNext checks the session user's own Stock Reconciliation rights.
 - Count page /app/stock-take-count/<name>, printable sheet `count_print.sheet`, report Inventory Variance (tolerance `variance_tolerance_pct`).
 - Item `hk_recipe` / `hk_recipe_qty` (patch `item_recipe_link_fields`) link a sales SKU to another item's recipe.
+
+## Wastage and receiving (P11)
+- Wastage Log (+ items, WST-.YYYY.-.####) issues stock on submit; if stock is short it still submits and sets `stock_note`. Wastage Reason has `reason_zh` (8 seeded by patch `wastage_receiving_setup`).
+- Receive Delivery (/app/receive-delivery, button on submitted POs) → `kitchen.receive_po`: stock at the PO price, flags (pure `receiving.py`, tests/test_receiving.py) in Purchase Receipt `hk_has_discrepancy` / `hk_delivery_flags`, invoice price in PR Item `hk_invoice_rate` for the Price Variance report.
+- Pure HK Operations rules (overtime, price %, food cost) live in `hk_operations/calc.py` (tests/test_hk_operations.py).

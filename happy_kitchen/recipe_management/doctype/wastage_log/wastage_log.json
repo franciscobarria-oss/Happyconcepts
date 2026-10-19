@@ -1,0 +1,174 @@
+{
+ "actions": [],
+ "creation": "2026-10-07 12:00:00.000000",
+ "modified": "2026-10-13 16:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "Recipe Management",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "name": "Wastage Log",
+ "autoname": "naming_series:",
+ "is_submittable": 1,
+ "track_changes": 1,
+ "title_field": "posting_date",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1
+  },
+  {
+   "role": "Stock Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1
+  },
+  {
+   "role": "Stock User",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1,
+   "submit": 1
+  },
+  {
+   "role": "Manufacturing User",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1,
+   "submit": 1
+  }
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "WST-.YYYY.-.####",
+   "default": "WST-.YYYY.-.####",
+   "reqd": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Date",
+   "reqd": 1,
+   "default": "Today",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "posting_time",
+   "fieldtype": "Time",
+   "label": "Time",
+   "default": "Now"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "logged_by",
+   "fieldtype": "Link",
+   "label": "Logged By",
+   "options": "User",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "total_cost",
+   "fieldtype": "Currency",
+   "label": "Total Cost",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "items_section",
+   "fieldtype": "Section Break",
+   "label": "Wasted Items"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Wastage Log Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "stock_section",
+   "fieldtype": "Section Break",
+   "label": "Stock",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "label": "Stock Entry",
+   "options": "Stock Entry",
+   "read_only": 1,
+   "no_copy": 1,
+   "allow_on_submit": 1
+  },
+  {
+   "fieldname": "stock_note",
+   "fieldtype": "Small Text",
+   "label": "Stock Note",
+   "read_only": 1,
+   "no_copy": 1,
+   "allow_on_submit": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "options": "Wastage Log",
+   "read_only": 1,
+   "no_copy": 1,
+   "hidden": 1
+  }
+ ],
+ "field_order": [
+  "naming_series",
+  "posting_date",
+  "posting_time",
+  "column_break_1",
+  "logged_by",
+  "total_cost",
+  "items_section",
+  "items",
+  "stock_section",
+  "stock_entry",
+  "stock_note",
+  "amended_from"
+ ]
+}
