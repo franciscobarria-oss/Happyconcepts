@@ -142,15 +142,24 @@ class StockTake(Document):
 					"allow_zero_valuation_rate": 0 if flt(row.valuation_rate) else 1,
 				},
 			)
-		sr.remarks = _("From approved Stock Take {0}").format(self.name)
+		approver = frappe.session.user
+		sr.remarks = _("From approved Stock Take {0}, approved by {1}").format(self.name, approver)
 		sr.flags.ignore_permissions = True
+		# ERPNext checks the session user's own Stock Reconciliation write right
+		# (get_stock_balance_for), so ignore_permissions isn't enough. Approvers
+		# must not post reconciliations by hand (decision 2026-10-19), so this
+		# one is posted as Administrator, with the approver in the remarks.
+		frappe.set_user("Administrator")
 		try:
-			sr.insert()
-		except frappe.ValidationError as e:
-			if "None of the items have any change" in str(e):
-				return  # ERPNext stock already matches the count
-			raise
-		sr.submit()
+			try:
+				sr.insert()
+			except frappe.ValidationError as e:
+				if "None of the items have any change" in str(e):
+					return  # ERPNext stock already matches the count
+				raise
+			sr.submit()
+		finally:
+			frappe.set_user(approver)
 		self.db_set("stock_reconciliation", sr.name)
 
 
