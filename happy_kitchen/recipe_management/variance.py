@@ -108,6 +108,19 @@ def default_count_uom(stock_uom: str) -> str:
 	return "piece" if costing.STOCK_UOM_KIND.get(stock_uom) == "count" else "g"
 
 
+def fit_count_uom(count_uom: str | None, stock_uom: str, grams_per_piece=None) -> str:
+	"""The count unit to keep on a row: the chosen one if it fits the item's
+	stock unit (or the item has a weight per piece), else the default. A
+	Select field fills in its first option ('g'), so 'empty' can't be trusted."""
+	kind = costing.STOCK_UOM_KIND.get(stock_uom or "")
+	base = costing.UOM_TO_BASE.get(count_uom or "")
+	if not base:
+		return default_count_uom(stock_uom)
+	if kind is None or base[1] == kind or flt(grams_per_piece):
+		return count_uom
+	return default_count_uom(stock_uom)
+
+
 # ------------------------------------------------------- expected usage
 
 

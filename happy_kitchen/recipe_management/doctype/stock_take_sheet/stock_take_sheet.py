@@ -9,7 +9,8 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
-from happy_kitchen.recipe_management.variance import compact_packs, default_count_uom, suggest_packs
+from happy_kitchen.recipe_management import costing
+from happy_kitchen.recipe_management.variance import compact_packs, default_count_uom, fit_count_uom, suggest_packs
 
 PACK_UOM_FIELDS = ("pack_uom", "pack_uom_2", "pack_uom_3")
 
@@ -32,8 +33,10 @@ class StockTakeSheet(Document):
 			if key in seen:
 				frappe.throw(_("Row {0}: {1} is already on the sheet for {2}").format(row.idx, row.item, row.storage_area))
 			seen.add(key)
-			if not row.count_uom:
-				row.count_uom = default_count_uom(frappe.get_cached_value("Item", row.item, "stock_uom"))
+			item = frappe.get_cached_value("Item", row.item, ["stock_uom", "weight_per_unit", "weight_uom"], as_dict=True) or {}
+			row.count_uom = fit_count_uom(
+				row.count_uom, item.get("stock_uom"), costing.grams_per_piece(item.get("weight_per_unit"), item.get("weight_uom"))
+			)
 			# pack sizes fill from the left: "Pack Size 3" alone becomes Pack Size 1
 			packs = compact_packs(row.get(f) for f in PACK_UOM_FIELDS)
 			for f, uom in zip(PACK_UOM_FIELDS, packs + [None] * len(PACK_UOM_FIELDS)):
