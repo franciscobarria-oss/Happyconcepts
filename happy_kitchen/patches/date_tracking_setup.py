@@ -25,6 +25,9 @@ ITEM_FIELDS = [
 
 def execute():
 	create_custom_fields({"Item": ITEM_FIELDS}, update=True)
+	# v16 ships this off on a fresh site, and it blocks Item has_batch_no=1
+	# (batch items are the team's choice; the app never sets the flag itself).
+	frappe.db.set_single_value("Stock Settings", "enable_serial_and_batch_no_for_item", 1)
 
 	company = frappe.defaults.get_global_default("company")
 	if company:

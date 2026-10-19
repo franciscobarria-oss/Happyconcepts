@@ -38,6 +38,8 @@ def run():
 	frappe.set_user("Administrator")
 	company = frappe.defaults.get_global_default("company")
 	abbr = frappe.db.get_value("Company", company, "abbr")
+	assert frappe.db.get_single_value("Stock Settings", "enable_serial_and_batch_no_for_item"), \
+		"Stock Settings: serial and batch no for items is off"
 	real_commit = frappe.db.commit
 	frappe.db.commit = lambda *a, **k: None
 	try:
