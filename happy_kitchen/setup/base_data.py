@@ -10,7 +10,7 @@ UOMS = {"Gram": 0, "Kg": 0, "Nos": 1, "Pack": 1, "Box": 1}
 
 # Warehouse renamed from the wizard's default, then the rest created under "All Warehouses".
 WAREHOUSE_RENAMES = {"Stores": "Dry Stock"}
-WAREHOUSES = ["Dry Stock", "Fridge", "Freezer", "Finished Goods"]
+WAREHOUSES = ["Dry Stock", "Fridge", "Chiller", "Freezer", "Finished Goods"]
 DEFAULT_WAREHOUSE = "Dry Stock"
 
 # parent -> children (parents are groups under "All Item Groups")

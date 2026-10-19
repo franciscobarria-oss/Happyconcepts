@@ -1,0 +1,218 @@
+{
+ "actions": [],
+ "creation": "2026-10-19 12:00:00.000000",
+ "modified": "2026-10-19 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "HK Operations",
+ "name": "Opened Item",
+ "sort_field": "opened_at",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "description": "A pack or container opened in the kitchen, with its use-by time (logged from the Opened screen).",
+ "field_order": [
+  "naming_series",
+  "item",
+  "item_name",
+  "batch_no",
+  "lot",
+  "column_break_1",
+  "status",
+  "opened_at",
+  "use_by",
+  "storage",
+  "opened_by",
+  "section_labels",
+  "labels",
+  "label_job",
+  "column_break_2",
+  "wastage_log",
+  "closed_at"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "OPN-.YYYY.-.#####",
+   "default": "OPN-.YYYY.-.#####",
+   "hidden": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Item",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item name",
+   "read_only": 1,
+   "fetch_from": "item.item_name"
+  },
+  {
+   "fieldname": "batch_no",
+   "fieldtype": "Link",
+   "label": "Batch",
+   "options": "Batch",
+   "description": "Optional: the batch the pack came from."
+  },
+  {
+   "fieldname": "lot",
+   "fieldtype": "Data",
+   "label": "Lot",
+   "description": "Lot printed on the label (the batch, or a lot from the production log)."
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Open\nUsed up\nDiscarded",
+   "default": "Open",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "opened_at",
+   "fieldtype": "Datetime",
+   "label": "Opened at",
+   "reqd": 1,
+   "default": "now",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "use_by",
+   "fieldtype": "Datetime",
+   "label": "Use by",
+   "read_only": 1,
+   "in_list_view": 1,
+   "description": "From the item's Expiry after opening (Label tab). Blank = the item has none."
+  },
+  {
+   "fieldname": "storage",
+   "fieldtype": "Select",
+   "label": "Storage",
+   "options": "\nAmbient\nChilled\nFrozen"
+  },
+  {
+   "fieldname": "opened_by",
+   "fieldtype": "Link",
+   "label": "Opened by",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_labels",
+   "fieldtype": "Section Break",
+   "label": "Labels"
+  },
+  {
+   "fieldname": "labels",
+   "fieldtype": "Int",
+   "label": "Labels printed",
+   "default": "1",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "label_job",
+   "fieldtype": "Link",
+   "label": "Label job",
+   "options": "Label Job",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "wastage_log",
+   "fieldtype": "Link",
+   "label": "Wastage log",
+   "options": "Wastage Log",
+   "read_only": 1,
+   "depends_on": "eval:doc.status=='Discarded'"
+  },
+  {
+   "fieldname": "closed_at",
+   "fieldtype": "Datetime",
+   "label": "Closed at",
+   "read_only": 1,
+   "depends_on": "eval:doc.status!='Open'"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Stock Manager",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Manufacturing Manager",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Stock User",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1
+  },
+  {
+   "role": "Manufacturing User",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1
+  },
+  {
+   "role": "Kitchen Tablet",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1
+  }
+ ],
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "item_name",
+ "track_changes": 1
+}

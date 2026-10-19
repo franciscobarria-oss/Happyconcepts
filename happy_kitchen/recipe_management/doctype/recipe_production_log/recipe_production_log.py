@@ -34,9 +34,13 @@ class RecipeProductionLog(Document):
 			self.total_cost += row.amount
 
 	def on_submit(self):
+		from happy_kitchen.hk_operations import dates_api
+
+		dates_api.assign_batches(self)
 		if get_settings().create_stock_entry_on_submit:
 			make_batch_preparation_entries(self.name)
 			make_stock_entry(self.name)
+		dates_api.queue_batch_labels_on_submit(self)
 
 
 def _check_log(name: str):
@@ -150,18 +154,18 @@ def make_batch_preparation_entries(name: str) -> list[str]:
 		)
 		se.fg_completed_qty = flt(row.units)
 		_append_ingredients(se, [{"recipe": row.recipe, "batches": row.batches}], company, log.warehouse)
-		se.append(
-			"items",
-			{
-				"item_code": recipe.item,
-				"qty": flt(row.units),
-				"uom": stock_uom,
-				"stock_uom": stock_uom,
-				"conversion_factor": 1,
-				"t_warehouse": _item_warehouse(recipe.item, company, log.warehouse),
-				"is_finished_item": 1,
-			},
-		)
+		finished = {
+			"item_code": recipe.item,
+			"qty": flt(row.units),
+			"uom": stock_uom,
+			"stock_uom": stock_uom,
+			"conversion_factor": 1,
+			"t_warehouse": _item_warehouse(recipe.item, company, log.warehouse),
+			"is_finished_item": 1,
+		}
+		if row.batch_no:  # only set when the item already tracks batches
+			finished.update({"use_serial_batch_fields": 1, "batch_no": row.batch_no})
+		se.append("items", finished)
 		se.insert()
 		created.append(se.name)
 	if created:

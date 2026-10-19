@@ -12,6 +12,7 @@
 4-digit PIN,4 位數密碼
 <b>{0}</b> is used in {1} recipes. Choose what to use instead and where.,<b>{0}</b> 用於 {1} 個食譜。請選擇取代的材料及食譜。
 A client spec sheet may change shelf life and storage for that client.,客戶規格表可為該客戶更改保質期及儲存方法。
+"A pack or container opened in the kitchen, with its use-by time (logged from the Opened screen).",廚房內開封的包裝或容器及其使用期限（由「開封」畫面記錄）。
 Accent Colour,強調色
 Active Ingredients,啟用材料
 Actual Used,實際用量
@@ -62,6 +63,7 @@ Batch Preparations,半成品
 Batch Yield (# of units),每批份量（件數）
 Batch prep,半成品
 Batch preparation {0} x {1} from Recipe Production Log {2},半成品 {0} x {1}，來自生產紀錄 {2}
+Batch status,批次狀態
 Batches,批數
 Before it can be checked,核對前需要
 "Below {0}'s minimum order of {1} ({2} more needed). You can keep the draft, but it can't be submitted yet.",低於 {0} 的最低訂貨額 {1}（尚欠 {2}）。可以保留草稿，但暫時不能提交。
@@ -92,6 +94,7 @@ Checked label fingerprint,已檢查標籤的指紋
 Checked on,核對時間
 Chilled,冷藏
 Chinese name,中文名稱
+Chinese name on kitchen labels,廚房標籤上的中文名稱
 Choose a Stock Take Sheet or a Stock Take.,請選擇盤點表或盤點紀錄。
 Choose a different ingredient to replace {0} with.,請選擇另一項材料取代 {0}。
 Choose a reason,請選擇原因
@@ -105,6 +108,7 @@ Clock-in PIN,打卡密碼
 Clock-in PIN Hash,打卡密碼雜湊
 Clock-in tablet,打卡平板
 Clock-ins,打卡紀錄
+Closed at,結束時間
 Closing,期末
 Closing Count,期末盤點
 Component,組件
@@ -151,6 +155,7 @@ Create labels when a sales order is submitted,提交銷售訂單時建立標籤
 Daily,日常
 Daily tasks,日常工作
 Day after tomorrow,後日
+Days count the opening day as day 1 and end at 23:59; hours count from the minute it is opened.,以日計：開封當天算第1天，至23:59止；以小時計：由開封那一分鐘起計。
 Default Labour Rate ($/hr),預設時薪
 Default Overheads,預設雜費
 Default Overheads & Services,預設雜費及服務
@@ -168,6 +173,8 @@ Delivery differs from the order,送貨與訂單不符
 Detailed,詳細
 Details,詳情
 Differs from Order,與訂單不符
+Discard {0},丟棄 {0}
+Discarded,已丟棄
 Don't print labels for this item,此項目不列印標籤
 Done,完成
 Draft {0} created. Check it and submit it to send.,已建立草稿 {0}。請檢查後提交發送。
@@ -176,6 +183,7 @@ Each changed recipe is re-costed and gets a comment. Products with labels will n
 Each recipe's quantity is multiplied by this. Keep 1 to use the same amount (e.g. 0.8 if the new product is stronger).,每個食譜的用量會乘以此數。保持 1 即用量不變（例如新產品味道較濃可用 0.8）。
 Employee Name,員工姓名
 Enter a quantity,請輸入數量
+Enter how much was thrown away.,請輸入丟棄的數量。
 Enter what arrived for at least one line.,請最少輸入一行的實收數量。
 Entries,項數
 Est. Cost,估計成本
@@ -184,6 +192,7 @@ Everything is in stock,全部有貨
 Everything matches the order.,與訂單相符。
 Expected Used,預計用量
 Expected but not counted,預計有但未盤點
+Expiry after opening,開封後保質期
 Extra line on label,標籤附加說明
 Factory statement,工場致敏原聲明
 "Fallback only: each ingredient is taken from its own default warehouse (Dry Stock, Fridge or Freezer) set on the Item.",只作後備：每項食材會從物品上設定的預設倉庫（乾貨、雪櫃或冰格）扣除。
@@ -212,6 +221,7 @@ Food cost,食材成本率
 From Storage,由儲存位置
 From approved Stock Take {0},來自已批准盤點 {0}
 "From approved Stock Take {0}, approved by {1}",來自已審批盤點 {0}，審批人 {1}
+From the item's Expiry after opening (Label tab). Blank = the item has none.,取自貨品的「開封後保質期」（標籤分頁）。留空 = 沒有。
 Frozen,冷凍
 Full-time only. Leave empty for hourly staff.,只適用於全職員工。時薪員工請留空。
 "Gas, electricity, packaging, cleaning, rent share... New recipes start with the defaults from Recipe Settings.",煤氣、電費、包裝、清潔、租金分攤…… 新食譜會以食譜設定中的預設值開始。
@@ -233,7 +243,9 @@ Hourly Wage,時薪
 Hours,時數
 Hours must be more than 0.,時數必須大於 0。
 Hours per Day,每日工時
+"How long it keeps once opened (or, for a batch preparation, once taken out). Blank = no opened label date.",開封後（批量預製品為取出後）可存放多久。留空 = 開封標籤不顯示日期。
 "How many of the recipe's yield units one of this item contains, e.g. 200 for a box of 200 dough pieces.",此物品一件包含多少個食譜份量單位，例如一盒 200 件麵團即為 200。
+How much was thrown away?,丟棄了多少？
 Hygiene Cert Expiry,衞生證書到期日
 Ignore Changes Under %,忽略低於此 % 的變動
 In Stock,現有庫存
@@ -280,7 +292,10 @@ Item Allergen,物料致敏物
 Item ID,物品編號
 Items in these groups (or their sub-groups) count as Packaging.,屬於這些組別（或其子組別）的物品會計作包裝。
 Just over target,略高於目標
+Keeps {0} {1} once opened,開封後可存放 {0} {1}
 Keywords,關鍵字
+Kitchen date label printer,廚房日期標籤打印機
+Kitchen date labels,廚房日期標籤
 Label,標籤
 Label Artwork,標籤設計
 Label Job,標籤列印
@@ -293,13 +308,17 @@ Label checked. Labels print automatically when an order is submitted.,標籤已�
 Label checked. {0} waiting label job(s) sent to the printer.,標籤已檢查。{0} 個等候中的標籤工作已送往打印機。
 Label content,標籤內容
 Label height (mm),標籤高度（毫米）
+Label job,標籤工作
 Label not ready,標籤未準備好
 Label preview,標籤預覽
 Label queue,標籤列印隊列
+Label queued. Use by {0},標籤已排隊。使用期限 {0}
+Label sent to the printer,標籤已送往打印機
 Label text,標籤文字
 Label width (mm),標籤寬度（毫米）
 Labels,標籤
 Labels failed to print,標籤列印失敗
+Labels per batch,每批標籤數
 Labels printed,標籤已列印
 Labels printing,標籤列印中
 Labels to check,標籤待核對
@@ -334,6 +353,7 @@ Log production,記錄生產
 Log {0} recipe(s) as produced on {1}?,確認記錄於 {1} 生產 {0} 個食譜？
 Logged By,記錄人
 Lot,批次
+"Lot printed on the label (the batch, or a lot from the production log).",標籤上印的批號（批次，或生產紀錄的批號）。
 Made From Recipe,按食譜製作
 Made by (bottom of label),製造商（標籤底部）
 Made on,生產日期
@@ -369,9 +389,12 @@ New count,新盤點
 No Price,未有價格
 No Price Found,找不到價格
 No allergen keywords found in the name. Check the supplier's pack or spec sheet.,名稱中找不到致敏物關鍵字。請查看供應商包裝或規格表。
+No batch,無批次
 No default supplier,未設預設供應商
 No deliveries expected today.,今日沒有預計收貨。
 No ingredients to issue: this log only has Batch Preparation recipes.,沒有食材需要發料：此紀錄只有半成品食譜。
+No item found,找不到貨品
+No kitchen label printer is set up (Label Printer > Use = Kitchen date labels).,尚未設定廚房標籤打印機（標籤打印機 > 用途 = 廚房日期標籤）。
 No open counts.,沒有進行中的盤點。
 No open orders,沒有未完成訂單
 No orders,沒有訂單
@@ -382,6 +405,7 @@ No purchase orders waiting for delivery.,沒有待收貨的採購單。
 No reason,未註明原因
 No recipe found for this product. Link one with Made From Recipe on the Sales tab.,找不到此產品的食譜。請在「銷售」分頁的「Made From Recipe」連結一個。
 No recipes found,找不到食譜
+No row in this log has a lot (only batch preparations and products do).,此紀錄沒有任何帶批號的行（只有批量預製品和成品有）。
 No selling price,未有售價
 No shifts on the roster today.,今日更表沒有人當值。
 "No storage area set on these items, so nothing was taken out of stock.",這些物品未設定儲存位置，所以未有扣除庫存。
@@ -396,8 +420,10 @@ Notes (size / qty),備註（尺寸／數量）
 "Notes, e.g. damaged box",備註，例如紙箱損壞
 Nothing due today,今日沒有待收貨
 Nothing found,找不到
+Nothing is near its use-by date.,沒有接近使用期限的貨品。
 Nothing left to make today.,今日生產已完成。
 Nothing logged this week.,本週未有生產紀錄。
+Nothing opened yet today,今日尚未開封任何貨品
 Nothing to copy,沒有可複製的更次
 Nothing to make for today's orders.,今日訂單不需生產。
 Nothing to order for the next 3 days.,未來3日不需訂貨。
@@ -419,11 +445,20 @@ Only Recipes That Need a Look,只顯示需檢查的食譜
 Only a manager can mark a label as checked.,只有經理可以將標籤標記為已檢查。
 Only ingredients with something to do,只顯示需要處理的材料
 Open Count Screen,開啟盤點畫面
+Open and print label,開封並打印標籤
 Open purchase orders,未完成採購單
+Opened,已開封
+Opened Item,開封貨品
+Opened Items,開封貨品
+Opened at,開封時間
+Opened by,開封人
+Opened item,開封貨品
+Opened today,今日開封
 Opening,期初
 Opening Count,期初盤點
 Optional. Used to work out the cooking yield.,選填。用於計算烹煮後份量。
 "Optional: count in up to 3 pack sizes (Bag, Box, Bottle) plus loose units. Each pack must have a UOM conversion on the Item.",可選：最多以 3 種包裝規格（袋、箱、瓶）加散裝數量盤點。每種包裝須在物品的單位換算中設定。
+Optional: the batch the pack came from.,可選：該包裝所屬的批次。
 Order in Multiples Of,訂貨倍數
 Order line,訂單行
 Order on labels,標籤排序
@@ -464,6 +499,7 @@ Packaging,包裝
 Packaging Item Groups,包裝物品組別
 Packaging and Case Pack,包裝及箱規
 Part-time / hourly staff only.,只適用於兼職／時薪員工。
+Past use-by,已過期
 Pay,薪酬
 Pay Method,計算方法
 Per,每
@@ -498,29 +534,38 @@ Print A4,列印 A4
 Print Count Sheet,列印盤點表
 Print Footer,列印頁尾
 Print again,重新列印
+Print batch labels,打印批次標籤
+Print batch labels when production is logged,記錄生產時打印批次標籤
 Print date,列印日期
+Print label again,重新打印標籤
 Print labels,列印標籤
 Print labels for {0},為 {0} 列印標籤
 Print resolution (dpi),列印解析度（dpi）
 Print test label,列印測試標籤
 Printed at,列印時間
 "Printed under ""Manufacturers:"", one line each: company name, then address.",印在「Manufacturers:」下方，每行一項：公司名稱，然後地址。
+Printed under the item name on opened and batch labels.,印在開封及批次標籤的貨品名稱下方。
 Printer,打印機
 Printer error,打印機錯誤
 Printer language,打印機語言
 Printer name,打印機名稱
 Printing,列印中
+Prints,打印張數
 Prints as,標籤上顯示為
+Prints opened-product and batch labels. Blank = the first enabled printer set to Kitchen date labels.,用於打印開封及批次標籤。留空 = 第一部設為「廚房日期標籤」的啟用打印機。
 Produced,已生產
 Produced today,今日已生產
 Product,產品
 Product Name,產品名稱
 Product label,產品標籤
+Product labels,產品標籤
+"Product labels: 100 × 150 mm labels for sales orders. Kitchen date labels: small opened-product and batch labels (e.g. a SATO printer, 50 × 30 mm).",產品標籤：銷售訂單用的 100 × 150 mm 標籤。廚房日期標籤：開封及批次小標籤（例如 SATO 打印機，50 × 30 mm）。
 Product name,產品名稱
 Product name on label,標籤上的產品名稱
 Production,生產
 Production Date,生產日期
 Production Log,生產紀錄
+Production log,生產紀錄
 Production logged,已記錄生產
 Production sheet,生產單
 Production sheet (A4),生產單（A4）
@@ -582,6 +627,7 @@ Replace with,取代為
 Replaced in {0} recipes.,已在 {0} 個食譜中取代。
 Reports,報表
 Roster,更表
+Row not found,找不到該行
 Row {0} ({1}): add {2} to the Item's Units of Measure (with how many {3} it holds) before counting in it,第 {0} 行（{1}）：以 {2} 盤點前，請先在物品的計量單位加入 {2}（註明每個等於多少 {3}）
 Row {0} ({1}): set a storage area,第 {0} 行（{1}）：請設定儲存位置
 Row {0} ({1}): {2},第 {0} 行（{1}）：{2}
@@ -595,7 +641,9 @@ Sales Orders,銷售訂單
 Save PIN,儲存密碼
 Save the sheet first.,請先儲存盤點表。
 Save the supplier to see its products.,請先儲存供應商才可查看其產品。
+"Saved, but no kitchen label printer is set up",已儲存，但尚未設定廚房標籤打印機
 Saving {0}…,儲存中（{0}）…
+Scan or search an item,掃描或搜尋貨品
 Search products,搜尋產品
 Selling Price,售價
 Selling Price / Unit,每件售價
@@ -607,6 +655,8 @@ Sent to printer,已送往打印機
 Service / Expense,服務／費用
 Services,服務
 Services & Overheads,服務及雜費
+Set 'Expiry after opening' on item {0} first (Label tab).,請先在貨品 {0} 設定「開封後保質期」（標籤分頁）。
+Set 'Expiry after opening' on {0} first (Item > Label tab).,請先在 {0} 設定「開封後保質期」（貨品 > 標籤分頁）。
 Set a default supplier on these items to order them from here.,請為這些項目設定預設供應商，以便在此訂貨。
 Set a warehouse on the Production Log (or a default in Recipe Settings),請在生產紀錄設定倉庫（或在食譜設定設定預設倉庫）
 Set clock-in PIN,設定打卡密碼
@@ -649,6 +699,7 @@ Stock Units per Pack 2,規格 2 每包庫存單位數量
 Stock Units per Pack 3,規格 3 每包庫存單位數量
 Storage,儲存方式
 Storage Area,儲存位置
+Storage once opened,開封後存放方式
 Sub-Recipe (Batch Preparation / Component),子食譜（半成品／組件）
 Submit for Approval,提交審批
 Submit the Production Log first,請先提交生產紀錄
@@ -693,6 +744,7 @@ This ingredient appears on product labels as <b>{0}</b>.,此材料在產品標�
 This job belongs to another printer.,此工作屬於另一部打印機。
 This label is waiting for its product to be checked.,此標籤正等候其產品被檢查。
 This log has no Batch Preparation recipes.,此紀錄沒有半成品食譜。
+Thrown away and logged as wastage,已丟棄並記錄為報廢
 "Tick after checking the allergens against the supplier's pack or spec sheet, even if there are none.",按供應商包裝或規格表核對致敏物後勾選，即使沒有致敏物亦然。
 Tick at least one line.,請至少勾選一行。
 Tick at least one recipe.,請至少選擇一個食譜。
@@ -731,6 +783,8 @@ Unit / Basis,單位／計算方式
 Unit Cost,單位成本
 Unit Cost (per Stock UOM),單位成本（每庫存單位）
 Units,件數
+Unknown action,未知操作
+Unknown kind,未知類型
 Unknown label printer {0},未知的標籤打印機 {0}
 Upcoming,即將到期
 Update ERPNext stock when a count is approved,盤點批准後更新 ERPNext 庫存
@@ -739,10 +793,12 @@ Updated {0},更新於 {0}
 Usage & Inventory,用量及庫存
 Usage for how many batches?,計算多少批的用量？
 Use Approve to approve a stock take.,請使用「批准」來批准盤點。
+Use by,使用期限
 Used In,用於
 Used In Recipes,用於食譜
 "Used by recipes but not on the count sheets, so not in the table: {0}",食譜有用但不在盤點表上，所以不在表內：{0}
 Used for the suggested selling price.,用於計算建議售價。
+Used up,已用完
 Used when an Overtime Entry is created for this person.,為此員工建立加班紀錄時使用。
 Utensil / Equipment,器具／設備
 Utensils,器具
@@ -764,6 +820,7 @@ Wastage Log Item,報廢物品
 Wastage Logs,報廢紀錄
 Wastage Reason,報廢原因
 Wastage Reasons,報廢原因
+Wastage log,報廢紀錄
 Wastage logged,已記錄報廢
 Wastage {0},報廢 {0}
 Waste (yield loss) Cost,損耗（可用率）成本
@@ -827,6 +884,7 @@ suggested price,建議售價
 target {0}%,目標 {0}%
 today,今日
 units,件
+use by,使用期限
 vs Cheapest %,對比最便宜 %
 vs Last Paid,對比上次
 vs List,對比牌價
@@ -863,6 +921,7 @@ waiting for the printer,等待打印機
 {0} isn't used in any active recipe.,{0} 沒有用於任何使用中的食譜。
 {0} jobs,{0} 個工作
 {0} label job(s) added.,已加入 {0} 個標籤工作。
+{0} label job(s) queued,已排隊 {0} 個標籤工作
 {0} label job(s) waiting for a printer.,{0} 個標籤工作正等候打印機。
 {0} label jobs waiting for a check,{0} 個標籤工作待檢查
 {0} label(s) are waiting: the product label has not been checked yet. Open the item's Label tab to check it.,{0} 張標籤正在等候：產品標籤尚未檢查。請打開物料的「標籤」分頁進行檢查。

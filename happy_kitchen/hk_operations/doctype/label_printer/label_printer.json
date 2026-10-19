@@ -1,7 +1,7 @@
 {
  "actions": [],
  "creation": "2026-10-14 16:00:00.000000",
- "modified": "2026-10-14 16:00:00.000000",
+ "modified": "2026-10-19 12:00:00.000000",
  "modified_by": "Administrator",
  "owner": "Administrator",
  "doctype": "DocType",
@@ -15,6 +15,7 @@
  "field_order": [
   "printer_name",
   "enabled",
+  "label_use",
   "api_user",
   "column_break_1",
   "status_html",
@@ -47,6 +48,15 @@
    "label": "Enabled",
    "default": "1",
    "in_list_view": 1
+  },
+  {
+   "fieldname": "label_use",
+   "fieldtype": "Select",
+   "label": "Prints",
+   "options": "Product labels\nKitchen date labels",
+   "default": "Product labels",
+   "in_list_view": 1,
+   "description": "Product labels: 100 × 150 mm labels for sales orders. Kitchen date labels: small opened-product and batch labels (e.g. a SATO printer, 50 × 30 mm)."
   },
   {
    "fieldname": "api_user",

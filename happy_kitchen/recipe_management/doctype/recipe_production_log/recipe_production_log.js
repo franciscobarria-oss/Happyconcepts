@@ -17,6 +17,20 @@ frappe.ui.form.on("Recipe Production Log", {
 				warehouse: frm.doc.warehouse,
 			})
 		);
+		if ((frm.doc.items || []).some((r) => r.lot_no)) {
+			frm.add_custom_button(__("Print batch labels"), () => {
+				frappe.prompt(
+					[{ fieldname: "labels", fieldtype: "Int", label: __("Labels per batch"), default: 1, reqd: 1 }],
+					(v) =>
+						frm.call({
+							method: "happy_kitchen.hk_operations.dates_api.print_batch_labels",
+							args: { log: frm.doc.name, labels: v.labels },
+							freeze: true,
+						}).then((r) => frappe.show_alert({ message: __("{0} label job(s) queued", [(r.message || []).length]), indicator: "green" })),
+					__("Print batch labels")
+				);
+			});
+		}
 		const M = "happy_kitchen.recipe_management.doctype.recipe_production_log.recipe_production_log.";
 		if (!frm.doc.batch_stock_entries) {
 			frm.add_custom_button(__("Add Batch Preparations to Stock"), () =>
