@@ -1,0 +1,135 @@
+{
+ "actions": [],
+ "creation": "2026-10-14 16:00:00.000000",
+ "modified": "2026-10-14 16:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "HK Operations",
+ "name": "Allergen",
+ "sort_field": "sort_order",
+ "sort_order": "ASC",
+ "states": [],
+ "links": [],
+ "field_order": [
+  "allergen_name",
+  "allergen_zh",
+  "label_phrase",
+  "sort_order",
+  "column_break_1",
+  "keywords",
+  "disabled"
+ ],
+ "fields": [
+  {
+   "fieldname": "allergen_name",
+   "fieldtype": "Data",
+   "label": "Allergen",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "description": "As printed after CONTAINS: on labels, e.g. Milk."
+  },
+  {
+   "fieldname": "allergen_zh",
+   "fieldtype": "Data",
+   "label": "Chinese name",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "label_phrase",
+   "fieldtype": "Data",
+   "label": "Wording on labels",
+   "description": "As it appears in \"This product contains ... and their products.\", e.g. cereals containing gluten."
+  },
+  {
+   "fieldname": "sort_order",
+   "fieldtype": "Int",
+   "label": "Order on labels",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "keywords",
+   "fieldtype": "Small Text",
+   "label": "Keywords",
+   "description": "Words in an ingredient name that suggest this allergen, one per line. Only used for suggestions; a person still reviews every ingredient."
+  },
+  {
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1
+  },
+  {
+   "role": "Stock Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1
+  },
+  {
+   "role": "Item Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1,
+   "report": 1,
+   "print": 1
+  },
+  {
+   "role": "Stock User",
+   "read": 1,
+   "report": 1,
+   "print": 1
+  },
+  {
+   "role": "Manufacturing User",
+   "read": 1,
+   "report": 1,
+   "print": 1
+  }
+ ],
+ "autoname": "field:allergen_name",
+ "naming_rule": "By fieldname",
+ "title_field": "allergen_name"
+}
