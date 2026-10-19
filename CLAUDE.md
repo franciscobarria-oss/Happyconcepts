@@ -39,3 +39,12 @@ Guidance for Claude Code working in this repository: the `happy_kitchen` Frappe 
 - Pure maths in `recipe_management/costing.py` (tests/test_costing.py) and `swap.py` (tests/test_swap.py); `pricing.py` reads Item Price, `usage.py` builds usage, `replace_ingredient.py` is the "Replace in recipes" API.
 - Re-costing: nightly, on Item Price change (Recipe Settings `recost_on_price_change`) and on Item weight change; `last_costed_on` only moves when a cost changed.
 - No data is loaded: the site starts empty and the team enters suppliers, products and recipes (decision 2026-10-17).
+
+## Production (P9)
+- Recipe Production Log (+ Item), naming RPL-.YYYY.-.####, submittable; only Active recipes can be logged.
+- On submit (Recipe Settings `create_stock_entry_on_submit`): one draft Manufacture per Batch Preparation row (inputs from each item's default warehouse, output to the prep item's default warehouse at ingredient cost) and one draft Material Issue for the other rows. Whole-number UOMs round up.
+- A Batch Preparation recipe keeps its Item's `valuation_rate` at the ingredient cost per unit, so ERPNext can value the prep before any of it is in stock.
+- Page /app/kitchen-production calls `recipe_management/kitchen.py`; pure helpers in `recipe_management/production.py` (tests/test_production.py).
+
+## End-to-end checks
+- `happy_kitchen/e2e/<feature>.py` has `run()`: creates E2E-* records, asserts, always rolls back. Run with `bench --site hcl-erp.fbs-host.com execute happy_kitchen.e2e.<feature>.run`.
