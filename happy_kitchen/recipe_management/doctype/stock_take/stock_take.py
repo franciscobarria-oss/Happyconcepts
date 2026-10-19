@@ -27,6 +27,7 @@ from happy_kitchen.recipe_management.variance import (
 	check_transition,
 	compact_packs,
 	count_to_stock_qty,
+	fit_count_uom,
 	packs_to_stock_qty,
 )
 
@@ -61,13 +62,14 @@ class StockTake(Document):
 			item = frappe.get_cached_value("Item", row.item, ["stock_uom", "weight_per_unit", "weight_uom", "disabled"], as_dict=True)
 			if not item or item.disabled:
 				continue
+			gpp = costing.grams_per_piece(item.weight_per_unit, item.weight_uom)
 			values = {
 				"item": row.item,
 				"item_name": row.item_name,
 				"storage_area": row.storage_area,
-				"count_uom": row.count_uom,
+				"count_uom": fit_count_uom(row.count_uom, item.stock_uom, gpp),
 				"stock_uom": item.stock_uom,
-				"grams_per_piece": costing.grams_per_piece(item.weight_per_unit, item.weight_uom),
+				"grams_per_piece": gpp,
 			}
 			for (uom_f, factor_f, _), uom in zip(PACK_FIELDS, compact_packs(row.get(f[0]) for f in PACK_FIELDS)):
 				values[uom_f], values[factor_f] = uom, pack_factor(row.item, uom)

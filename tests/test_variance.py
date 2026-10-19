@@ -270,3 +270,20 @@ def test_pack_caption_in_words():
 	assert v.pack_caption("Bag", 25000, "Gram") == "Bag 25 kg"
 	assert v.pack_caption("Case", 360, "Nos") == "Case 360 pcs"
 	assert v.pack_caption("Pack", 0, "Gram") == "Pack"
+
+
+def test_fit_count_uom_replaces_weight_unit_on_count_item():
+	# a Select field fills in its first option ('g'), even for eggs
+	assert v.fit_count_uom("g", "Nos") == "piece"
+	assert v.fit_count_uom(None, "Nos") == "piece"
+	assert v.fit_count_uom("", "Gram") == "g"
+	assert v.fit_count_uom("piece", "Gram") == "g"
+
+
+def test_fit_count_uom_keeps_a_fitting_choice():
+	assert v.fit_count_uom("kg", "Gram") == "kg"
+	assert v.fit_count_uom("piece", "Nos") == "piece"
+	# weight per piece makes either kind work
+	assert v.fit_count_uom("g", "Nos", 60) == "g"
+	# unknown stock unit: keep what was chosen
+	assert v.fit_count_uom("l", "Bottle") == "l"
