@@ -3,6 +3,12 @@
 frappe.ui.form.on("Supplier", {
 	refresh(frm) {
 		hk_render_supplier_products(frm);
+		if (frm.is_new()) return;
+		frm.add_custom_button(
+			__("Ingredients & Packaging"),
+			() => frappe.set_route("query-report", "Ingredients and Packaging by Supplier", { supplier: frm.doc.name }),
+			__("View")
+		);
 	},
 });
 

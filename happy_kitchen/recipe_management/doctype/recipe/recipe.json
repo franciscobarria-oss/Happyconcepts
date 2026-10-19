@@ -1,0 +1,518 @@
+{
+ "actions": [],
+ "autoname": "field:item",
+ "creation": "2026-10-01 12:00:00.000000",
+ "default_print_format": "Recipe Costing Sheet",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "recipe_tab",
+  "cost_card",
+  "product_section",
+  "item",
+  "recipe_name",
+  "recipe_type",
+  "status",
+  "item_group",
+  "image",
+  "column_break_product",
+  "batch_yield",
+  "yield_uom",
+  "ingredients_section",
+  "ingredients",
+  "missing_price_count",
+  "used_in_recipes",
+  "labour_tab",
+  "labour_section",
+  "labour",
+  "overheads_section",
+  "overheads",
+  "costing_tab",
+  "cost_section",
+  "total_ingredient_cost",
+  "total_packaging_cost",
+  "total_ingredient_weight_used",
+  "total_pieces_used",
+  "total_labour_hours",
+  "total_labour_minutes",
+  "total_labour_cost",
+  "total_cost_incl_labour",
+  "total_overhead_cost",
+  "total_batch_cost",
+  "column_break_cost_unit",
+  "ingredient_cost_per_unit",
+  "cost_per_unit_incl_labour",
+  "labour_cost_per_unit",
+  "overhead_cost_per_unit",
+  "cost_per_unit",
+  "column_break_cost_price",
+  "selling_price",
+  "food_cost_pct",
+  "total_cost_pct",
+  "gross_margin",
+  "suggested_price",
+  "last_costed_on",
+  "weights_section",
+  "unit_weight",
+  "total_input_weight",
+  "column_break_weights",
+  "output_weight",
+  "cooking_yield_pct",
+  "method_tab",
+  "utensils_section",
+  "utensils",
+  "method_section",
+  "steps",
+  "notes_section",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "recipe_tab",
+   "fieldtype": "Tab Break",
+   "label": "Recipe"
+  },
+  {
+   "fieldname": "cost_card",
+   "fieldtype": "HTML",
+   "label": "Cost Card"
+  },
+  {
+   "fieldname": "product_section",
+   "fieldtype": "Section Break",
+   "label": "Product"
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "SKU",
+   "options": "Item",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "recipe_name",
+   "fieldtype": "Data",
+   "label": "Recipe Name",
+   "reqd": 1,
+   "in_list_view": 1,
+   "fetch_from": "item.item_name",
+   "fetch_if_empty": 1
+  },
+  {
+   "fieldname": "recipe_type",
+   "fieldtype": "Select",
+   "label": "Recipe Type",
+   "options": "Finished Product\nBatch Preparation\nRecipe Component",
+   "default": "Finished Product",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "description": "Finished Product = sold · Batch Preparation = made ahead and stocked (dough, bases) · Recipe Component = part made fresh inside another recipe"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nActive\nArchived",
+   "default": "Active",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "item_group",
+   "fieldtype": "Link",
+   "label": "Item Group",
+   "options": "Item Group",
+   "fetch_from": "item.item_group",
+   "read_only": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "label": "Photo"
+  },
+  {
+   "fieldname": "column_break_product",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "batch_yield",
+   "fieldtype": "Float",
+   "label": "Batch Yield (# of units)",
+   "reqd": 1,
+   "default": "1"
+  },
+  {
+   "fieldname": "yield_uom",
+   "fieldtype": "Link",
+   "label": "Yield Unit",
+   "options": "UOM",
+   "default": "Nos"
+  },
+  {
+   "fieldname": "ingredients_section",
+   "fieldtype": "Section Break",
+   "label": "Ingredients"
+  },
+  {
+   "fieldname": "ingredients",
+   "fieldtype": "Table",
+   "label": "Ingredients",
+   "options": "Recipe Ingredient"
+  },
+  {
+   "fieldname": "missing_price_count",
+   "fieldtype": "Int",
+   "label": "Ingredient lines with no price",
+   "read_only": 1,
+   "depends_on": "eval:doc.missing_price_count"
+  },
+  {
+   "fieldname": "used_in_recipes",
+   "fieldtype": "Small Text",
+   "label": "Used In Recipes",
+   "read_only": 1,
+   "depends_on": "eval:['Batch Preparation','Recipe Component'].includes(doc.recipe_type)"
+  },
+  {
+   "fieldname": "labour_tab",
+   "fieldtype": "Tab Break",
+   "label": "Labour & Overheads"
+  },
+  {
+   "fieldname": "labour_section",
+   "fieldtype": "Section Break",
+   "label": "Labour",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "labour",
+   "fieldtype": "Table",
+   "label": "Labour",
+   "options": "Recipe Labour"
+  },
+  {
+   "fieldname": "overheads_section",
+   "fieldtype": "Section Break",
+   "label": "Overheads & Services"
+  },
+  {
+   "fieldname": "overheads",
+   "fieldtype": "Table",
+   "label": "Overheads",
+   "options": "Recipe Overhead",
+   "description": "Gas, electricity, packaging, cleaning, rent share... New recipes start with the defaults from Recipe Settings."
+  },
+  {
+   "fieldname": "costing_tab",
+   "fieldtype": "Tab Break",
+   "label": "Costing"
+  },
+  {
+   "fieldname": "cost_section",
+   "fieldtype": "Section Break",
+   "label": "Cost Summary"
+  },
+  {
+   "fieldname": "total_ingredient_cost",
+   "fieldtype": "Currency",
+   "label": "Total Ingredient Cost (excl. Labour)",
+   "read_only": 1,
+   "description": "Ingredients + packaging + working recipes."
+  },
+  {
+   "fieldname": "total_packaging_cost",
+   "fieldtype": "Currency",
+   "label": "of which Packaging",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_ingredient_weight_used",
+   "fieldtype": "Float",
+   "label": "Total Ingredient Used (g)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_pieces_used",
+   "fieldtype": "Float",
+   "label": "Total Pieces Used",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_labour_hours",
+   "fieldtype": "Float",
+   "label": "Labour Hours",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_labour_minutes",
+   "fieldtype": "Float",
+   "label": "Labour Minutes",
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "total_labour_cost",
+   "fieldtype": "Currency",
+   "label": "Labour Cost ($)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_cost_incl_labour",
+   "fieldtype": "Currency",
+   "label": "Total Cost incl. Labour",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_overhead_cost",
+   "fieldtype": "Currency",
+   "label": "Overheads / Batch",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_batch_cost",
+   "fieldtype": "Currency",
+   "label": "Total Cost / Batch",
+   "read_only": 1,
+   "bold": 1
+  },
+  {
+   "fieldname": "column_break_cost_unit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ingredient_cost_per_unit",
+   "fieldtype": "Currency",
+   "label": "Cost per Unit (excl. Labour)",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "cost_per_unit_incl_labour",
+   "fieldtype": "Currency",
+   "label": "Cost per Unit (incl. Labour)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "labour_cost_per_unit",
+   "fieldtype": "Currency",
+   "label": "Labour / Unit",
+   "read_only": 1
+  },
+  {
+   "fieldname": "overhead_cost_per_unit",
+   "fieldtype": "Currency",
+   "label": "Overheads / Unit",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cost_per_unit",
+   "fieldtype": "Currency",
+   "label": "Cost per Unit (all-in, incl. services)",
+   "read_only": 1,
+   "bold": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_cost_price",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "selling_price",
+   "fieldtype": "Currency",
+   "label": "Selling Price / Unit",
+   "description": "Filled from the selling price list when blank."
+  },
+  {
+   "fieldname": "food_cost_pct",
+   "fieldtype": "Percent",
+   "label": "Food Cost %",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_cost_pct",
+   "fieldtype": "Percent",
+   "label": "Total Cost %",
+   "read_only": 1
+  },
+  {
+   "fieldname": "gross_margin",
+   "fieldtype": "Currency",
+   "label": "Margin / Unit",
+   "read_only": 1
+  },
+  {
+   "fieldname": "suggested_price",
+   "fieldtype": "Currency",
+   "label": "Suggested Price (target food cost)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_costed_on",
+   "fieldtype": "Datetime",
+   "label": "Last Costed On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "weights_section",
+   "fieldtype": "Section Break",
+   "label": "Weights & Cooking Yield",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "unit_weight",
+   "fieldtype": "Float",
+   "label": "Finished Weight per Unit (g)",
+   "description": "Optional. Used to work out the cooking yield."
+  },
+  {
+   "fieldname": "total_input_weight",
+   "fieldtype": "Float",
+   "label": "Ingredient Weight per Batch (g)",
+   "read_only": 1,
+   "description": "Sum of net weights of all gram-based ingredient lines."
+  },
+  {
+   "fieldname": "column_break_weights",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "output_weight",
+   "fieldtype": "Float",
+   "label": "Finished Weight per Batch (g)",
+   "read_only": 1,
+   "depends_on": "eval:doc.unit_weight"
+  },
+  {
+   "fieldname": "cooking_yield_pct",
+   "fieldtype": "Percent",
+   "label": "Cooking Yield %",
+   "read_only": 1,
+   "depends_on": "eval:doc.unit_weight"
+  },
+  {
+   "fieldname": "method_tab",
+   "fieldtype": "Tab Break",
+   "label": "Method"
+  },
+  {
+   "fieldname": "utensils_section",
+   "fieldtype": "Section Break",
+   "label": "Utensils & Equipment",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "utensils",
+   "fieldtype": "Table",
+   "label": "Utensils",
+   "options": "Recipe Utensil"
+  },
+  {
+   "fieldname": "method_section",
+   "fieldtype": "Section Break",
+   "label": "Method",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "steps",
+   "fieldtype": "Table",
+   "label": "Steps",
+   "options": "Recipe Step"
+  },
+  {
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ],
+ "image_field": "image",
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-10-13 16:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Recipe Management",
+ "name": "Recipe",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Manufacturing Manager",
+   "read": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Manufacturing User",
+   "read": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1,
+   "write": 1,
+   "create": 1
+  },
+  {
+   "role": "Stock Manager",
+   "read": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Stock User",
+   "read": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Purchase Manager",
+   "read": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  }
+ ],
+ "search_fields": "recipe_name,status",
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "recipe_name",
+ "track_changes": 1
+}

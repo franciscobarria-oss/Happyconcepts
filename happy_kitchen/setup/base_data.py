@@ -49,3 +49,6 @@ def with_abbr(name, abbr=COMPANY_ABBR):
 	"""'Dry Stock' -> 'Dry Stock - HK' (ERPNext's naming for company-owned records)."""
 	suffix = f" - {abbr}"
 	return name if name.endswith(suffix) else f"{name}{suffix}"
+
+# Recipe Settings defaults set on a fresh site (only where the field is still empty)
+RECIPE_PACKAGING_GROUPS = ["Packaging"]

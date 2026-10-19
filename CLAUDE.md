@@ -33,3 +33,9 @@ Guidance for Claude Code working in this repository: the `happy_kitchen` Frappe 
 - Supplier fields `hk_min_order_amount`, `hk_products_tab`, `hk_products_html`; Item `hk_order_multiple` (patch `supplier_moq_fields`).
 - MOQ rules are enforced on the server (`hk_operations/purchasing.py`, Purchase Order `validate` / `before_submit`), so API, Data Import and draft orders created by code obey them too. The form only adds an early warning.
 - "+ Add Product" runs in the whitelisted `add_supplier_product` (one transaction: item and price together). Maths in `hk_operations/moq.py`.
+
+## Recipes and costing (P6)
+- DocType Recipe (named by its item) + Recipe Ingredient / Labour / Overhead / Step / Utensil / Packaging Group, and the single Recipe Settings. Types: Finished Product, Batch Preparation (stocked), Recipe Component (made fresh); sub-recipes pass cost per unit up. Status Active / Archived / Draft.
+- Pure maths in `recipe_management/costing.py` (tests/test_costing.py) and `swap.py` (tests/test_swap.py); `pricing.py` reads Item Price, `usage.py` builds usage, `replace_ingredient.py` is the "Replace in recipes" API.
+- Re-costing: nightly, on Item Price change (Recipe Settings `recost_on_price_change`) and on Item weight change; `last_costed_on` only moves when a cost changed.
+- No data is loaded: the site starts empty and the team enters suppliers, products and recipes (decision 2026-10-17).
