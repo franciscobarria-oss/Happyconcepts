@@ -1,0 +1,430 @@
+/* Happy Kitchen ERP: Happy Concepts theme for the Frappe desk (Light and Dark).
+   Values come from docs/design-tokens.json (Happy Kitchen ERP design system).
+
+   Everything is scoped to html.hk-theme, which public/js/hk_theme.js adds only when
+   Recipe Settings > "Happy Concepts desk theme" is ticked (per site). Untick it and the
+   desk is stock Frappe again. Each user still picks Light / Dark / Automatic from the
+   avatar menu > Toggle Theme. */
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Oswald:wght@500;600;700&display=swap");
+
+/* ---------- tokens ---------- */
+html.hk-theme,
+html.hk-theme[data-theme="light"] {
+	--hk-surface: #ffffff;
+	--hk-surface-sunken: #f8f2f1;
+	--hk-surface-raised: #ffffff;
+	--hk-line: #e2e2e2;
+	--hk-line-strong: #8c7b74;
+	--hk-ink: #211f20;
+	--hk-ink-muted: #5e5e5e;
+	--hk-brand: #6f5245;
+	--hk-brand-hover: #5a4237;
+	--hk-on-brand: #ffffff;
+	--hk-brand-soft: #e7d8d1;
+	--hk-accent: #d10f17;
+	--hk-on-accent: #ffffff;
+	--hk-success: #0a6b78;
+	--hk-success-soft: #e3f1f2;
+	--hk-warning: #8a5a00;
+	--hk-warning-soft: #fbefd6;
+	--hk-danger: #a8320a;
+	--hk-danger-soft: #fbe6dd;
+	--hk-info: #2f5d8a;
+	--hk-info-soft: #e4ecf4;
+	--hk-focus: #211f20;
+}
+html.hk-theme[data-theme="dark"] {
+	--hk-surface: #1b1819;
+	--hk-surface-sunken: #141112;
+	--hk-surface-raised: #262223;
+	--hk-line: #3a3435;
+	--hk-line-strong: #8a7d79;
+	--hk-ink: #f4eeec;
+	--hk-ink-muted: #b5aaa6;
+	--hk-brand: #c9a797;
+	--hk-brand-hover: #d9bcae;
+	--hk-on-brand: #211f20;
+	--hk-brand-soft: #4a3a33;
+	--hk-accent: #ff6b6b;
+	--hk-on-accent: #211f20;
+	--hk-success: #6fc7d1;
+	--hk-success-soft: #12333a;
+	--hk-warning: #e9b949;
+	--hk-warning-soft: #3a2d0c;
+	--hk-danger: #ff9a6b;
+	--hk-danger-soft: #40200f;
+	--hk-info: #8fb8e0;
+	--hk-info-soft: #1a2c40;
+	--hk-focus: #f4eeec;
+}
+
+/* ---------- tokens -> Frappe variables (both themes) ---------- */
+html.hk-theme,
+html.hk-theme[data-theme="light"],
+html.hk-theme[data-theme="dark"] {
+	--hk-font-sans: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", "Microsoft JhengHei", sans-serif;
+	--hk-font-display: Oswald, "Open Sans", Arial, "PingFang HK", "Microsoft JhengHei", sans-serif;
+
+	--primary: var(--hk-brand);
+	--primary-color: var(--hk-brand);
+	--brand-color: var(--hk-brand);
+	--btn-primary: var(--hk-brand);
+	--border-primary: var(--hk-brand);
+	--progress-bar-bg: var(--hk-brand);
+	--date-active-bg: var(--hk-brand);
+	--date-active-text: var(--hk-on-brand);
+
+	--text-color: var(--hk-ink);
+	--heading-color: var(--hk-ink);
+	--text-muted: var(--hk-ink-muted);
+	--text-light: var(--hk-ink-muted);
+
+	--bg-color: var(--hk-surface);
+	--fg-color: var(--hk-surface-raised);
+	--card-bg: var(--hk-surface-raised);
+	--modal-bg: var(--hk-surface-raised);
+	--popover-bg: var(--hk-surface-raised);
+	--toast-bg: var(--hk-surface-raised);
+	--navbar-bg: var(--hk-surface);
+	--subtle-accent: var(--hk-surface-sunken);
+	--subtle-fg: var(--hk-surface-sunken);
+	--fg-hover-color: var(--hk-surface-sunken);
+	--highlight-color: var(--hk-surface-sunken);
+	--control-bg: var(--hk-surface-sunken);
+	--control-bg-on-gray: var(--hk-brand-soft);
+	--awesomebar-focus-bg: var(--hk-surface-raised);
+
+	--btn-default-bg: var(--hk-surface-sunken);
+	--btn-default-hover-bg: var(--hk-brand-soft);
+	--btn-ghost-hover-bg: var(--hk-brand-soft);
+
+	--border-color: var(--hk-line);
+	--table-border-color: var(--hk-line);
+	--dark-border-color: var(--hk-line-strong);
+	--btn-group-border-color: var(--hk-line-strong);
+
+	/* v16 sidebar */
+	--surface-menu-bar: var(--hk-surface-sunken);
+	--sidebar-select-color: var(--hk-brand-soft);
+	--sidebar-active-color: var(--hk-brand-soft);
+	--sidebar-hover-color: var(--hk-brand-soft);
+	--sidebar-border-color: var(--hk-line);
+	--divider-color: var(--hk-line);
+
+	/* status colour pairs used by indicator pills, alerts and our kitchen screens */
+	--bg-green: var(--hk-success-soft);
+	--text-on-green: var(--hk-success);
+	--bg-blue: var(--hk-info-soft);
+	--bg-light-blue: var(--hk-info-soft);
+	--text-on-blue: var(--hk-info);
+	--text-on-light-blue: var(--hk-info);
+	--bg-yellow: var(--hk-warning-soft);
+	--text-on-yellow: var(--hk-warning);
+	--bg-orange: var(--hk-warning-soft);
+	--text-on-orange: var(--hk-warning);
+	--bg-red: var(--hk-danger-soft);
+	--text-on-red: var(--hk-danger);
+	--bg-gray: var(--hk-surface-sunken);
+	--bg-grey: var(--hk-surface-sunken);
+	--bg-light-gray: var(--hk-surface-sunken);
+	--text-on-gray: var(--hk-ink-muted);
+	--text-on-grey: var(--hk-ink-muted);
+	--text-on-light-gray: var(--hk-ink-muted);
+
+	--alert-text-danger: var(--hk-danger);
+	--alert-text-warning: var(--hk-warning);
+	--alert-text-info: var(--hk-info);
+	--alert-text-success: var(--hk-success);
+	--alert-bg-danger: var(--hk-danger-soft);
+	--alert-bg-warning: var(--hk-warning-soft);
+	--alert-bg-info: var(--hk-info-soft);
+	--alert-bg-success: var(--hk-success-soft);
+
+	--checkbox-gradient: linear-gradient(180deg, var(--hk-brand) -124.51%, var(--hk-brand) 100%);
+	--switch-bg: var(--hk-line-strong);
+}
+
+/* ---------- base ---------- */
+html.hk-theme body {
+	font-family: var(--hk-font-sans);
+	background: var(--hk-surface);
+	color: var(--hk-ink);
+}
+html.hk-theme :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+	outline: 2px solid var(--hk-focus);
+	outline-offset: 2px;
+}
+html.hk-theme a:not(.btn):not(.dropdown-item):not(.standard-sidebar-item a):not(.item-anchor),
+html.hk-theme .text-primary {
+	color: var(--hk-brand);
+}
+
+/* Oswald for titles: page titles, workspace headers, document numbers */
+html.hk-theme .page-title .title-text,
+html.hk-theme .page-head .title-text,
+html.hk-theme .ce-header,
+html.hk-theme .widget-group-title,
+html.hk-theme .modal-title,
+html.hk-theme .header-title {
+	font-family: var(--hk-font-display);
+	font-weight: 600;
+	letter-spacing: 0.2px;
+}
+
+/* ---------- navbar / sidebar ---------- */
+html.hk-theme .navbar {
+	background: var(--hk-surface);
+	border-bottom: 1px solid var(--hk-line);
+}
+html.hk-theme .body-sidebar {
+	background: var(--hk-surface-sunken);
+}
+html.hk-theme .body-sidebar .standard-sidebar-item {
+	border-radius: 8px;
+}
+html.hk-theme .body-sidebar .standard-sidebar-item.active-sidebar,
+html.hk-theme .body-sidebar .active-sidebar {
+	background: var(--hk-brand-soft);
+	font-weight: 600;
+}
+html.hk-theme .body-sidebar .section-break,
+html.hk-theme .body-sidebar .section-item > .standard-sidebar-item .sidebar-item-label {
+	letter-spacing: 1.5px;
+}
+html.hk-theme .page-head {
+	background: var(--hk-surface);
+	border-bottom: 1px solid var(--hk-line);
+}
+
+/* ---------- buttons ---------- */
+html.hk-theme .btn-primary,
+html.hk-theme .btn.btn-primary {
+	background-color: var(--hk-brand);
+	border-color: var(--hk-brand);
+	color: var(--hk-on-brand);
+}
+html.hk-theme .btn-primary:hover,
+html.hk-theme .btn-primary:active,
+html.hk-theme .btn-primary:focus,
+html.hk-theme .btn.btn-primary:hover {
+	background-color: var(--hk-brand-hover);
+	border-color: var(--hk-brand-hover);
+	color: var(--hk-on-brand);
+}
+html.hk-theme .btn-primary svg use,
+html.hk-theme .btn-primary .icon use { stroke: var(--hk-on-brand); }
+html.hk-theme .btn-default,
+html.hk-theme .btn-secondary {
+	border: 1px solid var(--hk-line-strong);
+	background: var(--hk-surface-raised);
+	color: var(--hk-ink);
+}
+html.hk-theme .btn-default:hover,
+html.hk-theme .btn-secondary:hover {
+	background: var(--hk-brand-soft);
+}
+html.hk-theme .btn-danger {
+	background: var(--hk-danger-soft);
+	color: var(--hk-danger);
+	border: 1px solid var(--hk-danger);
+}
+html.hk-theme .btn { border-radius: 8px; }
+
+/* ---------- inputs ---------- */
+html.hk-theme .form-control,
+html.hk-theme .frappe-control input.input-with-feedback,
+html.hk-theme select.form-control {
+	border-radius: 4px;
+}
+html.hk-theme .form-control:focus {
+	box-shadow: 0 0 0 2px var(--hk-brand-soft);
+	border-color: var(--hk-brand);
+}
+html.hk-theme input[type="checkbox"]:checked {
+	background-color: var(--hk-brand);
+	border-color: var(--hk-brand);
+}
+
+/* ---------- status badges (Frappe indicator pills) ---------- */
+html.hk-theme .indicator-pill,
+html.hk-theme .indicator-pill-right {
+	font-weight: 600;
+	border-radius: 999px;
+}
+html.hk-theme .indicator-pill.green,  html.hk-theme .indicator.green  { background: var(--hk-success-soft); color: var(--hk-success); }
+html.hk-theme .indicator-pill.blue,   html.hk-theme .indicator.blue,
+html.hk-theme .indicator-pill.cyan,   html.hk-theme .indicator.cyan,
+html.hk-theme .indicator-pill.purple, html.hk-theme .indicator.purple { background: var(--hk-info-soft); color: var(--hk-info); }
+html.hk-theme .indicator-pill.orange, html.hk-theme .indicator.orange,
+html.hk-theme .indicator-pill.yellow, html.hk-theme .indicator.yellow { background: var(--hk-warning-soft); color: var(--hk-warning); }
+html.hk-theme .indicator-pill.red,    html.hk-theme .indicator.red    { background: var(--hk-danger-soft); color: var(--hk-danger); }
+html.hk-theme .indicator-pill.gray,   html.hk-theme .indicator.gray,
+html.hk-theme .indicator-pill.grey,   html.hk-theme .indicator.grey,
+html.hk-theme .indicator-pill.darkgrey { background: var(--hk-surface-sunken); color: var(--hk-ink-muted); }
+html.hk-theme .indicator.green::before,  html.hk-theme .indicator-pill.green::before  { background: var(--hk-success); }
+html.hk-theme .indicator.blue::before,   html.hk-theme .indicator-pill.blue::before   { background: var(--hk-info); }
+html.hk-theme .indicator.orange::before, html.hk-theme .indicator-pill.orange::before,
+html.hk-theme .indicator.yellow::before, html.hk-theme .indicator-pill.yellow::before { background: var(--hk-warning); }
+html.hk-theme .indicator.red::before,    html.hk-theme .indicator-pill.red::before    { background: var(--hk-danger); }
+/* plain .indicator (dot + text, no pill) keeps a transparent ground */
+html.hk-theme .indicator:not(.indicator-pill) { background: none; }
+
+/* ---------- cards, lists, tables ---------- */
+html.hk-theme .widget,
+html.hk-theme .frappe-card,
+html.hk-theme .form-dashboard-section,
+html.hk-theme .report-summary {
+	border-radius: 12px;
+}
+/* workspace text/heading blocks also carry .widget: leave them plain */
+html.hk-theme .widget:not(.ce-paragraph):not(.ce-header):not(.custom-block-widget-box) {
+	border: 1px solid var(--hk-line);
+	background: var(--hk-surface-raised);
+	box-shadow: none;
+}
+html.hk-theme .widget:not(.ce-paragraph):not(.ce-header):not(.custom-block-widget-box):hover { border-color: var(--hk-line-strong); }
+/* custom blocks (e.g. "HK Kitchen Today") draw their own cards */
+html.hk-theme .widget.custom-block-widget-box {
+	border: 0;
+	background: transparent;
+	padding: 0;
+	box-shadow: none;
+}
+html.hk-theme .report-summary .summary-value {
+	font-family: var(--hk-font-display);
+	font-weight: 600;
+}
+html.hk-theme .widget.shortcut-widget-box .widget-title,
+html.hk-theme .widget .widget-title { color: var(--hk-ink); font-weight: 600; }
+html.hk-theme .number-widget-box .widget-content .number {
+	font-family: var(--hk-font-display);
+	font-weight: 600;
+}
+
+html.hk-theme .list-row-head,
+html.hk-theme .grid-heading-row,
+html.hk-theme .dt-header .dt-cell,
+html.hk-theme .dt-row-header .dt-cell {
+	background: var(--hk-surface-sunken);
+}
+html.hk-theme .list-row-head .list-row-col,
+html.hk-theme .grid-heading-row .static-area,
+html.hk-theme .dt-header .dt-cell__content {
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.6px;
+	text-transform: uppercase;
+	color: var(--hk-ink-muted);
+}
+html.hk-theme .list-row:hover,
+html.hk-theme .list-row-container:hover .list-row { background: var(--hk-surface-sunken); }
+html.hk-theme .list-row-container.selected .list-row,
+html.hk-theme .dt-row--highlight .dt-cell { background: var(--hk-brand-soft); }
+
+/* form section headings as eyebrow labels */
+html.hk-theme .form-section .section-head {
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 1.5px;
+	text-transform: uppercase;
+	color: var(--hk-brand);
+}
+html.hk-theme .form-tabs .nav-link.active {
+	color: var(--hk-ink);
+	border-bottom-color: var(--hk-brand);
+}
+html.hk-theme .control-label { color: var(--hk-ink); }
+
+/* alerts / message boxes */
+html.hk-theme .alert-warning { background: var(--hk-warning-soft); color: var(--hk-warning); border-color: transparent; }
+html.hk-theme .alert-danger  { background: var(--hk-danger-soft);  color: var(--hk-danger);  border-color: transparent; }
+html.hk-theme .alert-info    { background: var(--hk-info-soft);    color: var(--hk-info);    border-color: transparent; }
+html.hk-theme .alert-success { background: var(--hk-success-soft); color: var(--hk-success); border-color: transparent; }
+
+/* unread / notification counters use the logo red, never a status */
+html.hk-theme .notifications-icon .badge,
+html.hk-theme .navbar .badge-danger,
+html.hk-theme .standard-sidebar-item .sidebar-item-suffix .badge {
+	background: var(--hk-accent);
+	color: var(--hk-on-accent);
+}
+
+/* ---------- shared component classes for Happy Kitchen screens ----------
+   Used by the kitchen pages and the "HK Kitchen Today" block. They read the
+   --hk-* tokens with stock-Frappe fallbacks, so they look right with the theme off too. */
+.hk-eyebrow { font: 600 12px/16px var(--hk-font-sans, inherit); letter-spacing: 1.5px; text-transform: uppercase; color: var(--hk-brand, var(--primary)); }
+.hk-badge { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; background: var(--hk-surface-sunken, var(--bg-light-gray)); color: var(--hk-ink-muted, var(--text-muted)); }
+.hk-badge::before { content: ""; width: 8px; height: 8px; border-radius: 999px; background: currentColor; }
+.hk-badge--success { background: var(--hk-success-soft, var(--bg-green)); color: var(--hk-success, var(--text-on-green)); }
+.hk-badge--info    { background: var(--hk-info-soft, var(--bg-blue));     color: var(--hk-info, var(--text-on-blue)); }
+.hk-badge--warning { background: var(--hk-warning-soft, var(--bg-orange)); color: var(--hk-warning, var(--text-on-orange)); }
+.hk-badge--danger  { background: var(--hk-danger-soft, var(--bg-red));    color: var(--hk-danger, var(--text-on-red)); }
+/* shape as well as colour, so status never depends on colour alone */
+.hk-badge--success::before { border-radius: 2px; }
+.hk-badge--warning::before { border-radius: 0; transform: rotate(45deg) scale(0.8); }
+.hk-badge--danger::before  { border-radius: 0; height: 3px; }
+
+/* ---------- Happy Kitchen screens (Production, Wastage, Receive Delivery, Count) ---------- */
+html.hk-theme .hkk h4,
+html.hk-theme .hk-stk h3,
+html.hk-theme .hk-stk h4 {
+	font-family: var(--hk-font-display);
+	font-weight: 600;
+	letter-spacing: 0.2px;
+}
+html.hk-theme .hkk-table th {
+	background: var(--hk-surface-sunken);
+	text-transform: uppercase;
+	letter-spacing: 1.2px;
+	font-size: 12px;
+	color: var(--hk-ink-muted);
+}
+html.hk-theme .hkk-tile b { color: var(--hk-ink); }
+html.hk-theme .hkk-tile.sel { outline-color: var(--hk-brand); background: var(--hk-brand-soft); }
+html.hk-theme .hkk-chip:hover,
+html.hk-theme .hkk-step button:hover { background: var(--hk-brand-soft); }
+html.hk-theme .hkk-input,
+html.hk-theme .hkk-select { border-color: var(--hk-line-strong); background: var(--hk-surface-raised); color: var(--hk-ink); }
+html.hk-theme .hkk-card { border-radius: 12px; }
+
+/* Recipe form cost card */
+html.hk-theme .hk-cc-card { border-radius: 12px; }
+
+/* ---------- EN / 中 language toggle (always on; theme colours when the theme is on) ---------- */
+.hk-lang {
+	display: inline-flex;
+	align-items: center;
+	padding: 2px;
+	gap: 2px;
+	border: 1px solid var(--hk-line-strong, var(--dark-border-color, #c7c7c7));
+	border-radius: 8px;
+	background: var(--hk-surface-raised, var(--fg-color, #fff));
+	flex: none;
+}
+.hk-lang button {
+	min-width: 34px;
+	height: 26px;
+	padding: 0 8px;
+	border: 0;
+	border-radius: 6px;
+	background: none;
+	color: var(--hk-ink-muted, var(--text-muted, #6b6b6b));
+	font: 600 12px/16px var(--hk-font-sans, inherit);
+	cursor: pointer;
+}
+.hk-lang button:hover { background: var(--hk-brand-soft, var(--btn-default-hover-bg, #eee)); color: var(--hk-ink, var(--text-color)); }
+.hk-lang button[aria-pressed="true"] {
+	background: var(--hk-brand, var(--primary, #171717));
+	color: var(--hk-on-brand, #fff);
+	cursor: default;
+}
+.hk-lang button:focus-visible { outline: 2px solid var(--hk-focus, currentColor); outline-offset: 2px; }
+.hk-lang--head { margin-right: 8px; }
+.hk-lang--sidebar { display: none; margin: 8px 12px; align-self: flex-start; }
+.hk-lang--sidebar button { height: 32px; min-width: 44px; font-size: 13px; }
+
+/* desktop: header toggle only. Mobile: side-menu toggle only (the drawer is wide enough there). */
+@media (max-width: 767.98px) {
+	.hk-lang--head { display: none; }
+	.hk-lang--sidebar { display: inline-flex; }
+}
