@@ -179,6 +179,21 @@ def _content_and_state(item_code: str, customer: str | None) -> tuple[dict, dict
 	return content, state
 
 
+def production_lot(item_code: str | None, made_on) -> str:
+	"""Lot of the production run that made this item on that day; blank when none was logged."""
+	if not item_code:
+		return ""
+	rows = frappe.db.sql(
+		"""select i.lot_no from `tabRecipe Production Log Item` i
+		join `tabRecipe Production Log` l on l.name = i.parent
+		join `tabRecipe` r on r.name = i.recipe
+		where l.docstatus = 1 and l.posting_date = %s and r.item = %s and coalesce(i.lot_no, '') != ''
+		order by l.creation desc limit 1""",
+		(getdate(made_on), item_code),
+	)
+	return rows[0][0] if rows else ""
+
+
 def printable(content: dict, units: int, made_on, banner: str = "") -> dict:
 	dates = ld.label_dates(getdate(made_on), content.get("shelf_life_days") or 0)
 	storage = content.get("storage")
@@ -187,8 +202,16 @@ def printable(content: dict, units: int, made_on, banner: str = "") -> dict:
 		"net": ld.net_text(content.get("net_weight_g") or 0, content.get("units_per_label") or 1, units),
 		"storage": f"Storage : {storage}" if storage else "",
 		"best_before": ld.fmt_date(dates["best_before"]),
+		"lot": (production_lot(content.get("item"), made_on) or dates["lot"]) if dates["best_before"] else "",
 		"banner": banner,
 	}
+
+
+KITCHEN_KINDS = ("Opened", "Batch")
+
+
+def _kitchen_lines(content: dict) -> list[tuple[str, str]]:
+	return [(a, b) for a, b in content.get("lines") or []]
 
 
 def _printer_size(printer: str | None) -> tuple[float, float, int]:
@@ -266,6 +289,9 @@ def job_preview(job: str):
 	doc = frappe.get_doc("Label Job", job)
 	doc.check_permission("read")
 	content = json.loads(doc.label_json or "{}") or label_content(doc.item, doc.customer)
+	if doc.kind in KITCHEN_KINDS:
+		w, h, dpi = _printer_size(doc.printer)
+		return {"png": lr.to_png_b64(lr.render_kitchen(_kitchen_lines(content), w, h, dpi)), "labels": cint(doc.label_count) or 1}
 	qtys = ld.label_quantities(doc.qty, content.get("units_per_label") or 1)
 	w, h, dpi = _printer_size(doc.printer)
 	made_on = doc.made_on or _made_on(doc)
@@ -442,6 +468,8 @@ def agent_poll(printer: str, agent_version: str | None = None, host: str | None 
 	job = frappe.get_doc("Label Job", rows[0][0])
 	content = json.loads(job.label_json or "{}")
 	made_on = _made_on(job)
+	if job.kind in KITCHEN_KINDS:
+		return _kitchen_job(job, content, p)
 	qtys = ld.label_quantities(job.qty, content.get("units_per_label") or 1) or [0]
 	banner = "TEST LABEL" if job.is_test else ""
 	w, h, dpi = flt(p.width_mm) or 100, flt(p.height_mm) or 150, cint(p.dpi) or 203
@@ -463,6 +491,17 @@ def agent_poll(printer: str, agent_version: str | None = None, host: str | None 
 	})
 	frappe.db.commit()
 	return {"job": job.name, "format": "png" if p.mode == "PNG (CUPS)" else "zpl", "labels": labels, "count": len(qtys)}
+
+
+def _kitchen_job(job, content: dict, p) -> dict:
+	"""Opened and Batch labels: one small picture, printed `label_count` times."""
+	w, h, dpi = flt(p.width_mm) or 50, flt(p.height_mm) or 30, cint(p.dpi) or 203
+	copies = max(1, cint(job.label_count) or cint(job.qty))
+	img = lr.for_printer(lr.render_kitchen(_kitchen_lines(content), w, h, dpi), w, h)
+	label = {"png": lr.to_png_b64(img), "copies": copies} if p.mode == "PNG (CUPS)" else {"zpl": lr.to_zpl(img, copies), "copies": copies}
+	job.db_set({"status": "Printing", "claimed_at": now_datetime(), "printer": p.name, "attempts": cint(job.attempts) + 1, "error": ""})
+	frappe.db.commit()
+	return {"job": job.name, "format": "png" if p.mode == "PNG (CUPS)" else "zpl", "labels": [label], "count": copies}
 
 
 @frappe.whitelist(methods=["POST"])

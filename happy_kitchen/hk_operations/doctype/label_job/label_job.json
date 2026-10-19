@@ -1,7 +1,7 @@
 {
  "actions": [],
  "creation": "2026-10-14 16:00:00.000000",
- "modified": "2026-10-14 16:00:00.000000",
+ "modified": "2026-10-19 12:00:00.000000",
  "modified_by": "Administrator",
  "owner": "Administrator",
  "doctype": "DocType",
@@ -15,6 +15,7 @@
  "field_order": [
   "naming_series",
   "status",
+  "kind",
   "item",
   "item_name",
   "qty",
@@ -26,6 +27,8 @@
   "so_detail",
   "printer",
   "is_test",
+  "opened_item",
+  "production_log",
   "section_hold",
   "hold_reason",
   "error",
@@ -57,6 +60,16 @@
    "label": "Status",
    "options": "Queued\nNeeds check\nPrinting\nPrinted\nFailed\nCancelled",
    "default": "Queued",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "kind",
+   "fieldtype": "Select",
+   "label": "Kind",
+   "options": "Product\nOpened\nBatch",
+   "default": "Product",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "read_only": 1
@@ -134,6 +147,22 @@
    "fieldtype": "Check",
    "label": "Test label",
    "read_only": 1
+  },
+  {
+   "fieldname": "opened_item",
+   "fieldtype": "Link",
+   "label": "Opened item",
+   "options": "Opened Item",
+   "read_only": 1,
+   "depends_on": "eval:doc.kind=='Opened'"
+  },
+  {
+   "fieldname": "production_log",
+   "fieldtype": "Link",
+   "label": "Production log",
+   "options": "Recipe Production Log",
+   "read_only": 1,
+   "depends_on": "eval:doc.kind=='Batch'"
   },
   {
    "fieldname": "section_hold",

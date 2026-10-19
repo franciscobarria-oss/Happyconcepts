@@ -118,7 +118,7 @@ def render(label: dict, width_mm: float = 150, height_mm: float = 100, dpi: int 
 	"""One label as a 1-bit landscape image (the longer side across), whatever the
 	roll's orientation; for_printer() turns it for portrait rolls. `label` keys:
 	title, ingredients, contains, net, storage, maker (list), origin, note,
-	factory, best_before, barcode ({"type", "value"} or None), banner."""
+	factory, best_before, lot, barcode ({"type", "value"} or None), banner."""
 	W = round(max(width_mm, height_mm) / 25.4 * dpi)
 	H = round(min(width_mm, height_mm) / 25.4 * dpi)
 	u = H / 595.0  # sizes below are taken from the 842 x 595 scan of the printed label
@@ -164,7 +164,7 @@ def render(label: dict, width_mm: float = 150, height_mm: float = 100, dpi: int 
 		for key in ("note", "factory"):
 			if label.get(key):
 				right += _wrap(d, label[key], body, right_w)
-		date_h = round(23 * u * 1.35) * 3 if label.get("best_before") else 0
+		date_h = round(23 * u * 1.35) * (4 if label.get("lot") else 3) if label.get("best_before") else 0
 		right_end = y_cols + len(right) * lh + (round(lh * 0.9) if right and date_h else 0) + date_h
 		return {"body": body, "lh": lh, "tfont": tfont, "title": title, "title_lh": round(title_px * 1.3),
 		        "title_px": title_px, "ing": ing, "y_cols": y_cols, "left": left, "left_gap": left_gap,
@@ -212,8 +212,11 @@ def render(label: dict, width_mm: float = 150, height_mm: float = 100, dpi: int 
 			y += round(lh * 0.9)
 		block_lh = round(23 * u * 1.35)
 		cx = rx + right_w / 2
-		for text, kind in ((BEST_BEFORE_ZH, "regular"), (BEST_BEFORE_EN, "bold"), (label["best_before"], "bold")):
-			f = _font(kind, 23 * u if text != BEST_BEFORE_EN else 21 * u, text)
+		block = [(BEST_BEFORE_ZH, "regular"), (BEST_BEFORE_EN, "bold"), (label["best_before"], "bold")]
+		if label.get("lot"):
+			block.append((f"Lot 批號 {label['lot']}", "regular"))
+		for text, kind in block:
+			f = _font(kind, 23 * u if text != BEST_BEFORE_EN and not text.startswith("Lot ") else 21 * u, text)
 			d.text((cx - d.textlength(text, font=f) / 2, y), text, font=f, fill=0)
 			y += block_lh
 
@@ -244,6 +247,49 @@ def render(label: dict, width_mm: float = 150, height_mm: float = 100, dpi: int 
 		x1, y1 = W - mx - tw - 2 * pad, round(0.015 * H)
 		d.rectangle([x1, y1, W - mx, y1 + 16 * u + 2 * pad], fill=0)
 		d.text((x1 + pad, y1 + pad), label["banner"], font=f, fill=1)
+	return img
+
+
+# relative text sizes on the small kitchen date labels (P15b), as a share of the label height
+KITCHEN_SIZES = {"title": 0.135, "sub": 0.11, "row": 0.095, "big": 0.12, "small": 0.075}
+KITCHEN_BOLD = {"title", "big"}
+
+
+def render_kitchen(lines: list[tuple[str, str]], width_mm: float = 50, height_mm: float = 30,
+                   dpi: int = 203) -> Image.Image:
+	"""A small kitchen date label (date_labels.kitchen_lines) as a 1-bit landscape
+	image. Text shrinks until everything fits; long lines wrap."""
+	W = round(max(width_mm, height_mm) / 25.4 * dpi)
+	H = round(min(width_mm, height_mm) / 25.4 * dpi)
+	img = Image.new("1", (W, H), 1)
+	d = ImageDraw.Draw(img)
+	m = max(4, round(0.04 * H))
+	width = W - 2 * m
+
+	def plan(scale: float):
+		rows, y = [], m
+		for style, text in lines:
+			if not text:
+				continue
+			px = KITCHEN_SIZES.get(style, KITCHEN_SIZES["row"]) * H * scale
+			f = _font("bold" if style in KITCHEN_BOLD else "regular", px, text)
+			for part in _wrap(d, text, f, width):
+				rows.append((y, part, f, style))
+				y += round(px * 1.18)
+		return rows, y
+
+	scale = 1.0
+	rows, bottom = plan(scale)
+	while bottom > H - m and scale > 0.45:
+		scale -= 0.05
+		rows, bottom = plan(scale)
+	for y, text, f, style in rows:
+		if style == "big":  # the use-by line in reverse (white on black), so it stands out
+			tw = d.textlength(text, font=f)
+			d.rectangle([m - 2, y - 1, m + tw + 2, y + f.size + 2], fill=0)
+			d.text((m, y), text, font=f, fill=1)
+		else:
+			d.text((m, y), text, font=f, fill=0)
 	return img
 
 

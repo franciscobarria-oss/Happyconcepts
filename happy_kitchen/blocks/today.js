@@ -58,6 +58,8 @@
 		if (e.target.closest(".refresh")) return load();
 		const po = e.target.closest("[data-po]");
 		if (po) return make_po(po);
+		const closer = e.target.closest("[data-close]");
+		if (closer) return close_date(closer);
 		const el = e.target.closest("[data-route]");
 		if (!el) return;
 		e.preventDefault();
@@ -180,6 +182,20 @@
 			: empty(__("All clear."));
 		$('[data-part="waiting"] .count').textContent = w.length;
 
+		// --- opened items and batches near their use-by date ---
+		const dl = d.dates || [];
+		$('[data-part="dates"]').hidden = d.dates == null;
+		$('[data-part="dates"] .list').innerHTML = dl.length
+			? dl.map((x, i) => `<div class="row">
+					<span class="badge ${x.state === "past" || x.state === "today" ? "danger" : "warning"}">${esc(
+						x.state === "past" ? __("Past use-by") : x.state === "today" ? __("Today") : __("Tomorrow"))}</span>
+					<span class="grow"><b>${esc(x.item_name)}</b><span class="cap">${esc(x.kind === "Opened Item" ? __("Opened") : __("Batch"))}${x.lot ? " " + esc(x.lot) : ""} · ${esc(__("use by"))} ${esc(x.label)}</span></span>
+					<span class="acts"><button type="button" class="btn small" data-close="${i}" data-action="Used up">${esc(__("Used up"))}</button>
+					<button type="button" class="btn small primary" data-close="${i}" data-action="Discarded">${esc(__("Discarded"))}</button></span>
+				</div>`).join("")
+			: empty(__("Nothing is near its use-by date."));
+		$('[data-part="dates"] .count').textContent = dl.length;
+
 		// --- tasks ---
 		const ord = d.tasks.ordering;
 		$('[data-task="ordering"]').hidden = !ord;
@@ -207,6 +223,29 @@
 			$(`[data-task="${key}"] .count`).textContent = t.length;
 		}
 		$(".updated").textContent = __("Updated {0}", [moment().format("HH:mm")]);
+	}
+
+	async function close_date(btn) {
+		const x = data.dates[Number(btn.dataset.close)];
+		const action = btn.dataset.action;
+		const send = async (v) => {
+			await frappe.call({
+				method: "happy_kitchen.hk_operations.dates_api.close",
+				args: { kind: x.kind, name: x.name, row: x.row, action, qty: v && v.qty, uom: v && v.uom },
+				freeze: true,
+			});
+			if (action === "Discarded") frappe.show_alert({ message: __("Thrown away and logged as wastage"), indicator: "green" });
+			load();
+		};
+		if (action === "Used up") return send();
+		frappe.prompt(
+			[
+				{ fieldname: "qty", fieldtype: "Float", label: __("How much was thrown away?"), reqd: 1 },
+				{ fieldname: "uom", fieldtype: "Select", label: __("Unit"), options: "g\nkg\nml\nl\npiece", default: x.uom, reqd: 1 },
+			],
+			send,
+			__("Discard {0}", [x.item_name])
+		);
 	}
 
 	async function make_po(btn) {

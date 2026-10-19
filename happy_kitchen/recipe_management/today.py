@@ -15,4 +15,8 @@ from happy_kitchen.recipe_management import board, dashboard, today_board
 
 @frappe.whitelist()
 def today() -> dict:
-	return board.merge_today(dashboard.kitchen_today(), today_board.today_board())
+	from happy_kitchen.hk_operations import dates_api
+
+	data = board.merge_today(dashboard.kitchen_today(), today_board.today_board())
+	data["dates"] = dates_api.expiring() if dates_api.can_handle_dates() else None
+	return data

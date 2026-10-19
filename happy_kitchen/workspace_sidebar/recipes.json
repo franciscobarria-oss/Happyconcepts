@@ -116,6 +116,18 @@
   {
    "child": 1,
    "collapsible": 1,
+   "icon": "package-open",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Opened Items",
+   "link_to": "kitchen-opened",
+   "link_type": "Page",
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "child": 1,
+   "collapsible": 1,
    "icon": "truck",
    "indent": 0,
    "keep_closed": 0,
