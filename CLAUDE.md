@@ -28,3 +28,8 @@ Guidance for Claude Code working in this repository: the `happy_kitchen` Frappe 
 - From macOS, pack source with `COPYFILE_DISABLE=1 tar --no-xattrs`, or `._*` files get in and break `bench migrate` ("bad json").
 - The site `encryption_key` (site_config.json) must go into full backups once email accounts or API keys exist. Never put it, passwords or API keys in the repo, chat or project files.
 - The old production stack (`erpnext`, erp.fbs-host.com) owns nginx-proxy and Let's Encrypt. Other stacks only join its `erpnext_default` network from their frontend and use their own backend/websocket aliases. Don't edit the production compose file outside the go-live step.
+
+## Purchasing (P4)
+- Supplier fields `hk_min_order_amount`, `hk_products_tab`, `hk_products_html`; Item `hk_order_multiple` (patch `supplier_moq_fields`).
+- MOQ rules are enforced on the server (`hk_operations/purchasing.py`, Purchase Order `validate` / `before_submit`), so API, Data Import and draft orders created by code obey them too. The form only adds an early warning.
+- "+ Add Product" runs in the whitelisted `add_supplier_product` (one transaction: item and price together). Maths in `hk_operations/moq.py`.

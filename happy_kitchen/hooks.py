@@ -27,8 +27,16 @@ app_include_css = [_asset(p) for p in _APP_CSS]
 app_include_js = [_asset(p) for p in _APP_JS]
 
 # Form scripts live in public/js and are attached here (no Client Scripts in the database).
-doctype_js = {}
+doctype_js = {
+	"Supplier": "public/js/supplier.js",
+	"Purchase Order": "public/js/purchase_order.js",
+}
 
-doc_events = {}
+doc_events = {
+	"Purchase Order": {
+		"validate": "happy_kitchen.hk_operations.purchasing.validate_purchase_order",
+		"before_submit": "happy_kitchen.hk_operations.purchasing.before_submit_purchase_order",
+	},
+}
 
 scheduler_events = {}
