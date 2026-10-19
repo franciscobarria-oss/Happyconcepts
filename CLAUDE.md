@@ -48,3 +48,10 @@ Guidance for Claude Code working in this repository: the `happy_kitchen` Frappe 
 
 ## End-to-end checks
 - `happy_kitchen/e2e/<feature>.py` has `run()`: creates E2E-* records, asserts, always rolls back. Run with `bench --site hcl-erp.fbs-host.com execute happy_kitchen.e2e.<feature>.run`.
+
+## Stock take (P10)
+- Stock Take Sheet (+ items, up to 3 pack sizes from the Item's UOM conversions) and Stock Take (+ items): Draft → Submitted → Approved, or back to Draft with a rejection comment. Rules in `variance.check_transition` (tests/test_variance.py); the submitter can't approve, standard Submit is blocked.
+- Approval posts a Stock Reconciliation (Recipe Settings `stock_take_sync_stock`); the company's first one is Opening Stock against the Temporary account.
+  It is posted as Administrator (approver named in the remarks): approvers must not post reconciliations by hand, and ERPNext checks the session user's own Stock Reconciliation rights.
+- Count page /app/stock-take-count/<name>, printable sheet `count_print.sheet`, report Inventory Variance (tolerance `variance_tolerance_pct`).
+- Item `hk_recipe` / `hk_recipe_qty` (patch `item_recipe_link_fields`) link a sales SKU to another item's recipe.

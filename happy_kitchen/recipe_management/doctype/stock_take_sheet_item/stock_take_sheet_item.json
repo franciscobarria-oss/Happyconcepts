@@ -1,0 +1,101 @@
+{
+ "actions": [],
+ "creation": "2026-10-03 12:00:00.000000",
+ "modified": "2026-10-16 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "Recipe Management",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "name": "Stock Take Sheet Item",
+ "istable": 1,
+ "editable_grid": 1,
+ "permissions": [],
+ "fields": [
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Ingredient",
+   "options": "Item",
+   "reqd": 1,
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Ingredient Name",
+   "fetch_from": "item.item_name",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "storage_area",
+   "fieldtype": "Link",
+   "label": "Storage Area",
+   "options": "Warehouse",
+   "in_list_view": 1,
+   "columns": 1,
+   "description": "Defaults to the item's default warehouse (Dry Stock, Fridge, Freezer)."
+  },
+  {
+   "fieldname": "count_uom",
+   "fieldtype": "Select",
+   "label": "Count Unit",
+   "options": "g\nkg\nml\nl\npiece",
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "pack_uom",
+   "fieldtype": "Link",
+   "label": "Pack Size 1",
+   "options": "UOM",
+   "in_list_view": 1,
+   "columns": 1,
+   "description": "Optional: count in up to 3 pack sizes (Bag, Box, Bottle) plus loose units. Each pack must have a UOM conversion on the Item."
+  },
+  {
+   "fieldname": "pack_uom_2",
+   "fieldtype": "Link",
+   "label": "Pack Size 2",
+   "options": "UOM",
+   "in_list_view": 1,
+   "columns": 1,
+   "depends_on": "eval:doc.pack_uom"
+  },
+  {
+   "fieldname": "pack_uom_3",
+   "fieldtype": "Link",
+   "label": "Pack Size 3",
+   "options": "UOM",
+   "in_list_view": 1,
+   "columns": 1,
+   "depends_on": "eval:doc.pack_uom_2"
+  },
+  {
+   "fieldname": "active",
+   "fieldtype": "Check",
+   "label": "Active",
+   "default": "1",
+   "in_list_view": 1,
+   "columns": 1,
+   "description": "Inactive rows are hidden on the count sheet."
+  }
+ ],
+ "field_order": [
+  "item",
+  "item_name",
+  "storage_area",
+  "count_uom",
+  "pack_uom",
+  "pack_uom_2",
+  "pack_uom_3",
+  "active"
+ ]
+}

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock take count sheet {{ info.title|e }} · {{ b.brand_name|e }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
+<style>
+	:root { --brand: {{ b.primary_color or "#6f5245" }}; --ink: #211f20; --muted: #5e5e5e; --line: #c9bdb8; --sunken: #f8f2f1; --warn: #8a5a00; --warn-bg: #fbefd6; --bad: #a8320a; --bad-bg: #fbe6dd; --ok: #0a6b78; }
+	@page { size: A4; margin: 11mm 11mm 13mm; }
+	* { box-sizing: border-box; }
+	html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+	body { margin: 0; background: #ebe6e4; color: var(--ink); font: 400 11.5px/1.4 "Open Sans", Arial, "PingFang HK", "Microsoft JhengHei", sans-serif; }
+	.sheet { width: 210mm; min-height: 297mm; margin: 16px auto; background: #fff; padding: 11mm; box-shadow: 0 2px 12px rgba(0,0,0,.12); }
+	h1, h2 { font-family: Oswald, Arial, "PingFang HK", sans-serif; font-weight: 600; margin: 0; }
+	h1 { font-size: 22px; line-height: 1.15; }
+	h2 { font-size: 14px; color: var(--brand); margin: 14px 0 5px; display: flex; align-items: baseline; gap: 8px; break-after: avoid; }
+	h2 small { font: 400 10.5px "Open Sans", Arial, sans-serif; color: var(--muted); }
+	.eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--brand); }
+	.head { display: flex; justify-content: space-between; gap: 16px; border-bottom: 2px solid var(--brand); padding-bottom: 8px; }
+	.head .right { text-align: right; color: var(--muted); font-size: 10.5px; }
+	.head .date { font: 600 18px Oswald, Arial, sans-serif; color: var(--ink); }
+	.logo { max-height: 40px; max-width: 150px; display: block; margin-bottom: 4px; }
+	.summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 10px 0 2px; }
+	.summary div { border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; }
+	.summary b { display: block; font: 600 18px Oswald, Arial, sans-serif; }
+	.summary .warn { background: var(--warn-bg); border-color: transparent; }
+	.summary .bad { background: var(--bad-bg); border-color: transparent; }
+	table { width: 100%; border-collapse: collapse; }
+	th, td { border: 1px solid var(--line); padding: 4px 6px; text-align: left; vertical-align: top; }
+	th { background: var(--sunken); font-size: 10px; font-weight: 600; white-space: nowrap; }
+	tr { break-inside: avoid; }
+	.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+	.big { font-weight: 700; font-size: 12.5px; }
+	.code { color: var(--muted); font-size: 9.5px; }
+	.tick { width: 26px; text-align: center; }
+	.box { display: inline-block; width: 13px; height: 13px; border: 1.5px solid var(--ink); border-radius: 2px; }
+	.short td { background: var(--bad-bg); }
+	.short .flag { color: var(--bad); font-weight: 700; }
+	.suggest td { background: var(--warn-bg); }
+	.suggest .flag { color: var(--warn); font-weight: 700; }
+	.muted { color: var(--muted); }
+	.none { color: var(--muted); font-style: italic; margin: 2px 0 0; }
+	.orders td:first-child { width: 28%; }
+	.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+	.note { margin-top: 12px; font-size: 10px; color: var(--muted); }
+	.sig { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-top: 26px; font-size: 10.5px; }
+	.sig div { border-top: 1px solid var(--ink); padding-top: 3px; }
+	/* toolbar: screen only */
+	.bar { position: sticky; top: 0; z-index: 2; background: #211f20; color: #fff; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 16px; font-size: 13px; }
+	.bar a, .bar button, .bar label { color: #fff; }
+	.bar a, .bar button { border: 1px solid rgba(255,255,255,.5); background: none; border-radius: 6px; padding: 5px 10px; font: 600 13px "Open Sans", Arial, sans-serif; text-decoration: none; cursor: pointer; }
+	.bar button.print { background: var(--brand); border-color: var(--brand); }
+	.bar input[type=date] { font: inherit; padding: 4px 6px; border-radius: 6px; border: 0; }
+	.bar .grow { flex: 1; }
+	@media print { body { background: #fff; } .bar { display: none; } .sheet { width: auto; min-height: 0; margin: 0; padding: 0; box-shadow: none; } }
+	@media (max-width: 820px) { .sheet { width: auto; margin: 0; padding: 14px; min-height: 0; } .summary { grid-template-columns: repeat(2, 1fr); } .cols { grid-template-columns: 1fr; } }
+</style>
+<style>
+	.cnt td { height: 24px; padding: 2px 6px; vertical-align: middle; }
+	.cnt th.in, .cnt td.in { width: 84px; }
+	.cap { display: block; color: var(--muted); font-size: 8.5px; line-height: 1.1; }
+	.area { background: var(--brand); color: #fff; font: 600 12px Oswald, Arial, sans-serif; letter-spacing: .5px; }
+	.area td { border-color: var(--brand); padding: 3px 6px; }
+	.fill { display: inline-block; min-width: 110px; border-bottom: 1px solid var(--ink); height: 14px; vertical-align: bottom; }
+	thead { display: table-header-group; }
+	.numcol { width: 24px; text-align: center; color: var(--muted); font-size: 9.5px; }
+</style>
+</head>
+<body>
+<form class="bar" method="get">
+	<a href="/app/stock-take-sheet">← Count sheets</a>
+	{% if sheet %}<input type="hidden" name="sheet" value="{{ sheet|e }}">{% endif %}
+	{% if take %}<input type="hidden" name="take" value="{{ take|e }}">{% endif %}
+	<label><input type="checkbox" name="show_stock" value="1" {% if show_stock %}checked{% endif %} onchange="if(!this.checked){var h=document.createElement('input');h.type='hidden';h.name='show_stock';h.value='0';this.form.appendChild(h)};this.form.submit()"> Show stock in ERP (not a blind count) 顯示系統庫存</label>
+	<span class="grow"></span>
+	<button type="button" class="print" onclick="window.print()">Print A4 列印</button>
+</form>
+
+<div class="sheet">
+	<div class="head">
+		<div>
+			{% if b.brand_logo %}<img class="logo" src="{{ b.brand_logo }}" alt="">{% endif %}
+			<div class="eyebrow">{{ b.brand_name|e }}</div>
+			<h1>Stock take count sheet · 盤點表</h1>
+		</div>
+		<div class="right">
+			<div class="date">{{ info.title|e }}</div>
+			{{ info.sheet|e }} · {{ total }} items 項<br>
+			Printed 列印 {{ printed }} · {{ printed_by|e }}
+		</div>
+	</div>
+	<p style="margin:10px 0 4px">Date 日期: {% if date_fmt %}<b>{{ date_fmt }}</b>{% else %}<span class="fill"></span>{% endif %}
+		&nbsp;&nbsp; Counted by 盤點人: <span class="fill"></span>
+		&nbsp;&nbsp; Checked by 覆核: <span class="fill"></span></p>
+	<p class="note" style="margin:0 0 8px">Count whole packs in the pack columns and anything left over in the last column. Write 0 if there is none; leave nothing blank. 整包數量填在包裝欄，零散數量填在最後一欄。沒有請填 0，不要留空。</p>
+
+	<table class="cnt">
+		<thead><tr>
+			<th class="numcol">#</th><th>Item 品名</th>
+			{% for i in range(pack_cols) %}<th class="in">Packs 包 {{ i + 1 }}</th>{% endfor %}
+			<th class="in">Loose 散裝</th>
+			{% if show_stock %}<th class="num">In ERP 系統</th>{% endif %}
+			<th>Notes 備註</th>
+		</tr></thead>
+		<tbody>
+		{% set ns = namespace(n=0) %}
+		{% for g in groups %}
+		<tr class="area"><td colspan="{{ 4 + pack_cols + (1 if show_stock else 0) }}">{{ g.label|e or "No storage area 未指定位置" }}</td></tr>
+		{% for r in g.rows %}{% set ns.n = ns.n + 1 %}
+		<tr>
+			<td class="numcol">{{ ns.n }}</td>
+			<td><span class="big" style="font-size:11.5px">{{ r.name|e }}</span> <span class="code">{{ r.item|e }}</span></td>
+			{% for i in range(pack_cols) %}<td class="in">{% if r.packs|length > i %}<span class="cap">{{ r.packs[i].caption|e }}</span>{% endif %}</td>{% endfor %}
+			<td class="in"><span class="cap">{{ r.loose|e }}</span></td>
+			{% if show_stock %}<td class="num muted">{{ r.system }}</td>{% endif %}
+			<td></td>
+		</tr>
+		{% endfor %}
+		{% endfor %}
+		</tbody>
+	</table>
+	<div class="sig"><div>Counted by 盤點人</div><div>Checked by 覆核</div><div>Entered in ERP 輸入系統</div></div>
+	{% if b.print_footer %}<p class="note">{{ b.print_footer|e }}</p>{% endif %}
+</div>
+</body>
+</html>
