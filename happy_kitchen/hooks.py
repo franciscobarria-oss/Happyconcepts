@@ -34,6 +34,7 @@ doctype_js = {
 	"Purchase Order": "public/js/purchase_order.js",
 	"Item": "public/js/item.js",
 	"Purchase Receipt": "public/js/purchase_receipt.js",
+	"Employee": "public/js/employee.js",
 }
 
 jinja = {
@@ -46,6 +47,10 @@ doc_events = {
 	},
 	"Item Price": {
 		"on_update": "happy_kitchen.recipe_management.doctype.recipe.recipe.recost_recipes_for_item",
+	},
+	"Employee": {
+		"validate": "happy_kitchen.hk_operations.team_api.employee_validate",
+		"on_update": "happy_kitchen.hk_operations.team_api.employee_on_update",
 	},
 	"Purchase Order": {
 		"validate": "happy_kitchen.hk_operations.purchasing.validate_purchase_order",

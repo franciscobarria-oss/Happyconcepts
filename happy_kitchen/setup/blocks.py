@@ -8,6 +8,9 @@ from happy_kitchen.setup.block_files import needs_update, read_block
 
 BLOCKS = {
 	# "Block Name": "file_stem",  (files: blocks/file_stem.html / .js / .css)
+	"HK Team Today": "team_today",
+	"HK Team Roster": "team_roster",
+	"HK Clock In": "clock_in",
 }
 
 
