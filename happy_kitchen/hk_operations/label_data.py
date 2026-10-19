@@ -33,7 +33,9 @@ def ingredient_weights(item: str, recipe_for_item: dict, lines: dict, piece_gram
 	out: dict[str, float] = {}
 	warnings: list[str] = []
 	for l in lines.get(info["recipe"], []):
-		if (l.get("component_type") or "Ingredient") != "Ingredient":
+		# sub-recipe lines carry the sub-recipe's type (Batch Preparation /
+		# Recipe Component); only packaging stays off the label
+		if l.get("component_type") == "Packaging":
 			continue
 		code, amount = l["item"], (l.get("gross_qty") or 0.0) * per_unit
 		if code in recipe_for_item and code != item and code not in _path:

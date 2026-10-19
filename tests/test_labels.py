@@ -15,7 +15,7 @@ RECIPE_FOR_ITEM = {
 }
 LINES = {
 	"R-COOKIE": [
-		{"item": "DOUGH", "gross_qty": 400, "stock_uom": "Gram"},
+		{"item": "DOUGH", "gross_qty": 400, "stock_uom": "Gram", "component_type": "Batch Preparation"},
 		{"item": "CHOC", "gross_qty": 100, "stock_uom": "Gram"},
 		{"item": "BAG", "gross_qty": 10, "stock_uom": "Nos", "component_type": "Packaging"},
 	],
