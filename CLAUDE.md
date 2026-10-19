@@ -43,6 +43,7 @@ Guidance for Claude Code working in this repository: the `happy_kitchen` Frappe 
 ## Production (P9)
 - Recipe Production Log (+ Item), naming RPL-.YYYY.-.####, submittable; only Active recipes can be logged.
 - On submit (Recipe Settings `create_stock_entry_on_submit`): one draft Manufacture per Batch Preparation row (inputs from each item's default warehouse, output to the prep item's default warehouse at ingredient cost) and one draft Material Issue for the other rows. Whole-number UOMs round up.
+- A Batch Preparation recipe keeps its Item's `valuation_rate` at the ingredient cost per unit, so ERPNext can value the prep before any of it is in stock.
 - Page /app/kitchen-production calls `recipe_management/kitchen.py`; pure helpers in `recipe_management/production.py` (tests/test_production.py).
 
 ## End-to-end checks
