@@ -5,7 +5,7 @@
  "doctype": "Workspace Sidebar",
  "header_icon": "calendar-check",
  "idx": 0,
- "modified": "2026-10-19 12:00:00.000000",
+ "modified": "2026-10-19 15:00:00.000000",
  "modified_by": "Administrator",
  "module": "Recipe Management",
  "name": "Today",
@@ -83,6 +83,18 @@
    "show_arrow": 0,
    "type": "Link",
    "link_to": "Sales Order"
+  },
+  {
+   "child": 1,
+   "collapsible": 1,
+   "icon": "printer",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Label Queue",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link",
+   "link_to": "Label Job"
   },
   {
    "child": 0,

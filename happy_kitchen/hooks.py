@@ -40,6 +40,7 @@ doctype_js = {
 	"Item": "public/js/item.js",
 	"Purchase Receipt": "public/js/purchase_receipt.js",
 	"Employee": "public/js/employee.js",
+	"Sales Order": "public/js/sales_order.js",
 }
 
 jinja = {
@@ -56,6 +57,11 @@ doc_events = {
 	"Employee": {
 		"validate": "happy_kitchen.hk_operations.team_api.employee_validate",
 		"on_update": "happy_kitchen.hk_operations.team_api.employee_on_update",
+	},
+	"Sales Order": {
+		# one Label Job per line (see hk_operations/labels.py)
+		"on_submit": "happy_kitchen.hk_operations.labels.on_sales_order_submit",
+		"on_cancel": "happy_kitchen.hk_operations.labels.on_sales_order_cancel",
 	},
 	"Purchase Order": {
 		"validate": "happy_kitchen.hk_operations.purchasing.validate_purchase_order",

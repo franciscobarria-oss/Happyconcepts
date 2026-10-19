@@ -125,6 +125,16 @@
   },
   {
    "hidden": 0,
+   "is_query_report": 1,
+   "label": "Ingredient Label Check",
+   "link_count": 0,
+   "link_to": "Ingredient Label Check",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
    "is_query_report": 0,
    "label": "Masters",
    "link_count": 4,
@@ -284,9 +294,21 @@
    "type": "Link",
    "dependencies": "",
    "only_for": ""
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "OEM Spec Sheet",
+   "link_count": 0,
+   "link_to": "OEM Spec Sheet",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link",
+   "dependencies": "",
+   "only_for": ""
   }
  ],
- "modified": "2026-10-19 12:00:00.000000",
+ "modified": "2026-10-19 15:00:00.000000",
  "modified_by": "Administrator",
  "module": "Recipe Management",
  "name": "Recipes",

@@ -15,6 +15,8 @@ INSTALL_PATCHES = [
 	"happy_kitchen.patches.team_fields",
 	"happy_kitchen.patches.team_setup",
 	"happy_kitchen.patches.theme_defaults",
+	"happy_kitchen.patches.labels_setup",
+	"happy_kitchen.patches.label_design_defaults",
 ]
 
 

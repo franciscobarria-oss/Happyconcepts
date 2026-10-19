@@ -1,0 +1,240 @@
+{
+ "actions": [],
+ "creation": "2026-10-13 14:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "customer",
+  "item",
+  "item_name",
+  "recipe",
+  "version",
+  "column_break_1",
+  "status",
+  "approved_on",
+  "signed_off_by",
+  "section_spec",
+  "unit_weight_g",
+  "tolerance_g",
+  "shelf_life_days",
+  "storage",
+  "column_break_2",
+  "allergens",
+  "packaging",
+  "section_files",
+  "spec_file",
+  "column_break_3",
+  "label_artwork",
+  "section_notes",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "SPEC-.###",
+   "default": "SPEC-.###",
+   "hidden": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Client",
+   "options": "Customer",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Product",
+   "options": "Item",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Product Name",
+   "fetch_from": "item.item_name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "recipe",
+   "fieldtype": "Link",
+   "label": "Recipe",
+   "options": "Recipe",
+   "description": "The recipe this client version is made from."
+  },
+  {
+   "fieldname": "version",
+   "fieldtype": "Int",
+   "label": "Version",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nApproved\nSuperseded",
+   "default": "Draft",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "approved_on",
+   "fieldtype": "Date",
+   "label": "Approved On"
+  },
+  {
+   "fieldname": "signed_off_by",
+   "fieldtype": "Data",
+   "label": "Signed Off By (Client)"
+  },
+  {
+   "fieldname": "section_spec",
+   "fieldtype": "Section Break",
+   "label": "Specification"
+  },
+  {
+   "fieldname": "unit_weight_g",
+   "fieldtype": "Float",
+   "label": "Weight per Piece (g)"
+  },
+  {
+   "fieldname": "tolerance_g",
+   "fieldtype": "Float",
+   "label": "Weight Tolerance (± g)"
+  },
+  {
+   "fieldname": "shelf_life_days",
+   "fieldtype": "Int",
+   "label": "Shelf Life (days)"
+  },
+  {
+   "fieldname": "storage",
+   "fieldtype": "Select",
+   "label": "Storage",
+   "options": "\nAmbient\nChilled\nFrozen"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "allergens",
+   "fieldtype": "Small Text",
+   "label": "Allergens Declared"
+  },
+  {
+   "fieldname": "packaging",
+   "fieldtype": "Small Text",
+   "label": "Packaging and Case Pack"
+  },
+  {
+   "fieldname": "section_files",
+   "fieldtype": "Section Break",
+   "label": "Files"
+  },
+  {
+   "fieldname": "spec_file",
+   "fieldtype": "Attach",
+   "label": "Approved Spec File"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "label_artwork",
+   "fieldtype": "Attach",
+   "label": "Label Artwork"
+  },
+  {
+   "fieldname": "section_notes",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text Editor",
+   "label": "Notes"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-10-13 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "HK Operations",
+ "name": "OEM Spec Sheet",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Manufacturing Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1,
+   "print": 1
+  },
+  {
+   "role": "Manufacturing User",
+   "read": 1,
+   "report": 1,
+   "print": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "item_name",
+ "show_title_field_in_link": 1
+}

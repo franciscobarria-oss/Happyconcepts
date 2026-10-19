@@ -8,8 +8,10 @@
 (quantity × {0}),（數量 × {0}）
 + Add Product,+ 新增產品
 +{0} more,另有 {0} 項
+1 = a label on every piece. 48 = one label per carton of 48; an order of 200 prints 4 × 48 and 1 × 8.,1 = 每件一張標籤。48 = 每箱 48 件一張；訂單 200 件會印 4 張 × 48 及 1 張 × 8。
 4-digit PIN,4 位數密碼
 <b>{0}</b> is used in {1} recipes. Choose what to use instead and where.,<b>{0}</b> 用於 {1} 個食譜。請選擇取代的材料及食譜。
+A client spec sheet may change shelf life and storage for that client.,客戶規格表可為該客戶更改保質期及儲存方法。
 Accent Colour,強調色
 Active Ingredients,啟用材料
 Actual Used,實際用量
@@ -19,6 +21,7 @@ Add Product from {0},從 {0} 新增產品
 Add all stocked ingredients,加入所有庫存材料
 Add at least one item,請最少加入一項物品
 After Usage,使用後
+Agent version,程式版本
 All,全部
 All arrived as ordered,全部按單收貨
 All clear.,全部處理完畢。
@@ -27,9 +30,11 @@ All saved,已全部儲存
 Allergen,致敏原
 Allergens,致敏原
 Allergens Declared,申報致敏原
+"Allergens also handled in the kitchen (cross-contact), printed under the note.",廚房亦有處理的致敏物（交叉接觸），印在備註下方。
 Allergens reviewed,已核對致敏原
 Already printed,已列印
 Also replace pack sizes that are already set,同時取代已設定的包裝規格
+"Also typed in the Raspberry Pi's settings file, e.g. Kitchen Zebra.",亦須填入 Raspberry Pi 的設定檔，例如 Kitchen Zebra。
 Ambient,常溫
 Amount (HK$),金額（港元）
 Amount / Batch,每批金額
@@ -45,6 +50,8 @@ Approved amount,已批金額
 Approved hours,已批時數
 Approving a Stock Take posts a Stock Reconciliation so ERPNext stock matches the count.,審批盤點後會建立庫存調整，使系統庫存與盤點數量一致。
 Archived,已封存
+"As it appears in ""This product contains ... and their products."", e.g. cereals containing gluten.",用於「This product contains ... and their products.」句中，例如 cereals containing gluten。
+"As printed after CONTAINS: on labels, e.g. Milk.",標籤上 CONTAINS: 之後的寫法，例如 Milk。
 Back to orders,返回採購單
 Base Unit,基本單位
 Based On,計算基礎
@@ -59,7 +66,10 @@ Batches,批數
 Before it can be checked,核對前需要
 "Below {0}'s minimum order of {1} ({2} more needed). You can keep the draft, but it can't be submitted yet.",低於 {0} 的最低訂貨額 {1}（尚欠 {2}）。可以保留草稿，但暫時不能提交。
 Best before,此日期前最佳
+Best before = made-on date + the product's shelf life.,此日期前最佳 = 製造日期 + 產品保質期。
 Blank = default labour rate from Recipe Settings.,留空 = 使用食譜設定中的預設人工費率。
+Blank = item name.,留空 = 物料名稱。
+Blank = the recipe's unit weight.,留空 = 食譜的單位重量。
 Brand Name,品牌名稱
 Brand line,品牌行
 Branding (A4 recipe print),品牌（A4 食譜列印）
@@ -78,6 +88,7 @@ Check ingredients,檢查材料
 Check product labels,核對產品標籤
 Check the label,核對標籤
 Checked by,核對人
+Checked label fingerprint,已檢查標籤的指紋
 Checked on,核對時間
 Chilled,冷藏
 Chinese name,中文名稱
@@ -195,6 +206,7 @@ Flagged,已標記
 Food Cost %,食材成本率
 Food Cost per Unit,每件食物成本
 Food cost,食材成本率
+"For delivery charges, services and other non-food lines.",用於運費、服務及其他非食品項目。
 "For sales items sold under another code than the recipe's own item, e.g. a customer's article number or a box.",用於以食譜物品以外編號出售的銷售物品，例如客戶的貨號或一盒裝。
 "From Item > Weight Per Unit. Lets a recipe use grams for an item priced per piece, or pieces for one priced per gram.",取自物品 > 每單位重量。讓食譜可用克計算按件定價的物品，或用件計算按克定價的物品。
 From Storage,由儲存位置
@@ -215,6 +227,7 @@ HK Today,HK 今日
 Happening today,今日進行中
 Happy Concepts desk theme,Happy Concepts 介面主題
 Happy Kitchen,快樂廚房
+"Have you read the whole label, including allergens, storage and shelf life, and is it correct?",你是否已閱讀整張標籤（包括致敏物、儲存方法及保質期），並確認正確？
 Hourly Labour Cost (incl. MPF),每小時人工成本（包括強積金）
 Hourly Wage,時薪
 Hours,時數
@@ -238,6 +251,7 @@ Ingredient (heaviest first),配料（按重量排列）
 Ingredient / Packaging,食材／包裝
 Ingredient Cost Analysis,食材成本分析
 Ingredient ID,食材編號
+Ingredient Label Check,材料標籤檢查
 Ingredient Name,食材名稱
 Ingredient Usage,食材用量
 Ingredient Weight per Batch (g),每批食材重量（克）
@@ -262,6 +276,7 @@ Instructions,說明
 Inventory Variance,盤點差異
 Invoice Price,發票價
 Invoice price,發票價
+Item Allergen,物料致敏物
 Item ID,物品編號
 Items in these groups (or their sub-groups) count as Packaging.,屬於這些組別（或其子組別）的物品會計作包裝。
 Just over target,略高於目標
@@ -274,7 +289,11 @@ Label Printers,標籤打印機
 Label Queue,標籤列印隊列
 Label Settings,標籤設定
 Label checked,標籤已核對
+Label checked. Labels print automatically when an order is submitted.,標籤已檢查。提交訂單時會自動列印標籤。
+Label checked. {0} waiting label job(s) sent to the printer.,標籤已檢查。{0} 個等候中的標籤工作已送往打印機。
+Label content,標籤內容
 Label height (mm),標籤高度（毫米）
+Label not ready,標籤未準備好
 Label preview,標籤預覽
 Label queue,標籤列印隊列
 Label text,標籤文字
@@ -296,6 +315,7 @@ Last Costed On,最後計算成本日期
 Last Paid,上次價格
 Last Rejected By,最後退回人
 Last Rejected On,最後退回日期
+Last heard from {0},最後聯絡：{0}
 Last seen,最後連線
 Late,逾期
 Leave balances,假期結餘
@@ -348,6 +368,7 @@ Net weight per piece (g),每件淨重（克）
 New count,新盤點
 No Price,未有價格
 No Price Found,找不到價格
+No allergen keywords found in the name. Check the supplier's pack or spec sheet.,名稱中找不到致敏物關鍵字。請查看供應商包裝或規格表。
 No default supplier,未設預設供應商
 No deliveries expected today.,今日沒有預計收貨。
 No ingredients to issue: this log only has Batch Preparation recipes.,沒有食材需要發料：此紀錄只有半成品食譜。
@@ -359,6 +380,7 @@ No price,沒有價格
 No products are linked to this supplier yet.,此供應商尚未連結任何產品。
 No purchase orders waiting for delivery.,沒有待收貨的採購單。
 No reason,未註明原因
+No recipe found for this product. Link one with Made From Recipe on the Sales tab.,找不到此產品的食譜。請在「銷售」分頁的「Made From Recipe」連結一個。
 No recipes found,找不到食譜
 No selling price,未有售價
 No shifts on the roster today.,今日更表沒有人當值。
@@ -366,6 +388,7 @@ No shifts on the roster today.,今日更表沒有人當值。
 Not allowed,不允許
 Not changed,未更改
 Not checked,未核對
+Not checked yet. Labels for orders wait until a manager checks this label.,尚未檢查。訂單的標籤會等候經理檢查此標籤。
 Not now,暫不
 Not sold on its own,不單獨出售
 Note (optional),備註（選填）
@@ -383,14 +406,18 @@ Nothing to receive today or tomorrow.,今明兩日沒有收貨。
 Nothing was received. Enter the quantity that arrived for at least one line.,未有收貨。請最少輸入一行的實收數量。
 Nothing yet.,暫無記錄。
 OEM Spec Sheet,客戶產品規格表
+Offline,離線
 "Offline: {0} saved on this iPad, retrying",離線：{0} 項已存於此 iPad，稍後重試
 On other products' labels,用於其他產品標籤
 On shift,當值
 On target,達標
 One row per ingredient and storage area. Drag rows to change the counting order; the count screen groups them by storage area in this order. Untick Active to hide a row.,每項食材及儲存位置一行。拖動行可更改盤點次序；盤點畫面會按此次序以儲存位置分組。取消勾選「使用中」可隱藏該行。
+Online,在線
 Only Out of Tolerance,只顯示超出容差
 Only Price Changes,只顯示價格變動
 Only Recipes That Need a Look,只顯示需檢查的食譜
+Only a manager can mark a label as checked.,只有經理可以將標籤標記為已檢查。
+Only ingredients with something to do,只顯示需要處理的材料
 Open Count Screen,開啟盤點畫面
 Open purchase orders,未完成採購單
 Opening,期初
@@ -398,6 +425,7 @@ Opening Count,期初盤點
 Optional. Used to work out the cooking yield.,選填。用於計算烹煮後份量。
 "Optional: count in up to 3 pack sizes (Bag, Box, Bottle) plus loose units. Each pack must have a UOM conversion on the Item.",可選：最多以 3 種包裝規格（袋、箱、瓶）加散裝數量盤點。每種包裝須在物品的單位換算中設定。
 Order in Multiples Of,訂貨倍數
+Order line,訂單行
 Order on labels,標籤排序
 Order quantity not allowed,訂貨數量不符
 Ordered,訂購
@@ -449,6 +477,7 @@ Photo,相片
 Pi reports a problem,Raspberry Pi 報告問題
 Pick a method: {0} or {1}.,請選擇計算方法：{0} 或 {1}。
 Pick a rate (or set a default overtime rate on the Employee).,請選擇費率（或在員工資料設定預設加班費率）。
+Pick the lines to print. Pieces = how many pieces the labels cover; the item's Pieces per label decides how many labels that is.,選擇要列印的行。件數 = 標籤涵蓋的件數；物料的「每張標籤件數」決定共印多少張。
 Pieces,件數
 Pieces per label,每張標籤件數
 Planned Batches,計劃批數
@@ -471,17 +500,23 @@ Print Footer,列印頁尾
 Print again,重新列印
 Print date,列印日期
 Print labels,列印標籤
+Print labels for {0},為 {0} 列印標籤
 Print resolution (dpi),列印解析度（dpi）
 Print test label,列印測試標籤
 Printed at,列印時間
+"Printed under ""Manufacturers:"", one line each: company name, then address.",印在「Manufacturers:」下方，每行一項：公司名稱，然後地址。
+Printer,打印機
 Printer error,打印機錯誤
 Printer language,打印機語言
 Printer name,打印機名稱
+Printing,列印中
+Prints as,標籤上顯示為
 Produced,已生產
 Produced today,今日已生產
 Product,產品
 Product Name,產品名稱
 Product label,產品標籤
+Product name,產品名稱
 Product name on label,標籤上的產品名稱
 Production,生產
 Production Date,生產日期
@@ -579,6 +614,7 @@ Set when the count is approved.,盤點獲審批時設定。
 Share of Ingredient Cost,佔食材成本比例
 Sheet Name,盤點表名稱
 Shelf Life (days),保質期（日）
+Shelf life: {0} days (Inventory tab → Shelf Life In Days).,保質期：{0} 天（存貨分頁 → Shelf Life In Days）。
 Shifts,更次
 Short Name,簡稱
 Short on Stock,庫存不足
@@ -616,6 +652,7 @@ Storage Area,儲存位置
 Sub-Recipe (Batch Preparation / Component),子食譜（半成品／組件）
 Submit for Approval,提交審批
 Submit the Production Log first,請先提交生產紀錄
+Submit the sales order first.,請先提交銷售訂單。
 Submit this count for approval? It can't be changed while it waits.,確認提交審批？等候審批期間不能修改。
 Submit this wastage? It will be taken out of stock.,確認提交報廢？物品將從庫存扣除。
 Submit {0} item(s),提交 {0} 項
@@ -624,6 +661,7 @@ Submitted On,提交日期
 Submitted for approval,已提交審批
 Suggest allergens,建議致敏原
 Suggested Price (target food cost),建議售價
+"Suggested: {0}. Check the pack, then tick Allergens reviewed and save.",建議：{0}。請核對包裝，然後勾選「已審核致敏物」並儲存。
 Sum of net weights of all gram-based ingredient lines.,所有以克計食材的淨重總和。
 Superseded,已取代
 Supplier Price,供應商價格
@@ -640,13 +678,23 @@ Tasks,工作
 Team,團隊
 Team & Clients,員工及客戶
 Test label,測試標籤
+Test label {0} sent. It prints within a few seconds if the Pi is online.,測試標籤 {0} 已送出。如 Pi 在線，數秒內會列印。
 The PIN must be exactly 4 digits.,密碼必須是 4 位數字。
+The Raspberry Pi has never connected.,Raspberry Pi 從未連線。
 The closing stock take must be after the opening one,期末盤點必須在期初盤點之後
 The quantity factor must be more than 0.,數量倍數必須大於 0。
+The recipe this client version is made from.,此客戶版本所用的食譜。
+"The recipe, an ingredient or a label field changed since the last check. Labels wait until it is checked again.",自上次檢查後，食譜、材料或標籤欄位已更改。標籤會等候再次檢查。
 The sheet {0} has no active ingredients,盤點表 {0} 沒有啟用的材料
+The user whose API key the Pi uses. It only needs the Label Printer role.,Pi 使用其 API 金鑰的用戶。只需要 Label Printer 角色。
 This count is waiting for approval and can't be changed. Ask an approver to reject it first.,此盤點正等候審批，不能修改。請先請審批人退回。
 This count is {0} and can't be changed.,此盤點狀態為 {0}，不能修改。
+This ingredient appears on product labels as <b>{0}</b>.,此材料在產品標籤上顯示為 <b>{0}</b>。
+This job belongs to another printer.,此工作屬於另一部打印機。
+This label is waiting for its product to be checked.,此標籤正等候其產品被檢查。
 This log has no Batch Preparation recipes.,此紀錄沒有半成品食譜。
+"Tick after checking the allergens against the supplier's pack or spec sheet, even if there are none.",按供應商包裝或規格表核對致敏物後勾選，即使沒有致敏物亦然。
+Tick at least one line.,請至少勾選一行。
 Tick at least one recipe.,請至少選擇一個食譜。
 Time off,休假
 Time off to approve,待審批假期
@@ -661,6 +709,7 @@ Today's run,今日生產
 Tolerance,容差
 Tomorrow,明日
 Too many wrong PINs. Wait 5 minutes or ask your manager.,密碼錯誤次數過多。請等 5 分鐘或聯絡主管。
+"Top of the right column, e.g. For immediate consumption after opening. A product's ""Extra line on label"" replaces it.",右欄頂部，例如 For immediate consumption after opening。產品的「標籤額外一行」會取代它。
 Top up {0},補充 {0}
 Total / Unit,每件總成本
 Total Cost,總成本
@@ -682,6 +731,7 @@ Unit / Basis,單位／計算方式
 Unit Cost,單位成本
 Unit Cost (per Stock UOM),單位成本（每庫存單位）
 Units,件數
+Unknown label printer {0},未知的標籤打印機 {0}
 Upcoming,即將到期
 Update ERPNext stock when a count is approved,盤點批准後更新 ERPNext 庫存
 Updated {0},更新於 {0}
@@ -723,12 +773,14 @@ Wasted Items,報廢物品
 Weight Tolerance (± g),重量誤差（± 克）
 Weight per Piece (g),每件重量（克）
 Weights & Cooking Yield,重量及成品率
+"What customers read, without brand or pack size, e.g. Wheat flour, Unsalted butter. Blank = item name.",顧客看到的名稱，不含品牌或包裝尺寸，例如 Wheat flour、Unsalted butter。留空 = 物料名稱。
 "What the extra time was for (big order, stock count, cover).",加班原因（大訂單、盤點、代更）。
 Why is it rejected?,退回原因？
 With a recipe: show usage for this many batches instead of the date range.,選擇食譜時：顯示此批數的用量，而非日期範圍內的用量。
 Within Tolerance,在容差內
 Within tolerance,在容差內
 Wording on labels,標籤用語
+"Words in an ingredient name that suggest this allergen, one per line. Only used for suggestions; a person still reviews every ingredient.",材料名稱中提示此致敏物的字詞，每行一個。只用作建議；每種材料仍須由人審核。
 Working Days per Month,每月工作日數
 Yield,份量
 Yield %,可用率
@@ -737,6 +789,7 @@ Yield Unit,份量單位
 You can't create purchase orders.,你沒有權限建立採購單。
 You replaced <b>{0}</b> with <b>{1}</b>. {0} is also used in {2} other recipes. Replace it there too?,你已將 <b>{0}</b> 取代為 <b>{1}</b>。{0} 亦用於另外 {2} 個食譜。是否一併取代？
 "You submitted this count, so another approver has to approve or reject it.",此盤點由你提交，須由另一位審批人批准或退回。
+ZPL for Zebra and other thermal printers that speak ZPL. PNG sends a picture through the Pi's printer driver (CUPS) for anything else.,ZPL 適用於 Zebra 及其他支援 ZPL 的熱感打印機。其他打印機用 PNG，經 Pi 的打印驅動（CUPS）傳送圖片。
 and {0} more,另有 {0} 張
 archived,已封存
 batch,批
@@ -747,6 +800,8 @@ could not be saved,無法儲存
 doesn't use {0},沒有使用 {0}
 due,到期
 due today,今日到期
+e.g. Made in Hong Kong,例如 Made in Hong Kong
+e.g. May contain traces of nuts. / Heat before serving.,例如 May contain traces of nuts. / Heat before serving.
 expected today,預計今日到貨
 failed,失敗
 from recipe {0},來自食譜 {0}
@@ -807,7 +862,11 @@ waiting for the printer,等待打印機
 {0} is not an approved stock take,{0} 不是已批准的盤點
 {0} isn't used in any active recipe.,{0} 沒有用於任何使用中的食譜。
 {0} jobs,{0} 個工作
+{0} label job(s) added.,已加入 {0} 個標籤工作。
+{0} label job(s) waiting for a printer.,{0} 個標籤工作正等候打印機。
 {0} label jobs waiting for a check,{0} 個標籤工作待檢查
+{0} label(s) are waiting: the product label has not been checked yet. Open the item's Label tab to check it.,{0} 張標籤正在等候：產品標籤尚未檢查。請打開物料的「標籤」分頁進行檢查。
+{0} label(s). The first one is shown.,{0} 張標籤。顯示第一張。
 {0} late,{0} 個逾期
 {0} line(s) differ from the order. Stock is received at the ordered price; the differences are flagged on the receipt for the office.,{0} 行與訂單不符。貨品按訂單價格入庫，差異會標記在收貨單上交辦公室跟進。
 {0} lines,{0} 行
