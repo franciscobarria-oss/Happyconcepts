@@ -1,0 +1,26 @@
+.hk-clock { max-width: 900px; margin: 0 auto; color: var(--text-color); text-align: center; }
+.hk-clock .top { display: flex; justify-content: space-between; align-items: baseline; }
+.hk-clock h3 { font-weight: 700; margin: 6px 0; }
+.hk-clock .clock { font-size: 28px; font-weight: 700; }
+.hk-clock .sub { color: var(--text-muted); text-align: left; }
+.hk-clock .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.hk-clock .tile { min-height: 96px; border-radius: 16px; border: 1px solid var(--border-color); background: var(--card-bg);
+	display: flex; flex-direction: column; justify-content: center; gap: 4px; font-size: 14px; }
+.hk-clock .tile .nm { font-size: 20px; font-weight: 700; }
+.hk-clock .tile.is-in { border-color: var(--green-500, #38a169); background: var(--green-50, #f0fff4); }
+.hk-clock .in { color: var(--green-700, #276749); font-weight: 600; }
+.hk-clock .muted { color: var(--text-muted); }
+.hk-clock .back { float: left; }
+.hk-clock .pin-view h3 { clear: both; padding-top: 12px; font-size: 26px; }
+.hk-clock .dots { display: flex; justify-content: center; gap: 14px; margin: 18px 0 8px; }
+.hk-clock .dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--text-muted); }
+.hk-clock .dot.on { background: var(--text-color); border-color: var(--text-color); }
+.hk-clock .dots.shake { animation: hk-shake .35s; }
+@keyframes hk-shake { 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+.hk-clock .pin-msg { min-height: 20px; color: var(--text-muted); }
+.hk-clock .keys { display: grid; grid-template-columns: repeat(3, 84px); gap: 12px; justify-content: center; margin-top: 12px; }
+.hk-clock .key { height: 72px; border-radius: 16px; border: 1px solid var(--border-color); background: var(--card-bg); font-size: 28px; }
+.hk-clock .done-view { padding: 60px 0; }
+.hk-clock .done-mark { font-size: 64px; color: var(--green-600, #2f855a); }
+.hk-clock .done-view.out .done-mark { color: var(--text-muted); }
+.hk-clock .done-title { font-size: 28px; }

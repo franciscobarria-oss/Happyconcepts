@@ -58,3 +58,10 @@ Guidance for Claude Code working in this repository: the `happy_kitchen` Frappe 
 - Wastage Log (+ items, WST-.YYYY.-.####) issues stock on submit; if stock is short it still submits and sets `stock_note`. Wastage Reason has `reason_zh` (8 seeded by patch `wastage_receiving_setup`).
 - Receive Delivery (/app/receive-delivery, button on submitted POs) → `kitchen.receive_po`: stock at the PO price, flags (pure `receiving.py`, tests/test_receiving.py) in Purchase Receipt `hk_has_discrepancy` / `hk_delivery_flags`, invoice price in PR Item `hk_invoice_rate` for the Price Variance report.
 - Pure HK Operations rules (overtime, price %, food cost) live in `hk_operations/calc.py` (tests/test_hk_operations.py).
+
+## Team (P12)
+- Employee fields (patch `team_fields`): hk_short_name, hk_cert_expiry, pay fields at permlevel 1 (hk_monthly_base, hk_hourly_rate, hk_working_days, hk_hours_per_day, hk_hourly_cost, hk_default_overtime_rate, hk_pin_hash), readable by HR Manager / System Manager only.
+- `hk_hourly_cost` is computed on the server (Employee validate, `hk_operations/team_api.py`) and synced to Activity Cost "Kitchen Labour". Maths and setup data in `hk_operations/team.py` (tests/test_team.py): MPF 5 % capped HK$1,500, PIN hash sha256("id:pin"), roster cycle, EO annual leave.
+- Clock-in PINs are checked on the server (`team_api.clock_in`, 5 wrong tries lock 5 min); the kiosk never receives hashes or pay. Roster taps and "copy last week" run in `team_api.roster_cycle` / `roster_copy_week`.
+- Blocks HK Team Today / HK Team Roster / HK Clock In are files in `blocks/`; workspaces Team and Clock In (module HK Operations), sidebars in `workspace_sidebar/`, icons in `desktop_icon/`. Starting data (departments, shifts, HK Statutory 2026-27 holidays, Annual Leave, overtime rates, activity types) from patch `team_setup`. No employees are loaded.
+- Payroll stays with the outside provider: Overtime Entry (submit = approve) and the Overtime Summary report.

@@ -12,9 +12,15 @@ INSTALL_PATCHES = [
 	"happy_kitchen.patches.item_recipe_link_fields",
 	"happy_kitchen.patches.stock_take_defaults",
 	"happy_kitchen.patches.wastage_receiving_setup",
+	"happy_kitchen.patches.team_fields",
+	"happy_kitchen.patches.team_setup",
 ]
 
 
 def after_install():
 	for path in INSTALL_PATCHES:
 		importlib.import_module(path).execute()
+	# install-app doesn't run after_migrate, so create the Custom HTML Blocks now too
+	from happy_kitchen.setup import blocks
+
+	blocks.sync()

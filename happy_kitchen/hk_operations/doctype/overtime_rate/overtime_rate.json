@@ -1,0 +1,87 @@
+{
+ "actions": [],
+ "creation": "2026-10-13 14:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "rate_name",
+  "method",
+  "value",
+  "disabled"
+ ],
+ "fields": [
+  {
+   "fieldname": "rate_name",
+   "fieldtype": "Data",
+   "label": "Rate Name",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "method",
+   "fieldtype": "Select",
+   "label": "Pay Method",
+   "options": "Fixed per hour\nMultiple of own hourly wage",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "value",
+   "fieldtype": "Float",
+   "label": "Value",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "HK$ per hour (Fixed), or how many times the person's own hourly wage (1.5 = time and a half)."
+  },
+  {
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-10-13 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "HK Operations",
+ "name": "Overtime Rate",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR User",
+   "read": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "autoname": "field:rate_name",
+ "naming_rule": "By fieldname",
+ "quick_entry": 1
+}

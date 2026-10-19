@@ -1,0 +1,92 @@
+{
+ "app": "happy_kitchen",
+ "charts": [],
+ "content": "[{\"id\": \"hk-b0\", \"type\": \"custom_block\", \"data\": {\"custom_block_name\": \"HK Team Today\", \"col\": 12}}, {\"id\": \"hk-b1\", \"type\": \"custom_block\", \"data\": {\"custom_block_name\": \"HK Team Roster\", \"col\": 12}}, {\"id\": \"hk-sh\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h5\\\"><b>More</b></span>\", \"col\": 12}}, {\"id\": \"hk-s0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Staff\", \"col\": 3}}, {\"id\": \"hk-s1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Time off\", \"col\": 3}}, {\"id\": \"hk-s2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Attendance\", \"col\": 3}}, {\"id\": \"hk-s3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Clock-ins\", \"col\": 3}}, {\"id\": \"hk-s4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Overtime\", \"col\": 3}}, {\"id\": \"hk-s5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Overtime Summary\", \"col\": 3}}, {\"id\": \"hk-s6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Holidays\", \"col\": 3}}, {\"id\": \"hk-s7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Shifts\", \"col\": 3}}]",
+ "creation": "2026-10-19 09:00:00.000000",
+ "custom_blocks": [
+  {
+   "custom_block_name": "HK Team Today",
+   "label": "HK Team Today"
+  },
+  {
+   "custom_block_name": "HK Team Roster",
+   "label": "HK Team Roster"
+  }
+ ],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "users",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Team",
+ "links": [],
+ "modified": "2026-10-19 09:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "HK Operations",
+ "name": "Team",
+ "number_cards": [],
+ "owner": "Administrator",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "HR Manager"
+  }
+ ],
+ "shortcuts": [
+  {
+   "type": "DocType",
+   "label": "Staff",
+   "link_to": "Employee",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Time off",
+   "link_to": "Leave Application",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Attendance",
+   "link_to": "Attendance",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Clock-ins",
+   "link_to": "Employee Checkin",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Overtime",
+   "link_to": "Overtime Entry",
+   "doc_view": ""
+  },
+  {
+   "type": "Report",
+   "label": "Overtime Summary",
+   "link_to": "Overtime Summary",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Holidays",
+   "link_to": "Holiday List",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Shifts",
+   "link_to": "Shift Type",
+   "doc_view": ""
+  }
+ ],
+ "title": "Team"
+}
