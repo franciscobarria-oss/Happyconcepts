@@ -11,3 +11,4 @@ happy_kitchen.patches.stock_take_defaults
 happy_kitchen.patches.wastage_receiving_setup
 happy_kitchen.patches.team_fields
 happy_kitchen.patches.team_setup
+happy_kitchen.patches.theme_defaults

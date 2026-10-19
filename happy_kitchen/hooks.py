@@ -14,9 +14,12 @@ after_migrate = ["happy_kitchen.setup.blocks.sync"]
 # Desk-wide CSS/JS. /assets is served with a long cache lifetime and these files are not
 # bundled, so each URL carries ?v=<_HK_ASSET_VERSION>.
 # Bump _HK_ASSET_VERSION whenever any file listed in app_include_css / app_include_js changes.
-_HK_ASSET_VERSION = "0.2.0"
-_APP_CSS = []  # e.g. "css/hk_theme.css"
+_HK_ASSET_VERSION = "0.3.0"
+# Happy Concepts desk theme: always loaded, only active under html.hk-theme, which
+# hk_theme.js sets from boot (Recipe Settings > "Happy Concepts desk theme", see theme.py).
+_APP_CSS = ["css/hk_theme.css"]
 _APP_JS = [
+	"js/hk_theme.js",  # theme switch, EN / 中 toggle, sidebar and workspace text through __()
 	"js/hk_replace_ingredient.js",  # "Replace in recipes" dialog, used by the Recipe and Item forms
 ]
 
@@ -27,6 +30,8 @@ def _asset(path):
 
 app_include_css = [_asset(p) for p in _APP_CSS]
 app_include_js = [_asset(p) for p in _APP_JS]
+
+boot_session = "happy_kitchen.theme.boot_session"
 
 # Form scripts live in public/js and are attached here (no Client Scripts in the database).
 doctype_js = {

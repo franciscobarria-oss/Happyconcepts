@@ -14,6 +14,7 @@ INSTALL_PATCHES = [
 	"happy_kitchen.patches.wastage_receiving_setup",
 	"happy_kitchen.patches.team_fields",
 	"happy_kitchen.patches.team_setup",
+	"happy_kitchen.patches.theme_defaults",
 ]
 
 
