@@ -4,7 +4,7 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import now_datetime
+from frappe.utils import flt, now_datetime
 
 from happy_kitchen.recipe_management import costing
 from happy_kitchen.recipe_management.pricing import (
@@ -43,6 +43,7 @@ class Recipe(Document):
 		)
 
 	def on_update(self):
+		self.sync_item_valuation_rate()
 		# a working recipe's / component's cost feeds the recipes that use it
 		if self.recipe_type in SUB_RECIPE_TYPES and not self.flags.from_recost:
 			frappe.enqueue(
@@ -51,6 +52,19 @@ class Recipe(Document):
 				queue="short",
 				enqueue_after_commit=True,
 			)
+
+	def sync_item_valuation_rate(self):
+		"""A stocked batch preparation's Item gets its ingredient cost per unit as the fallback
+		valuation rate, so ERPNext can value it before any stock of it exists (e.g. dough made
+		and used in the same Production Log). Labour and overheads are not stock value."""
+		if self.recipe_type != "Batch Preparation" or not self.item:
+			return
+		item = frappe.db.get_value("Item", self.item, ["stock_uom", "valuation_rate", "is_stock_item"], as_dict=True)
+		if not item or not item.is_stock_item or (self.yield_uom and self.yield_uom != item.stock_uom):
+			return
+		rate = flt(self.ingredient_cost_per_unit, 6)
+		if rate and abs(flt(item.valuation_rate) - rate) > 1e-9:
+			frappe.db.set_value("Item", self.item, "valuation_rate", rate, update_modified=False)
 
 	def set_ingredient_prices(self, settings):
 		packaging_groups = get_packaging_groups(settings)

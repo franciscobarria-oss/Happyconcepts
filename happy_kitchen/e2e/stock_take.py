@@ -37,7 +37,8 @@ def run():
 		flour = frappe.get_doc({
 			"doctype": "Item", "item_code": P + "FLOUR", "item_name": P + "FLOUR", "stock_uom": "Gram",
 			"item_group": "Ingredients", "is_stock_item": 1,
-			"uoms": [{"uom": "Gram", "conversion_factor": 1}, {"uom": "Kg", "conversion_factor": 1000}],
+			"uoms": [{"uom": "Gram", "conversion_factor": 1}, {"uom": "Kg", "conversion_factor": 1000},
+			         {"uom": "Box", "conversion_factor": 25000}],
 			"item_defaults": [{"company": company, "default_warehouse": dry}],
 		}).insert().name
 		egg = frappe.get_doc({
@@ -60,7 +61,7 @@ def run():
 		sheet_api.fill_pack_sizes(sheet.name)
 		sheet.reload()
 		frow = next(r for r in sheet.items if r.item == flour)
-		_check(frow.pack_uom == "Kg", f"flour pack size Kg, got {frow.pack_uom}")
+		_check(frow.pack_uom == "Box", f"flour pack size Box (Kg is a measure, not a pack), got {frow.pack_uom}")
 		# keep only our rows (a real site may have other stocked items)
 		sheet.items = [r for r in sheet.items if r.item in (flour, egg)]
 		sheet.save()
@@ -74,7 +75,7 @@ def run():
 		st.save_counts(name, [{"row": rows[flour], "qty": 300, "packs": [2]}, {"row": rows[egg], "qty": 24}])
 		doc = frappe.get_doc("Stock Take", name)
 		qty = {r.item: flt(r.stock_qty) for r in doc.items}
-		_check(qty == {flour: 2300, egg: 24}, f"2 Kg packs + 300 g loose = 2300 g, 24 eggs; got {qty}")
+		_check(qty == {flour: 50300, egg: 24}, f"2 boxes of 25 kg + 300 g loose = 50300 g, 24 eggs; got {qty}")
 
 		doc.reload()
 		_expect_error(lambda: doc.submit(), "standard Submit is blocked")
@@ -99,7 +100,7 @@ def run():
 			stock = {(b.item_code, b.warehouse): flt(b.actual_qty)
 			         for b in frappe.get_all("Bin", filters={"item_code": ("in", [flour, egg])},
 			                                 fields=["item_code", "warehouse", "actual_qty"])}
-			_check(stock == {(flour, dry): 2300, (egg, fridge): 30}, f"stock follows the count: {stock}")
+			_check(stock == {(flour, dry): 50300, (egg, fridge): 30}, f"stock follows the count: {stock}")
 			print(f"stock reconciliation {sr.name} ({sr.purpose})")
 		_expect_error(lambda: doc.cancel(), "approved stock take can't be cancelled")
 		print("ok: stock take e2e passed")
