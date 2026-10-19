@@ -1,0 +1,100 @@
+{
+ "app": "happy_kitchen",
+ "creation": "2026-10-19 12:00:00.000000",
+ "docstatus": 0,
+ "doctype": "Workspace Sidebar",
+ "header_icon": "calendar-check",
+ "idx": 0,
+ "modified": "2026-10-19 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Recipe Management",
+ "name": "Today",
+ "owner": "Administrator",
+ "standard": 1,
+ "title": "Today",
+ "items": [
+  {
+   "child": 0,
+   "collapsible": 1,
+   "icon": "home",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Today",
+   "link_type": "Workspace",
+   "show_arrow": 0,
+   "type": "Link",
+   "link_to": "Today"
+  },
+  {
+   "child": 0,
+   "collapsible": 1,
+   "icon": "list-checks",
+   "indent": 1,
+   "keep_closed": 0,
+   "label": "Tasks",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Section Break"
+  },
+  {
+   "child": 1,
+   "collapsible": 1,
+   "icon": "shopping-bag",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Purchase Orders",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link",
+   "link_to": "Purchase Order"
+  },
+  {
+   "child": 1,
+   "collapsible": 1,
+   "icon": "truck",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Receive Delivery",
+   "link_type": "Page",
+   "show_arrow": 0,
+   "type": "Link",
+   "link_to": "receive-delivery"
+  },
+  {
+   "child": 1,
+   "collapsible": 1,
+   "icon": "chef-hat",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Production",
+   "link_type": "Page",
+   "show_arrow": 0,
+   "type": "Link",
+   "link_to": "kitchen-production"
+  },
+  {
+   "child": 1,
+   "collapsible": 1,
+   "icon": "shopping-cart",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Sales Orders",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link",
+   "link_to": "Sales Order"
+  },
+  {
+   "child": 0,
+   "collapsible": 1,
+   "icon": "notepad-text",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Happy Kitchen",
+   "link_type": "Workspace",
+   "show_arrow": 0,
+   "type": "Link",
+   "link_to": "Recipes"
+  }
+ ]
+}

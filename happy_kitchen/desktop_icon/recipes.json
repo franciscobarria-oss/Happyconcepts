@@ -1,0 +1,21 @@
+{
+ "app": "happy_kitchen",
+ "creation": "2026-10-19 12:00:00.000000",
+ "docstatus": 0,
+ "doctype": "Desktop Icon",
+ "hidden": 0,
+ "icon": "notepad-text",
+ "icon_type": "Link",
+ "idx": 1,
+ "label": "Recipes",
+ "link_to": "Recipes",
+ "link_type": "Workspace Sidebar",
+ "modified": "2026-10-19 12:00:00.000000",
+ "modified_by": "Administrator",
+ "name": "Recipes",
+ "owner": "Administrator",
+ "parent_icon": "ERPNext",
+ "restrict_removal": 0,
+ "roles": [],
+ "standard": 1
+}

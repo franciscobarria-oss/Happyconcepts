@@ -11,6 +11,7 @@ BLOCKS = {
 	"HK Team Today": "team_today",
 	"HK Team Roster": "team_roster",
 	"HK Clock In": "clock_in",
+	"HK Today": "today",
 }
 
 

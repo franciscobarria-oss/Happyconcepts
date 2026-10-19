@@ -867,6 +867,21 @@ ZH_TW = {
 	"{0} doesn't exist or is disabled.": "{0} 不存在或已停用。",
 	"Print Count Sheet": "列印盤點表",
 	"Choose a Stock Take Sheet or a Stock Take.": "請選擇盤點表或盤點紀錄。",
+	# P14 Today home
+	"HK Today": "HK 今日",
+	"Draft {0} created. Check it and submit it to send.": "已建立草稿 {0}。請檢查後提交發送。",
+	"Nothing to order.": "沒有需要訂購的項目。",
+	"You can't create purchase orders.": "你沒有權限建立採購單。",
+	"batches · {0} of {1} recipes done": "批 · 已完成 {0} / {1} 個食譜",
+	"today": "今日",
+	"{0} batches · short {1}": "{0} 批 · 欠 {1}",
+	"{0} batches · {1} still to make": "{0} 批 · 尚需製作 {1}",
+	"{0} jobs": "{0} 個工作",
+	"{0} label jobs waiting for a check": "{0} 個標籤工作待檢查",
+	"{0} late": "{0} 個逾期",
+	"{0} lines": "{0} 行",
+	"{0} · {1} lines{2}": "{0} · {1} 行{2}",
+	"{0}% received": "已收貨 {0}%",
 }
 
 
@@ -875,7 +890,7 @@ ZH_TW = {
 LEAVE_AS_IS = {
 	"Actions", "Active", "Amended From", "Approved", "Attendance", "Company", "Department", "Disabled", "Draft",
 	"Employee", "From", "From Date", "Grand Total", "Group", "Holidays", "Home", "Item Name", "Items",
-	"Locked", "Logo", "Month", "More", "Name", "Not permitted", "Price", "Price List", "Reject", "Rejected",
+	"Locked", "Logo", "Month", "More", "Settings", "Name", "Not permitted", "Price", "Price List", "Reject", "Rejected",
 	"Series", "Skipped", "Status", "Stock Entry", "Stock Reconciliation", "Stock UOM", "Submitted", "Time",
 	"To", "To Date", "UOM", "Value", "View",
 	"Date", "Item", "Item Group", "Item Price", "Notes", "Qty", "Remarks", "Supplier", "Type", "Unit", "Warehouse",
