@@ -54,3 +54,10 @@ def test_parse_lines_flags_what_it_cannot_read():
 def test_next_internal_sku():
 	assert sku.next_code([]) == "SKU-0001"
 	assert sku.next_code(["SKU-0009", "SKU-0002", "ING-099", "SKU-x"]) == "SKU-0010"
+
+
+def test_strip_quoted_keeps_only_the_new_words():
+	reply = "Please make it 18 x Brownie\n\nOn Mon, 19 Oct 2026 at 10:00, Amy <a@x.com> wrote:\n> 12 x Brownie\n> Thanks"
+	assert eo.strip_quoted(reply) == "Please make it 18 x Brownie\n"
+	assert eo.strip_quoted("> 12 x Brownie\n6 x Scone") == "6 x Scone"
+	assert eo.strip_quoted("12 x Brownie\n-----Original Message-----\n12 x Brownie") == "12 x Brownie"

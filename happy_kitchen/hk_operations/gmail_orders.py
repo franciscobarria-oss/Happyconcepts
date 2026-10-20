@@ -13,7 +13,7 @@ import frappe
 from frappe import _
 from frappe.utils import add_days, get_datetime, getdate, now_datetime, nowdate
 
-from happy_kitchen.hk_operations import email_orders, sku
+from happy_kitchen.hk_operations import email_orders, revisions_api, sku
 
 GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
 GMAIL_API = "https://gmail.googleapis.com/gmail/v1/users/me"
@@ -90,7 +90,7 @@ def fetch(client=None) -> dict:
 		        and s.get_password("refresh_token", raise_exception=False)):
 			frappe.throw(_("Gmail Settings needs the Google client ID, secret and refresh token first."))
 		client = GmailClient(s)
-	made = {"new": 0, "draft": 0, "review": 0, "ignored": 0, "failed": 0}
+	made = {"new": 0, "draft": 0, "revised": 0, "review": 0, "ignored": 0, "failed": 0}
 	try:
 		ids = client.list_ids(build_query(s.label_name, s.look_back_days), int(s.max_per_run or 25))
 		known = set(frappe.get_all("Email Order", filters={"message_id": ("in", ids or [""])}, pluck="message_id"))
@@ -99,7 +99,7 @@ def fetch(client=None) -> dict:
 				continue
 			made["new"] += 1
 			status = _take(client, mid, s)
-			made[{"Draft order": "draft", "Needs review": "review", "Ignored": "ignored"}.get(status, "failed")] += 1
+			made[{"Draft order": "draft", "Revised": "revised", "Needs review": "review", "Ignored": "ignored"}.get(status, "failed")] += 1
 		frappe.db.set_single_value("Gmail Settings", "last_error", "")
 	except Exception as e:
 		frappe.db.set_single_value("Gmail Settings", "last_error", str(e)[:500])
@@ -118,7 +118,7 @@ def _take(client, message_id: str, s) -> str:
 		"doctype": "Email Order", "message_id": message_id, "status": "New",
 		"subject": (email_orders.header(payload, "Subject") or _("(no subject)"))[:140],
 		"sender_name": name, "sender_email": address,
-		"received_on": _received(payload_msg),
+		"received_on": _received(payload_msg), "thread_id": payload_msg.get("threadId"),
 	})
 	if not email_orders.sender_allowed(address, s.allowed_senders):
 		order.status = "Ignored"
@@ -129,7 +129,7 @@ def _take(client, message_id: str, s) -> str:
 	point = f"hk_email_{frappe.generate_hash(length=8)}"
 	frappe.db.savepoint(point)
 	try:
-		process(order, lead_days=int(s.default_lead_days or 1))
+		process(order, lead_days=int(s.default_lead_days or 1), prior=find_prior(order))
 	except Exception:
 		frappe.db.rollback(save_point=point)
 		order.reload()
@@ -148,7 +148,22 @@ def _received(msg: dict):
 	return get_datetime(datetime.fromtimestamp(int(ms) / 1000, tz=timezone.utc).replace(tzinfo=None))
 
 
-def process(order, lead_days: int = 1):
+def find_prior(order):
+	"""The first earlier email in this Gmail thread, from the same sender, that made an order which
+	has not been cancelled: a follow-up in that thread revises it instead of making a second order."""
+	if not (order.thread_id and order.sender_email):
+		return None
+	for name in frappe.get_all("Email Order", filters={
+		"thread_id": order.thread_id, "sender_email": order.sender_email, "name": ("!=", order.name),
+		"sales_order": ("is", "set"), "status": ("in", ["Draft order", "Needs review", "Revised"]),
+	}, order_by="creation asc", pluck="name"):
+		prior = frappe.get_doc("Email Order", name)
+		if frappe.db.get_value("Sales Order", prior.sales_order, "docstatus") != 2:
+			return prior
+	return None
+
+
+def process(order, lead_days: int = 1, prior=None):
 	"""Read the order lines, find or create the customer and products, and make the draft Sales Order."""
 	lines, unparsed = email_orders.parse_lines(order.body or "")
 	order.unparsed = "\n".join(unparsed)
@@ -156,6 +171,8 @@ def process(order, lead_days: int = 1):
 		order.status = "Needs review"
 		order.save(ignore_permissions=True)
 		return
+	if prior:
+		return revise(order, prior, lines, unparsed)
 	customer = find_or_create_customer(order.sender_name, order.sender_email)
 	order.customer = customer
 	order.set("lines", [])
@@ -169,7 +186,7 @@ def process(order, lead_days: int = 1):
 	delivery = add_days(max(getdate(order.received_on or nowdate()), getdate(nowdate())), lead_days)
 	so = frappe.get_doc({
 		"doctype": "Sales Order", "customer": customer, "delivery_date": str(delivery)[:10],
-		"transaction_date": nowdate(), "items": so_items,
+		"transaction_date": nowdate(), "items": so_items, "hk_email_order": order.name,
 	})
 	so.insert(ignore_permissions=True)
 	frappe.get_doc({"doctype": "Comment", "comment_type": "Info", "reference_doctype": "Sales Order",
@@ -178,6 +195,37 @@ def process(order, lead_days: int = 1):
 		                order.subject, order.sender_email, order.name)}).insert(ignore_permissions=True)
 	order.sales_order = so.name
 	order.status = "Needs review" if unparsed else "Draft order"
+	order.save(ignore_permissions=True)
+
+
+def revise(order, prior, lines, unparsed):
+	"""A follow-up email restates the order: the new lines replace the old ones on the same Sales Order
+	(a draft is changed; a submitted order is only flagged with the proposal). The earlier items stay in
+	Order Revision and the order is flagged for review. An email that changes nothing is ignored."""
+	customer = prior.customer
+	order.customer, order.revises, order.sales_order = customer, prior.name, prior.sales_order
+	order.set("lines", [])
+	new_items = []
+	for ln in lines:
+		item, created = find_or_create_item(customer, ln["external_sku"], ln["description"])
+		order.append("lines", {**ln, "item": item, "item_created": 1 if created else 0})
+		new_items.append({"item_code": item, "qty": ln["qty"]})
+	so = frappe.get_doc("Sales Order", prior.sales_order)
+	if so.docstatus == 0:
+		so.flags.hk_revision_source = "Email"
+		so.flags.hk_revision_email_order = order.name
+		so.set("items", [])
+		for i in new_items:
+			so.append("items", i)
+		count = int(so.get("hk_revision_count") or 0)
+		so.save(ignore_permissions=True)
+		changed = int(so.get("hk_revision_count") or 0) > count
+	else:
+		rev = revisions_api.record(so.name, revisions_api.lines(so.items), new_items, "Email", applied=0, email_order=order.name)
+		changed = bool(rev)
+		if rev:
+			revisions_api.flag_proposal(so.name, rev)
+	order.status = ("Needs review" if (unparsed or so.docstatus != 0) else "Revised") if changed else "Ignored"
 	order.save(ignore_permissions=True)
 
 

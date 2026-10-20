@@ -13,6 +13,7 @@
 4-digit PIN,4 位數密碼
 <b>{0}</b> is used in {1} recipes. Choose what to use instead and where.,<b>{0}</b> 用於 {1} 個食譜。請選擇取代的材料及食譜。
 A client spec sheet may change shelf life and storage for that client.,客戶規格表可為該客戶更改保質期及儲存方法。
+A newer email proposes changes to this submitted order ({0}): {1},較新的電郵建議修改這張已提交的訂單({0}):{1}
 "A pack or container opened in the kitchen, with its use-by time (logged from the Opened screen).",廚房內開封的包裝或容器及其使用期限（由「開封」畫面記錄）。
 Accent Colour,強調色
 Active Ingredients,啟用材料
@@ -42,6 +43,7 @@ Ambient,常溫
 Amount (HK$),金額（港元）
 Amount / Batch,每批金額
 An approved stock take is locked.,已批准的盤點已鎖定。
+Applied to the order,已套用到訂單
 Approval,審批
 Approve,批准
 Approve stock count {0},審批盤點 {0}
@@ -84,6 +86,7 @@ Buying Price List,採購價目表
 By,經手人
 Can't reach the server.,未能連接伺服器。
 Change clock-in PIN,更改打卡密碼
+Changed by,修改者
 Changed since check,核對後有更改
 Cheapest,最便宜
 Cheapest Supplier,最便宜供應商
@@ -248,6 +251,7 @@ Gmail Settings,Gmail 設定
 Gmail answered {0}.,Gmail 回應 {0}。
 Gmail label,Gmail 標籤
 Gmail message ID,Gmail 郵件 ID
+Gmail thread ID,Gmail 對話 ID
 Goods received,已收貨
 Google client ID,Google 用戶端 ID
 Google client secret,Google 用戶端密鑰
@@ -319,6 +323,8 @@ Invoice price,發票價
 Item (internal SKU),貨品(內部貨號)
 Item Allergen,物料致敏物
 Item ID,物品編號
+Items after,修改後貨品
+Items before,修改前貨品
 Items in these groups (or their sub-groups) count as Packaging.,屬於這些組別（或其子組別）的物品會計作包裝。
 Just over target,略高於目標
 Keeps {0} {1} once opened,開封後可存放 {0} {1}
@@ -398,6 +404,7 @@ Margin,毛利
 Margin / Unit,每件毛利
 Margin per unit,每件毛利
 Mark label as checked,標記標籤已核對
+Mark revision as checked,標記修訂已檢查
 Masters,主檔
 Material Issue (ingredients),發料單（食材）
 Method,製作方法
@@ -451,6 +458,7 @@ Not checked,未核對
 Not checked yet. Labels for orders wait until a manager checks this label.,尚未檢查。訂單的標籤會等候經理檢查此標籤。
 Not now,暫不
 Not sold on its own,不單獨出售
+Not ticked = a later email proposes these changes to an order that is already submitted; make them on the order yourself.,未剔選 = 較新的電郵建議修改已提交的訂單;請自行在訂單上修改。
 Note (optional),備註（選填）
 Notes (size / qty),備註（尺寸／數量）
 "Notes, e.g. damaged box",備註，例如紙箱損壞
@@ -499,6 +507,7 @@ Opening Count,期初盤點
 Optional. Used to work out the cooking yield.,選填。用於計算烹煮後份量。
 "Optional: count in up to 3 pack sizes (Bag, Box, Bottle) plus loose units. Each pack must have a UOM conversion on the Item.",可選：最多以 3 種包裝規格（袋、箱、瓶）加散裝數量盤點。每種包裝須在物品的單位換算中設定。
 Optional: the batch the pack came from.,可選：該包裝所屬的批次。
+Order Revision,訂單修訂
 Order in Multiples Of,訂貨倍數
 Order line,訂單行
 Order lines,訂單行
@@ -671,6 +680,16 @@ Replace in selected recipes,在已選食譜中取代
 Replace with,取代為
 Replaced in {0} recipes.,已在 {0} 個食譜中取代。
 Reports,報表
+Revised,已修訂
+Revised by,修訂人
+Revised on,修訂時間
+Revised orders to check,待檢查的修訂訂單
+Revised: check before delivering,已修訂:送貨前請檢查
+Revises email order,修訂的電郵訂單
+Revision,修訂
+Revision checked by {0}.,{0} 已檢查修訂。
+Revision history,修訂記錄
+Revisions,修訂次數
 Roster,更表
 Row not found,找不到該行
 Row {0} ({1}): add {2} to the Item's Units of Measure (with how many {3} it holds) before counting in it,第 {0} 行（{1}）：以 {2} 盤點前，請先在物品的計量單位加入 {2}（註明每個等於多少 {3}）
@@ -707,6 +726,7 @@ Set a default supplier on these items to order them from here.,請為這些項�
 Set a warehouse on the Production Log (or a default in Recipe Settings),請在生產紀錄設定倉庫（或在食譜設定設定預設倉庫）
 Set clock-in PIN,設定打卡密碼
 Set when the count is approved.,盤點獲審批時設定。
+Set when this email changes an order picked up from an earlier email in the same thread.,當此電郵修改同一對話中較早電郵所建立的訂單時填寫。
 Share of Ingredient Cost,佔食材成本比例
 Sheet Name,盤點表名稱
 Shelf Life (days),保質期（日）
@@ -782,6 +802,7 @@ Test label {0} sent. It prints within a few seconds if the Pi is online.,測試�
 The PIN must be exactly 4 digits.,密碼必須是 4 位數字。
 The Raspberry Pi has never connected.,Raspberry Pi 從未連線。
 The closing stock take must be after the opening one,期末盤點必須在期初盤點之後
+The email this order was picked up from.,建立此訂單的電郵。
 The quantity factor must be more than 0.,數量倍數必須大於 0。
 The recipe this client version is made from.,此客戶版本所用的食譜。
 "The recipe, an ingredient or a label field changed since the last check. Labels wait until it is checked again.",自上次檢查後，食譜、材料或標籤欄位已更改。標籤會等候再次檢查。
@@ -794,6 +815,7 @@ This ingredient appears on product labels as <b>{0}</b>.,此材料在產品標�
 This job belongs to another printer.,此工作屬於另一部打印機。
 This label is waiting for its product to be checked.,此標籤正等候其產品被檢查。
 This log has no Batch Preparation recipes.,此紀錄沒有半成品食譜。
+This order was changed after it came in. Check the changes before delivering.,此訂單在收到後被修改。送貨前請檢查修改內容。
 Thrown away and logged as wastage,已丟棄並記錄為報廢
 "Tick after checking the allergens against the supplier's pack or spec sheet, even if there are none.",按供應商包裝或規格表核對致敏物後勾選，即使沒有致敏物亦然。
 Tick at least one line.,請至少勾選一行。
@@ -881,6 +903,7 @@ Week ahead,未來一週
 Weight Tolerance (± g),重量誤差（± 克）
 Weight per Piece (g),每件重量（克）
 Weights & Cooking Yield,重量及成品率
+What changed,修改內容
 "What customers read, without brand or pack size, e.g. Wheat flour, Unsalted butter. Blank = item name.",顧客看到的名稱，不含品牌或包裝尺寸，例如 Wheat flour、Unsalted butter。留空 = 物料名稱。
 "What the extra time was for (big order, stock count, cover).",加班原因（大訂單、盤點、代更）。
 Why is it rejected?,退回原因？
@@ -986,10 +1009,11 @@ waiting for the printer,等待打印機
 {0} lines,{0} 行
 {0} logs since Monday,週一至今 {0} 份紀錄
 {0} logs · HK$ {1} ingredients,{0} 份紀錄 · 材料 HK$ {1}
-"{0} new emails: {1} draft orders, {2} to review, {3} ignored, {4} failed.",{0} 封新電郵:{1} 張訂單草稿、{2} 張待檢查、{3} 封略過、{4} 封失敗。
+"{0} new emails: {1} draft orders, {2} revised, {3} to review, {4} ignored, {5} failed.",{0} 封新電郵:{1} 張訂單草稿、{2} 張已修訂、{3} 張待檢查、{4} 封略過、{5} 封失敗。
 {0} of {1} counted,已盤點 {0} / {1}
 {0} of {1} made,已製作 {0} / {1}
 {0} orders,{0} 張訂單
+{0} orders changed after they came in,{0} 張訂單在收到後被修改
 {0} orders to receive,{0} 張採購單待收貨
 {0} production logs,{0} 張生產紀錄
 {0} products from this supplier,此供應商的 {0} 項產品

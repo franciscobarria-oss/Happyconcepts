@@ -176,6 +176,13 @@ def kitchen_today() -> dict:
 			for key, label, day, rows in days
 		]
 		out["orders_total"] = len(orders)
+		if frappe.get_meta("Sales Order").has_field("hk_needs_review"):
+			revised = frappe.db.count("Sales Order", {"docstatus": ("<", 2), "hk_needs_review": 1})
+			if revised:
+				out["waiting"].append(
+					{"label": _("Revised orders to check"), "detail": _("{0} orders changed after they came in").format(revised),
+					 "route": "List/Sales Order?hk_needs_review=1", "tone": "warning"}
+				)
 
 	if _can("Purchase Order"):
 		open_pos = frappe.get_all(

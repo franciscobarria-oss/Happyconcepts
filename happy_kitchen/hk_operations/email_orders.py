@@ -54,6 +54,24 @@ def _strip_html(text: str) -> str:
 	return html.unescape(re.sub(r"<[^>]+>", " ", text))
 
 
+QUOTE_START = re.compile(
+	r"^(on .{5,200} wrote:|-{2,}\s*(original message|forwarded message)\s*-{2,}|_{5,}|from:\s.+|sent from my .+)$", re.I)
+
+
+def strip_quoted(text: str) -> str:
+	"""A reply's own words only: drop "> quoted" lines and everything after "On ... wrote:" or
+	"-----Original Message-----", so the earlier order is not read again as part of the new one."""
+	out = []
+	for line in (text or "").split("\n"):
+		s = line.strip()
+		if QUOTE_START.match(s):
+			break
+		if s.startswith(">"):
+			continue
+		out.append(line)
+	return "\n".join(out)
+
+
 def body_text(payload: dict) -> str:
 	"""Plain text of a Gmail message payload: the text/plain part, else the HTML part stripped."""
 	plain, rich = [], []
@@ -69,7 +87,7 @@ def body_text(payload: dict) -> str:
 			walk(sub)
 
 	walk(payload or {})
-	text = "\n".join(plain) if plain else "\n".join(rich)
+	text = strip_quoted("\n".join(plain) if plain else "\n".join(rich))
 	lines = [re.sub(r"[ \t\xa0]+", " ", l).strip() for l in text.replace("\r", "").split("\n")]
 	return "\n".join(l for l in lines if l)[:MAX_BODY]
 

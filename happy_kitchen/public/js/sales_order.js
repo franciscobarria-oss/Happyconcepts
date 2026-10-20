@@ -1,6 +1,7 @@
 // Product labels for a submitted order: a summary line, "Print labels" and the label queue.
 frappe.ui.form.on("Sales Order", {
 	refresh(frm) {
+		hk_revision_buttons(frm);
 		if (frm.doc.docstatus !== 1) return;
 		frappe.call("happy_kitchen.hk_operations.labels.sales_order_labels", { sales_order: frm.doc.name }).then(({ message: jobs }) => {
 			jobs = jobs || [];
@@ -66,4 +67,19 @@ function hk_print_labels_dialog(frm, jobs) {
 		},
 	});
 	d.show();
+}
+
+// Revised orders: flag, "Mark revision as checked" (managers) and the history of changes.
+function hk_revision_buttons(frm) {
+	if (frm.is_new() || !(frm.doc.hk_revision_count || frm.doc.hk_needs_review)) return;
+	frm.add_custom_button(__("Revision history"), () => frappe.set_route("List", "Order Revision", { sales_order: frm.doc.name }), __("Revision"));
+	if (!frm.doc.hk_needs_review) return;
+	frm.dashboard.add_comment(
+		__("This order was changed after it came in. Check the changes before delivering."), "orange", true
+	);
+	if (frappe.user.has_role("Sales Manager") || frappe.user.has_role("System Manager"))
+		frm.add_custom_button(__("Mark revision as checked"), async () => {
+			await frappe.xcall("happy_kitchen.hk_operations.revisions_api.mark_checked", { sales_order: frm.doc.name });
+			frm.reload_doc();
+		}, __("Revision")).addClass("btn-primary");
 }
