@@ -15,10 +15,10 @@ def _check(cond, msg):
 		raise AssertionError(msg)
 
 
-def _msg(mid, sender, subject, body, age_hours=1):
+def _msg(mid, sender, subject, body, age_hours=1, thread=None):
 	data = base64.urlsafe_b64encode(body.encode()).decode().rstrip("=")
 	# an hour ago, and a copy from days ago in m2 below, so the date rules are tested whatever today is
-	return {"id": mid, "internalDate": str(int((time.time() - age_hours * 3600) * 1000)), "payload": {
+	return {"id": mid, "threadId": thread or mid, "internalDate": str(int((time.time() - age_hours * 3600) * 1000)), "payload": {
 		"mimeType": "text/plain", "body": {"data": data},
 		"headers": [{"name": "From", "value": sender}, {"name": "Subject", "value": subject}]}}
 
@@ -53,14 +53,14 @@ def run():
 
 		fake = FakeGmail([
 			_msg("m1", f'"{P}Cafe" <orders@e2e-cafe.example>', "Friday order",
-			     f"Hi!\nCK-001 | {P}Butter cookie | 24\n12 x {P}Chocolate brownie\n{P}Plain scone x 6\nThanks"),
+			     f"Hi!\nCK-001 | {P}Butter cookie | 24\n12 x {P}Chocolate brownie\n{P}Plain scone x 6\nThanks", thread="t1"),
 			_msg("m2", f"{P}Cafe <orders@e2e-cafe.example>", "More", f"CK-001 | {P}Butter cookie | 10\nsomething | odd | line | many", age_hours=24 * 9),
 			_msg("m3", "Spam <x@spam.example>", "Buy now", "100 x Pills"),
 			_msg("m4", "orders@e2e-cafe.example", "Question", "Can you call me back?"),
 		])
 		made = gmail_orders.fetch(client=fake)
 		_check('label:"Orders" newer_than:14d' in fake.queries, f"query: {fake.queries}")
-		_check(made == {"new": 4, "draft": 1, "review": 2, "ignored": 1, "failed": 0}, f"summary: {made}")
+		_check(made == {"new": 4, "draft": 1, "revised": 0, "review": 2, "ignored": 1, "failed": 0}, f"summary: {made}")
 
 		o1 = frappe.get_doc("Email Order", {"message_id": "m1"})
 		_check(o1.status == "Draft order" and o1.sales_order, f"m1: {o1.status}")
@@ -97,6 +97,53 @@ def run():
 		_check(again["new"] == 0, f"second run: {again}")
 		_check(frappe.db.count("Email Order", {"message_id": ("in", ["m1", "m2", "m3", "m4"])}) == 4, "no duplicates")
 		_check(frappe.db.count("Sales Order", {"customer": o1.customer}) == 2, "two draft orders")
+
+		# --- revise order: a follow-up in the same thread amends the draft instead of making a second order ---
+		from happy_kitchen.hk_operations import revisions_api
+
+		fake.messages["m5"] = _msg("m5", f"{P}Cafe <orders@e2e-cafe.example>", "Re: Friday order",
+		                           f"Change of plan:\nCK-001 | {P}Butter cookie | 30\n12 x {P}Chocolate brownie\n"
+		                           "On Mon, 19 Oct 2026 at 10:00, Cafe wrote:\n> 24 x Cookie\n> 6 x Scone", thread="t1")
+		fake.messages["m8"] = _msg("m8", f"{P}Cafe <orders@e2e-cafe.example>", "Re: Friday order",
+		                           f"Just checking, still:\nCK-001 | {P}Butter cookie | 30\n12 x {P}Chocolate brownie", thread="t1")
+		made = gmail_orders.fetch(client=fake)
+		_check(made["new"] == 2 and made["revised"] == 1 and made["ignored"] == 1, f"follow-ups: {made}")
+		o5 = frappe.get_doc("Email Order", {"message_id": "m5"})
+		_check(o5.status == "Revised" and o5.sales_order == o1.sales_order and o5.revises == o1.name, f"m5: {o5.status}")
+		so.reload()
+		_check({i.item_code: i.qty for i in so.items} == {cookie.item: 30, existing: 12}, "the draft now has the new quantities")
+		_check(so.hk_needs_review == 1 and so.hk_revision_count == 1, "revised order is flagged for review")
+		_check(frappe.db.count("Sales Order", {"customer": o1.customer}) == 2, "still two orders: the follow-up made no new one")
+		rev = frappe.get_doc("Order Revision", {"sales_order": so.name})
+		_check(rev.source == "Email" and rev.applied and "removed" in rev.summary, f"history: {rev.summary}")
+		_check(cookie.item in rev.previous_items and "24" in rev.previous_items, "earlier items are kept")
+		_check(frappe.db.get_value("Email Order", {"message_id": "m8"}, "status") == "Ignored", "an email that changes nothing is ignored")
+
+		# staff edits to an email order are kept too, then a manager marks the revision as checked
+		so.items[0].qty = 31
+		so.save()
+		so.reload()
+		_check(so.hk_revision_count == 2 and frappe.db.count("Order Revision", {"sales_order": so.name, "source": "Staff"}) == 1, "staff change recorded")
+		revisions_api.mark_checked(so.name)
+		_check(frappe.db.get_value("Sales Order", so.name, "hk_needs_review") == 0, "marked as checked")
+
+		# an order that is already submitted is not changed by an email: the proposal is kept and the order flagged
+		fake.messages["m6"] = _msg("m6", "Bistro <b@e2e-bistro.example>", "Order", f"BI-1 | {P}Bistro loaf | 10", thread="t2")
+		frappe.db.set_single_value("Gmail Settings", "allowed_senders", "")
+		gmail_orders.fetch(client=fake)
+		o6 = frappe.get_doc("Email Order", {"message_id": "m6"})
+		so6 = frappe.get_doc("Sales Order", o6.sales_order)
+		so6.items[0].rate = 5
+		so6.save()
+		so6.submit()
+		fake.messages["m7"] = _msg("m7", "Bistro <b@e2e-bistro.example>", "Re: Order", f"BI-1 | {P}Bistro loaf | 14", thread="t2")
+		gmail_orders.fetch(client=fake)
+		o7 = frappe.get_doc("Email Order", {"message_id": "m7"})
+		_check(o7.status == "Needs review" and o7.sales_order == so6.name, f"m7: {o7.status}")
+		so6.reload()
+		_check(so6.items[0].qty == 10 and so6.hk_needs_review == 1, "the submitted order is untouched but flagged")
+		proposal = frappe.get_doc("Order Revision", {"sales_order": so6.name})
+		_check(not proposal.applied and "10 → 14" in proposal.summary, f"proposal kept: {proposal.summary}")
 
 		# scheduled run is a no-op while switched off
 		gmail_orders.scheduled_fetch()

@@ -64,6 +64,9 @@ doc_events = {
 		# one Label Job per line (see hk_operations/labels.py)
 		"on_submit": "happy_kitchen.hk_operations.labels.on_sales_order_submit",
 		"on_cancel": "happy_kitchen.hk_operations.labels.on_sales_order_cancel",
+		# a change to the items after the order came from an email, or after it was submitted, is kept in Order Revision
+		"validate": "happy_kitchen.hk_operations.revisions_api.track",
+		"before_update_after_submit": "happy_kitchen.hk_operations.revisions_api.track",
 	},
 	"Purchase Order": {
 		"validate": "happy_kitchen.hk_operations.purchasing.validate_purchase_order",

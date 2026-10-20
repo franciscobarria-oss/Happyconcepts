@@ -1,0 +1,133 @@
+{
+ "actions": [],
+ "creation": "2026-10-20 15:00:00.000000",
+ "modified": "2026-10-20 15:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "HK Operations",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "name": "Order Revision",
+ "autoname": "REV-.YYYY.-.#####",
+ "naming_rule": "Expression (old style)",
+ "title_field": "sales_order",
+ "field_order": [
+  "sales_order",
+  "source",
+  "applied",
+  "revised_on",
+  "revised_by",
+  "column_break_1",
+  "email_order",
+  "summary",
+  "section_items",
+  "previous_items",
+  "proposed_items"
+ ],
+ "fields": [
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "label": "Sales Order",
+   "options": "Sales Order",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "source",
+   "fieldtype": "Select",
+   "label": "Changed by",
+   "options": "Email\nStaff",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "applied",
+   "fieldtype": "Check",
+   "label": "Applied to the order",
+   "in_list_view": 1,
+   "read_only": 1,
+   "description": "Not ticked = a later email proposes these changes to an order that is already submitted; make them on the order yourself."
+  },
+  {
+   "fieldname": "revised_on",
+   "fieldtype": "Datetime",
+   "label": "Revised on",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "revised_by",
+   "fieldtype": "Data",
+   "label": "Revised by",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "email_order",
+   "fieldtype": "Link",
+   "label": "Email Order",
+   "options": "Email Order",
+   "read_only": 1
+  },
+  {
+   "fieldname": "summary",
+   "fieldtype": "Small Text",
+   "label": "What changed",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "section_items",
+   "fieldtype": "Section Break",
+   "label": "Items",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "previous_items",
+   "fieldtype": "Long Text",
+   "label": "Items before",
+   "read_only": 1
+  },
+  {
+   "fieldname": "proposed_items",
+   "fieldtype": "Long Text",
+   "label": "Items after",
+   "read_only": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "report": 1,
+   "print": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1,
+   "report": 1,
+   "print": 1
+  }
+ ]
+}

@@ -23,6 +23,8 @@
   "received_on",
   "column_break_1",
   "message_id",
+  "thread_id",
+  "revises",
   "customer",
   "sales_order",
   "section_lines",
@@ -38,7 +40,7 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "New\nDraft order\nNeeds review\nIgnored\nFailed",
+   "options": "New\nDraft order\nRevised\nNeeds review\nIgnored\nFailed",
    "default": "New",
    "in_list_view": 1,
    "in_standard_filter": 1
@@ -81,6 +83,21 @@
    "read_only": 1,
    "unique": 1,
    "reqd": 1
+  },
+  {
+   "fieldname": "thread_id",
+   "fieldtype": "Data",
+   "label": "Gmail thread ID",
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "revises",
+   "fieldtype": "Link",
+   "label": "Revises email order",
+   "options": "Email Order",
+   "read_only": 1,
+   "description": "Set when this email changes an order picked up from an earlier email in the same thread."
   },
   {
    "fieldname": "customer",
