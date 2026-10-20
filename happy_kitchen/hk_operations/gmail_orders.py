@@ -35,6 +35,10 @@ class GmailClient:
 		import requests
 
 		if not self._token:
+			missing = [label for label, v in (("client ID", self.client_id), ("client secret", self.client_secret),
+			                                  ("refresh token", self.refresh_token)) if not v]
+			if missing:
+				frappe.throw(_("Gmail Settings is missing: {0}.").format(", ".join(missing)))
 			r = requests.post(
 				GOOGLE_TOKEN_URL,
 				data={"client_id": self.client_id, "client_secret": self.client_secret,
@@ -43,7 +47,10 @@ class GmailClient:
 			)
 			if r.status_code != 200:
 				# the response can echo request details: report only Google's error code
-				code = (r.json() or {}).get("error", r.status_code) if r.headers.get("content-type", "").startswith("application/json") else r.status_code
+				body = r.json() if r.headers.get("content-type", "").startswith("application/json") else {}
+				code = body.get("error", r.status_code)
+				if body.get("error_description"):
+					code = f"{code}: {body['error_description']}"
 				frappe.throw(_("Google refused the sign-in ({0}). Run the Google sign-in step again.").format(code))
 			self._token = r.json()["access_token"]
 		return {"Authorization": f"Bearer {self._token}"}
