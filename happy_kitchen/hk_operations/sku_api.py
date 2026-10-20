@@ -24,7 +24,8 @@ def item_validate(doc, method=None):
 		)
 		if other:
 			frappe.throw(_("{0}'s SKU {1} is already used by item {2}.").format(r["supplier"], code, other[0][0]))
-	doc.hk_supplier_skus = sku.search_text(rows)
+	customer_rows = [{"supplier": "", "supplier_part_no": r.ref_code} for r in doc.get("customer_items") or []]
+	doc.hk_supplier_skus = sku.search_text(rows + customer_rows)
 
 
 def supplier_skus(supplier: str, items) -> dict:

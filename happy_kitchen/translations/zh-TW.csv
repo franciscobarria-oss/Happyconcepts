@@ -5,6 +5,7 @@
 % of Labour Cost,佔人工成本 %
 % of Total,佔總額 %
 "(Monthly base + employer MPF 5%, capped 1,500) / (days x hours), or hourly wage x 1.05. Recalculated on save.","（每月底薪 + 僱主強積金 5%，上限 1,500）/（日數 x 時數），或時薪 x 1.05。儲存時重新計算。"
+(no subject),(無主旨)
 (quantity × {0}),（數量 × {0}）
 + Add Product,+ 新增產品
 +{0} more,另有 {0} 項
@@ -21,6 +22,7 @@ Add Batch Preparations to Stock,半成品入庫
 Add Product from {0},從 {0} 新增產品
 Add all stocked ingredients,加入所有庫存材料
 Add at least one item,請最少加入一項物品
+"Addresses or @domains, separated by commas or lines. Blank = anyone whose mail carries the label.","電郵地址或 @網域,以逗號或換行分隔。留空 = 凡帶有此標籤的郵件皆可。"
 After Usage,使用後
 Agent version,程式版本
 All,全部
@@ -86,10 +88,12 @@ Changed since check,核對後有更改
 Cheapest,最便宜
 Cheapest Supplier,最便宜供應商
 Check,檢查
+Check connection,檢查連線
 Check delivery from {0},檢查 {0} 的送貨
 Check ingredients,檢查材料
 Check product labels,核對產品標籤
 Check the label,核對標籤
+Check these against the email and add them to the draft order by hand.,"請對照電郵,把這些行手動加到訂單草稿。"
 Checked by,核對人
 Checked label fingerprint,已檢查標籤的指紋
 Checked on,核對時間
@@ -113,6 +117,7 @@ Closed at,結束時間
 Closing,期末
 Closing Count,期末盤點
 Component,組件
+Connected to {0}. Read-only access.,已連接 {0}(唯讀)。
 Continue a count,繼續盤點
 Cooking Yield %,成品率
 Copied into every new recipe. Edit them per recipe as needed.,會複製到每個新食譜，可按需要逐個食譜修改。
@@ -170,6 +175,7 @@ Deliveries due,待收貨
 Deliveries in,今日收貨
 Delivery Check,收貨檢查
 Delivery date,送貨日期
+Delivery date: days after the email,送貨日期:電郵後第幾日
 Delivery differs from the order,送貨與訂單不符
 Detailed,詳細
 Details,詳情
@@ -178,10 +184,17 @@ Discard {0},丟棄 {0}
 Discarded,已丟棄
 Don't print labels for this item,此項目不列印標籤
 Done,完成
+Draft order,訂單草稿
+Draft orders get this delivery date; change it on the order.,訂單草稿會用這個送貨日期;可在訂單上修改。
+Draft sales order,銷售訂單草稿
 Draft {0} created. Check it and submit it to send.,已建立草稿 {0}。請檢查後提交發送。
 Drawing the label...,正在生成標籤…
 Each changed recipe is re-costed and gets a comment. Products with labels will need their label checked again.,每個已更改的食譜會重新計算成本並加上備註。有標籤的產品需要重新檢查標籤。
 Each recipe's quantity is multiplied by this. Keep 1 to use the same amount (e.g. 0.8 if the new product is stronger).,每個食譜的用量會乘以此數。保持 1 即用量不變（例如新產品味道較濃可用 0.8）。
+Email Order,電郵訂單
+Email Order Line,電郵訂單行
+Email customer,電郵客戶
+Email text,電郵內容
 Employee Name,員工姓名
 Enter a quantity,請輸入數量
 Enter how much was thrown away.,請輸入丟棄的數量。
@@ -194,6 +207,8 @@ Everything matches the order.,與訂單相符。
 Expected Used,預計用量
 Expected but not counted,預計有但未盤點
 Expiry after opening,開封後保質期
+External SKU,外部貨號
+External SKUs,外部貨號
 Extra line on label,標籤附加說明
 Factory statement,工場致敏原聲明
 "Fallback only: each ingredient is taken from its own default warehouse (Dry Stock, Fridge or Freezer) set on the Item.",只作後備：每項食材會從物品上設定的預設倉庫（乾貨、雪櫃或冰格）扣除。
@@ -224,10 +239,20 @@ From Storage,由儲存位置
 From approved Stock Take {0},來自已批准盤點 {0}
 "From approved Stock Take {0}, approved by {1}",來自已審批盤點 {0}，審批人 {1}
 From the item's Expiry after opening (Label tab). Blank = the item has none.,取自貨品的「開封後保質期」（標籤分頁）。留空 = 沒有。
+From the one-time sign-in on your own computer (deploy/gmail_orders.md). Read-only Gmail access.,來自在你自己電腦上做的一次性登入(deploy/gmail_orders.md)。只讀取 Gmail。
 Frozen,冷凍
 Full-time only. Leave empty for hourly staff.,只適用於全職員工。時薪員工請留空。
 "Gas, electricity, packaging, cleaning, rent share... New recipes start with the defaults from Recipe Settings.",煤氣、電費、包裝、清潔、租金分攤…… 新食譜會以食譜設定中的預設值開始。
+Gmail Settings,Gmail 設定
+"Gmail Settings needs the Google client ID, secret and refresh token first.",請先在 Gmail 設定填寫 Google 用戶端 ID、密鑰及更新權杖。
+Gmail answered {0}.,Gmail 回應 {0}。
+Gmail label,Gmail 標籤
+Gmail message ID,Gmail 郵件 ID
 Goods received,已收貨
+Google client ID,Google 用戶端 ID
+Google client secret,Google 用戶端密鑰
+Google refresh token,Google 更新權杖
+Google refused the sign-in ({0}). Run the Google sign-in step again.,Google 拒絕登入({0})。請重新進行 Google 登入步驟。
 Grams per Piece,每件克數
 Gross Base Qty,毛用量（基本單位）
 Gross Qty (issue),毛用量（發料）
@@ -250,6 +275,7 @@ Hours per Day,每日工時
 How much was thrown away?,丟棄了多少？
 Hygiene Cert Expiry,衞生證書到期日
 Ignore Changes Under %,忽略低於此 % 的變動
+Ignored,已略過
 In Stock,現有庫存
 In stock,現有庫存
 "In the UOM above, e.g. 12 for eggs by the dozen. 0 = any quantity.",以上面的單位計，例如雞蛋按打訂為 12。0 = 任何數量。
@@ -290,6 +316,7 @@ Instructions,說明
 Inventory Variance,盤點差異
 Invoice Price,發票價
 Invoice price,發票價
+Item (internal SKU),貨品(內部貨號)
 Item Allergen,物料致敏物
 Item ID,物品編號
 Items in these groups (or their sub-groups) count as Packaging.,屬於這些組別（或其子組別）的物品會計作包裝。
@@ -336,6 +363,8 @@ Last Costed On,最後計算成本日期
 Last Paid,上次價格
 Last Rejected By,最後退回人
 Last Rejected On,最後退回日期
+Last checked,上次檢查
+Last error,上次錯誤
 Last heard from {0},最後聯絡：{0}
 Last seen,最後連線
 Late,逾期
@@ -343,6 +372,7 @@ Leave balances,假期結餘
 Leave blank to use the cheapest supplier on the buying price list.,留空即使用採購價格表中最便宜的供應商。
 Less,收起
 Line ID,行編號
+Lines that could not be read,無法讀取的行
 List Price,牌價
 Loaded Cost / Batch,全成本（每批）
 Loaded Cost / Unit,全成本（每件）
@@ -354,6 +384,7 @@ Log Wastage,報廢
 Log production,記錄生產
 Log {0} recipe(s) as produced on {1}?,確認記錄於 {1} 生產 {0} 個食譜？
 Logged By,記錄人
+Look back (days),回溯日數
 Lot,批次
 "Lot printed on the label (the batch, or a lot from the production log).",標籤上印的批號（批次，或生產紀錄的批號）。
 Made From Recipe,按食譜製作
@@ -376,6 +407,7 @@ Minimum order not reached,未達最低訂貨額
 Minimum order: {0},最低訂貨額：{0}
 Minutes per Batch,每批分鐘
 Monthly Base Salary,每月底薪
+Most emails per run,每次最多電郵數
 Multiple of own hourly wage,本人時薪倍數
 Name in ingredient lists,配料表名稱
 Name is required.,必須填寫名稱。
@@ -383,11 +415,13 @@ Need,需要
 Need a look,需檢查
 Needed {0},需要日期 {0}
 Needs check,待核對
+Needs review,待檢查
 Net Base Qty,淨用量（基本單位）
 Net Qty,淨用量
 Net Qty Used,淨用量
 Net weight per piece (g),每件淨重（克）
 New count,新盤點
+New item,新貨品
 No Price,未有價格
 No Price Found,找不到價格
 No allergen keywords found in the name. Check the supplier's pack or spec sheet.,名稱中找不到致敏物關鍵字。請查看供應商包裝或規格表。
@@ -434,8 +468,10 @@ Nothing to receive today or tomorrow.,今明兩日沒有收貨。
 Nothing was received. Enter the quantity that arrived for at least one line.,未有收貨。請最少輸入一行的實收數量。
 Nothing yet.,暫無記錄。
 OEM Spec Sheet,客戶產品規格表
+"Off until the Google steps are done. Read-only: the system never sends, labels or deletes mail.",完成 Google 步驟前保持關閉。只讀:系統不會發送、標記或刪除郵件。
 Offline,離線
 "Offline: {0} saved on this iPad, retrying",離線：{0} 項已存於此 iPad，稍後重試
+"Older mail is ignored, so the first run does not pull in the whole label.","較舊的郵件會被略過,首次執行不會讀取整個標籤。"
 On other products' labels,用於其他產品標籤
 On shift,當值
 On target,達標
@@ -446,6 +482,8 @@ Only Price Changes,只顯示價格變動
 Only Recipes That Need a Look,只顯示需檢查的食譜
 Only a manager can mark a label as checked.,只有經理可以將標籤標記為已檢查。
 Only ingredients with something to do,只顯示需要處理的材料
+Only mail under this label is read. Create the label in Gmail and apply it with a filter or by hand.,"只會讀取此標籤下的郵件。請在 Gmail 建立標籤,並用篩選器或手動套用。"
+Only these senders,只限這些寄件人
 Open Count Screen,開啟盤點畫面
 Open and print label,開封並打印標籤
 Open purchase orders,未完成採購單
@@ -463,6 +501,7 @@ Optional. Used to work out the cooking yield.,選填。用於計算烹煮後份�
 Optional: the batch the pack came from.,可選：該包裝所屬的批次。
 Order in Multiples Of,訂貨倍數
 Order line,訂單行
+Order lines,訂單行
 Order on labels,標籤排序
 Order quantity not allowed,訂貨數量不符
 Ordered,訂購
@@ -516,6 +555,9 @@ Pi reports a problem,Raspberry Pi 報告問題
 Pick a method: {0} or {1}.,請選擇計算方法：{0} 或 {1}。
 Pick a rate (or set a default overtime rate on the Employee).,請選擇費率（或在員工資料設定預設加班費率）。
 Pick the lines to print. Pieces = how many pieces the labels cover; the item's Pieces per label decides how many labels that is.,選擇要列印的行。件數 = 標籤涵蓋的件數；物料的「每張標籤件數」決定共印多少張。
+Pick up orders from Gmail,從 Gmail 讀取訂單
+Pick up orders now,立即讀取訂單
+Picked up from the email '{0}' from {1} ({2}). Check it before submitting.,"由電郵「{0}」(來自 {1},{2})讀取。提交前請先檢查。"
 Pieces,件數
 Pieces per label,每張標籤件數
 Planned Batches,計劃批數
@@ -653,6 +695,7 @@ Selling Price / Unit,每件售價
 Selling Price List,銷售價目表
 Selling price,售價
 Send to printer,送往打印機
+Sender email,寄件人電郵
 Sent back,已退回
 Sent to printer,已送往打印機
 Service / Expense,服務／費用
@@ -722,6 +765,7 @@ Supplier Price,供應商價格
 Supplier Prices & Recipes,供應商價格及食譜
 Supplier SKU,供應商貨號
 Supplier SKUs,供應商貨號
+"Supplier and customer part numbers from the tables on this form, so the item is found by any of them.","來自此表單內表格的供應商及客戶貨號,令貨品可用其中任何一個搜尋。"
 Supplier delivery note / invoice no.,送貨單號／發票號碼
 Suppliers,供應商
 Tagline,標語
@@ -942,6 +986,7 @@ waiting for the printer,等待打印機
 {0} lines,{0} 行
 {0} logs since Monday,週一至今 {0} 份紀錄
 {0} logs · HK$ {1} ingredients,{0} 份紀錄 · 材料 HK$ {1}
+"{0} new emails: {1} draft orders, {2} to review, {3} ignored, {4} failed.",{0} 封新電郵:{1} 張訂單草稿、{2} 張待檢查、{3} 封略過、{4} 封失敗。
 {0} of {1} counted,已盤點 {0} / {1}
 {0} of {1} made,已製作 {0} / {1}
 {0} orders,{0} 張訂單
