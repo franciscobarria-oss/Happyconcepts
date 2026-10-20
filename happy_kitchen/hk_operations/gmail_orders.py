@@ -195,7 +195,7 @@ def pdf_text(raw: bytes) -> str:
 					rows += table
 	except Exception:
 		rows = []
-	lines = email_orders.table_to_lines(rows)
+	lines = email_orders.drop_repeats(email_orders.table_to_lines(rows))
 	if lines:
 		return "\n".join(lines)
 	text = ""
@@ -209,7 +209,7 @@ def pdf_text(raw: bytes) -> str:
 			text = "\n".join((page.extract_text() or "") for page in PdfReader(io.BytesIO(raw)).pages[:10])
 		except Exception:
 			return ""
-	return "\n".join(email_orders.text_item_lines(text)) or text
+	return "\n".join(email_orders.drop_repeats(email_orders.text_item_lines(text))) or text
 
 
 def _save_files(order, files):

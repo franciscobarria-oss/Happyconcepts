@@ -19,6 +19,7 @@ HEADER_WORDS = {"qty", "quantity", "code", "sku", "item", "product", "descriptio
 MAX_BODY = 20000
 MAX_PDFS = 8
 MAX_PDF_TEXT = 20000
+MAX_CELL = 300
 
 
 def header(payload: dict, name: str) -> str:
@@ -139,6 +140,8 @@ def table_to_lines(rows: list[list]) -> list[str]:
 	out = []
 	for row in rows or []:
 		raw = [str(c or "") for c in row]
+		if any(len(c) > MAX_CELL for c in raw):
+			continue  # a cell with a whole page of text is not a table row
 		cells = [re.sub(r"\s+", " ", c).strip() for c in raw]
 		low = [c.lower().rstrip(":") for c in cells]
 		if head is None:
@@ -200,6 +203,17 @@ def text_item_lines(text: str) -> list[str]:
 		elif out and line and not re.search(r"\d{1,3}(,\d{3})*\.\d{2}\b", line):
 			out[-1][1] = f"{out[-1][1]} {line}"
 	return [f"{c} | {d} | {q}" if c else f"{d} | {q}" for c, d, q in out if float(q) > 0]
+
+
+def drop_repeats(lines: list[str]) -> list[str]:
+	"""A PO printed twice in one PDF (page 2 repeats page 1) is read once: identical lines in the
+	same PDF are dropped, the first one kept."""
+	seen, out = set(), []
+	for line in lines:
+		if line not in seen:
+			seen.add(line)
+			out.append(line)
+	return out
 
 
 def join_attachment_text(body: str, texts: list[tuple[str, str]]) -> str:

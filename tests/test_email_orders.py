@@ -160,3 +160,13 @@ def test_text_items_without_item_code():
 def test_total_lines_are_not_unparsed():
 	lines, unparsed = eo.parse_lines("Total | 114.00\nSub Total 5 x 3\nBrownie | 4")
 	assert [(l["description"], l["qty"]) for l in lines] == [("Brownie", 4)] and unparsed == []
+
+
+def test_a_huge_cell_is_not_a_table_row_and_text_is_used():
+	rows = [["Description", "Quantity", "Unit", "Unit Price", "Amount"],
+	        ["Terms and conditions " * 40, "9.99", "x", "1", "2"]]
+	assert eo.table_to_lines(rows) == []
+
+
+def test_repeated_page_lines_are_read_once():
+	assert eo.drop_repeats(["A | x | 1", "B | y | 2", "A | x | 1"]) == ["A | x | 1", "B | y | 2"]
