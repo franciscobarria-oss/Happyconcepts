@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import frappe
 from frappe import _
-from frappe.utils import add_days, add_to_date, get_datetime, now_datetime, nowdate
+from frappe.utils import add_days, get_datetime, getdate, now_datetime, nowdate
 
 from happy_kitchen.hk_operations import email_orders, sku
 
@@ -164,7 +164,9 @@ def process(order, lead_days: int = 1):
 		item, created = find_or_create_item(customer, ln["external_sku"], ln["description"])
 		order.append("lines", {**ln, "item": item, "item_created": 1 if created else 0})
 		so_items.append({"item_code": item, "qty": ln["qty"]})
-	delivery = add_days(order.received_on or nowdate(), lead_days)
+	# the lead time counts from the later of the email date and today: ERPNext rejects a delivery
+	# date before the order date, and an email picked up days late is still ordered today
+	delivery = add_days(max(getdate(order.received_on or nowdate()), getdate(nowdate())), lead_days)
 	so = frappe.get_doc({
 		"doctype": "Sales Order", "customer": customer, "delivery_date": str(delivery)[:10],
 		"transaction_date": nowdate(), "items": so_items,

@@ -1,6 +1,7 @@
 """Gmail order pick-up with fake messages (no real Gmail). Rolled back."""
 
 import base64
+import time
 
 import frappe
 
@@ -14,9 +15,10 @@ def _check(cond, msg):
 		raise AssertionError(msg)
 
 
-def _msg(mid, sender, subject, body):
+def _msg(mid, sender, subject, body, age_hours=1):
 	data = base64.urlsafe_b64encode(body.encode()).decode().rstrip("=")
-	return {"id": mid, "internalDate": "1792000000000", "payload": {
+	# an hour ago, and a copy from days ago in m2 below, so the date rules are tested whatever today is
+	return {"id": mid, "internalDate": str(int((time.time() - age_hours * 3600) * 1000)), "payload": {
 		"mimeType": "text/plain", "body": {"data": data},
 		"headers": [{"name": "From", "value": sender}, {"name": "Subject", "value": subject}]}}
 
@@ -52,7 +54,7 @@ def run():
 		fake = FakeGmail([
 			_msg("m1", f'"{P}Cafe" <orders@e2e-cafe.example>', "Friday order",
 			     f"Hi!\nCK-001 | {P}Butter cookie | 24\n12 x {P}Chocolate brownie\n{P}Plain scone x 6\nThanks"),
-			_msg("m2", f"{P}Cafe <orders@e2e-cafe.example>", "More", f"CK-001 | {P}Butter cookie | 10\nsomething | odd | line | many"),
+			_msg("m2", f"{P}Cafe <orders@e2e-cafe.example>", "More", f"CK-001 | {P}Butter cookie | 10\nsomething | odd | line | many", age_hours=24 * 9),
 			_msg("m3", "Spam <x@spam.example>", "Buy now", "100 x Pills"),
 			_msg("m4", "orders@e2e-cafe.example", "Question", "Can you call me back?"),
 		])
@@ -65,7 +67,9 @@ def run():
 		so = frappe.get_doc("Sales Order", o1.sales_order)
 		_check(so.docstatus == 0, "the sales order stays a draft")
 		_check({i.qty for i in so.items} == {24, 12, 6}, f"quantities: {[(i.item_code, i.qty) for i in so.items]}")
-		_check(str(so.delivery_date) >= str(o1.received_on)[:10], "delivery date follows the email date")
+		_check(str(so.delivery_date) >= frappe.utils.nowdate(), "delivery date is never before today")
+		_check(str(frappe.get_doc("Sales Order", frappe.get_doc("Email Order", {"message_id": "m2"}).sales_order).delivery_date)
+		       >= frappe.utils.nowdate(), "an email picked up days late still gets a valid delivery date")
 
 		# internal SKU (item code) + external SKU (customer's code) on the new product
 		cookie = o1.lines[0]
