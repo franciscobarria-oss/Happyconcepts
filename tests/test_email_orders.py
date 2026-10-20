@@ -170,3 +170,39 @@ def test_a_huge_cell_is_not_a_table_row_and_text_is_used():
 
 def test_repeated_page_lines_are_read_once():
 	assert eo.drop_repeats(["A | x | 1", "B | y | 2", "A | x | 1"]) == ["A | x | 1", "B | y | 2"]
+
+
+def _page(po, rows):
+	return f"Purchase Order\nPurchase No. {po}\nNo. Description No. Quantity Unit Unit Price Amount\n" + "\n".join(rows) + "\nTotal HKD 1.00\n"
+
+
+def test_same_po_printed_twice_is_read_once_but_different_pos_are_kept():
+	row = "Butter cookie 123456789 12 box 10.50 126.00"
+	pages = [_page("AB1-0001", [row]), _page("AB1-0001", [row]), _page("AB1-0002", [row]), _page("AB1-0003", [row])]
+	got = eo.text_item_pages(pages)
+	assert [po for po, _ in got] == ["AB1-0001", "AB1-0002", "AB1-0003"]
+	assert all(lines == ["123456789 | Butter cookie | 12"] for _, lines in got)
+
+
+def test_table_that_continues_on_the_next_page_is_read_whole():
+	p1 = "Description Quantity Unit Unit Price Amount\nCookie 123456789 1 box 1.00 1.00\n"
+	p2 = "Page 2\nCake 987654321 2 box 2.00 4.00\nTotal 5.00\n"
+	assert [l for _, ls in eo.text_item_pages([p1, p2]) for l in ls] == ["123456789 | Cookie | 1", "987654321 | Cake | 2"]
+
+
+def test_wrapped_description_stays_short_and_terms_text_is_not_swallowed():
+	text = ("Description Quantity Unit Unit Price Amount\nLemon tart 9.50 Pcs 12.00 114.00\n"
+	        "Item Total: 114.00\n" + "Terms and conditions apply to every order. " * 30 + "\n")
+	assert eo.text_item_lines(text) == ["Lemon tart | 9.50"]
+
+
+def test_po_number():
+	assert eo.po_number("ORDER NO.: A1234-56789 x") == "A1234-56789"
+	assert eo.po_number("Purchase No. AB12-3456789") == "AB12-3456789"
+	assert eo.po_number("nothing here") == ""
+
+
+def test_signature_pipe_lines_are_not_unparsed():
+	text = "Unit 1, Block 2 | 99 Some Road | Kowloon | Hong Kong\nTel: +852 1234 5678 | Email: a@b.com\nBrownie | 4"
+	lines, unparsed = eo.parse_lines(text)
+	assert [(l["description"], l["qty"]) for l in lines] == [("Brownie", 4)] and unparsed == []

@@ -177,32 +177,57 @@ TEXT_ITEM_NOCODE = re.compile(
 	rf"^(?P<desc>[^\d].*?)\s+(?P<qty>{NUM})\s+(?P<unit>[^\W\d_]+)\s+(?P<price>[\d,]+\.\d+)\s+(?P<amount>[\d,]+\.\d+)(?:\s+\S+)?\s*$")
 
 
+PO_NO = re.compile(r"(?i)\b(?:purchase|order|po|document)\s*(?:order\s*)?(?:no\.?|number|#)\s*[:.]?\s*([A-Z0-9][A-Z0-9-]{4,})")
+MAX_CONTINUATION = 80
+
+
+def po_number(page_text: str) -> str:
+	"""The purchase order number printed on a page ("Purchase No. X123-456", "ORDER NO.: A1234-56789"), or ''."""
+	m = PO_NO.search(page_text or "")
+	return m.group(1).upper() if m else ""
+
+
+def text_item_pages(pages: list[str]) -> list[tuple[str, list[str]]]:
+	"""Per page: (PO number, order lines) for a PDF whose items are plain positioned text, one per line,
+	as "description  [item-no]  qty  unit  unit-price  amount [date]" with the description wrapping
+	onto short following lines. Reading starts at a header line with "Description" and "Quantity" and
+	stops at any line with the word "total"; it carries across pages, so a table that continues on the
+	next page is read whole. A page that repeats an earlier page (same PO number, same lines) is
+	dropped: a reprinted copy. Different PO numbers are never merged, even with identical lines."""
+	out, seen = [], set()
+	reading, items = False, []
+	for page in pages:
+		items = []
+		for raw in (page or "").split("\n"):
+			line = re.sub(r"\s+", " ", raw).strip()
+			low = line.lower()
+			if not reading:
+				reading = "description" in low and "quantity" in low
+				continue
+			if re.search(r"\btotal\b", low):
+				reading = False
+				continue
+			m = TEXT_ITEM.match(line)
+			code = m.group("code") if m else ""
+			if not m:
+				m = TEXT_ITEM_NOCODE.match(line)
+			if m:
+				items.append([code, m.group("desc").strip(), m.group("qty")])
+			elif items and line and len(line) <= MAX_CONTINUATION and not re.search(r"\d{1,3}(,\d{3})*\.\d{2}\b", line):
+				items[-1][1] = f"{items[-1][1]} {line}"
+		lines = [f"{c} | {d} | {q}" if c else f"{d} | {q}" for c, d, q in items if float(q) > 0]
+		po = po_number(page)
+		key = (po, tuple(lines))
+		if po and lines and key in seen:
+			continue
+		seen.add(key)
+		out.append((po, lines))
+	return out
+
+
 def text_item_lines(text: str) -> list[str]:
-	"""Order lines from a PDF whose items are plain positioned text, one per line, as
-	"description  item-no  qty  unit  unit-price  amount" with the description wrapping onto the
-	following line(s). Only read after a header line that has both "Description" and "Quantity", and
-	until a "Total" line."""
-	out = []
-	reading = False
-	for raw in (text or "").split("\n"):
-		line = re.sub(r"\s+", " ", raw).strip()
-		low = line.lower()
-		if not reading:
-			reading = "description" in low and "quantity" in low
-			continue
-		if low.startswith("total"):
-			reading = False
-			continue
-		m = TEXT_ITEM.match(line)
-		if m:
-			out.append([m.group("code"), m.group("desc").strip(), m.group("qty")])
-			continue
-		m = TEXT_ITEM_NOCODE.match(line)
-		if m:
-			out.append(["", m.group("desc").strip(), m.group("qty")])
-		elif out and line and not re.search(r"\d{1,3}(,\d{3})*\.\d{2}\b", line):
-			out[-1][1] = f"{out[-1][1]} {line}"
-	return [f"{c} | {d} | {q}" if c else f"{d} | {q}" for c, d, q in out if float(q) > 0]
+	"""All order lines of a PDF's text (pages separated by form feeds), PO markers left out."""
+	return [l for _, lines in text_item_pages((text or "").split("\f")) for l in lines]
 
 
 def drop_repeats(lines: list[str]) -> list[str]:
@@ -264,6 +289,8 @@ def parse_lines(text: str) -> tuple[list[dict], list[str]]:
 				code, name = (cols[0], cols[1]) if len(cols) >= 2 else ("", cols[0])
 				lines.append({"external_sku": code, "description": name, "qty": qty})
 				continue
+			if len(cols) >= 4 or "@" in line or re.search(r"\+\d", line):
+				continue  # address / phone / e-mail signature, not an order line
 			unparsed.append(raw.strip())
 			continue
 		m = QTY_FIRST.match(line)

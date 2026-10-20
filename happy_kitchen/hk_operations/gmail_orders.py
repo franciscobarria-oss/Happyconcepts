@@ -195,21 +195,25 @@ def pdf_text(raw: bytes) -> str:
 					rows += table
 	except Exception:
 		rows = []
-	lines = email_orders.drop_repeats(email_orders.table_to_lines(rows))
+	lines = email_orders.table_to_lines(rows)
 	if lines:
 		return "\n".join(lines)
-	text = ""
+	pages = []
 	try:
 		with pdfplumber.open(io.BytesIO(raw)) as pdf:
-			text = "\n".join((page.extract_text() or "") for page in pdf.pages[:10])
+			pages = [(page.extract_text() or "") for page in pdf.pages[:10]]
 	except Exception:
 		try:
 			from pypdf import PdfReader
 
-			text = "\n".join((page.extract_text() or "") for page in PdfReader(io.BytesIO(raw)).pages[:10])
+			pages = [(page.extract_text() or "") for page in PdfReader(io.BytesIO(raw)).pages[:10]]
 		except Exception:
 			return ""
-	return "\n".join(email_orders.drop_repeats(email_orders.text_item_lines(text))) or text
+	out = []
+	for po, page_lines in email_orders.text_item_pages(pages):
+		if page_lines:
+			out += ([f"--- PO {po} ---"] if po else []) + page_lines
+	return "\n".join(out) or "\n".join(pages)
 
 
 def _save_files(order, files):
