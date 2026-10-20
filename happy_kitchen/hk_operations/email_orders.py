@@ -17,6 +17,8 @@ QTY_LAST = re.compile(rf"^(?P<rest>.+?)\s*(?:[x×*]\s*)(?P<qty>{NUM})\s*(?:pcs?|
 CODE_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]{1,31}$")
 HEADER_WORDS = {"qty", "quantity", "code", "sku", "item", "product", "description", "name"}
 MAX_BODY = 20000
+MAX_PDFS = 3
+MAX_PDF_TEXT = 20000
 
 
 def header(payload: dict, name: str) -> str:
@@ -90,6 +92,68 @@ def body_text(payload: dict) -> str:
 	text = strip_quoted("\n".join(plain) if plain else "\n".join(rich))
 	lines = [re.sub(r"[ \t\xa0]+", " ", l).strip() for l in text.replace("\r", "").split("\n")]
 	return "\n".join(l for l in lines if l)[:MAX_BODY]
+
+
+def pdf_attachments(payload: dict) -> list[dict]:
+	"""PDF attachments of a Gmail message payload: [{filename, attachment_id, data}] (data only when
+	Gmail sent the bytes inline, otherwise fetch by attachment_id)."""
+	out = []
+
+	def walk(part):
+		name = part.get("filename") or ""
+		mime = (part.get("mimeType") or "").lower()
+		body = part.get("body") or {}
+		if (mime == "application/pdf" or name.lower().endswith(".pdf")) and (body.get("attachmentId") or body.get("data")):
+			out.append({"filename": name or "order.pdf", "attachment_id": body.get("attachmentId"), "data": body.get("data")})
+		for sub in part.get("parts") or []:
+			walk(sub)
+
+	walk(payload or {})
+	return out[:MAX_PDFS]
+
+
+QTY_HEADS = ("qty", "quantity", "qnty", "order qty", "ordered", "pcs", "數量", "数量")
+CODE_HEADS = ("code", "sku", "item code", "item no", "item no.", "product code", "article", "ref", "編號", "货号", "貨號")
+DESC_HEADS = ("description", "item", "product", "item name", "product name", "name", "品名", "名稱", "描述")
+
+
+def table_to_lines(rows: list[list]) -> list[str]:
+	"""Rows of a PDF table -> "CODE | Description | Qty" lines for parse_lines. The header row (the
+	first that has a quantity column and a description or code column) says which column is which;
+	rows before it, rows without a positive number in the quantity column and total rows are skipped."""
+	head = None
+	out = []
+	for row in rows or []:
+		cells = [re.sub(r"\s+", " ", str(c or "")).strip() for c in row]
+		low = [c.lower().rstrip(":") for c in cells]
+		if head is None:
+			qty = next((i for i, c in enumerate(low) if c in QTY_HEADS), None)
+			desc = next((i for i, c in enumerate(low) if c in DESC_HEADS), None)
+			code = next((i for i, c in enumerate(low) if c in CODE_HEADS), None)
+			if qty is not None and (desc is not None or code is not None):
+				head = (code, desc, qty)
+			continue
+		code, desc, qty = head
+		if qty >= len(cells) or not re.fullmatch(rf"{NUM}", cells[qty].replace(",", "")):
+			continue
+		n = float(cells[qty].replace(",", ""))
+		name = cells[desc] if desc is not None and desc < len(cells) else ""
+		sku = cells[code] if code is not None and code < len(cells) else ""
+		if n <= 0 or not (name or sku) or "total" in (name + sku).lower():
+			continue
+		out.append(f"{sku} | {name or sku} | {cells[qty].replace(',', '')}" if sku else f"{name} | {cells[qty].replace(',', '')}")
+	return out
+
+
+def join_attachment_text(body: str, texts: list[tuple[str, str]]) -> str:
+	"""The email body followed by each PDF's text under a "--- Attachment: name ---" line, so the
+	same line reader handles both. Each PDF is capped; an empty PDF (a scan) adds only the header."""
+	parts = [body] if body else []
+	for name, text in texts:
+		parts.append(f"--- Attachment: {name} ---")
+		lines = [re.sub(r"[ \t\xa0]+", " ", l).strip() for l in (text or "").replace("\r", "").split("\n")]
+		parts.append("\n".join(l for l in lines if l)[:MAX_PDF_TEXT])
+	return "\n".join(parts)
 
 
 def _number(text: str) -> float | None:

@@ -492,6 +492,7 @@ Only Out of Tolerance,只顯示超出容差
 Only Price Changes,只顯示價格變動
 Only Recipes That Need a Look,只顯示需檢查的食譜
 Only a manager can mark a label as checked.,只有經理可以將標籤標記為已檢查。
+Only an email without a sales order that is Needs review or Failed can be read again.,只有沒有銷售訂單、且狀態為「需檢查」或「失敗」的電郵才能重新讀取。
 Only ingredients with something to do,只顯示需要處理的材料
 Only mail under this label is read. Create the label in Gmail and apply it with a filter or by hand.,"只會讀取此標籤下的郵件。請在 Gmail 建立標籤,並用篩選器或手動套用。"
 Only these senders,只限這些寄件人
@@ -638,6 +639,7 @@ Rate (per basis),費率（按計算方式）
 Rate Name,費率名稱
 Rates,費率
 Re-cost recipes when an Item Price changes,物品價格變動時重新計算食譜成本
+Read again,重新讀取
 Reason,原因
 Reason (Chinese),原因（中文）
 Receipt,收貨單
@@ -752,6 +754,7 @@ Staff,員工
 Staff Role,職位
 Start Stock Take,開始盤點
 Start a new count,開始新盤點
+Status: {0},狀態:{0}
 Steps,步驟
 Still to approve,待審批
 Stock,庫存

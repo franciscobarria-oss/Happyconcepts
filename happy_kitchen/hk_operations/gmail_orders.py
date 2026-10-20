@@ -70,6 +70,12 @@ class GmailClient:
 			frappe.throw(_("Gmail answered {0}.").format(f"{r.status_code} ({why})" if why else r.status_code))
 		return r.json()
 
+	def get_attachment(self, message_id: str, attachment_id: str) -> bytes:
+		import base64
+
+		data = self._get(f"messages/{message_id}/attachments/{attachment_id}").get("data") or ""
+		return base64.urlsafe_b64decode(data + "=" * (-len(data) % 4))
+
 	def profile(self) -> str:
 		return self._get("profile").get("emailAddress") or ""
 
@@ -138,8 +144,11 @@ def _take(client, message_id: str, s) -> str:
 		order.status = "Ignored"
 		order.insert(ignore_permissions=True)
 		return order.status
-	order.body = email_orders.body_text(payload)
+	files = _pdf_files(client, message_id, payload)
+	order.body = email_orders.join_attachment_text(
+		email_orders.body_text(payload), [(n, pdf_text(raw)) for n, raw in files])
 	order.insert(ignore_permissions=True)
+	_save_files(order, files)
 	point = f"hk_email_{frappe.generate_hash(length=8)}"
 	frappe.db.savepoint(point)
 	try:
@@ -151,6 +160,57 @@ def _take(client, message_id: str, s) -> str:
 		order.error = frappe.get_traceback(with_context=False)[-500:]
 		order.save(ignore_permissions=True)
 	return order.status
+
+
+def _pdf_files(client, message_id: str, payload: dict) -> list[tuple[str, bytes]]:
+	"""(file name, bytes) of each PDF attached to the message; one that cannot be fetched is skipped."""
+	import base64
+
+	out = []
+	for att in email_orders.pdf_attachments(payload):
+		try:
+			if att.get("data"):
+				data = att["data"]
+				raw = base64.urlsafe_b64decode(data + "=" * (-len(data) % 4))
+			else:
+				raw = client.get_attachment(message_id, att["attachment_id"])
+			out.append((att["filename"], raw))
+		except Exception:
+			continue
+	return out
+
+
+def pdf_text(raw: bytes) -> str:
+	"""What the order reader gets from a PDF: the lines of its tables when it has a table with a
+	quantity column, else its page text. Needs no network; a scanned PDF has no text (no OCR)."""
+	import io
+
+	rows = []
+	try:
+		import pdfplumber
+
+		with pdfplumber.open(io.BytesIO(raw)) as pdf:
+			for page in pdf.pages[:10]:
+				for table in page.extract_tables() or []:
+					rows += table
+	except Exception:
+		rows = []
+	lines = email_orders.table_to_lines(rows)
+	if lines:
+		return "\n".join(lines)
+	try:
+		from pypdf import PdfReader
+
+		return "\n".join((page.extract_text() or "") for page in PdfReader(io.BytesIO(raw)).pages[:10])
+	except Exception:
+		return ""
+
+
+def _save_files(order, files):
+	"""Keep the PDFs on the Email Order (private files) so the order can be checked against them."""
+	for name, raw in files:
+		frappe.get_doc({"doctype": "File", "file_name": name[:140], "content": raw, "is_private": 1,
+		                "attached_to_doctype": "Email Order", "attached_to_name": order.name}).insert(ignore_permissions=True)
 
 
 def _received(msg: dict):
@@ -328,3 +388,25 @@ def test_connection() -> str:
 	frappe.only_for("System Manager")
 	s = frappe.get_single("Gmail Settings")
 	return GmailClient(s).profile()
+
+
+@frappe.whitelist()
+def reprocess(name: str):
+	"""Read an Email Order again from Gmail (new reading rules, or its PDFs): only while it has no
+	Sales Order and is Needs review or Failed. Replaces its body, PDFs and lines; makes the draft order."""
+	frappe.only_for(("Sales Manager", "System Manager"))
+	order = frappe.get_doc("Email Order", name)
+	if order.sales_order or order.status not in ("Needs review", "Failed"):
+		frappe.throw(_("Only an email without a sales order that is Needs review or Failed can be read again."))
+	s = frappe.get_single("Gmail Settings")
+	client = GmailClient(s)
+	payload = client.get_message(order.message_id).get("payload") or {}
+	files = _pdf_files(client, order.message_id, payload)
+	order.body = email_orders.join_attachment_text(
+		email_orders.body_text(payload), [(n, pdf_text(raw)) for n, raw in files])
+	order.error = ""
+	order.save(ignore_permissions=True)
+	if not frappe.get_all("File", filters={"attached_to_doctype": "Email Order", "attached_to_name": order.name}):
+		_save_files(order, files)
+	process(order, lead_days=int(s.default_lead_days or 1), prior=find_prior(order))
+	return frappe.db.get_value("Email Order", name, "status")

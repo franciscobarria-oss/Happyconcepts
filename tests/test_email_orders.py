@@ -61,3 +61,42 @@ def test_strip_quoted_keeps_only_the_new_words():
 	assert eo.strip_quoted(reply) == "Please make it 18 x Brownie\n"
 	assert eo.strip_quoted("> 12 x Brownie\n6 x Scone") == "6 x Scone"
 	assert eo.strip_quoted("12 x Brownie\n-----Original Message-----\n12 x Brownie") == "12 x Brownie"
+
+
+def test_table_to_lines_uses_the_header_row():
+	rows = [
+		["Purchase Order 123", None, None],
+		["Item Code", "Description", "Qty", "Unit"],
+		["CK-001", "Butter cookie", "12", "box"],
+		["", "Delivery note", "", ""],
+		["CK-002", "Brownie\ntray", "1,200", "pcs"],
+		["", "Total", "1212", ""],
+		["CK-003", "Zero", "0", "pcs"],
+	]
+	assert eo.table_to_lines(rows) == ["CK-001 | Butter cookie | 12", "CK-002 | Brownie tray | 1200"]
+	lines, unparsed = eo.parse_lines("\n".join(eo.table_to_lines(rows)))
+	assert [(l["external_sku"], l["description"], l["qty"]) for l in lines] == [
+		("CK-001", "Butter cookie", 12), ("CK-002", "Brownie tray", 1200)]
+	assert unparsed == []
+
+
+def test_table_without_a_quantity_column_gives_nothing():
+	assert eo.table_to_lines([["Name", "Price"], ["Brownie", "5"]]) == []
+
+
+def test_table_description_only():
+	assert eo.table_to_lines([["Product", "Quantity"], ["Brownie", "6"]]) == ["Brownie | 6"]
+
+
+def test_pdf_attachments_and_joined_text():
+	payload = {"mimeType": "multipart/mixed", "parts": [
+		{"mimeType": "text/plain", "body": {"data": "SGk="}},
+		{"mimeType": "application/pdf", "filename": "PO-9.pdf", "body": {"attachmentId": "att1"}},
+		{"mimeType": "image/png", "filename": "logo.png", "body": {"attachmentId": "att2"}},
+	]}
+	atts = eo.pdf_attachments(payload)
+	assert [(a["filename"], a["attachment_id"]) for a in atts] == [("PO-9.pdf", "att1")]
+	text = eo.join_attachment_text("Hi", [("PO-9.pdf", "CK-001 | Cookie | 3"), ("scan.pdf", "")])
+	assert "--- Attachment: PO-9.pdf ---" in text and "--- Attachment: scan.pdf ---" in text
+	lines, unparsed = eo.parse_lines(text)
+	assert [(l["external_sku"], l["qty"]) for l in lines] == [("CK-001", 3)] and unparsed == []

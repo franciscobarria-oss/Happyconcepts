@@ -42,6 +42,7 @@ doctype_js = {
 	"Employee": "public/js/employee.js",
 	"Sales Order": "public/js/sales_order.js",
 	"Gmail Settings": "public/js/gmail_settings.js",
+	"Email Order": "public/js/email_order.js",
 }
 
 jinja = {
