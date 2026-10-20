@@ -998,6 +998,7 @@ ZH_TW = {
 	"Unknown action": "未知操作",
 	"Unknown kind": "未知類型",
 	"Use by": "使用期限",
+	"Week ahead": "未來一週",
 	"Busy day": "繁忙",
 	"Quiet day": "清閒",
 	"orders out": "出貨訂單",

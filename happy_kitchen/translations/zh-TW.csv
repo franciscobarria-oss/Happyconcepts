@@ -829,6 +829,7 @@ Waste (yield loss) Cost,損耗（可用率）成本
 "Waste recorded, but stock was not updated: {0}",已記錄報廢，但庫存未有更新：{0}
 Waste this week,本週報廢
 Wasted Items,報廢物品
+Week ahead,未來一週
 Weight Tolerance (± g),重量誤差（± 克）
 Weight per Piece (g),每件重量（克）
 Weights & Cooking Yield,重量及成品率
