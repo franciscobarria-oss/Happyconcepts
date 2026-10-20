@@ -123,11 +123,15 @@ def purchase_order_lines(po: str) -> dict:
 	doc = frappe.get_doc("Purchase Order", po)
 	doc.check_permission("read")
 	lines = []
+	from happy_kitchen.hk_operations import sku_api
+
+	skus = sku_api.supplier_skus(doc.supplier, [i.item_code for i in doc.items])
 	for i in doc.items:
 		pending = flt(i.qty) - flt(i.received_qty)
 		if pending <= 0:
 			continue
 		lines.append({"po_detail": i.name, "item": i.item_code, "item_name": i.item_name, "uom": i.uom,
+		              "supplier_sku": i.get("supplier_part_no") or skus.get(i.item_code, ""),
 		              "pending_qty": pending, "rate": i.rate, "warehouse": i.warehouse})
 	return {"name": doc.name, "supplier": doc.supplier, "supplier_name": doc.supplier_name, "currency": doc.currency,
 	        "schedule_date": str(doc.schedule_date or ""), "lines": lines}

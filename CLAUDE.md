@@ -32,6 +32,7 @@ Guidance for Claude Code working in this repository: the `happy_kitchen` Frappe 
 ## Purchasing (P4)
 - Supplier fields `hk_min_order_amount`, `hk_products_tab`, `hk_products_html`; Item `hk_order_multiple` (patch `supplier_moq_fields`).
 - MOQ rules are enforced on the server (`hk_operations/purchasing.py`, Purchase Order `validate` / `before_submit`), so API, Data Import and draft orders created by code obey them too. The form only adds an early warning.
+- **SKUs:** our SKU is the Item code (ING-xxx for bought-in); a supplier's SKU is `supplier_part_no` on the Item's Supplier Items row. Item `hk_supplier_skus` (patch `supplier_sku_fields`, filled on Item validate by `sku_api.item_validate`, rules in `hk_operations/sku.py`, tests/test_sku.py) lists them and is in the Item `search_fields`, so any Item search finds an item by either. A supplier's SKU can belong to one item only. The Supplier Products tab, "+ Add Product" and Receive Delivery show/take the supplier SKU. e2e: `happy_kitchen.e2e.sku.run`.
 - "+ Add Product" runs in the whitelisted `add_supplier_product` (one transaction: item and price together). Maths in `hk_operations/moq.py`.
 
 ## Recipes and costing (P6)
