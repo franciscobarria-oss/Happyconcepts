@@ -69,4 +69,4 @@ def mark_checked(sales_order: str) -> None:
 	frappe.db.set_value("Sales Order", sales_order, "hk_needs_review", 0, update_modified=False)
 	frappe.get_doc({"doctype": "Comment", "comment_type": "Info", "reference_doctype": "Sales Order",
 	                "reference_name": sales_order,
-	                "content": _("Revision checked by {0}.").format(frappe.get_fullname())}).insert(ignore_permissions=True)
+	                "content": _("Revision checked by {0}.").format(frappe.utils.get_fullname(frappe.session.user))}).insert(ignore_permissions=True)
