@@ -1,0 +1,56 @@
+import base64
+
+from happy_kitchen.hk_operations import email_orders as eo
+from happy_kitchen.hk_operations import sku
+
+
+def _b64(text):
+	return base64.urlsafe_b64encode(text.encode()).decode().rstrip("=")
+
+
+def test_parse_sender_and_allow_list():
+	assert eo.parse_sender('"Cafe A" <Orders@CafeA.com>') == ("Cafe A", "orders@cafea.com")
+	assert eo.parse_sender("") == ("", "")
+	assert eo.sender_allowed("a@x.com", "")
+	assert eo.sender_allowed("a@x.com", "b@y.com, a@x.com")
+	assert eo.sender_allowed("a@x.com", "@x.com")
+	assert not eo.sender_allowed("a@evil-x.com", "@x.com\nb@y.com")
+
+
+def test_body_text_prefers_plain_and_strips_html():
+	plain = {"mimeType": "multipart/alternative", "parts": [
+		{"mimeType": "text/plain", "body": {"data": _b64("12 x Brownie\r\n\r\nThanks")}},
+		{"mimeType": "text/html", "body": {"data": _b64("<p>ignored</p>")}}]}
+	assert eo.body_text(plain) == "12 x Brownie\nThanks"
+	rich = {"mimeType": "text/html", "body": {"data": _b64("<table><tr><td>CK-1</td><td>Cookie</td><td>24</td></tr></table>")}}
+	assert "CK-1 | Cookie | 24" in eo.body_text(rich).replace("  ", " ")
+
+
+def test_parse_lines_formats():
+	text = "\n".join([
+		"Hi team, please send for Friday:",
+		"Code | Product | Qty",
+		"CK-001 | Butter cookie | 24",
+		"BR-7 | Sourdough loaf | 6 pcs",
+		"12 x Chocolate brownie",
+		"Almond croissant x 30",
+		"5 x [PS-12] Pistachio swirl",
+		"BR-9 - Rye loaf x 4",
+		"Thanks!",
+	])
+	lines, unparsed = eo.parse_lines(text)
+	assert unparsed == []
+	assert [(l["external_sku"], l["description"], l["qty"]) for l in lines] == [
+		("CK-001", "Butter cookie", 24), ("BR-7", "Sourdough loaf", 6), ("", "Chocolate brownie", 12),
+		("", "Almond croissant", 30), ("PS-12", "Pistachio swirl", 5), ("BR-9", "Rye loaf", 4)]
+
+
+def test_parse_lines_flags_what_it_cannot_read():
+	lines, unparsed = eo.parse_lines("CK-001 | Butter cookie | a dozen\n0 x Nothing\nJust some chatter")
+	assert lines == []
+	assert unparsed == ["CK-001 | Butter cookie | a dozen", "0 x Nothing"]
+
+
+def test_next_internal_sku():
+	assert sku.next_code([]) == "SKU-0001"
+	assert sku.next_code(["SKU-0009", "SKU-0002", "ING-099", "SKU-x"]) == "SKU-0010"

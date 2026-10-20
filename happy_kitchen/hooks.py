@@ -41,6 +41,7 @@ doctype_js = {
 	"Purchase Receipt": "public/js/purchase_receipt.js",
 	"Employee": "public/js/employee.js",
 	"Sales Order": "public/js/sales_order.js",
+	"Gmail Settings": "public/js/gmail_settings.js",
 }
 
 jinja = {
@@ -72,4 +73,5 @@ doc_events = {
 
 scheduler_events = {
 	"daily": ["happy_kitchen.recipe_management.doctype.recipe.recipe.recost_recipes"],
+	"cron": {"*/15 * * * *": ["happy_kitchen.hk_operations.gmail_orders.scheduled_fetch"]},
 }

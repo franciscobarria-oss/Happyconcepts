@@ -1,0 +1,266 @@
+"""Pick up orders from Gmail (read-only) and turn them into draft Sales Orders.
+
+Safe by design: the only Google scope is gmail.readonly (nothing is sent, labelled or
+deleted); only mail under one Gmail label (and, if set, from the listed senders) is read;
+each message becomes one Email Order keyed by its Gmail message id, so it is never
+picked up twice; the Sales Order stays a draft for a person to review. Rules for reading
+the text are in email_orders.py (pure, tested). Secrets live in Gmail Settings
+(Password fields); they are never logged or returned."""
+
+from __future__ import annotations
+
+import frappe
+from frappe import _
+from frappe.utils import add_days, add_to_date, get_datetime, now_datetime, nowdate
+
+from happy_kitchen.hk_operations import email_orders, sku
+
+GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
+GMAIL_API = "https://gmail.googleapis.com/gmail/v1/users/me"
+PRODUCT_GROUP = "Products"
+CODE_PREFIX = "SKU-"
+TIMEOUT = 30
+
+
+class GmailClient:
+	"""Minimal read-only Gmail REST client (users.messages.list / get, users.getProfile)."""
+
+	def __init__(self, settings):
+		self.client_id = settings.client_id
+		self.client_secret = settings.get_password("client_secret", raise_exception=False)
+		self.refresh_token = settings.get_password("refresh_token", raise_exception=False)
+		self._token = None
+
+	def _headers(self):
+		import requests
+
+		if not self._token:
+			r = requests.post(
+				GOOGLE_TOKEN_URL,
+				data={"client_id": self.client_id, "client_secret": self.client_secret,
+				      "refresh_token": self.refresh_token, "grant_type": "refresh_token"},
+				timeout=TIMEOUT,
+			)
+			if r.status_code != 200:
+				# the response can echo request details: report only Google's error code
+				code = (r.json() or {}).get("error", r.status_code) if r.headers.get("content-type", "").startswith("application/json") else r.status_code
+				frappe.throw(_("Google refused the sign-in ({0}). Run the Google sign-in step again.").format(code))
+			self._token = r.json()["access_token"]
+		return {"Authorization": f"Bearer {self._token}"}
+
+	def _get(self, path, **params):
+		import requests
+
+		r = requests.get(f"{GMAIL_API}/{path}", headers=self._headers(), params=params, timeout=TIMEOUT)
+		if r.status_code != 200:
+			frappe.throw(_("Gmail answered {0}.").format(r.status_code))
+		return r.json()
+
+	def profile(self) -> str:
+		return self._get("profile").get("emailAddress") or ""
+
+	def list_ids(self, query: str, limit: int) -> list[str]:
+		out, token = [], None
+		while len(out) < limit:
+			data = self._get("messages", q=query, maxResults=min(100, limit - len(out)),
+			                 **({"pageToken": token} if token else {}))
+			out += [m["id"] for m in data.get("messages") or []]
+			token = data.get("nextPageToken")
+			if not token:
+				break
+		return out[:limit]
+
+	def get_message(self, message_id: str) -> dict:
+		return self._get(f"messages/{message_id}", format="full")
+
+
+def build_query(label: str, look_back_days: int) -> str:
+	label = (label or "").replace('"', "").strip()
+	return f'label:"{label}" newer_than:{int(look_back_days or 14)}d'
+
+
+# --- pick-up ----------------------------------------------------------------------------
+
+def fetch(client=None) -> dict:
+	"""Read new mail under the label and make an Email Order (and a draft Sales Order) for each.
+	`client` is injected by the tests; otherwise the real Gmail client."""
+	s = frappe.get_single("Gmail Settings")
+	if client is None:
+		if not (s.client_id and s.get_password("client_secret", raise_exception=False)
+		        and s.get_password("refresh_token", raise_exception=False)):
+			frappe.throw(_("Gmail Settings needs the Google client ID, secret and refresh token first."))
+		client = GmailClient(s)
+	made = {"new": 0, "draft": 0, "review": 0, "ignored": 0, "failed": 0}
+	try:
+		ids = client.list_ids(build_query(s.label_name, s.look_back_days), int(s.max_per_run or 25))
+		known = set(frappe.get_all("Email Order", filters={"message_id": ("in", ids or [""])}, pluck="message_id"))
+		for mid in ids:
+			if mid in known:
+				continue
+			made["new"] += 1
+			status = _take(client, mid, s)
+			made[{"Draft order": "draft", "Needs review": "review", "Ignored": "ignored"}.get(status, "failed")] += 1
+		frappe.db.set_single_value("Gmail Settings", "last_error", "")
+	except Exception as e:
+		frappe.db.set_single_value("Gmail Settings", "last_error", str(e)[:500])
+		raise
+	finally:
+		frappe.db.set_single_value("Gmail Settings", "last_checked", now_datetime())
+	return made
+
+
+def _take(client, message_id: str, s) -> str:
+	"""One message -> one Email Order. A failure on one message never stops the others."""
+	payload_msg = client.get_message(message_id)
+	payload = payload_msg.get("payload") or {}
+	name, address = email_orders.parse_sender(email_orders.header(payload, "From"))
+	order = frappe.get_doc({
+		"doctype": "Email Order", "message_id": message_id, "status": "New",
+		"subject": (email_orders.header(payload, "Subject") or _("(no subject)"))[:140],
+		"sender_name": name, "sender_email": address,
+		"received_on": _received(payload_msg),
+	})
+	if not email_orders.sender_allowed(address, s.allowed_senders):
+		order.status = "Ignored"
+		order.insert(ignore_permissions=True)
+		return order.status
+	order.body = email_orders.body_text(payload)
+	order.insert(ignore_permissions=True)
+	point = f"hk_email_{frappe.generate_hash(length=8)}"
+	frappe.db.savepoint(point)
+	try:
+		process(order, lead_days=int(s.default_lead_days or 1))
+	except Exception:
+		frappe.db.rollback(save_point=point)
+		order.reload()
+		order.status = "Failed"
+		order.error = frappe.get_traceback(with_context=False)[-500:]
+		order.save(ignore_permissions=True)
+	return order.status
+
+
+def _received(msg: dict):
+	ms = msg.get("internalDate")
+	if not ms:
+		return now_datetime()
+	from datetime import datetime, timezone
+
+	return get_datetime(datetime.fromtimestamp(int(ms) / 1000, tz=timezone.utc).replace(tzinfo=None))
+
+
+def process(order, lead_days: int = 1):
+	"""Read the order lines, find or create the customer and products, and make the draft Sales Order."""
+	lines, unparsed = email_orders.parse_lines(order.body or "")
+	order.unparsed = "\n".join(unparsed)
+	if not lines:
+		order.status = "Needs review"
+		order.save(ignore_permissions=True)
+		return
+	customer = find_or_create_customer(order.sender_name, order.sender_email)
+	order.customer = customer
+	order.set("lines", [])
+	so_items = []
+	for ln in lines:
+		item, created = find_or_create_item(customer, ln["external_sku"], ln["description"])
+		order.append("lines", {**ln, "item": item, "item_created": 1 if created else 0})
+		so_items.append({"item_code": item, "qty": ln["qty"]})
+	delivery = add_days(order.received_on or nowdate(), lead_days)
+	so = frappe.get_doc({
+		"doctype": "Sales Order", "customer": customer, "delivery_date": str(delivery)[:10],
+		"transaction_date": nowdate(), "items": so_items,
+	})
+	so.insert(ignore_permissions=True)
+	frappe.get_doc({"doctype": "Comment", "comment_type": "Info", "reference_doctype": "Sales Order",
+	                "reference_name": so.name,
+	                "content": _("Picked up from the email '{0}' from {1} ({2}). Check it before submitting.").format(
+		                order.subject, order.sender_email, order.name)}).insert(ignore_permissions=True)
+	order.sales_order = so.name
+	order.status = "Needs review" if unparsed else "Draft order"
+	order.save(ignore_permissions=True)
+
+
+def find_or_create_customer(sender_name: str, address: str) -> str:
+	if address:
+		found = frappe.db.get_value("Customer", {"email_id": address}, "name")
+		if found:
+			return found
+		rows = frappe.db.sql(
+			"""select dl.link_name from `tabContact Email` ce
+			   join `tabContact` c on c.name = ce.parent
+			   join `tabDynamic Link` dl on dl.parent = c.name and dl.parenttype = 'Contact' and dl.link_doctype = 'Customer'
+			   where lower(ce.email_id) = %s limit 1""",
+			(address,),
+		)
+		if rows:
+			return rows[0][0]
+	title = (sender_name or address or _("Email customer")).strip()
+	if frappe.db.exists("Customer", title):
+		title = f"{title} ({address})" if address else title
+	group = frappe.db.get_single_value("Selling Settings", "customer_group") or frappe.db.get_value(
+		"Customer Group", {"is_group": 0}, "name")
+	territory = frappe.db.get_single_value("Selling Settings", "territory") or frappe.db.get_value(
+		"Territory", {"is_group": 0}, "name")
+	customer = frappe.get_doc({"doctype": "Customer", "customer_name": title, "customer_type": "Company",
+	                           "customer_group": group, "territory": territory}).insert(ignore_permissions=True)
+	if address:
+		frappe.get_doc({
+			"doctype": "Contact", "first_name": (sender_name or address)[:60],
+			"email_ids": [{"email_id": address, "is_primary": 1}],
+			"links": [{"link_doctype": "Customer", "link_name": customer.name}],
+		}).insert(ignore_permissions=True)
+	return customer.name
+
+
+def find_or_create_item(customer: str, external_sku: str, description: str) -> tuple[str, bool]:
+	"""(internal SKU = item code, created). Matches this customer's external SKU first, then the
+	item name; otherwise creates a sales product with the next SKU-nnnn and records the external SKU."""
+	external_sku = sku.clean(external_sku)
+	description = (description or "").strip()
+	found = None
+	if external_sku:
+		found = frappe.db.get_value("Item Customer Detail", {"customer_name": customer, "ref_code": external_sku,
+		                                                     "parenttype": "Item"}, "parent")
+	if not found and description:
+		found = frappe.db.get_value("Item", {"item_name": description, "disabled": 0}, "name")
+	if found:
+		if external_sku and not frappe.db.exists("Item Customer Detail", {"parent": found, "customer_name": customer,
+		                                                                  "ref_code": external_sku}):
+			item = frappe.get_doc("Item", found)
+			item.append("customer_items", {"customer_name": customer, "ref_code": external_sku})
+			item.save(ignore_permissions=True)
+		return found, False
+	codes = frappe.get_all("Item", filters={"name": ("like", f"{CODE_PREFIX}%")}, pluck="name")
+	company = frappe.defaults.get_global_default("company")
+	item = frappe.get_doc({
+		"doctype": "Item", "item_code": sku.next_code(codes, CODE_PREFIX), "item_name": (description or external_sku)[:140],
+		"item_group": PRODUCT_GROUP, "stock_uom": "Nos", "is_stock_item": 1, "is_sales_item": 1, "is_purchase_item": 0,
+		"customer_items": [{"customer_name": customer, "ref_code": external_sku}] if external_sku else [],
+		"item_defaults": [{"company": company}] if company else [],
+	}).insert(ignore_permissions=True)
+	return item.name, True
+
+
+# --- entry points ------------------------------------------------------------------------
+
+def scheduled_fetch():
+	"""Every 15 minutes: does nothing until Gmail Settings is switched on and complete."""
+	s = frappe.get_single("Gmail Settings")
+	if not s.enabled:
+		return
+	try:
+		fetch()
+	except Exception:
+		frappe.log_error(title="Gmail order pick-up")
+
+
+@frappe.whitelist()
+def fetch_now() -> dict:
+	frappe.only_for("System Manager")
+	return fetch()
+
+
+@frappe.whitelist()
+def test_connection() -> str:
+	frappe.only_for("System Manager")
+	s = frappe.get_single("Gmail Settings")
+	return GmailClient(s).profile()

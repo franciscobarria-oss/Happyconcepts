@@ -19,6 +19,7 @@ INSTALL_PATCHES = [
 	"happy_kitchen.patches.label_design_defaults",
 	"happy_kitchen.patches.date_tracking_setup",
 	"happy_kitchen.patches.supplier_sku_fields",
+	"happy_kitchen.patches.gmail_orders_setup",
 ]
 
 

@@ -4,9 +4,9 @@ from frappe.custom.doctype.property_setter.property_setter import make_property_
 
 FIELDS = {
 	"Item": [
-		{"fieldname": "hk_supplier_skus", "label": "Supplier SKUs", "fieldtype": "Small Text",
+		{"fieldname": "hk_supplier_skus", "label": "External SKUs", "fieldtype": "Small Text",
 		 "insert_after": "supplier_items", "read_only": 1,
-		 "description": "Filled from the Supplier Items table above so the item is found by any supplier's SKU."},
+		 "description": "Supplier and customer part numbers from the tables on this form, so the item is found by any of them."},
 	],
 }
 

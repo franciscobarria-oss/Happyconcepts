@@ -40,3 +40,13 @@ def sku_for_supplier(rows, supplier) -> str:
 		if r.get("supplier") == supplier and clean(r.get("supplier_part_no")):
 			return clean(r.get("supplier_part_no"))
 	return ""
+
+
+def next_code(existing, prefix: str = "SKU-", width: int = 4) -> str:
+	"""Next internal SKU after the highest "<prefix><number>" in `existing`."""
+	top = 0
+	for code in existing:
+		code = str(code or "")
+		if code.startswith(prefix) and code[len(prefix):].isdigit():
+			top = max(top, int(code[len(prefix):]))
+	return f"{prefix}{top + 1:0{width}d}"
