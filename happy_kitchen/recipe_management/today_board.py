@@ -300,3 +300,34 @@ def create_purchase_order(supplier: str, items: str | list, schedule_date: str |
 	po.set_missing_values()
 	po.insert()
 	return po.name
+
+
+WEEK_DAYS = 7
+
+
+def week_ahead() -> dict | None:
+	"""Orders going out and deliveries coming in for today and the next 6 days
+	(late ones count on today). None when the user can read neither."""
+	can_so, can_po = _can("Sales Order"), _can("Purchase Order")
+	if not (can_so or can_po):
+		return None
+	today = nowdate()
+	days = [str(add_days(today, i)) for i in range(WEEK_DAYS)]
+
+	def tally(doctype, statuses, date_field, amount_field):
+		out: dict = {}
+		for r in frappe.get_all(
+			doctype,
+			filters={"docstatus": 1, "status": ("in", statuses), date_field: ("<=", days[-1])},
+			fields=[date_field, amount_field],
+			limit=1000,
+		):
+			d = max(str(r[date_field] or today), today)
+			t = out.setdefault(d, {"count": 0, "amount": 0.0})
+			t["count"] += 1
+			t["amount"] += flt(r[amount_field])
+		return out
+
+	orders = tally("Sales Order", OPEN_SO_STATUSES, "delivery_date", "grand_total") if can_so else {}
+	deliveries = tally("Purchase Order", OPEN_PO_STATUSES, "schedule_date", "grand_total") if can_po else {}
+	return {"days": board.week_load(days, orders, deliveries), "orders": can_so, "deliveries": can_po}

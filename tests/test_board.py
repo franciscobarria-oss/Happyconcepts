@@ -122,3 +122,20 @@ def test_merge_today_without_board_tiles_skips_duplicates():
 	out = board.merge_today(dash, {"tiles": [], "tasks": {"ordering": None, "receiving": None, "production": None}})
 	assert out["tiles"] == []
 	assert out["tasks"]["receiving"] is None
+
+
+def test_week_load_levels():
+	days = [f"2026-10-{19 + i}" for i in range(7)]
+	orders = {days[0]: {"count": 4, "amount": 400}, days[1]: {"count": 1, "amount": 50}, days[2]: {"count": 3, "amount": 300}}
+	deliveries = {days[0]: {"count": 2}, days[3]: {"count": 1}}
+	rows = board.week_load(days, orders, deliveries)
+	assert [r["load"] for r in rows] == [6, 1, 3, 1, 0, 0, 0]
+	assert [r["level"] for r in rows] == ["busy", "quiet", "normal", "quiet", "quiet", "quiet", "quiet"]
+	assert rows[0]["order_amount"] == 400 and rows[0]["deliveries"] == 2
+
+
+def test_week_load_flat_or_empty_week_is_never_busy():
+	days = ["a", "b", "c"]
+	assert {r["level"] for r in board.week_load(days, {}, {})} == {"quiet"}
+	flat = board.week_load(days, {d: {"count": 1} for d in days}, {})
+	assert {r["level"] for r in flat} == {"normal"}  # peak < 3: nothing counts as busy

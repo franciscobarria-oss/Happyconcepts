@@ -76,6 +76,7 @@ Brand Name,品牌名稱
 Brand line,品牌行
 Branding (A4 recipe print),品牌（A4 食譜列印）
 "Brown / blush Happy Concepts colours and Oswald headings on every screen, in Light and Dark. Untick to go back to the standard look. Applies after each user reloads the page.",所有畫面使用 Happy Concepts 啡色／粉紅色及 Oswald 標題，淺色及深色模式皆適用。取消勾選即回復標準外觀。每位用戶重新載入頁面後生效。
+Busy day,繁忙
 Buying Price,採購價
 Buying Price List,採購價目表
 By,經手人
@@ -575,6 +576,7 @@ Purchase Orders,採購單
 Purchase orders to send,待發出採購單
 Qty in Stock UOM,庫存單位數量
 Quantity factor,數量倍數
+Quiet day,清閒
 Raspberry Pi user,Raspberry Pi 用戶
 Rate ($/hr),時薪
 Rate (per basis),費率（按計算方式）
@@ -827,6 +829,7 @@ Waste (yield loss) Cost,損耗（可用率）成本
 "Waste recorded, but stock was not updated: {0}",已記錄報廢，但庫存未有更新：{0}
 Waste this week,本週報廢
 Wasted Items,報廢物品
+Week ahead,未來一週
 Weight Tolerance (± g),重量誤差（± 克）
 Weight per Piece (g),每件重量（克）
 Weights & Cooking Yield,重量及成品率
@@ -854,6 +857,7 @@ batch cost,每批成本
 batches,批
 batches · {0} of {1} recipes done,批 · 已完成 {0} / {1} 個食譜
 could not be saved,無法儲存
+deliveries in,到貨
 doesn't use {0},沒有使用 {0}
 due,到期
 due today,今日到期
@@ -873,6 +877,7 @@ no permission to change it,沒有更改權限
 nothing planned,沒有計劃
 of which Packaging,其中包裝
 only if different,只在不同時
+orders out,出貨訂單
 out at {0},{0} 下班
 overheads,雜費
 printed,已列印
@@ -901,6 +906,7 @@ waiting for the printer,等待打印機
 {0} batches · short {1},{0} 批 · 欠 {1}
 {0} batches · {1} still to make,{0} 批 · 尚需製作 {1}
 {0} clocked in,{0} 人已打卡
+{0} deliveries,{0} 批到貨
 {0} differs from the order,{0} 與訂單不符
 {0} doesn't exist or is disabled.,{0} 不存在或已停用。
 {0} drafts,{0} 張草稿
@@ -933,6 +939,7 @@ waiting for the printer,等待打印機
 {0} logs · HK$ {1} ingredients,{0} 份紀錄 · 材料 HK$ {1}
 {0} of {1} counted,已盤點 {0} / {1}
 {0} of {1} made,已製作 {0} / {1}
+{0} orders,{0} 張訂單
 {0} orders to receive,{0} 張採購單待收貨
 {0} production logs,{0} 張生產紀錄
 {0} products from this supplier,此供應商的 {0} 項產品

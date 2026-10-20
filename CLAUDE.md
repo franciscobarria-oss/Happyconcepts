@@ -79,6 +79,7 @@ Guidance for Claude Code working in this repository: the `happy_kitchen` Frappe 
 - Label status on orders and the label tasks (labels to check, failed prints) come from Label Job (P15).
 - A4 production sheet: `/api/method/happy_kitchen.recipe_management.production_sheet.sheet?date=YYYY-MM-DD` (template `templates/production_sheet.html`, maths in `daily_plan.plan_day`, tests/test_daily_plan.py).
 - Print format HK Delivery Note (bilingual, module HK Operations). Customer delivery times, invoice no. and line notes are not added: the review left them undecided (01 review 9.5 / 14.8).
+- "Week ahead" card on Today (`today_board.week_ahead`, pure `board.week_load`, tests/test_board.py): per day for the next 7 days, orders going out (late ones count today) plus deliveries coming in; a day is Busy from 75 % of the week's peak (peak of at least 3), Quiet up to 25 %.
 - Workspace Recipes (desktop icon label "Recipes"): shortcuts, Active-recipe quick lists per type (object-format filters) and link cards.
 
 ## Labels (P15)
