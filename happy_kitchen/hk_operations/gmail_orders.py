@@ -187,17 +187,21 @@ def pdf_text(raw: bytes) -> str:
 
 	import pdfplumber
 
-	rows = []
+	rows, texts = [], []
 	try:
 		with pdfplumber.open(io.BytesIO(raw)) as pdf:
 			for page in pdf.pages[:10]:
+				texts.append(page.extract_text() or "")
 				for table in page.extract_tables() or []:
 					rows += table
 	except Exception:
 		rows = []
 	lines = email_orders.table_to_lines(rows)
 	if lines:
-		return "\n".join(lines)
+		# a table PDF is one purchase order: its number and delivery date come from the page text
+		whole = "\n".join(texts)
+		po, date = email_orders.po_number(whole), email_orders.delivery_date_of(whole)
+		return "\n".join(([f"--- PO {po}{' | ' + date if date else ''} ---"] if po else []) + lines)
 	pages = []
 	try:
 		with pdfplumber.open(io.BytesIO(raw)) as pdf:
