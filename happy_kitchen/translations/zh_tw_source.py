@@ -1053,6 +1053,7 @@ ZH_TW = {
 	"Google client secret": "Google 用戶端密鑰",
 	"Google refresh token": "Google 更新權杖",
 	"Google refused the sign-in ({0}). Run the Google sign-in step again.": "Google 拒絕登入({0})。請重新進行 Google 登入步驟。",
+	"Gmail Settings is missing: {0}.": "Gmail 設定缺少:{0}。",
 	"Ignored": "已略過",
 	"Item (internal SKU)": "貨品(內部貨號)",
 	"Last checked": "上次檢查",

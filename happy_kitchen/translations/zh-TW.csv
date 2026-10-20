@@ -248,6 +248,7 @@ Frozen,冷凍
 Full-time only. Leave empty for hourly staff.,只適用於全職員工。時薪員工請留空。
 "Gas, electricity, packaging, cleaning, rent share... New recipes start with the defaults from Recipe Settings.",煤氣、電費、包裝、清潔、租金分攤…… 新食譜會以食譜設定中的預設值開始。
 Gmail Settings,Gmail 設定
+Gmail Settings is missing: {0}.,Gmail 設定缺少:{0}。
 "Gmail Settings needs the Google client ID, secret and refresh token first.",請先在 Gmail 設定填寫 Google 用戶端 ID、密鑰及更新權杖。
 Gmail answered {0}.,Gmail 回應 {0}。
 Gmail label,Gmail 標籤
