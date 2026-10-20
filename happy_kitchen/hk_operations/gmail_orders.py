@@ -60,7 +60,14 @@ class GmailClient:
 
 		r = requests.get(f"{GMAIL_API}/{path}", headers=self._headers(), params=params, timeout=TIMEOUT)
 		if r.status_code != 200:
-			frappe.throw(_("Gmail answered {0}.").format(r.status_code))
+			try:
+				err = r.json().get("error") or {}
+				why = err.get("status") or ""
+				if err.get("message"):
+					why = f"{why}: {err['message']}" if why else err["message"]
+			except Exception:
+				why = ""
+			frappe.throw(_("Gmail answered {0}.").format(f"{r.status_code} ({why})" if why else r.status_code))
 		return r.json()
 
 	def profile(self) -> str:
