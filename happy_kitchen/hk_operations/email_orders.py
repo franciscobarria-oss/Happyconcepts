@@ -151,9 +151,10 @@ def table_to_lines(rows: list[list]) -> list[str]:
 		code, desc, qty = head
 		if qty >= len(cells):
 			continue
-		nums = cells[qty].replace(",", "").split()
-		if not nums or not all(re.fullmatch(NUM, x) for x in nums):
+		qty_text = cells[qty].replace(",", "")
+		if not re.fullmatch(rf"(?:{NUM}\s*[^\W\d_]*\s*)+", qty_text):
 			continue
+		nums = re.findall(NUM, qty_text)
 		k = len(nums)
 		names = _split_cell(raw[desc], k) if desc is not None and desc < len(raw) else [""] * k
 		skus = _split_cell(raw[code], k) if code is not None and code < len(raw) else [""] * k
@@ -167,6 +168,10 @@ def table_to_lines(rows: list[list]) -> list[str]:
 
 TEXT_ITEM = re.compile(
 	rf"^(?P<desc>.+?)\s+(?P<code>\d{{6,12}})\s+(?P<qty>{NUM})\s+(?P<unit>[^\W\d_]+)\s+(?P<price>[\d,]+\.\d+)\s+(?P<amount>[\d,]+\.\d+)\s*$")
+
+
+TEXT_ITEM_NOCODE = re.compile(
+	rf"^(?P<desc>[^\d].*?)\s+(?P<qty>{NUM})\s+(?P<unit>[^\W\d_]+)\s+(?P<price>[\d,]+\.\d+)\s+(?P<amount>[\d,]+\.\d+)(?:\s+\S+)?\s*$")
 
 
 def text_item_lines(text: str) -> list[str]:
@@ -188,9 +193,13 @@ def text_item_lines(text: str) -> list[str]:
 		m = TEXT_ITEM.match(line)
 		if m:
 			out.append([m.group("code"), m.group("desc").strip(), m.group("qty")])
+			continue
+		m = TEXT_ITEM_NOCODE.match(line)
+		if m:
+			out.append(["", m.group("desc").strip(), m.group("qty")])
 		elif out and line and not re.search(r"\d{1,3}(,\d{3})*\.\d{2}\b", line):
 			out[-1][1] = f"{out[-1][1]} {line}"
-	return [f"{c} | {d} | {q}" for c, d, q in out if float(q) > 0]
+	return [f"{c} | {d} | {q}" if c else f"{d} | {q}" for c, d, q in out if float(q) > 0]
 
 
 def join_attachment_text(body: str, texts: list[tuple[str, str]]) -> str:
@@ -229,7 +238,7 @@ def parse_lines(text: str) -> tuple[list[dict], list[str]]:
 	lines, unparsed = [], []
 	for raw in (text or "").split("\n"):
 		line = raw.strip(" \t-•*")
-		if not line or len(line) > 200:
+		if not line or len(line) > 200 or re.match(r"(?i)^(sub\s*)?total\b", line):
 			continue
 		if "|" in line or "\t" in line:
 			cols = [c.strip() for c in re.split(r"\||\t", line) if c.strip()]

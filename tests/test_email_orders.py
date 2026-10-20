@@ -145,3 +145,18 @@ def test_table_without_code_column_and_decimal_quantity():
 def test_up_to_eight_pdfs_are_listed():
 	parts = [{"mimeType": "application/pdf", "filename": f"{i}.pdf", "body": {"attachmentId": f"a{i}"}} for i in range(6)]
 	assert len(eo.pdf_attachments({"parts": parts})) == 6
+
+
+def test_table_quantity_cell_with_its_unit():
+	rows = [["Description", "Quantity", "Unit Price", "Amount"], ["Lemon tart", "9.50 Pcs", "12.00", "114.00"]]
+	assert eo.table_to_lines(rows) == ["Lemon tart | 9.50"]
+
+
+def test_text_items_without_item_code():
+	text = "Description Quantity Unit Unit Price Amount Del. Date\nLemon tart large 9.50 Pcs 12.00 114.00 21/Oct/2026\nTotal: 114.00\n"
+	assert eo.text_item_lines(text) == ["Lemon tart large | 9.50"]
+
+
+def test_total_lines_are_not_unparsed():
+	lines, unparsed = eo.parse_lines("Total | 114.00\nSub Total 5 x 3\nBrownie | 4")
+	assert [(l["description"], l["qty"]) for l in lines] == [("Brownie", 4)] and unparsed == []
