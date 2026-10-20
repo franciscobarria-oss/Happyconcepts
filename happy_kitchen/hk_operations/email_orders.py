@@ -17,7 +17,7 @@ QTY_LAST = re.compile(rf"^(?P<rest>.+?)\s*(?:[x×*]\s*)(?P<qty>{NUM})\s*(?:pcs?|
 CODE_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]{1,31}$")
 HEADER_WORDS = {"qty", "quantity", "code", "sku", "item", "product", "description", "name"}
 MAX_BODY = 20000
-MAX_PDFS = 3
+MAX_PDFS = 8
 MAX_PDF_TEXT = 20000
 
 
@@ -117,14 +117,29 @@ CODE_HEADS = ("code", "sku", "item code", "item no", "item no.", "product code",
 DESC_HEADS = ("description", "item", "product", "item name", "product name", "name", "品名", "名稱", "描述")
 
 
+def _split_cell(cell, n: int) -> list[str]:
+	"""One table cell that holds `n` values (several order lines merged into one row): by line when it
+	has `n` lines, else by spaces when it has `n` words; a cell that cannot be split is repeated."""
+	text = str(cell or "").strip()
+	by_line = [p.strip() for p in text.split("\n") if p.strip()]
+	if len(by_line) == n:
+		return by_line
+	words = text.split()
+	if len(words) == n:
+		return words
+	return [re.sub(r"\s+", " ", text)] * n
+
+
 def table_to_lines(rows: list[list]) -> list[str]:
 	"""Rows of a PDF table -> "CODE | Description | Qty" lines for parse_lines. The header row (the
 	first that has a quantity column and a description or code column) says which column is which;
-	rows before it, rows without a positive number in the quantity column and total rows are skipped."""
+	rows before it, rows without a positive number in the quantity column and total rows are skipped.
+	A row that merges several order lines (its quantity cell holds several numbers) is split."""
 	head = None
 	out = []
 	for row in rows or []:
-		cells = [re.sub(r"\s+", " ", str(c or "")).strip() for c in row]
+		raw = [str(c or "") for c in row]
+		cells = [re.sub(r"\s+", " ", c).strip() for c in raw]
 		low = [c.lower().rstrip(":") for c in cells]
 		if head is None:
 			qty = next((i for i, c in enumerate(low) if c in QTY_HEADS), None)
@@ -134,15 +149,48 @@ def table_to_lines(rows: list[list]) -> list[str]:
 				head = (code, desc, qty)
 			continue
 		code, desc, qty = head
-		if qty >= len(cells) or not re.fullmatch(rf"{NUM}", cells[qty].replace(",", "")):
+		if qty >= len(cells):
 			continue
-		n = float(cells[qty].replace(",", ""))
-		name = cells[desc] if desc is not None and desc < len(cells) else ""
-		sku = cells[code] if code is not None and code < len(cells) else ""
-		if n <= 0 or not (name or sku) or "total" in (name + sku).lower():
+		nums = cells[qty].replace(",", "").split()
+		if not nums or not all(re.fullmatch(NUM, x) for x in nums):
 			continue
-		out.append(f"{sku} | {name or sku} | {cells[qty].replace(',', '')}" if sku else f"{name} | {cells[qty].replace(',', '')}")
+		k = len(nums)
+		names = _split_cell(raw[desc], k) if desc is not None and desc < len(raw) else [""] * k
+		skus = _split_cell(raw[code], k) if code is not None and code < len(raw) else [""] * k
+		for name, sku, q in zip(names, skus, nums):
+			n = float(q)
+			if n <= 0 or not (name or sku) or "total" in (name + sku).lower():
+				continue
+			out.append(f"{sku} | {name or sku} | {q}" if sku else f"{name} | {q}")
 	return out
+
+
+TEXT_ITEM = re.compile(
+	rf"^(?P<desc>.+?)\s+(?P<code>\d{{6,12}})\s+(?P<qty>{NUM})\s+(?P<unit>[^\W\d_]+)\s+(?P<price>[\d,]+\.\d+)\s+(?P<amount>[\d,]+\.\d+)\s*$")
+
+
+def text_item_lines(text: str) -> list[str]:
+	"""Order lines from a PDF whose items are plain positioned text, one per line, as
+	"description  item-no  qty  unit  unit-price  amount" with the description wrapping onto the
+	following line(s). Only read after a header line that has both "Description" and "Quantity", and
+	until a "Total" line."""
+	out = []
+	reading = False
+	for raw in (text or "").split("\n"):
+		line = re.sub(r"\s+", " ", raw).strip()
+		low = line.lower()
+		if not reading:
+			reading = "description" in low and "quantity" in low
+			continue
+		if low.startswith("total"):
+			reading = False
+			continue
+		m = TEXT_ITEM.match(line)
+		if m:
+			out.append([m.group("code"), m.group("desc").strip(), m.group("qty")])
+		elif out and line and not re.search(r"\d{1,3}(,\d{3})*\.\d{2}\b", line):
+			out[-1][1] = f"{out[-1][1]} {line}"
+	return [f"{c} | {d} | {q}" for c, d, q in out if float(q) > 0]
 
 
 def join_attachment_text(body: str, texts: list[tuple[str, str]]) -> str:

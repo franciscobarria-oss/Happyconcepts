@@ -100,3 +100,48 @@ def test_pdf_attachments_and_joined_text():
 	assert "--- Attachment: PO-9.pdf ---" in text and "--- Attachment: scan.pdf ---" in text
 	lines, unparsed = eo.parse_lines(text)
 	assert [(l["external_sku"], l["qty"]) for l in lines] == [("CK-001", 3)] and unparsed == []
+
+
+LAYOUT_A = """Purchase Order
+Supplier Item Unit
+No. Description No. Quantity Packing Size Unit Price Amount
+Butter cookie box 123456789 12 box 10.50 126.00
+tin of 24
+Brownie tray 987654321 6 pcs 99.00 594.00
+Total HKD 720.00
+Page 1 of 1
+"""
+
+
+def test_text_item_lines_reads_positioned_text_with_wrapping_descriptions():
+	lines = eo.text_item_lines(LAYOUT_A)
+	assert lines == ["123456789 | Butter cookie box tin of 24 | 12", "987654321 | Brownie tray | 6"]
+	parsed, unparsed = eo.parse_lines("\n".join(lines))
+	assert [(l["external_sku"], l["description"], l["qty"]) for l in parsed] == [
+		("123456789", "Butter cookie box tin of 24", 12), ("987654321", "Brownie tray", 6)]
+	assert unparsed == []
+
+
+def test_text_item_lines_needs_the_header():
+	assert eo.text_item_lines("Butter cookie 123456789 12 box 10.50 126.00") == []
+
+
+def test_table_row_with_merged_order_lines_is_split():
+	rows = [
+		["Product Code", "Description", "Order Unit", "QTY", "Unit Price", "Total"],
+		["1111111111 2222222222", "Flour 25kg\nSugar 10kg", "CS PK", "12.000 6.500", "9.99 5.00", "119.88 32.50"],
+		["3333333333", "Eggs tray", "TR", "30.000", "4.00", "120.00"],
+	]
+	assert eo.table_to_lines(rows) == [
+		"1111111111 | Flour 25kg | 12.000", "2222222222 | Sugar 10kg | 6.500", "3333333333 | Eggs tray | 30.000"]
+
+
+def test_table_without_code_column_and_decimal_quantity():
+	rows = [["Description", "Quantity", "Unit", "Unit Price", "Amount", "Del. Date"],
+	        ["Lemon tart", "9.50", "Pcs", "12.00", "114.00", "21/Oct/2026"]]
+	assert eo.table_to_lines(rows) == ["Lemon tart | 9.50"]
+
+
+def test_up_to_eight_pdfs_are_listed():
+	parts = [{"mimeType": "application/pdf", "filename": f"{i}.pdf", "body": {"attachmentId": f"a{i}"}} for i in range(6)]
+	assert len(eo.pdf_attachments({"parts": parts})) == 6

@@ -185,10 +185,10 @@ def pdf_text(raw: bytes) -> str:
 	quantity column, else its page text. Needs no network; a scanned PDF has no text (no OCR)."""
 	import io
 
+	import pdfplumber
+
 	rows = []
 	try:
-		import pdfplumber
-
 		with pdfplumber.open(io.BytesIO(raw)) as pdf:
 			for page in pdf.pages[:10]:
 				for table in page.extract_tables() or []:
@@ -198,12 +198,18 @@ def pdf_text(raw: bytes) -> str:
 	lines = email_orders.table_to_lines(rows)
 	if lines:
 		return "\n".join(lines)
+	text = ""
 	try:
-		from pypdf import PdfReader
-
-		return "\n".join((page.extract_text() or "") for page in PdfReader(io.BytesIO(raw)).pages[:10])
+		with pdfplumber.open(io.BytesIO(raw)) as pdf:
+			text = "\n".join((page.extract_text() or "") for page in pdf.pages[:10])
 	except Exception:
-		return ""
+		try:
+			from pypdf import PdfReader
+
+			text = "\n".join((page.extract_text() or "") for page in PdfReader(io.BytesIO(raw)).pages[:10])
+		except Exception:
+			return ""
+	return "\n".join(email_orders.text_item_lines(text)) or text
 
 
 def _save_files(order, files):
