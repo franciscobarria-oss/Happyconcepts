@@ -210,9 +210,9 @@ def pdf_text(raw: bytes) -> str:
 		except Exception:
 			return ""
 	out = []
-	for po, page_lines in email_orders.text_item_pages(pages):
+	for po, date, page_lines in email_orders.text_item_pages(pages):
 		if page_lines:
-			out += ([f"--- PO {po} ---"] if po else []) + page_lines
+			out += ([f"--- PO {po}{' | ' + date if date else ''} ---"] if po else []) + page_lines
 	return "\n".join(out) or "\n".join(pages)
 
 
@@ -248,28 +248,68 @@ def find_prior(order):
 
 
 def process(order, lead_days: int = 1, prior=None):
-	"""Read the order lines, find or create the customer and products, and make the draft Sales Order."""
+	"""Read the order lines, find or create the customer and products, and make the draft Sales Order(s):
+	one per purchase order number in the email or its PDFs (lines without a PO number are one order).
+	A follow-up in the same thread revises the earlier order only when it carries no PO numbers."""
 	lines, unparsed = email_orders.parse_lines(order.body or "")
 	order.unparsed = "\n".join(unparsed)
 	if not lines:
 		order.status = "Needs review"
 		order.save(ignore_permissions=True)
 		return
-	if prior:
+	if prior and not any(ln["po_no"] for ln in lines):
 		return revise(order, prior, lines, unparsed)
 	customer = find_or_create_customer(order.sender_name, order.sender_email)
 	order.customer = customer
 	order.set("lines", [])
-	so_items = []
+	groups = {}
 	for ln in lines:
-		item, created = find_or_create_item(customer, ln["external_sku"], ln["description"])
-		order.append("lines", {**ln, "item": item, "item_created": 1 if created else 0})
-		so_items.append({"item_code": item, "qty": ln["qty"]})
-	# the lead time counts from the later of the email date and today: ERPNext rejects a delivery
-	# date before the order date, and an email picked up days late is still ordered today
-	delivery = add_days(max(getdate(order.received_on or nowdate()), getdate(nowdate())), lead_days)
+		groups.setdefault(ln["po_no"], []).append(ln)
+	notes, made = [], []
+	for po, group in groups.items():
+		if po and frappe.db.exists("Sales Order", {"customer": customer, "po_no": po, "docstatus": ("<", 2)}):
+			notes.append(_("PO {0} already has a sales order.").format(po))
+			continue
+		items = []
+		for ln in group:
+			item, created = find_or_create_item(customer, ln["external_sku"], ln["description"])
+			items.append((ln, item, created))
+		so = _make_sales_order(order, customer, po, items, lead_days)
+		made.append(so.name)
+		for ln, item, created in items:
+			order.append("lines", {**ln, "item": item, "item_created": 1 if created else 0,
+			                       "delivery_date": ln["delivery_date"] or None, "sales_order": so.name})
+	if notes:
+		order.unparsed = "\n".join(([order.unparsed] if order.unparsed else []) + notes)
+	if not made:
+		order.status = "Ignored"
+		order.save(ignore_permissions=True)
+		return
+	order.sales_order = made[0]
+	order.status = "Needs review" if unparsed or notes else "Draft order"
+	order.save(ignore_permissions=True)
+
+
+def _make_sales_order(order, customer, po, items, lead_days):
+	"""One draft Sales Order for one PO. A delivery date from the PO is used when it is today or later,
+	otherwise the lead time counts from the later of the email date and today (ERPNext rejects a delivery
+	date before the order date, and an email picked up days late is still ordered today)."""
+	today = getdate(nowdate())
+	fallback = add_days(max(getdate(order.received_on or nowdate()), today), lead_days)
+
+	def usable(d):
+		return d if d and getdate(d) >= today else None
+
+	so_items = []
+	for ln, item, _created in items:
+		row = {"item_code": item, "qty": ln["qty"]}
+		if usable(ln["delivery_date"]):
+			row["delivery_date"] = ln["delivery_date"]
+		so_items.append(row)
+	dates = [r["delivery_date"] for r in so_items if r.get("delivery_date")]
+	delivery = min(dates) if dates else fallback
 	so = frappe.get_doc({
-		"doctype": "Sales Order", "customer": customer, "delivery_date": str(delivery)[:10],
+		"doctype": "Sales Order", "customer": customer, "delivery_date": str(delivery)[:10], "po_no": po or None,
 		"transaction_date": nowdate(), "items": so_items, "hk_email_order": order.name,
 	})
 	so.insert(ignore_permissions=True)
@@ -277,9 +317,7 @@ def process(order, lead_days: int = 1, prior=None):
 	                "reference_name": so.name,
 	                "content": _("Picked up from the email '{0}' from {1} ({2}). Check it before submitting.").format(
 		                order.subject, order.sender_email, order.name)}).insert(ignore_permissions=True)
-	order.sales_order = so.name
-	order.status = "Needs review" if unparsed else "Draft order"
-	order.save(ignore_permissions=True)
+	return so
 
 
 def revise(order, prior, lines, unparsed):

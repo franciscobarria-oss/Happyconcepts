@@ -154,7 +154,14 @@ def test_table_quantity_cell_with_its_unit():
 
 def test_text_items_without_item_code():
 	text = "Description Quantity Unit Unit Price Amount Del. Date\nLemon tart large 9.50 Pcs 12.00 114.00 21/Oct/2026\nTotal: 114.00\n"
-	assert eo.text_item_lines(text) == ["Lemon tart large | 9.50"]
+	assert eo.text_item_lines(text) == ["Lemon tart large | 9.50 | 2026-10-21"]
+
+
+def test_text_item_with_its_own_date():
+	text = "Description Quantity Unit Unit Price Amount Del. Date\nLemon tart 9.50 Pcs 12.00 114.00 21/Oct/2026\n"
+	assert eo.text_item_lines(text) == ["Lemon tart | 9.50 | 2026-10-21"]
+	lines, _ = eo.parse_lines("--- PO A1-12345 | 2026-10-25 ---\nLemon tart | 9.50 | 2026-10-21\nCake | 2")
+	assert [(l["po_no"], l["delivery_date"], l["qty"]) for l in lines] == [("A1-12345", "2026-10-21", 9.5), ("A1-12345", "2026-10-25", 2)]
 
 
 def test_total_lines_are_not_unparsed():
@@ -180,14 +187,14 @@ def test_same_po_printed_twice_is_read_once_but_different_pos_are_kept():
 	row = "Butter cookie 123456789 12 box 10.50 126.00"
 	pages = [_page("AB1-0001", [row]), _page("AB1-0001", [row]), _page("AB1-0002", [row]), _page("AB1-0003", [row])]
 	got = eo.text_item_pages(pages)
-	assert [po for po, _ in got] == ["AB1-0001", "AB1-0002", "AB1-0003"]
-	assert all(lines == ["123456789 | Butter cookie | 12"] for _, lines in got)
+	assert [po for po, _, _ in got] == ["AB1-0001", "AB1-0002", "AB1-0003"]
+	assert all(lines == ["123456789 | Butter cookie | 12"] for _, _, lines in got)
 
 
 def test_table_that_continues_on_the_next_page_is_read_whole():
 	p1 = "Description Quantity Unit Unit Price Amount\nCookie 123456789 1 box 1.00 1.00\n"
 	p2 = "Page 2\nCake 987654321 2 box 2.00 4.00\nTotal 5.00\n"
-	assert [l for _, ls in eo.text_item_pages([p1, p2]) for l in ls] == ["123456789 | Cookie | 1", "987654321 | Cake | 2"]
+	assert [l for _, _, ls in eo.text_item_pages([p1, p2]) for l in ls] == ["123456789 | Cookie | 1", "987654321 | Cake | 2"]
 
 
 def test_wrapped_description_stays_short_and_terms_text_is_not_swallowed():
@@ -206,3 +213,22 @@ def test_signature_pipe_lines_are_not_unparsed():
 	text = "Unit 1, Block 2 | 99 Some Road | Kowloon | Hong Kong\nTel: +852 1234 5678 | Email: a@b.com\nBrownie | 4"
 	lines, unparsed = eo.parse_lines(text)
 	assert [(l["description"], l["qty"]) for l in lines] == [("Brownie", 4)] and unparsed == []
+
+
+def test_dates_and_delivery_date_of_a_page():
+	assert eo.parse_date("21. October 2026") == "2026-10-21"
+	assert eo.parse_date("21/Oct/2026") == "2026-10-21"
+	assert eo.parse_date("21/10/2026") == "2026-10-21"
+	assert eo.parse_date("2026-10-21") == "2026-10-21"
+	assert eo.parse_date("31/02/2026") == "" and eo.parse_date("soon") == ""
+	assert eo.delivery_date_of("Order Date 20 Oct 2026\nDelivery Date 25. October 2026\n") == "2026-10-25"
+	assert eo.delivery_date_of("no dates") == ""
+
+
+def test_po_markers_split_lines_by_po():
+	text = "--- PO A-11111 | 2026-10-21 ---\nCookie | 1\n--- PO A-22222 | 2026-10-22 ---\nCookie | 3\nCake | 2"
+	lines, _ = eo.parse_lines(text)
+	assert [(l["po_no"], l["delivery_date"], l["qty"]) for l in lines] == [
+		("A-11111", "2026-10-21", 1), ("A-22222", "2026-10-22", 3), ("A-22222", "2026-10-22", 2)]
+	plain, _ = eo.parse_lines("Cookie | 1")
+	assert plain[0]["po_no"] == "" and plain[0]["delivery_date"] == ""

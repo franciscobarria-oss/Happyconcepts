@@ -1052,10 +1052,12 @@ ZH_TW = {
 	"Google client ID": "Google 用戶端 ID",
 	"Google client secret": "Google 用戶端密鑰",
 	"Google refresh token": "Google 更新權杖",
+	"PO No.": "採購單編號",
 	"Google refused the sign-in ({0}). Run the Google sign-in step again.": "Google 拒絕登入({0})。請重新進行 Google 登入步驟。",
 	"Gmail Settings is missing: {0}.": "Gmail 設定缺少:{0}。",
 	"Only an email without a sales order that is Needs review or Failed can be read again.": "只有沒有銷售訂單、且狀態為「需檢查」或「失敗」的電郵才能重新讀取。",
 	"Read again": "重新讀取",
+	"PO {0} already has a sales order.": "採購單 {0} 已有銷售訂單。",
 	"Status: {0}": "狀態:{0}",
 	"Ignored": "已略過",
 	"Item (internal SKU)": "貨品(內部貨號)",
@@ -1099,7 +1101,7 @@ ZH_TW = {
 # Left to Frappe / ERPNext's own translation, or never translated (unit symbols).
 # Overriding these would change them everywhere in ERPNext.
 LEAVE_AS_IS = {
-	"Email",
+	"Email", "Delivery Date",
 	"Description", "Error", "Subject", "Text", "Sender", "New", "Lines",
 	"Actions", "Active", "Amended From", "Approved", "Attendance", "Company", "Department", "Disabled", "Draft",
 	"Employee", "From", "From Date", "Grand Total", "Group", "Holidays", "Home", "Item Name", "Items",

@@ -544,7 +544,9 @@ Overtime Summary,加班摘要
 Overtime to approve,待審批加班
 PIN set for {0},已為 {0} 設定密碼
 PO,採購單
+PO No.,採購單編號
 PO Price,採購單價
+PO {0} already has a sales order.,採購單 {0} 已有銷售訂單。
 Pack Size 1,包裝規格 1
 Pack Size 2,包裝規格 2
 Pack Size 3,包裝規格 3

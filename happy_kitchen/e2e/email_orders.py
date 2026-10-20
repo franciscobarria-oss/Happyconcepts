@@ -145,6 +145,28 @@ def run():
 		proposal = frappe.get_doc("Order Revision", {"sales_order": so6.name})
 		_check(not proposal.applied and "10 → 14" in proposal.summary, f"proposal kept: {proposal.summary}")
 
+		# --- several purchase orders in one email: one draft Sales Order per PO, each with its PO no. and delivery date ---
+		soon, past = frappe.utils.add_days(frappe.utils.nowdate(), 5), frappe.utils.add_days(frappe.utils.nowdate(), -3)
+		body = (f"--- Attachment: orders.pdf ---\n--- PO {P}PO-1 | {soon} ---\nMP-1 | {P}Multi A | 4\nMP-2 | {P}Multi B | 6\n"
+		        f"--- PO {P}PO-2 | {past} ---\nMP-3 | {P}Multi C | 8\n")
+		fake.messages["m9"] = _msg("m9", "Hotel <h@e2e-hotel.example>", "Orders", body, thread="t9")
+		gmail_orders.fetch(client=fake)
+		o9 = frappe.get_doc("Email Order", {"message_id": "m9"})
+		sos = frappe.get_all("Sales Order", filters={"po_no": ("like", f"{P}PO-%"), "customer": o9.customer},
+		                     fields=["name", "po_no", "delivery_date", "docstatus"], order_by="po_no")
+		_check([s.po_no for s in sos] == [f"{P}PO-1", f"{P}PO-2"] and all(s.docstatus == 0 for s in sos), f"one draft per PO: {sos}")
+		_check(str(sos[0].delivery_date) == soon, f"PO-1 keeps its own delivery date: {sos[0].delivery_date}")
+		_check(str(sos[1].delivery_date) >= frappe.utils.nowdate(), "a past delivery date falls back to a valid one")
+		_check(len(frappe.get_doc("Sales Order", sos[0].name).items) == 2 and len(frappe.get_doc("Sales Order", sos[1].name).items) == 1,
+		       "each order has only its own lines")
+		_check(o9.sales_order == sos[0].name and {(l.po_no, l.sales_order) for l in o9.lines} == {(s.po_no, s.name) for s in sos},
+		       "email lines point at their order")
+		# a later email carrying the same PO numbers does not make more orders
+		fake.messages["m10"] = _msg("m10", "Hotel <h@e2e-hotel.example>", "Orders again", body, thread="t10")
+		gmail_orders.fetch(client=fake)
+		_check(frappe.db.count("Sales Order", {"po_no": ("like", f"{P}PO-%"), "customer": o9.customer}) == 2, "an existing PO is skipped")
+		_check(frappe.db.get_value("Email Order", {"message_id": "m10"}, "status") == "Ignored", "all POs known: ignored")
+
 		# scheduled run is a no-op while switched off
 		gmail_orders.scheduled_fetch()
 		print("ok: email orders e2e passed")

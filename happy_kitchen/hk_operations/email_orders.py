@@ -174,7 +174,43 @@ TEXT_ITEM = re.compile(
 
 
 TEXT_ITEM_NOCODE = re.compile(
-	rf"^(?P<desc>[^\d].*?)\s+(?P<qty>{NUM})\s+(?P<unit>[^\W\d_]+)\s+(?P<price>[\d,]+\.\d+)\s+(?P<amount>[\d,]+\.\d+)(?:\s+\S+)?\s*$")
+	rf"^(?P<desc>[^\d].*?)\s+(?P<qty>{NUM})\s+(?P<unit>[^\W\d_]+)\s+(?P<price>[\d,]+\.\d+)\s+(?P<amount>[\d,]+\.\d+)(?:\s+(?P<date>\S+))?\s*$")
+
+
+MONTHS = {m: i + 1 for i, m in enumerate(["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"])}
+DATE_RES = [
+	re.compile(r"\b(?P<y>20\d\d)-(?P<m>\d{1,2})-(?P<d>\d{1,2})\b"),
+	re.compile(r"\b(?P<d>\d{1,2})\s*[./\s-]\s*(?P<mon>[A-Za-z]{3})[A-Za-z]*\.?\s*[./\s,-]\s*(?P<y>20\d\d)\b"),
+	re.compile(r"\b(?P<d>\d{1,2})/(?P<m>\d{1,2})/(?P<y>20\d\d)\b"),
+]
+PO_MARK = re.compile(r"^-{2,}\s*PO\s+(?P<po>\S+?)(?:\s*\|\s*(?P<date>\d{4}-\d{2}-\d{2}))?\s*-{2,}$")
+
+
+def parse_date(text: str) -> str:
+	"""The first date in the text as YYYY-MM-DD, or ''. Reads 2026-10-21, 21/Oct/2026, 21. October 2026,
+	21 Oct 2026 and 21/10/2026 (day first). Impossible dates give ''."""
+	import datetime
+
+	for rx in DATE_RES:
+		m = rx.search(text or "")
+		if not m:
+			continue
+		g = m.groupdict()
+		month = MONTHS.get(g["mon"].lower()) if g.get("mon") else int(g["m"])
+		try:
+			return datetime.date(int(g["y"]), month or 0, int(g["d"])).isoformat()
+		except (TypeError, ValueError):
+			continue
+	return ""
+
+
+def delivery_date_of(page_text: str) -> str:
+	"""The delivery date printed in a page's header block ("Delivery Date 21. October 2026"), or ''."""
+	for m in re.finditer(r"(?i)deliver\w*(?:\s+date)?\s*[:.]?\s*(.{0,32})", page_text or ""):
+		d = parse_date(m.group(1))
+		if d:
+			return d
+	return ""
 
 
 PO_NO = re.compile(r"(?i)\b(?:purchase|order|po|document)\s*(?:order\s*)?(?:no\.?|number|#)\s*[:.]?\s*([A-Z0-9][A-Z0-9-]{4,})")
@@ -187,15 +223,16 @@ def po_number(page_text: str) -> str:
 	return m.group(1).upper() if m else ""
 
 
-def text_item_pages(pages: list[str]) -> list[tuple[str, list[str]]]:
-	"""Per page: (PO number, order lines) for a PDF whose items are plain positioned text, one per line,
-	as "description  [item-no]  qty  unit  unit-price  amount [date]" with the description wrapping
-	onto short following lines. Reading starts at a header line with "Description" and "Quantity" and
-	stops at any line with the word "total"; it carries across pages, so a table that continues on the
-	next page is read whole. A page that repeats an earlier page (same PO number, same lines) is
-	dropped: a reprinted copy. Different PO numbers are never merged, even with identical lines."""
+def text_item_pages(pages: list[str]) -> list[tuple[str, str, list[str]]]:
+	"""Per page: (PO number, delivery date, order lines) for a PDF whose items are plain positioned
+	text, one per line, as "description  [item-no]  qty  unit  unit-price  amount [date]" with the
+	description wrapping onto short following lines. Reading starts at a header line with "Description"
+	and "Quantity" and stops at any line with the word "total"; it carries across pages, so a table
+	that continues on the next page is read whole. A page that repeats an earlier page (same PO number,
+	same lines) is dropped: a reprinted copy. Different PO numbers are never merged, even with
+	identical lines. A line's own date (last column) is added as a final "| YYYY-MM-DD" column."""
 	out, seen = [], set()
-	reading, items = False, []
+	reading = False
 	for page in pages:
 		items = []
 		for raw in (page or "").split("\n"):
@@ -212,22 +249,27 @@ def text_item_pages(pages: list[str]) -> list[tuple[str, list[str]]]:
 			if not m:
 				m = TEXT_ITEM_NOCODE.match(line)
 			if m:
-				items.append([code, m.group("desc").strip(), m.group("qty")])
+				date = parse_date(m.groupdict().get("date") or "")
+				items.append([code, m.group("desc").strip(), m.group("qty"), date])
 			elif items and line and len(line) <= MAX_CONTINUATION and not re.search(r"\d{1,3}(,\d{3})*\.\d{2}\b", line):
 				items[-1][1] = f"{items[-1][1]} {line}"
-		lines = [f"{c} | {d} | {q}" if c else f"{d} | {q}" for c, d, q in items if float(q) > 0]
+		lines = []
+		for c, d, q, dt in items:
+			if float(q) > 0:
+				parts = ([c] if c else []) + [d, q] + ([dt] if dt else [])
+				lines.append(" | ".join(parts))
 		po = po_number(page)
 		key = (po, tuple(lines))
 		if po and lines and key in seen:
 			continue
 		seen.add(key)
-		out.append((po, lines))
+		out.append((po, delivery_date_of(page), lines))
 	return out
 
 
 def text_item_lines(text: str) -> list[str]:
 	"""All order lines of a PDF's text (pages separated by form feeds), PO markers left out."""
-	return [l for _, lines in text_item_pages((text or "").split("\f")) for l in lines]
+	return [l for _, _, lines in text_item_pages((text or "").split("\f")) for l in lines]
 
 
 def drop_repeats(lines: list[str]) -> list[str]:
@@ -275,22 +317,32 @@ def _split_code(rest: str) -> tuple[str, str]:
 def parse_lines(text: str) -> tuple[list[dict], list[str]]:
 	"""Order lines [{"external_sku", "description", "qty"}] and the lines that could not be read."""
 	lines, unparsed = [], []
+	po, po_date = "", ""
 	for raw in (text or "").split("\n"):
+		mark = PO_MARK.match(raw.strip())
+		if mark:
+			po, po_date = mark.group("po"), mark.group("date") or ""
+			continue
 		line = raw.strip(" \t-•*")
 		if not line or len(line) > 200 or re.match(r"(?i)^(sub\s*)?total\b", line):
 			continue
 		if "|" in line or "\t" in line:
 			cols = [c.strip() for c in re.split(r"\||\t", line) if c.strip()]
+			line_date = ""
+			if cols and re.fullmatch(r"\d{4}-\d{2}-\d{2}", cols[-1]):
+				line_date = cols.pop()
 			if not cols or {c.lower() for c in cols} & HEADER_WORDS and _number(" ".join(cols)) is None:
 				continue
 			qty = _number(cols[-1]) if len(cols) >= 2 and re.fullmatch(rf"{NUM}\s*[A-Za-z]*", cols[-1]) else None
 			if qty and qty > 0:
 				cols = cols[:-1]
 				code, name = (cols[0], cols[1]) if len(cols) >= 2 else ("", cols[0])
-				lines.append({"external_sku": code, "description": name, "qty": qty})
+				lines.append({"external_sku": code, "description": name, "qty": qty,
+				              "po_no": po, "delivery_date": line_date or po_date})
 				continue
-			if len(cols) >= 4 or "@" in line or re.search(r"\+\d", line):
-				continue  # address / phone / e-mail signature, not an order line
+			digits = any(c.isdigit() for c in line)
+			if "@" in line or re.search(r"\+\d", line) or (len(cols) >= 4 and digits) or (not digits and " / " in line):
+				continue  # address / branch list / phone / e-mail signature, not an order line
 			unparsed.append(raw.strip())
 			continue
 		m = QTY_FIRST.match(line)
@@ -305,5 +357,5 @@ def parse_lines(text: str) -> tuple[list[dict], list[str]]:
 			unparsed.append(raw.strip())
 			continue
 		code, name = _split_code(rest)
-		lines.append({"external_sku": code, "description": name, "qty": qty})
+		lines.append({"external_sku": code, "description": name, "qty": qty, "po_no": po, "delivery_date": po_date})
 	return lines, unparsed
