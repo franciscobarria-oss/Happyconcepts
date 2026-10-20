@@ -29,11 +29,18 @@ frappe.ui.form.on("Stock Take", {
 		);
 
 		if (status === "Draft" && frm.doc.docstatus === 0) {
-			frm.page.set_primary_action(__("Submit for Approval"), () =>
-				frappe.confirm(__("Submit this count for approval? It can't be changed while it waits."), () =>
-					frm.call({ method: HK_STK + "submit_for_approval", args: { name: frm.doc.name }, freeze: true }).then(() => frm.reload_doc())
-				)
-			);
+			frm.page.set_primary_action(__("Submit for Approval"), async () => {
+				const missing = await frappe.xcall(HK_STK + "uncounted_items", { name: frm.doc.name });
+				const esc = frappe.utils.escape_html;
+				const warning = missing.length
+					? `<p class="text-danger"><b>${esc(__("{0} items have no count and will be set to 0:", [missing.length]))}</b></p><ul>${
+						missing.slice(0, 15).map((m) => `<li>${esc(m.item_name)}</li>`).join("")}${
+						missing.length > 15 ? `<li>${esc(__("and {0} more", [missing.length - 15]))}</li>` : ""}</ul>`
+					: "";
+				frappe.confirm(warning + __("Submit this count for approval? It can't be changed while it waits."), () =>
+					frm.call({ method: HK_STK + "submit_for_approval", args: { name: frm.doc.name, zero_missing: missing.length ? 1 : 0 }, freeze: true }).then(() => frm.reload_doc())
+				);
+			});
 		}
 		if (status === "Submitted" && frm.doc.docstatus === 0 && is_approver) {
 			if (own) {

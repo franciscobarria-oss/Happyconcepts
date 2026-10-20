@@ -126,6 +126,13 @@
    "columns": 1
   },
   {
+   "fieldname": "auto_zero",
+   "fieldtype": "Check",
+   "label": "Set to 0 at submit",
+   "read_only": 1,
+   "description": "No count was entered, so it was counted as 0 when the count was submitted."
+  },
+  {
    "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
@@ -189,6 +196,7 @@
   "counted_packs_3",
   "counted_qty",
   "counted",
+  "auto_zero",
   "column_break_1",
   "stock_uom",
   "stock_qty",

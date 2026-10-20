@@ -1,7 +1,7 @@
 """P10: count sheet, stock take approval flow and the stock update. Rolled back."""
 
 import frappe
-from frappe.utils import flt
+from frappe.utils import add_days, flt, nowdate
 
 from happy_kitchen.recipe_management.doctype.stock_take import stock_take as st
 from happy_kitchen.recipe_management.doctype.stock_take_sheet import stock_take_sheet as sheet_api
@@ -70,7 +70,22 @@ def run():
 		data = st.get_count_sheet(name)
 		_check(data["editable"] and len(data["rows"]) == 2, "count sheet ready")
 		rows = {r["item"]: r["row"] for r in data["rows"]}
-		_expect_error(lambda: st.submit_for_approval(name), "can't submit with uncounted rows")
+		_expect_error(lambda: st.submit_for_approval(name), "can't submit with uncounted rows unless confirmed")
+		_check(len(st.uncounted_items(name)) == 2, "both items are listed as uncounted")
+
+		# blank counts become 0 when the submit is confirmed (a second take, so the main flow below is unchanged)
+		name2 = st.make_stock_take(sheet.name, str(add_days(nowdate(), -1)))
+		rows2 = {r["item"]: r["row"] for r in st.get_count_sheet(name2)["rows"]}
+		st.save_counts(name2, [{"row": rows2[flour], "qty": 300, "packs": [0]}])
+		_check([u["item"] for u in st.uncounted_items(name2)] == [egg], "only the egg is uncounted")
+		_expect_error(lambda: st.submit_for_approval(name2), "refused without confirming")
+		_check(st.submit_for_approval(name2, zero_missing=1) == "Submitted", "submitted with the blank set to 0")
+		doc2 = frappe.get_doc("Stock Take", name2)
+		eggrow = next(r for r in doc2.items if r.item == egg)
+		flrow = next(r for r in doc2.items if r.item == flour)
+		_check(eggrow.counted and flt(eggrow.stock_qty) == 0 and eggrow.auto_zero, "the blank egg is counted as 0 and marked")
+		_check(flt(flrow.stock_qty) == 300 and not flrow.auto_zero, "the counted flour is left alone")
+		_check(doc2.counted_rows == 2, "all rows counted")
 
 		st.save_counts(name, [{"row": rows[flour], "qty": 300, "packs": [2]}, {"row": rows[egg], "qty": 24}])
 		doc = frappe.get_doc("Stock Take", name)

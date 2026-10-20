@@ -253,10 +253,10 @@ class HKStockTakeCount {
 	async submit() {
 		await this.flush();
 		if (Object.keys(this.pending()).length) return frappe.msgprint(__("Some counts aren't saved yet. Check the connection and try again."));
-		const missing = this.data.rows.filter((r) => !r.counted).length;
-		if (missing) return frappe.msgprint(__("{0} ingredients have no count yet. Enter 0 if there is none.", [missing]));
-		frappe.confirm(__("Submit this count for approval? It can't be changed while it waits."), async () => {
-			await frappe.xcall(HK_STK_API + "submit_for_approval", { name: this.name });
+		const missing = await frappe.xcall(HK_STK_API + "uncounted_items", { name: this.name });
+		const warning = missing.length ? hk_stk_zero_warning(missing) : "";
+		frappe.confirm(warning + __("Submit this count for approval? It can't be changed while it waits."), async () => {
+			await frappe.xcall(HK_STK_API + "submit_for_approval", { name: this.name, zero_missing: missing.length ? 1 : 0 });
 			frappe.show_alert({ message: __("Submitted for approval"), indicator: "green" });
 			this.load(this.name);
 		});
@@ -308,4 +308,12 @@ class HKStockTakeCount {
 		}`;
 		$(`<style id="hk-stk-css">${css}</style>`).appendTo("head");
 	}
+}
+
+// The items nobody entered a quantity for: submitting counts them as 0, so say which ones first.
+function hk_stk_zero_warning(missing) {
+	const esc = frappe.utils.escape_html;
+	const shown = missing.slice(0, 15).map((m) => `<li>${esc(m.item_name)}</li>`).join("");
+	const more = missing.length > 15 ? `<li>${esc(__("and {0} more", [missing.length - 15]))}</li>` : "";
+	return `<p class="text-danger"><b>${esc(__("{0} items have no count and will be set to 0:", [missing.length]))}</b></p><ul>${shown}${more}</ul>`;
 }

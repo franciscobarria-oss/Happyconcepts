@@ -284,16 +284,34 @@ def save_counts(name: str, counts) -> dict:
 	return {"saved": saved, "counted_rows": counted, "total_rows": len(doc.items)}
 
 
+@frappe.whitelist()
+def uncounted_items(name: str) -> list[dict]:
+	"""The items on the count with no quantity entered: submitting counts them as 0."""
+	doc = _get(name)
+	return [{"item": r.item, "item_name": r.item_name, "storage_area": r.storage_area}
+	        for r in doc.items if not cint(r.counted)]
+
+
 @frappe.whitelist(methods=["POST"])
-def submit_for_approval(name: str) -> str:
+def submit_for_approval(name: str, zero_missing=0) -> str:
+	"""Submit a count. Items with no quantity entered are counted as 0 only when the caller
+	confirms (`zero_missing`, after the screen listed them); otherwise the submit is refused."""
 	doc = _get(name, "write")
-	missing = [r.item_name for r in doc.items if not cint(r.counted)]
+	missing = [r for r in doc.items if not cint(r.counted)]
 	if missing:
-		frappe.throw(
-			_("{0} ingredients have no count yet (enter 0 if there is none): {1}").format(
-				len(missing), ", ".join(missing[:10]) + ("..." if len(missing) > 10 else "")
+		if not cint(zero_missing):
+			frappe.throw(
+				_("{0} items have no count: {1}. Confirm to count them as 0.").format(
+					len(missing), ", ".join(r.item_name for r in missing[:10]) + ("..." if len(missing) > 10 else "")
+				)
 			)
-		)
+		now = now_datetime()
+		for r in missing:
+			r.update({"counted": 1, "counted_qty": 0, "stock_qty": 0, "auto_zero": 1,
+			          "counted_by": frappe.session.user, "counted_at": now,
+			          **{f[2]: 0 for f in PACK_FIELDS}})
+		doc.add_comment("Comment", _("Counted as 0 when submitted (no quantity entered): {0}").format(
+			", ".join(r.item_name for r in missing)))
 	doc.status = _transition(doc, "submit")
 	doc.submitted_by, doc.submitted_on = frappe.session.user, now_datetime()
 	doc.flags.hk_transition = True

@@ -155,6 +155,7 @@ Counted Packs 1,規格 1 已盤點包數
 Counted Packs 2,規格 2 已盤點包數
 Counted Packs 3,規格 3 已盤點包數
 Counted Qty,已盤點數量
+Counted as 0 when submitted (no quantity entered): {0},提交時按 0 計算(未輸入數量):{0}
 Counts,盤點
 Create Material Issue,建立發料單
 Create a Stock Take Sheet first.,請先建立盤點表。
@@ -433,6 +434,7 @@ No Price,未有價格
 No Price Found,找不到價格
 No allergen keywords found in the name. Check the supplier's pack or spec sheet.,名稱中找不到致敏物關鍵字。請查看供應商包裝或規格表。
 No batch,無批次
+"No count was entered, so it was counted as 0 when the count was submitted.","未輸入盤點數量,提交盤點時按 0 計算。"
 No default supplier,未設預設供應商
 No deliveries expected today.,今日沒有預計收貨。
 No ingredients to issue: this log only has Batch Preparation recipes.,沒有食材需要發料：此紀錄只有半成品食譜。
@@ -725,6 +727,7 @@ Set 'Expiry after opening' on {0} first (Item > Label tab).,請先在 {0} 設定
 Set a default supplier on these items to order them from here.,請為這些項目設定預設供應商，以便在此訂貨。
 Set a warehouse on the Production Log (or a default in Recipe Settings),請在生產紀錄設定倉庫（或在食譜設定設定預設倉庫）
 Set clock-in PIN,設定打卡密碼
+Set to 0 at submit,提交時設為 0
 Set when the count is approved.,盤點獲審批時設定。
 Set when this email changes an order picked up from an earlier email in the same thread.,當此電郵修改同一對話中較早電郵所建立的訂單時填寫。
 Share of Ingredient Cost,佔食材成本比例
@@ -997,6 +1000,8 @@ waiting for the printer,等待打印機
 {0} is listed twice with the SKU {1}.,{0} 重複列出貨號 {1}。
 {0} is not an approved stock take,{0} 不是已批准的盤點
 {0} isn't used in any active recipe.,{0} 沒有用於任何使用中的食譜。
+{0} items have no count and will be set to 0:,"有 {0} 項貨品沒有盤點數量,將會設為 0:"
+{0} items have no count: {1}. Confirm to count them as 0.,有 {0} 項貨品沒有盤點數量:{1}。請確認按 0 計算。
 {0} jobs,{0} 個工作
 {0} label job(s) added.,已加入 {0} 個標籤工作。
 {0} label job(s) queued,已排隊 {0} 個標籤工作
