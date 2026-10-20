@@ -200,6 +200,7 @@ Factory statement,工場致敏原聲明
 Files,檔案
 Fill,填入
 Fill pack sizes from items,從物品填入包裝規格
+Filled from the Supplier Items table above so the item is found by any supplier's SKU.,"由上方「供應商項目」表自動填寫,讓任何供應商的貨號都能搜尋到此貨品。"
 Filled from the selling price list when blank.,留空時會從銷售價格表填入。
 Find ingredient,搜尋材料
 Find item,搜尋物品
@@ -719,6 +720,8 @@ Sum of net weights of all gram-based ingredient lines.,所有以克計食材的�
 Superseded,已取代
 Supplier Price,供應商價格
 Supplier Prices & Recipes,供應商價格及食譜
+Supplier SKU,供應商貨號
+Supplier SKUs,供應商貨號
 Supplier delivery note / invoice no.,送貨單號／發票號碼
 Suppliers,供應商
 Tagline,標語
@@ -739,6 +742,7 @@ The quantity factor must be more than 0.,數量倍數必須大於 0。
 The recipe this client version is made from.,此客戶版本所用的食譜。
 "The recipe, an ingredient or a label field changed since the last check. Labels wait until it is checked again.",自上次檢查後，食譜、材料或標籤欄位已更改。標籤會等候再次檢查。
 The sheet {0} has no active ingredients,盤點表 {0} 沒有啟用的材料
+The supplier's own product code. Our SKU is the item code the system gives it.,供應商自己的產品編號。我們的貨號是系統給此貨品的貨品編號。
 The user whose API key the Pi uses. It only needs the Label Printer role.,Pi 使用其 API 金鑰的用戶。只需要 Label Printer 角色。
 This count is waiting for approval and can't be changed. Ask an approver to reject it first.,此盤點正等候審批，不能修改。請先請審批人退回。
 This count is {0} and can't be changed.,此盤點狀態為 {0}，不能修改。
@@ -923,6 +927,7 @@ waiting for the printer,等待打印機
 {0} ingredients have no count yet (enter 0 if there is none): {1},尚有 {0} 項材料未盤點（如沒有請輸入 0）：{1}
 {0} ingredients have no count yet. Enter 0 if there is none.,尚有 {0} 項材料未盤點。如沒有，請輸入 0。
 "{0} ingredients have no pack size on their Item yet, so they are counted in loose units only.",{0} 項材料的物品尚未設定包裝規格，只會以散裝數量盤點。
+{0} is listed twice with the SKU {1}.,{0} 重複列出貨號 {1}。
 {0} is not an approved stock take,{0} 不是已批准的盤點
 {0} isn't used in any active recipe.,{0} 沒有用於任何使用中的食譜。
 {0} jobs,{0} 個工作
@@ -950,5 +955,6 @@ waiting for the printer,等待打印機
 {0} · {1} lines{2},{0} · {1} 行{2}
 {0}% delivered,已送貨 {0}%
 {0}% received,已收貨 {0}%
+{0}'s SKU {1} is already used by item {2}.,{0} 的貨號 {1} 已用於貨品 {2}。
 "{0}, counted {1}",{0}，盤點日期 {1}
 {0}: a count can't be negative,{0}：盤點數量不能為負數

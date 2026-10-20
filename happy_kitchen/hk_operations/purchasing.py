@@ -5,7 +5,7 @@ import frappe
 from frappe import _
 from frappe.utils import flt, fmt_money
 
-from happy_kitchen.hk_operations import moq
+from happy_kitchen.hk_operations import moq, sku, sku_api
 
 BUYING_PRICE_LIST = "Standard Buying"
 
@@ -80,14 +80,16 @@ def get_supplier_products(supplier):
 		# prefer the Standard Buying price when a supplier has several lists
 		if p.item_code not in prices or p.price_list == BUYING_PRICE_LIST:
 			prices[p.item_code] = p
+	skus = sku_api.supplier_skus(supplier, codes)
 	for it in items:
 		it["price"] = prices.get(it.name)
+		it["supplier_sku"] = skus.get(it.name, "")
 	return items
 
 
 @frappe.whitelist()
 def add_supplier_product(supplier, item_name, price, uom, item_group, min_order_qty=0, order_multiple=0,
-                         link_existing=0):
+                         link_existing=0, supplier_sku=None):
 	"""Create (or, with link_existing=1, link) an ING-xxx item bought from `supplier` with its
 	Standard Buying price. Returns {"item_code", "created"} or {"exists": {...}} asking the user to confirm."""
 	frappe.has_permission("Item", "create", throw=True)
@@ -112,8 +114,12 @@ def add_supplier_product(supplier, item_name, price, uom, item_group, min_order_
 			frappe.throw(_("{0} already has a price from {1}. Edit it on the Item Price list instead.").format(
 				existing.name, supplier))
 		item = frappe.get_doc("Item", existing.name)
-		if not any(r.supplier == supplier for r in item.supplier_items):
-			item.append("supplier_items", {"supplier": supplier})
+		row = next((r for r in item.supplier_items if r.supplier == supplier), None)
+		if row is None:
+			item.append("supplier_items", {"supplier": supplier, "supplier_part_no": sku.clean(supplier_sku)})
+			item.save()
+		elif sku.clean(supplier_sku) and not row.supplier_part_no:
+			row.supplier_part_no = sku.clean(supplier_sku)
 			item.save()
 		code, created = item.name, False
 	else:
@@ -130,7 +136,7 @@ def add_supplier_product(supplier, item_name, price, uom, item_group, min_order_
 			"is_sales_item": 0,
 			"min_order_qty": min_qty,
 			"hk_order_multiple": multiple,
-			"supplier_items": [{"supplier": supplier}],
+			"supplier_items": [{"supplier": supplier, "supplier_part_no": sku.clean(supplier_sku)}],
 			"item_defaults": [{"company": company, "default_supplier": supplier}] if company else [],
 		}).insert()
 		code, created = item.name, True

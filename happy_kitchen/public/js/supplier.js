@@ -40,9 +40,9 @@ async function hk_render_supplier_products(frm) {
 				flt(it.min_order_qty) ? `${__("min")} ${format_number(it.min_order_qty, null, 0)} ${esc(it.stock_uom)}` : "",
 				flt(it.hk_order_multiple) ? `${__("multiples of")} ${format_number(it.hk_order_multiple, null, 0)}` : "",
 			].filter(Boolean).join(" · ");
-			const q = esc(`${it.name} ${it.item_name} ${it.item_group || ""}`.toLowerCase());
+			const q = esc(`${it.name} ${it.item_name} ${it.supplier_sku || ""} ${it.item_group || ""}`.toLowerCase());
 			return `<tr class="hk-sp-row${it.disabled ? " text-muted" : ""}" data-q="${q}">
-				<td><a href="/app/item/${encodeURIComponent(it.name)}"><b>${esc(it.item_name)}</b></a><br><small class="text-muted">${esc(it.name)}</small></td>
+				<td><a href="/app/item/${encodeURIComponent(it.name)}"><b>${esc(it.item_name)}</b></a><br><small class="text-muted">${esc(it.name)}${it.supplier_sku ? " · " + __("Supplier SKU") + " " + esc(it.supplier_sku) : ""}</small></td>
 				<td>${esc(__(it.item_group || ""))}</td>
 				<td class="text-right" style="white-space:nowrap">${price}</td>
 				<td class="text-right text-muted" style="white-space:nowrap">${ordering}</td>
@@ -80,6 +80,8 @@ function hk_add_product_dialog(frm) {
 		title: __("Add Product from {0}", [frm.doc.name]),
 		fields: [
 			{ fieldname: "item_name", label: __("Name"), fieldtype: "Data", reqd: 1 },
+			{ fieldname: "supplier_sku", label: __("Supplier SKU"), fieldtype: "Data",
+			  description: __("The supplier's own product code. Our SKU is the item code the system gives it.") },
 			{ fieldname: "price", label: __("Price"), fieldtype: "Float", precision: 4, reqd: 1 },
 			{
 				fieldname: "uom", label: __("UOM"), fieldtype: "Select", reqd: 1, options: "Gram\nKg\nNos", default: "Gram",

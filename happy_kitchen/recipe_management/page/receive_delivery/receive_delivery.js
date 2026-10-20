@@ -82,7 +82,7 @@ class HKKReceive {
 				</div></div>
 			<div class="hkk-card"><table class="hkk-table">
 				<tr><th>${__("Item")}</th><th class="hkk-r">${__("Ordered")}</th><th class="hkk-r">${__("Received")}</th><th class="hkk-r">${__("Invoice price")}<br><small class="text-muted">${__("only if different")}</small></th><th>${__("Check")}</th></tr>
-				${d.lines.map((l) => `<tr data-l="${hkk_esc(l.po_detail)}"><td><b>${hkk_esc(l.item_name)}</b><br><small class="text-muted">${hkk_esc(l.item)}</small></td>
+				${d.lines.map((l) => `<tr data-l="${hkk_esc(l.po_detail)}"><td><b>${hkk_esc(l.item_name)}</b><br><small class="text-muted">${hkk_esc(l.item)}${l.supplier_sku ? " · " + __("Supplier SKU") + " " + hkk_esc(l.supplier_sku) : ""}</small></td>
 					<td class="hkk-r">${hkk_num(l.pending_qty)} ${hkk_esc(l.uom)}<br><small class="text-muted">@ ${format_currency(l.rate, d.currency, 4)}</small></td>
 					<td class="hkk-r"><input class="hkk-input hkk-num hkk-qty" type="number" inputmode="decimal" step="any" min="0" value="${l.pending_qty}"></td>
 					<td class="hkk-r"><input class="hkk-input hkk-num hkk-rate" type="number" inputmode="decimal" step="any" min="0" placeholder="${__("same")}"></td>

@@ -49,6 +49,7 @@ jinja = {
 
 doc_events = {
 	"Item": {
+		"validate": "happy_kitchen.hk_operations.sku_api.item_validate",
 		"on_update": "happy_kitchen.recipe_management.doctype.recipe.recipe.recost_recipes_for_item_weight",
 	},
 	"Item Price": {
