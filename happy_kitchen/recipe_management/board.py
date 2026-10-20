@@ -120,3 +120,22 @@ def merge_today(dash: dict, brd: dict) -> dict:
 		"waiting": waiting,
 		"tasks": tasks,
 	}
+
+
+def week_load(days: list[str], orders: dict[str, dict], deliveries: dict[str, dict]) -> list[dict]:
+	"""How busy each day is. `orders` / `deliveries` map a date to
+	{"count": n, "amount": value}. A day's load is orders going out plus
+	deliveries coming in; the level is relative to the week's busiest day
+	(busy from 75 % of the peak, quiet up to 25 %; a flat week is never busy)."""
+	rows = []
+	for d in days:
+		o, p = orders.get(d) or {}, deliveries.get(d) or {}
+		oc, pc = int(o.get("count") or 0), int(p.get("count") or 0)
+		rows.append({"date": d, "orders": oc, "order_amount": float(o.get("amount") or 0),
+		             "deliveries": pc, "load": oc + pc})
+	peak = max((r["load"] for r in rows), default=0)
+	for r in rows:
+		share = r["load"] / peak if peak else 0
+		r["share"] = round(share, 3)
+		r["level"] = "busy" if peak >= 3 and share >= 0.75 else "quiet" if share <= 0.25 else "normal"
+	return rows

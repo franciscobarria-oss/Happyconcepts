@@ -18,5 +18,6 @@ def today() -> dict:
 	from happy_kitchen.hk_operations import dates_api
 
 	data = board.merge_today(dashboard.kitchen_today(), today_board.today_board())
+	data["week"] = today_board.week_ahead()
 	data["dates"] = dates_api.expiring() if dates_api.can_handle_dates() else None
 	return data

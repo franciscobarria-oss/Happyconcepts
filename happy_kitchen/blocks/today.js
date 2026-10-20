@@ -196,6 +196,24 @@
 			: empty(__("Nothing is near its use-by date."));
 		$('[data-part="dates"] .count').textContent = dl.length;
 
+		// --- week ahead: one column per day, orders going out + deliveries coming in ---
+		const wk = d.week;
+		$('[data-part="week"]').hidden = !wk;
+		if (wk) {
+			const peak = Math.max(1, ...wk.days.map((x) => x.load));
+			$('[data-part="week"] .legend').textContent = [wk.orders ? __("orders out") : "", wk.deliveries ? __("deliveries in") : ""].filter(Boolean).join(" + ");
+			$(".week").innerHTML = wk.days.map((x, i) => {
+				const tip = `${day(x.date)}: ${__("{0} orders", [x.orders])}, ${__("{0} deliveries", [x.deliveries])}${x.orders ? " · " + money(x.order_amount) : ""}`;
+				const h = (n) => Math.round((100 * n) / peak);
+				return `<div class="wk ${esc(x.level)}${i === 0 ? " today" : ""}" title="${esc(tip)}">
+					<span class="n">${x.load}</span>
+					<span class="stack"><i class="out" style="height:${h(x.orders)}%"></i><i class="in" style="height:${h(x.deliveries)}%"></i></span>
+					<span class="dn">${esc(i === 0 ? __("Today") : __(moment(x.date).format("ddd")))}</span>
+					<span class="lv">${x.level === "busy" ? esc(__("Busy day")) : x.level === "quiet" ? esc(__("Quiet day")) : "&nbsp;"}</span>
+				</div>`;
+			}).join("");
+		}
+
 		// --- tasks ---
 		const ord = d.tasks.ordering;
 		$('[data-task="ordering"]').hidden = !ord;

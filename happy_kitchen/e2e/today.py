@@ -78,6 +78,9 @@ def run():
 		_check(prod.get(cookie_r, {}).get("batches") == 3, f"25 cookies = 3 batches of 10: {prod.get(cookie_r)}")
 		todays = next(g for g in data["orders"] if g["key"] == "today")
 		_check(any(o["name"] == so.name for o in todays["orders"]), "orders by day lists it under Today")
+		week = data["week"]
+		_check(week and len(week["days"]) == 7 and week["days"][0]["date"] == day, "week ahead covers 7 days from today")
+		_check(week["days"][0]["orders"] >= 1, f"the order shows on today's bar: {week['days'][0]}")
 		# 3 cookie batches need 1500 g dough -> 2 dough batches -> 1200 g flour, none in stock
 		lines = _ordering_lines(data, flour)
 		_check(len(lines) == 1 and abs(lines[0]["qty"] - 1200) < 1e-6, f"order 1200 g flour: {lines}")
