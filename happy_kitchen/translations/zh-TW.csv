@@ -162,6 +162,7 @@ Create a Stock Take Sheet first.,請先建立盤點表。
 Create draft Material Issue when a Production Log is submitted,提交生產紀錄時建立發料草稿
 Create draft order,建立採購單草稿
 Create labels when a sales order is submitted,提交銷售訂單時建立標籤
+Current Purchase,目前採購
 Daily,日常
 Daily tasks,日常工作
 Day after tomorrow,後日
@@ -829,6 +830,7 @@ Thrown away and logged as wastage,已丟棄並記錄為報廢
 "Tick after checking the allergens against the supplier's pack or spec sheet, even if there are none.",按供應商包裝或規格表核對致敏物後勾選，即使沒有致敏物亦然。
 Tick at least one line.,請至少勾選一行。
 Tick at least one recipe.,請至少選擇一個食譜。
+Tick the last-purchased version of a repeated item. Its name then ends in (current).,勾選重複物品中最後一次採購的版本。名稱會加上 (current)。
 Time off,休假
 Time off to approve,待審批假期
 Times sent,發送次數
