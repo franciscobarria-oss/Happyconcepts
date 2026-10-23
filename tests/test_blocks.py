@@ -24,3 +24,19 @@ def test_every_block_has_html_and_script():
 		assert values["html"].strip(), f"{name}: empty html"
 		assert values["script"].strip(), f"{name}: empty script"
 		assert "root_element" in values["script"], f"{name}: block scripts run in a shadow root"
+
+
+def test_block_scripts_parse():
+	"""A syntax error stops the whole block, so the page stays empty. Checked with node when present (CI has it)."""
+	import shutil
+	import subprocess
+
+	import pytest
+
+	node = shutil.which("node")
+	if not node:
+		pytest.skip("node is not installed")
+	for name, stem in listed_blocks().items():
+		script = block_files.read_block(stem)["script"]
+		r = subprocess.run([node, "--check", "--input-type=commonjs", "-"], input=script, capture_output=True, text=True)
+		assert r.returncode == 0, f"{name}: {r.stderr.strip()}"
