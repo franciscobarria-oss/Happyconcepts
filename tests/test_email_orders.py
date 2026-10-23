@@ -232,3 +232,18 @@ def test_po_markers_split_lines_by_po():
 		("A-11111", "2026-10-21", 1), ("A-22222", "2026-10-22", 3), ("A-22222", "2026-10-22", 2)]
 	plain, _ = eo.parse_lines("Cookie | 1")
 	assert plain[0]["po_no"] == "" and plain[0]["delivery_date"] == ""
+
+
+def test_search_query_label_only():
+	assert eo.search_query("Orders", 14) == 'label:"Orders" newer_than:14d'
+	assert eo.search_query('Or"ders', 0, "") == 'label:"Orders" newer_than:14d'
+
+
+def test_search_query_extra_senders():
+	q = eo.search_query("Orders", 7, "plaza-network.com, @Shop.example\nbuyer@x.example plaza-network.com")
+	assert q == '(label:"Orders" OR from:plaza-network.com OR from:shop.example OR from:buyer@x.example) newer_than:7d'
+
+
+def test_search_query_drops_unsafe_entries():
+	q = eo.search_query("Orders", 14, 'a.com) (label:"x" or ok.com')
+	assert q == '(label:"Orders" OR from:ok.com) newer_than:14d'

@@ -94,9 +94,8 @@ class GmailClient:
 		return self._get(f"messages/{message_id}", format="full")
 
 
-def build_query(label: str, look_back_days: int) -> str:
-	label = (label or "").replace('"', "").strip()
-	return f'label:"{label}" newer_than:{int(look_back_days or 14)}d'
+def build_query(label: str, look_back_days: int, extra_senders: str | None = None) -> str:
+	return email_orders.search_query(label, look_back_days, extra_senders)
 
 
 # --- pick-up ----------------------------------------------------------------------------
@@ -112,7 +111,7 @@ def fetch(client=None) -> dict:
 		client = GmailClient(s)
 	made = {"new": 0, "draft": 0, "revised": 0, "review": 0, "ignored": 0, "failed": 0}
 	try:
-		ids = client.list_ids(build_query(s.label_name, s.look_back_days), int(s.max_per_run or 25))
+		ids = client.list_ids(build_query(s.label_name, s.look_back_days, s.extra_senders), int(s.max_per_run or 25))
 		known = set(frappe.get_all("Email Order", filters={"message_id": ("in", ids or [""])}, pluck="message_id"))
 		for mid in ids:
 			if mid in known:

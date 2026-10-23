@@ -28,6 +28,7 @@ Add Product from {0},從 {0} 新增產品
 Add all stocked ingredients,加入所有庫存材料
 Add at least one item,請最少加入一項物品
 "Addresses or @domains, separated by commas or lines. Blank = anyone whose mail carries the label.","電郵地址或 @網域,以逗號或換行分隔。留空 = 凡帶有此標籤的郵件皆可。"
+"Addresses or domains (plaza-network.com), separated by commas or lines. Their mail is read even without the label.",地址或網域（plaza-network.com），以逗號或換行分隔。即使沒有標籤，也會讀取其郵件。
 After Usage,使用後
 Agent version,程式版本
 All,全部
@@ -41,6 +42,7 @@ Allergens Declared,申報致敏原
 "Allergens also handled in the kitchen (cross-contact), printed under the note.",廚房亦有處理的致敏物（交叉接觸），印在備註下方。
 Allergens reviewed,已核對致敏原
 Already printed,已列印
+Also pick up from these senders,同時讀取這些寄件人的郵件
 Also replace pack sizes that are already set,同時取代已設定的包裝規格
 "Also typed in the Raspberry Pi's settings file, e.g. Kitchen Zebra.",亦須填入 Raspberry Pi 的設定檔，例如 Kitchen Zebra。
 Ambient,常溫

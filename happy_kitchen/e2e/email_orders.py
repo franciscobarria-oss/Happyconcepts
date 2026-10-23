@@ -167,6 +167,11 @@ def run():
 		_check(frappe.db.count("Sales Order", {"po_no": ("like", f"{P}PO-%"), "customer": o9.customer}) == 2, "an existing PO is skipped")
 		_check(frappe.db.get_value("Email Order", {"message_id": "m10"}, "status") == "Ignored", "all POs known: ignored")
 
+		# extra senders are searched even without the label
+		frappe.db.set_single_value("Gmail Settings", "extra_senders", "e2e-plaza.example")
+		gmail_orders.fetch(client=fake)
+		_check('(label:"Orders" OR from:e2e-plaza.example) newer_than:14d' in fake.queries, f"extra sender query: {fake.queries[-1]}")
+
 		# scheduled run is a no-op while switched off
 		gmail_orders.scheduled_fetch()
 		print("ok: email orders e2e passed")

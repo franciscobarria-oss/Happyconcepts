@@ -1072,6 +1072,8 @@ ZH_TW = {
 	"Older mail is ignored, so the first run does not pull in the whole label.": "較舊的郵件會被略過,首次執行不會讀取整個標籤。",
 	"Only mail under this label is read. Create the label in Gmail and apply it with a filter or by hand.": "只會讀取此標籤下的郵件。請在 Gmail 建立標籤,並用篩選器或手動套用。",
 	"Only these senders": "只限這些寄件人",
+	"Also pick up from these senders": "同時讀取這些寄件人的郵件",
+	"Addresses or domains (plaza-network.com), separated by commas or lines. Their mail is read even without the label.": "地址或網域（plaza-network.com），以逗號或換行分隔。即使沒有標籤，也會讀取其郵件。",
 	"Order lines": "訂單行",
 	"Pick up orders from Gmail": "從 Gmail 讀取訂單",
 	"Pick up orders now": "立即讀取訂單",
