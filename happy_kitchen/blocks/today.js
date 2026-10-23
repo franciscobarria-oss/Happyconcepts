@@ -183,10 +183,10 @@
 		$('[data-part="waiting"] .count').textContent = w.length;
 
 		// --- opened items and batches near their use-by date ---
-		const dl = d.dates || [];
+		const due = d.dates || [];
 		$('[data-part="dates"]').hidden = d.dates == null;
-		$('[data-part="dates"] .list').innerHTML = dl.length
-			? dl.map((x, i) => `<div class="row">
+		$('[data-part="dates"] .list').innerHTML = due.length
+			? due.map((x, i) => `<div class="row">
 					<span class="badge ${x.state === "past" || x.state === "today" ? "danger" : "warning"}">${esc(
 						x.state === "past" ? __("Past use-by") : x.state === "today" ? __("Today") : __("Tomorrow"))}</span>
 					<span class="grow"><b>${esc(x.item_name)}</b><span class="cap">${esc(x.kind === "Opened Item" ? __("Opened") : __("Batch"))}${x.lot ? " " + esc(x.lot) : ""} · ${esc(__("use by"))} ${esc(x.label)}</span></span>
@@ -194,7 +194,7 @@
 					<button type="button" class="btn small primary" data-close="${i}" data-action="Discarded">${esc(__("Discarded"))}</button></span>
 				</div>`).join("")
 			: empty(__("Nothing is near its use-by date."));
-		$('[data-part="dates"] .count').textContent = dl.length;
+		$('[data-part="dates"] .count').textContent = due.length;
 
 		// --- week ahead: one column per day, orders going out + deliveries coming in ---
 		const wk = d.week;

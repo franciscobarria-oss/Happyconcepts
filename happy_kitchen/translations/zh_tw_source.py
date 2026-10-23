@@ -1022,6 +1022,8 @@ ZH_TW = {
 	"Set when this email changes an order picked up from an earlier email in the same thread.": "當此電郵修改同一對話中較早電郵所建立的訂單時填寫。",
 	"The email this order was picked up from.": "建立此訂單的電郵。",
 	"What changed": "修改內容",
+	"Draft orders to confirm": "待確認的訂單草稿",
+	"{0} drafts not yet submitted": "{0} 張草稿尚未提交",
 	"Revised orders to check": "待檢查的修訂訂單",
 	"{0} orders changed after they came in": "{0} 張訂單在收到後被修改",
 	"This order was changed after it came in. Check the changes before delivering.": "此訂單在收到後被修改。送貨前請檢查修改內容。",
