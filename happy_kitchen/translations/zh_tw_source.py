@@ -1095,6 +1095,40 @@ ZH_TW = {
 	"Wastage log": "報廢紀錄",
 	"use by": "使用期限",
 	"{0} label job(s) queued": "已排隊 {0} 個標籤工作",
+	# Sales block (Selling workspace)
+	"4 weeks": "4 週",
+	"12 weeks": "12 週",
+	"6 months": "6 個月",
+	"1 year": "1 年",
+	"Include drafts": "包括草稿",
+	"Show all SKUs": "顯示所有產品編號",
+	"Units sold per week": "每週銷售數量",
+	"Click a SKU to see its weeks and busiest days.": "按一個產品編號，查看它的每週數量和最忙日子。",
+	"Busiest days, last 4 weeks": "最忙日子（最近 4 週）",
+	"Busiest date": "最忙日期",
+	"Busiest weekday": "最忙星期",
+	"Couldn't load the sales figures.": "無法載入銷售數字。",
+	"Includes {0} draft orders in this range (not yet confirmed).": "已包括此期間 {0} 張草稿訂單（尚未確認）。",
+	"Monday to Sunday, by delivery date": "星期一至星期日，按送貨日期",
+	"No SKU matches.": "沒有相符的產品編號。",
+	"No sales in this range.": "此期間沒有銷售。",
+	"SKUs sold": "已售產品編號",
+	"Search SKU or name": "搜尋產品編號或名稱",
+	"The start date is after the end date.": "開始日期晚於結束日期。",
+	"Units by delivery day, {0} to {1}": "按送貨日的數量，{0} 至 {1}",
+	"Units sold": "已售數量",
+	"Week of": "週",
+	"Week of {0}": "{0} 當週",
+	"all SKUs": "所有產品編號",
+	"confirmed and draft": "已確認及草稿",
+	"confirmed only": "只計已確認",
+	"different items": "不同貨品",
+	"last 4 weeks": "最近 4 週",
+	"part week": "不完整的一週",
+	"net, before tax": "淨額，未計稅",
+	"{0} draft orders in this range are not counted. Tick Include drafts to add them.": "此期間有 {0} 張草稿訂單未計算。勾選「包括草稿」即可加入。",
+	"{0} units": "{0} 件",
+	"{0} units a week on average": "平均每週 {0} 件",
 }
 
 
@@ -1112,6 +1146,8 @@ LEAVE_AS_IS = {
 	"Batch", "Item name", "Kind", "Open", "Cancel", "Cancelled", "Customer", "Enabled", "Failed", "Print", "Printed", "Sales Order", "Version", "Preview", "Queued", "ZPL", "PNG (CUPS)", "Raspberry Pi",
 	# unit symbols
 	"g", "kg", "l", "lb", "min", "ml", "oz", "pc", "piece",
+	# words ERPNext already translates (Sales block)
+	"Amount", "Average", "Orders", "Sales", "Total",
 }
 
 
