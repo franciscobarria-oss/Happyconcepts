@@ -46,7 +46,7 @@ def run():
 	frappe.set_user("Administrator")
 	try:
 		frappe.db.set_single_value("Gmail Settings", {"label_name": "Orders", "look_back_days": 14, "default_lead_days": 2,
-		                                              "max_per_run": 25, "allowed_senders": "@e2e-cafe.example"})
+		                                              "max_per_run": 25, "allowed_senders": "@e2e-cafe.example", "extra_senders": ""})
 		existing = frappe.get_doc({
 			"doctype": "Item", "item_code": P + "BROWNIE", "item_name": P + "Chocolate brownie", "stock_uom": "Nos",
 			"item_group": "Products", "is_stock_item": 1, "is_sales_item": 1}).insert().name
