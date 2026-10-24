@@ -585,3 +585,18 @@ def confirm_order(name: str):
 		note += " " + _("Submitted: {0}.").format(", ".join(submitted))
 	order.add_comment("Comment", note)
 	return order.status
+
+
+@frappe.whitelist()
+def confirm_po(name: str, po_no: str = ""):
+	"""Confirm the items of the lines on one PO (one page of the order). Lines with no PO number are po_no ''."""
+	frappe.only_for(("Sales Manager", "System Manager"))
+	order = frappe.get_doc("Email Order", name)
+	changed = 0
+	for line in order.lines:
+		if (line.po_no or "") == (po_no or "") and line.item and not line.item_confirmed:
+			line.item_confirmed = 1
+			changed += 1
+	if changed:
+		order.save(ignore_permissions=True)
+	return changed

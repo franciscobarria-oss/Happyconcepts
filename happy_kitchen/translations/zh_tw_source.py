@@ -7,6 +7,12 @@
 # to list the strings that still need a translation here.
 
 ZH_TW = {
+	"PO {0}": "採購單 {0}",
+	"Lines without a PO number": "沒有採購單號的行",
+	"{0} of {1} lines confirmed": "已確認 {0} / {1} 行",
+	"Confirm PO items": "確認此採購單的產品",
+	"PO confirmed": "採購單已確認",
+	"{0} lines are not confirmed yet. Confirm the whole order anyway? This confirms the items and submits the draft sales order.": "仍有 {0} 行未確認。要確認整張訂單嗎？這會確認產品並提交銷售訂單草稿。",
 	"Someone checked this order against the PDF and confirmed it.": "已有人對照 PDF 檢查並確認此訂單。",
 	"Order confirmed": "訂單已確認",
 	"The order matches the PDF? This confirms the items and submits the draft sales order.": "訂單與 PDF 相符？這會確認產品並提交銷售訂單草稿。",

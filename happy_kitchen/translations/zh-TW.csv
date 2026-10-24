@@ -137,6 +137,7 @@ Closing,期末
 Closing Count,期末盤點
 Code,代碼
 Component,組件
+Confirm PO items,確認此採購單的產品
 Confirm item,確認產品
 Connected to {0}. Read-only access.,已連接 {0}(唯讀)。
 Continue a count,繼續盤點
@@ -419,6 +420,7 @@ Line {0} not found.,找不到第 {0} 行。
 Lines it could not read,讀不到的行
 Lines that could not be read,無法讀取的行
 Lines were found in the PDF but none could be turned into an order. Enter the order by hand.,PDF 內有行但無法轉成訂單。請人手輸入訂單。
+Lines without a PO number,沒有採購單號的行
 List Price,牌價
 Loaded Cost / Batch,全成本（每批）
 Loaded Cost / Unit,全成本（每件）
@@ -605,6 +607,8 @@ PIN set for {0},已為 {0} 設定密碼
 PO,採購單
 PO No.,採購單編號
 PO Price,採購單價
+PO confirmed,採購單已確認
+PO {0},採購單 {0}
 PO {0} already has a sales order.,採購單 {0} 已有銷售訂單。
 Pack Size 1,包裝規格 1
 Pack Size 2,包裝規格 2
@@ -1119,11 +1123,13 @@ waiting for the printer,等待打印機
 {0} late,{0} 個逾期
 {0} line(s) differ from the order. Stock is received at the ordered price; the differences are flagged on the receipt for the office.,{0} 行與訂單不符。貨品按訂單價格入庫，差異會標記在收貨單上交辦公室跟進。
 {0} lines,{0} 行
+{0} lines are not confirmed yet. Confirm the whole order anyway? This confirms the items and submits the draft sales order.,仍有 {0} 行未確認。要確認整張訂單嗎？這會確認產品並提交銷售訂單草稿。
 {0} logs since Monday,週一至今 {0} 份紀錄
 {0} logs · HK$ {1} ingredients,{0} 份紀錄 · 材料 HK$ {1}
 {0} new emails read,已讀取 {0} 封新電郵
 "{0} new emails: {1} draft orders, {2} revised, {3} to review, {4} ignored, {5} failed.",{0} 封新電郵:{1} 張訂單草稿、{2} 張已修訂、{3} 張待檢查、{4} 封略過、{5} 封失敗。
 {0} of {1} counted,已盤點 {0} / {1}
+{0} of {1} lines confirmed,已確認 {0} / {1} 行
 {0} of {1} made,已製作 {0} / {1}
 {0} orders,{0} 張訂單
 {0} orders changed after they came in,{0} 張訂單在收到後被修改

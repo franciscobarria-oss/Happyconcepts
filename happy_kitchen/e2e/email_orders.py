@@ -207,6 +207,9 @@ def run():
 		_check(not frappe.db.exists("Item Customer Detail", {"parent": first.item, "ref_code": first.external_sku, "customer_name": o2.customer})
 		       or not first.external_sku, "customer code moved off the old item")
 		o1b = frappe.get_doc("Email Order", {"message_id": "m1"})
+		po_of_first = o1b.lines[0].po_no or ""
+		_check(gmail_orders.confirm_po(o1b.name, po_of_first) >= 1, "one PO confirmed")
+		_check(gmail_orders.review_data(o1b.name)["lines"][0]["item_confirmed"] == 1, "review shows the PO as confirmed")
 		_check(gmail_orders.confirm_order(o1b.name) == "Order confirmed", "order confirmed")
 		_check(all(l.item_confirmed for l in frappe.get_doc("Email Order", o1b.name).lines if l.item), "lines confirmed")
 		_check(frappe.db.get_value("Sales Order", o1b.sales_order, "docstatus") == 1, "the draft sales order was submitted")
