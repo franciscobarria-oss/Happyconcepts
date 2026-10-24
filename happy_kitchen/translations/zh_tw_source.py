@@ -7,6 +7,17 @@
 # to list the strings that still need a translation here.
 
 ZH_TW = {
+	"Matched by the reader": "系統已配對",
+	"Confirm item": "確認產品",
+	"No product": "沒有產品",
+	"New product made": "已新增產品",
+	"Suggested item": "建議產品",
+	"Change item": "更改產品",
+	"The review could not be shown.": "無法顯示檢查畫面。",
+	"Line {0} not found.": "找不到第 {0} 行。",
+	"Item {0} does not exist.": "產品 {0} 不存在。",
+	"The sales order {0} is already submitted. Change the item on the order itself.": "銷售訂單 {0} 已提交，請在訂單上直接更改產品。",
+	"Item confirmed": "產品已確認",
 	"(empty)": "（空白）",
 	"Close this email as not an order?": "要把這封電郵標為非訂單並關閉嗎？",
 	"Code": "代碼",

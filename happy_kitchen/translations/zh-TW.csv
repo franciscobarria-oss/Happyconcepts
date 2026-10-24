@@ -97,6 +97,7 @@ Buying Price List,採購價目表
 By,經手人
 Can't reach the server.,未能連接伺服器。
 Change clock-in PIN,更改打卡密碼
+Change item,更改產品
 Changed by,修改者
 Changed since check,核對後有更改
 Cheapest,最便宜
@@ -136,6 +137,7 @@ Closing,期末
 Closing Count,期末盤點
 Code,代碼
 Component,組件
+Confirm item,確認產品
 Connected to {0}. Read-only access.,已連接 {0}(唯讀)。
 Continue a count,繼續盤點
 Cooking Yield %,成品率
@@ -353,6 +355,8 @@ Invoice price,發票價
 Item (internal SKU),貨品(內部貨號)
 Item Allergen,物料致敏物
 Item ID,物品編號
+Item confirmed,產品已確認
+Item {0} does not exist.,產品 {0} 不存在。
 Items after,修改後貨品
 Items before,修改前貨品
 Items in these groups (or their sub-groups) count as Packaging.,屬於這些組別（或其子組別）的物品會計作包裝。
@@ -411,6 +415,7 @@ Leave balances,假期結餘
 Leave blank to use the cheapest supplier on the buying price list.,留空即使用採購價格表中最便宜的供應商。
 Less,收起
 Line ID,行編號
+Line {0} not found.,找不到第 {0} 行。
 Lines it could not read,讀不到的行
 Lines that could not be read,無法讀取的行
 Lines were found in the PDF but none could be turned into an order. Enter the order by hand.,PDF 內有行但無法轉成訂單。請人手輸入訂單。
@@ -444,6 +449,7 @@ Mark revision as checked,標記修訂已檢查
 Marked as entered by hand by {0}.,{0} 已標為人手輸入。
 Marked as not an order by {0}.,{0} 已標為非訂單。
 Masters,主檔
+Matched by the reader,系統已配對
 Material Issue (ingredients),發料單（食材）
 Method,製作方法
 Minimum Order Amount (MOQ),最低訂貨金額（MOQ）
@@ -468,6 +474,7 @@ Net Qty Used,淨用量
 Net weight per piece (g),每件淨重（克）
 New count,新盤點
 New item,新貨品
+New product made,已新增產品
 No Price,未有價格
 No Price Found,找不到價格
 No SKU matches.,沒有相符的產品編號。
@@ -487,6 +494,7 @@ No order lines were read.,沒有讀到訂單行。
 No orders,沒有訂單
 No orders going out today.,今日沒有出貨訂單。
 No price,沒有價格
+No product,沒有產品
 No products are linked to this supplier yet.,此供應商尚未連結任何產品。
 No purchase orders waiting for delivery.,沒有待收貨的採購單。
 No reason,未註明原因
@@ -844,6 +852,7 @@ Submitted On,提交日期
 Submitted for approval,已提交審批
 Suggest allergens,建議致敏原
 Suggested Price (target food cost),建議售價
+Suggested item,建議產品
 "Suggested: {0}. Check the pack, then tick Allergens reviewed and save.",建議：{0}。請核對包裝，然後勾選「已審核致敏物」並儲存。
 Sum of net weights of all gram-based ingredient lines.,所有以克計食材的淨重總和。
 Superseded,已取代
@@ -875,6 +884,8 @@ The last check failed,上次檢查失敗
 The quantity factor must be more than 0.,數量倍數必須大於 0。
 The recipe this client version is made from.,此客戶版本所用的食譜。
 "The recipe, an ingredient or a label field changed since the last check. Labels wait until it is checked again.",自上次檢查後，食譜、材料或標籤欄位已更改。標籤會等候再次檢查。
+The review could not be shown.,無法顯示檢查畫面。
+The sales order {0} is already submitted. Change the item on the order itself.,銷售訂單 {0} 已提交，請在訂單上直接更改產品。
 The sheet {0} has no active ingredients,盤點表 {0} 沒有啟用的材料
 The start date is after the end date.,開始日期晚於結束日期。
 The supplier's own product code. Our SKU is the item code the system gives it.,供應商自己的產品編號。我們的貨號是系統給此貨品的貨品編號。

@@ -97,6 +97,14 @@ def run():
 		_check(rd["status"] == "Needs review" and not rd["lines"] and rd["reasons"], f"review data: {rd}")
 		rd2 = gmail_orders.review_data(o2.name)
 		_check(rd2["lines"] and rd2["unparsed"] and rd2["sales_order"] == o2.sales_order, "review shows lines, unparsed and the order")
+		first = o2.lines[0]
+		_check(gmail_orders.confirm_line_item(o2.name, first.idx) == first.item, "item confirmed")
+		_check(frappe.db.get_value("Email Order Line", first.name, "item_confirmed") == 1, "confirmed flag saved")
+		other = frappe.get_all("Item", filters={"name": ("!=", first.item), "disabled": 0}, pluck="name", limit=1)[0]
+		_check(gmail_orders.confirm_line_item(o2.name, first.idx, other) == other, "item changed")
+		_check(any(r.item_code == other for r in frappe.get_doc("Sales Order", o2.sales_order).items), "draft order follows the change")
+		_check(not frappe.db.exists("Item Customer Detail", {"parent": first.item, "ref_code": first.external_sku, "customer_name": o2.customer})
+		       or not first.external_sku, "customer code moved off the old item")
 		_check(gmail_orders.mark_done_by_hand(o4.name) == "Done by hand", "marked as entered by hand")
 		_check(frappe.db.get_value("Email Order", o4.name, "status") == "Done by hand", "status saved")
 		try:

@@ -21,7 +21,8 @@
   "item_created",
   "po_no",
   "delivery_date",
-  "sales_order"
+  "sales_order",
+  "item_confirmed"
  ],
  "fields": [
   {
@@ -84,6 +85,13 @@
    "options": "Sales Order",
    "label": "Sales Order",
    "read_only": 1
+  },
+  {
+   "fieldname": "item_confirmed",
+   "fieldtype": "Check",
+   "label": "Item confirmed",
+   "read_only": 1,
+   "default": "0"
   }
  ],
  "permissions": []

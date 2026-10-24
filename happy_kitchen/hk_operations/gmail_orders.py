@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import frappe
 from frappe import _
-from frappe.utils import add_days, get_datetime, getdate, now_datetime, nowdate
+from frappe.utils import add_days, flt, get_datetime, getdate, now_datetime, nowdate
 
 from happy_kitchen.hk_operations import email_orders, revisions_api, sku
 
@@ -474,7 +474,9 @@ def review_data(name: str) -> dict:
 	text, _sep, attached = body.partition("--- Attachment:")
 	attached = ("--- Attachment:" + attached) if _sep else ""
 	lines = [{"external_sku": l.external_sku, "description": l.description, "qty": l.qty, "item": l.item, "po_no": l.po_no,
-	          "delivery_date": str(l.delivery_date or ""), "sales_order": l.sales_order} for l in order.lines]
+	          "delivery_date": str(l.delivery_date or ""), "sales_order": l.sales_order, "idx": l.idx,
+		          "item_created": l.item_created, "item_confirmed": l.item_confirmed,
+		          "item_name": frappe.db.get_value("Item", l.item, "item_name") if l.item else ""} for l in order.lines]
 	unparsed = [u for u in (order.unparsed or "").split("\n") if u.strip()]
 	pdfs = [f for f in files if (f.file_name or "").lower().endswith(".pdf")]
 	reasons = email_orders.review_reasons(order.status, len(lines), len(unparsed), bool(order.sales_order), len(pdfs), bool(attached.strip()))
@@ -511,3 +513,41 @@ def mark_not_order(name: str):
 	order.save(ignore_permissions=True)
 	order.add_comment("Comment", _("Marked as not an order by {0}.").format(frappe.utils.get_fullname(frappe.session.user)))
 	return order.status
+
+
+@frappe.whitelist()
+def confirm_line_item(name: str, idx: int, item: str | None = None):
+	"""Confirm the product the reader chose for a line, or change it to another item.
+	A change also moves the customer's code to the new item and fixes the draft Sales Order row."""
+	frappe.only_for(("Sales Manager", "System Manager"))
+	order = frappe.get_doc("Email Order", name)
+	line = next((l for l in order.lines if l.idx == int(idx)), None)
+	if not line:
+		frappe.throw(_("Line {0} not found.").format(idx))
+	old = line.item
+	if item and item != old:
+		if not frappe.db.exists("Item", item):
+			frappe.throw(_("Item {0} does not exist.").format(item))
+		so = frappe.get_doc("Sales Order", line.sales_order) if line.sales_order else None
+		if so and so.docstatus != 0:
+			frappe.throw(_("The sales order {0} is already submitted. Change the item on the order itself.").format(so.name))
+		code = sku.clean(line.external_sku)
+		if code and order.customer:
+			frappe.db.delete("Item Customer Detail", {"parent": old, "parenttype": "Item", "customer_name": order.customer, "ref_code": code})
+			if not frappe.db.exists("Item Customer Detail", {"parent": item, "customer_name": order.customer, "ref_code": code}):
+				new = frappe.get_doc("Item", item)
+				new.append("customer_items", {"customer_name": order.customer, "ref_code": code})
+				new.save(ignore_permissions=True)
+		if so:
+			for row in so.items:
+				if row.item_code == old and flt(row.qty) == flt(line.qty):
+					delivery = row.delivery_date
+					so.remove(row)
+					so.append("items", {"item_code": item, "qty": line.qty, "delivery_date": delivery})
+					break
+			so.save(ignore_permissions=True)
+		line.item = item
+		line.item_created = 0
+	line.item_confirmed = 1
+	order.save(ignore_permissions=True)
+	return line.item
