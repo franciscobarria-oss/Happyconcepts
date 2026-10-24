@@ -171,6 +171,10 @@ def run():
 		from happy_kitchen.recipe_management import dashboard
 		labels = [w["label"] for w in dashboard.kitchen_today()["waiting"]]
 		_check(labels[:2] == ["Emails to read by hand", "Draft orders from email to check"], f"Today lines: {labels}")
+		from happy_kitchen.hk_operations import email_card
+		card = email_card.card()
+		_check(card and card["review"] >= 1 and card["drafts"] >= 1 and card["health"]["tone"] in ("off", "ok", "warning", "danger"), f"card: {card}")
+		_check(sum(b["count"] for b in card["buckets"]) == card["drafts"], "every draft order is in a delivery bucket")
 
 		# extra senders are searched even without the label
 		frappe.db.set_single_value("Gmail Settings", "extra_senders", "e2e-plaza.example")

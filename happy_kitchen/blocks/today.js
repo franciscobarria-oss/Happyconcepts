@@ -63,6 +63,8 @@
 		if (e.target.closest(".refresh")) return load();
 		const po = e.target.closest("[data-po]");
 		if (po) return make_po(po);
+		const pick = e.target.closest("[data-pickup]");
+		if (pick) return pick_up(pick);
 		const closer = e.target.closest("[data-close]");
 		if (closer) return close_date(closer);
 		const el = e.target.closest("[data-route]");
@@ -173,6 +175,35 @@
 				.join("");
 		}
 
+		// --- email orders: what needs a person, and whether the Gmail pick-up is healthy ---
+		const em = d.email;
+		$('[data-part="email"]').hidden = !em;
+		if (em) {
+			const BUCKET = { late: __("Late"), today: __("Today"), tomorrow: __("Tomorrow"), after: __("Day after"), later: __("Later"), none: __("No date") };
+			const h = em.health;
+			const link = (route, text) => `<button type="button" class="btn small" data-route="${esc(route)}">${esc(text)}</button>`;
+			$('[data-part="email"] .count').textContent = em.review + em.drafts;
+			$('[data-part="email"] .list').innerHTML = [
+				`<a class="row" href="#" data-route='List/Email Order?status=["in",["Needs review","Failed"]]&sales_order=["is","not set"]'>
+					<span class="badge ${em.review ? "danger" : "success"}">${esc(em.review ? __("Check") : __("Done"))}</span>
+					<span class="grow"><b>${esc(__("Emails to read by hand"))}: ${em.review}</b>${em.review_with_pdf
+						? `<span class="cap">${esc(__("{0} have a PDF the reader could not use. Open the PDF and enter the order by hand.", [em.review_with_pdf]))}</span>` : ""}</span>
+					<span class="chev">›</span></a>`,
+				`<a class="row" href="#" data-route='List/Sales Order?docstatus=0&hk_email_order=["is","set"]'>
+					<span class="badge ${em.drafts ? "warning" : "success"}">${esc(em.drafts ? __("To approve") : __("Done"))}</span>
+					<span class="grow"><b>${esc(__("Draft orders from email to check"))}: ${em.drafts}</b>${em.buckets.length
+						? `<span class="cap">${em.buckets.map((b) => esc(BUCKET[b.key]) + " " + b.count).join(" · ")}</span>` : ""}</span>
+					<span class="chev">›</span></a>`,
+				`<div class="row"><span class="badge ${h.tone === "ok" ? "success" : h.tone === "off" ? "" : h.tone}">${esc(h.tone === "ok" ? __("Working") : h.tone === "off" ? __("Off") : __("Check"))}</span>
+					<span class="grow"><b>${esc(__(h.message))}</b><span class="cap">${esc(
+						[h.last_checked ? __("Last check {0}", [h.last_checked.slice(5, 16)]) : "", h.error, em.new_mail + " " + __("new emails since yesterday"),
+						 __("Label: {0}", [h.label]) + (h.extra_senders ? " + " + h.extra_senders : "")].filter(Boolean).join(" · ")
+					)}</span></span>
+					<span class="acts">${em.can_admin ? `<button type="button" class="btn small primary" data-pickup="1">${esc(__("Pick up orders now"))}</button>` : ""}
+						${em.can_admin ? link("Form/Gmail Settings", __("Gmail Settings")) : ""}</span></div>`,
+			].join("");
+		}
+
 		// --- waiting on you: simple = the first few, titles only; detailed = everything with the reason ---
 		const w = d.waiting || [];
 		$('[data-part="waiting"] .list').innerHTML = w.length
@@ -188,10 +219,10 @@
 		$('[data-part="waiting"] .count').textContent = w.length;
 
 		// --- opened items and batches near their use-by date ---
-		const dl = d.dates || [];
+		const useby = d.dates || [];
 		$('[data-part="dates"]').hidden = d.dates == null;
-		$('[data-part="dates"] .list').innerHTML = dl.length
-			? dl.map((x, i) => `<div class="row">
+		$('[data-part="dates"] .list').innerHTML = useby.length
+			? useby.map((x, i) => `<div class="row">
 					<span class="badge ${x.state === "past" || x.state === "today" ? "danger" : "warning"}">${esc(
 						x.state === "past" ? __("Past use-by") : x.state === "today" ? __("Today") : __("Tomorrow"))}</span>
 					<span class="grow"><b>${esc(x.item_name)}</b><span class="cap">${esc(x.kind === "Opened Item" ? __("Opened") : __("Batch"))}${x.lot ? " " + esc(x.lot) : ""} · ${esc(__("use by"))} ${esc(x.label)}</span></span>
@@ -199,7 +230,7 @@
 					<button type="button" class="btn small primary" data-close="${i}" data-action="Discarded">${esc(__("Discarded"))}</button></span>
 				</div>`).join("")
 			: empty(__("Nothing is near its use-by date."));
-		$('[data-part="dates"] .count').textContent = dl.length;
+		$('[data-part="dates"] .count').textContent = useby.length;
 
 		// --- week ahead: one column per day, orders going out + deliveries coming in ---
 		const wk = d.week;
@@ -269,6 +300,18 @@
 			send,
 			__("Discard {0}", [x.item_name])
 		);
+	}
+
+	async function pick_up(btn) {
+		btn.disabled = true;
+		try {
+			const r = await frappe.call({ method: "happy_kitchen.hk_operations.gmail_orders.fetch_now", freeze: true });
+			const m = r.message || {};
+			frappe.show_alert({ message: __("{0} new emails read", [m.new || 0]), indicator: m.failed ? "orange" : "green" });
+			load();
+		} catch (e) {
+			btn.disabled = false;
+		}
 	}
 
 	async function make_po(btn) {

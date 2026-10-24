@@ -107,7 +107,9 @@ Check product labels,核對產品標籤
 Check the label,核對標籤
 Check these against the email and add them to the draft order by hand.,"請對照電郵,把這些行手動加到訂單草稿。"
 Checked by,核對人
+Checked for new mail,已檢查新郵件
 Checked label fingerprint,已檢查標籤的指紋
+Checked mail a moment ago,剛剛檢查過郵件
 Checked on,核對時間
 Chilled,冷藏
 Chinese name,中文名稱
@@ -175,6 +177,7 @@ Create draft order,建立採購單草稿
 Create labels when a sales order is submitted,提交銷售訂單時建立標籤
 Daily,日常
 Daily tasks,日常工作
+Day after,後天
 Day after tomorrow,後日
 Days count the opening day as day 1 and end at 23:59; hours count from the minute it is opened.,以日計：開封當天算第1天，至23:59止；以小時計：由開封那一分鐘起計。
 Default Labour Rate ($/hr),預設時薪
@@ -261,11 +264,13 @@ Frozen,冷凍
 Full-time only. Leave empty for hourly staff.,只適用於全職員工。時薪員工請留空。
 "Gas, electricity, packaging, cleaning, rent share... New recipes start with the defaults from Recipe Settings.",煤氣、電費、包裝、清潔、租金分攤…… 新食譜會以食譜設定中的預設值開始。
 Gmail Settings,Gmail 設定
+Gmail Settings is missing the Google sign-in,Gmail 設定缺少 Google 登入資料
 Gmail Settings is missing: {0}.,Gmail 設定缺少:{0}。
 "Gmail Settings needs the Google client ID, secret and refresh token first.",請先在 Gmail 設定填寫 Google 用戶端 ID、密鑰及更新權杖。
 Gmail answered {0}.,Gmail 回應 {0}。
 Gmail label,Gmail 標籤
 Gmail message ID,Gmail 郵件 ID
+Gmail pick-up is switched off,Gmail 讀取已關閉
 Gmail thread ID,Gmail 對話 ID
 Goods received,已收貨
 Google client ID,Google 用戶端 ID
@@ -368,6 +373,7 @@ Label queued. Use by {0},標籤已排隊。使用期限 {0}
 Label sent to the printer,標籤已送往打印機
 Label text,標籤文字
 Label width (mm),標籤寬度（毫米）
+Label: {0},標籤：{0}
 Labels,標籤
 Labels failed to print,標籤列印失敗
 Labels per batch,每批標籤數
@@ -386,11 +392,13 @@ Last Costed On,最後計算成本日期
 Last Paid,上次價格
 Last Rejected By,最後退回人
 Last Rejected On,最後退回日期
+Last check {0},上次檢查 {0}
 Last checked,上次檢查
 Last error,上次錯誤
 Last heard from {0},最後聯絡：{0}
 Last seen,最後連線
 Late,逾期
+Later,稍後
 Leave balances,假期結餘
 Leave blank to use the cheapest supplier on the buying price list.,留空即使用採購價格表中最便宜的供應商。
 Less,收起
@@ -453,6 +461,7 @@ No SKU matches.,沒有相符的產品編號。
 No allergen keywords found in the name. Check the supplier's pack or spec sheet.,名稱中找不到致敏物關鍵字。請查看供應商包裝或規格表。
 No batch,無批次
 "No count was entered, so it was counted as 0 when the count was submitted.","未輸入盤點數量,提交盤點時按 0 計算。"
+No date,未有日期
 No default supplier,未設預設供應商
 No deliveries expected today.,今日沒有預計收貨。
 No ingredients to issue: this log only has Batch Preparation recipes.,沒有食材需要發料：此紀錄只有半成品食譜。
@@ -476,6 +485,8 @@ No shifts on the roster today.,今日更表沒有人當值。
 Not allowed,不允許
 Not changed,未更改
 Not checked,未核對
+Not checked for over an hour,已超過一小時沒有檢查
+Not checked yet,尚未檢查
 Not checked yet. Labels for orders wait until a manager checks this label.,尚未檢查。訂單的標籤會等候經理檢查此標籤。
 Not now,暫不
 Not sold on its own,不單獨出售
@@ -497,6 +508,7 @@ Nothing to receive today or tomorrow.,今明兩日沒有收貨。
 Nothing was received. Enter the quantity that arrived for at least one line.,未有收貨。請最少輸入一行的實收數量。
 Nothing yet.,暫無記錄。
 OEM Spec Sheet,客戶產品規格表
+Off,已關閉
 "Off until the Google steps are done. Read-only: the system never sends, labels or deletes mail.",完成 Google 步驟前保持關閉。只讀:系統不會發送、標記或刪除郵件。
 Offline,離線
 "Offline: {0} saved on this iPad, retrying",離線：{0} 項已存於此 iPad，稍後重試
@@ -833,6 +845,7 @@ The PIN must be exactly 4 digits.,密碼必須是 4 位數字。
 The Raspberry Pi has never connected.,Raspberry Pi 從未連線。
 The closing stock take must be after the opening one,期末盤點必須在期初盤點之後
 The email this order was picked up from.,建立此訂單的電郵。
+The last check failed,上次檢查失敗
 The quantity factor must be more than 0.,數量倍數必須大於 0。
 The recipe this client version is made from.,此客戶版本所用的食譜。
 "The recipe, an ingredient or a label field changed since the last check. Labels wait until it is checked again.",自上次檢查後，食譜、材料或標籤欄位已更改。標籤會等候再次檢查。
@@ -948,6 +961,7 @@ Within Tolerance,在容差內
 Within tolerance,在容差內
 Wording on labels,標籤用語
 "Words in an ingredient name that suggest this allergen, one per line. Only used for suggestions; a person still reviews every ingredient.",材料名稱中提示此致敏物的字詞，每行一個。只用作建議；每種材料仍須由人審核。
+Working,運作中
 Working Days per Month,每月工作日數
 Yield,份量
 Yield %,可用率
@@ -986,6 +1000,7 @@ multiples of,倍數
 n/a,不適用
 needs another Stock Take Approver,需由另一位盤點審批人審批
 "net, before tax",淨額，未計稅
+new emails since yesterday,封新電郵（自昨日起）
 no permission to change it,沒有更改權限
 nothing planned,沒有計劃
 of which Packaging,其中包裝
@@ -1031,6 +1046,7 @@ waiting for the printer,等待打印機
 {0} entries,{0} 項
 {0} entries are saved on this iPad and will be sent when you're back online.,{0} 項已存於此 iPad，恢復網絡後會自動傳送。
 "{0} has no monthly base / working days / hours per day (or hourly rate) on the Employee record, so a multiple of their wage can't be worked out.",{0} 的員工資料未有月薪／工作日數／每日時數（或時薪），所以未能按時薪倍數計算。
+{0} have a PDF the reader could not use. Open the PDF and enter the order by hand.,{0} 封附有系統讀不到的 PDF，請打開 PDF 並手動輸入訂單。
 {0} hours of overtime in one day looks wrong. Split it over the right dates.,一日加班 {0} 小時似乎有誤，請按正確日期分開記錄。
 {0} ingredient line(s) have no buying price. Their cost counts as 0.,{0} 行食材未有採購價，成本以 0 計算。
 {0} ingredient price(s) missing,{0} 項食材未有價格
@@ -1057,6 +1073,7 @@ waiting for the printer,等待打印機
 {0} lines,{0} 行
 {0} logs since Monday,週一至今 {0} 份紀錄
 {0} logs · HK$ {1} ingredients,{0} 份紀錄 · 材料 HK$ {1}
+{0} new emails read,已讀取 {0} 封新電郵
 "{0} new emails: {1} draft orders, {2} revised, {3} to review, {4} ignored, {5} failed.",{0} 封新電郵:{1} 張訂單草稿、{2} 張已修訂、{3} 張待檢查、{4} 封略過、{5} 封失敗。
 {0} of {1} counted,已盤點 {0} / {1}
 {0} of {1} made,已製作 {0} / {1}
