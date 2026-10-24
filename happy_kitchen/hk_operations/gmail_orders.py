@@ -461,3 +461,53 @@ def reprocess(name: str):
 		_save_files(order, files)
 	process(order, lead_days=int(s.default_lead_days or 1), prior=find_prior(order))
 	return frappe.db.get_value("Email Order", name, "status")
+
+
+@frappe.whitelist()
+def review_data(name: str) -> dict:
+	"""Everything the review screen on an Email Order shows: the email, its files, and what the system understood."""
+	order = frappe.get_doc("Email Order", name)
+	order.check_permission("read")
+	files = frappe.get_all("File", filters={"attached_to_doctype": "Email Order", "attached_to_name": name},
+	                       fields=["file_name", "file_url"], order_by="creation asc")
+	body = order.body or ""
+	text, _sep, attached = body.partition("--- Attachment:")
+	attached = ("--- Attachment:" + attached) if _sep else ""
+	lines = [{"external_sku": l.external_sku, "description": l.description, "qty": l.qty, "item": l.item, "po_no": l.po_no,
+	          "delivery_date": str(l.delivery_date or ""), "sales_order": l.sales_order} for l in order.lines]
+	unparsed = [u for u in (order.unparsed or "").split("\n") if u.strip()]
+	pdfs = [f for f in files if (f.file_name or "").lower().endswith(".pdf")]
+	reasons = email_orders.review_reasons(order.status, len(lines), len(unparsed), bool(order.sales_order), len(pdfs), bool(attached.strip()))
+	return {"status": order.status, "files": files, "email_text": text.strip()[:6000], "pdf_text": attached.strip()[:12000],
+	        "lines": lines, "unparsed": unparsed, "reasons": [_(r).replace("{unparsed}", str(len(unparsed))) for r in reasons], "sales_order": order.sales_order,
+	        "customer": order.customer, "error": order.error}
+
+
+@frappe.whitelist()
+def mark_done_by_hand(name: str, sales_order: str | None = None):
+	"""Close an email whose order a person entered by hand, so it leaves the Today count."""
+	frappe.only_for(("Sales Manager", "System Manager"))
+	order = frappe.get_doc("Email Order", name)
+	if order.status not in ("Needs review", "Failed"):
+		frappe.throw(_("Only an email that is Needs review or Failed can be marked as entered by hand."))
+	if sales_order and not frappe.db.exists("Sales Order", sales_order):
+		frappe.throw(_("Sales Order {0} does not exist.").format(sales_order))
+	order.status = "Done by hand"
+	if sales_order and not order.sales_order:
+		order.sales_order = sales_order
+	order.save(ignore_permissions=True)
+	order.add_comment("Comment", _("Marked as entered by hand by {0}.").format(frappe.utils.get_fullname(frappe.session.user)))
+	return order.status
+
+
+@frappe.whitelist()
+def mark_not_order(name: str):
+	"""Close an email that is not an order (a note, a reply), so it leaves the Today count."""
+	frappe.only_for(("Sales Manager", "System Manager"))
+	order = frappe.get_doc("Email Order", name)
+	if order.status not in ("Needs review", "Failed"):
+		frappe.throw(_("Only an email that is Needs review or Failed can be marked as not an order."))
+	order.status = "Ignored"
+	order.save(ignore_permissions=True)
+	order.add_comment("Comment", _("Marked as not an order by {0}.").format(frappe.utils.get_fullname(frappe.session.user)))
+	return order.status

@@ -92,6 +92,19 @@ def run():
 		o4 = frappe.get_doc("Email Order", {"message_id": "m4"})
 		_check(o4.status == "Needs review" and not o4.sales_order, "mail with no order lines makes no sales order")
 
+		# review screen and closing a review
+		rd = gmail_orders.review_data(o4.name)
+		_check(rd["status"] == "Needs review" and not rd["lines"] and rd["reasons"], f"review data: {rd}")
+		rd2 = gmail_orders.review_data(o2.name)
+		_check(rd2["lines"] and rd2["unparsed"] and rd2["sales_order"] == o2.sales_order, "review shows lines, unparsed and the order")
+		_check(gmail_orders.mark_done_by_hand(o4.name) == "Done by hand", "marked as entered by hand")
+		_check(frappe.db.get_value("Email Order", o4.name, "status") == "Done by hand", "status saved")
+		try:
+			gmail_orders.mark_done_by_hand(o4.name)
+			raise AssertionError("second mark should be refused")
+		except frappe.ValidationError:
+			pass
+
 		# never picked up twice
 		again = gmail_orders.fetch(client=fake)
 		_check(again["new"] == 0, f"second run: {again}")

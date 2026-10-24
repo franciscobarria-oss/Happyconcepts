@@ -59,6 +59,36 @@ def search_query(label: str, look_back_days, extra_senders: str | None = None) -
 	return "(" + " OR ".join([f'label:"{label}"'] + [f"from:{e}" for e in senders]) + f") newer_than:{days}d"
 
 
+def review_reasons(status: str, lines: int, unparsed: int, has_sales_order: bool, pdfs: int, pdf_lines_found: bool) -> list[str]:
+	"""Plain sentences for a person looking at an Email Order: why it has this status and what to do."""
+	out = []
+	if status == "Draft order":
+		out.append("Every line was read and a draft sales order was made. Check it against the PDF, then submit it.")
+	elif status == "Revised":
+		out.append("This email changed an earlier order. The draft sales order now shows the new lines.")
+	elif status == "Ignored":
+		out.append("Nothing to do: the sender is not allowed, nothing changed, or every PO already has an order.")
+	elif status == "Done by hand":
+		out.append("Someone entered this order by hand and closed the email.")
+	elif status == "Failed":
+		out.append("Reading the email failed (see the error below). Use Read again, or enter the order by hand.")
+	elif status == "Needs review":
+		if not lines:
+			if pdfs and not pdf_lines_found:
+				out.append("The PDF has no table or item lines this reader knows yet. Enter the order by hand from the PDF, then mark it entered by hand.")
+			elif pdfs:
+				out.append("Lines were found in the PDF but none could be turned into an order. Enter the order by hand.")
+			else:
+				out.append("No order lines were found in the email text and it has no PDF. Read it, then enter the order by hand if it is one.")
+		if unparsed:
+			out.append("{unparsed} line(s) could not be read (listed below). Add them to the draft order by hand.")
+		if lines and has_sales_order:
+			out.append("A draft sales order was made from the lines that could be read. Check it against the PDF.")
+		if lines and not has_sales_order and not unparsed:
+			out.append("The lines were read but the order is held back, usually because it follows an order already submitted. Check it by hand.")
+	return out
+
+
 def _b64(data: str) -> str:
 	if not data:
 		return ""

@@ -5,6 +5,7 @@
 % of Labour Cost,佔人工成本 %
 % of Total,佔總額 %
 "(Monthly base + employer MPF 5%, capped 1,500) / (days x hours), or hourly wage x 1.05. Recalculated on save.","（每月底薪 + 僱主強積金 5%，上限 1,500）/（日數 x 時數），或時薪 x 1.05。儲存時重新計算。"
+(empty),（空白）
 (no subject),(無主旨)
 (quantity × {0}),（數量 × {0}）
 + Add Product,+ 新增產品
@@ -17,6 +18,7 @@
 6 months,6 個月
 <b>{0}</b> is used in {1} recipes. Choose what to use instead and where.,<b>{0}</b> 用於 {1} 個食譜。請選擇取代的材料及食譜。
 A client spec sheet may change shelf life and storage for that client.,客戶規格表可為該客戶更改保質期及儲存方法。
+A draft sales order was made from the lines that could be read. Check it against the PDF.,已用讀得到的行建立銷售訂單草稿。請對照 PDF 檢查。
 A newer email proposes changes to this submitted order ({0}): {1},較新的電郵建議修改這張已提交的訂單({0}):{1}
 "A pack or container opened in the kitchen, with its use-by time (logged from the Opened screen).",廚房內開封的包裝或容器及其使用期限（由「開封」畫面記錄）。
 Accent Colour,強調色
@@ -128,9 +130,11 @@ Clock-in PIN,打卡密碼
 Clock-in PIN Hash,打卡密碼雜湊
 Clock-in tablet,打卡平板
 Clock-ins,打卡紀錄
+Close this email as not an order?,要把這封電郵標為非訂單並關閉嗎？
 Closed at,結束時間
 Closing,期末
 Closing Count,期末盤點
+Code,代碼
 Component,組件
 Connected to {0}. Read-only access.,已連接 {0}(唯讀)。
 Continue a count,繼續盤點
@@ -191,6 +195,7 @@ Default printer,預設打印機
 Defaults to the person's rate on the Employee record.,預設為員工紀錄上的費率。
 Deliveries due,待收貨
 Deliveries in,今日收貨
+Delivery,送貨
 Delivery Check,收貨檢查
 Delivery date,送貨日期
 Delivery date: days after the email,送貨日期:電郵後第幾日
@@ -202,6 +207,7 @@ Discard {0},丟棄 {0}
 Discarded,已丟棄
 Don't print labels for this item,此項目不列印標籤
 Done,完成
+Done by hand,已人手處理
 Draft order,訂單草稿
 Draft orders from email to check,待核對的電郵訂單草稿
 Draft orders get this delivery date; change it on the order.,訂單草稿會用這個送貨日期;可在訂單上修改。
@@ -219,9 +225,11 @@ Employee Name,員工姓名
 Enter a quantity,請輸入數量
 Enter how much was thrown away.,請輸入丟棄的數量。
 Enter what arrived for at least one line.,請最少輸入一行的實收數量。
+Entered by hand,人手輸入
 Entries,項數
 Est. Cost,估計成本
 Estimated Cost,估計成本
+"Every line was read and a draft sales order was made. Check it against the PDF, then submit it.",所有行都已讀取並建立銷售訂單草稿。請對照 PDF 檢查後提交。
 Everything is in stock,全部有貨
 Everything matches the order.,與訂單相符。
 Expected Used,預計用量
@@ -403,7 +411,9 @@ Leave balances,假期結餘
 Leave blank to use the cheapest supplier on the buying price list.,留空即使用採購價格表中最便宜的供應商。
 Less,收起
 Line ID,行編號
+Lines it could not read,讀不到的行
 Lines that could not be read,無法讀取的行
+Lines were found in the PDF but none could be turned into an order. Enter the order by hand.,PDF 內有行但無法轉成訂單。請人手輸入訂單。
 List Price,牌價
 Loaded Cost / Batch,全成本（每批）
 Loaded Cost / Unit,全成本（每件）
@@ -428,8 +438,11 @@ Manufacturer,製造商
 Margin,毛利
 Margin / Unit,每件毛利
 Margin per unit,每件毛利
+Mark as entered by hand,標為已人手輸入
 Mark label as checked,標記標籤已核對
 Mark revision as checked,標記修訂已檢查
+Marked as entered by hand by {0}.,{0} 已標為人手輸入。
+Marked as not an order by {0}.,{0} 已標為非訂單。
 Masters,主檔
 Material Issue (ingredients),發料單（食材）
 Method,製作方法
@@ -469,6 +482,8 @@ No item found,找不到貨品
 No kitchen label printer is set up (Label Printer > Use = Kitchen date labels).,尚未設定廚房標籤打印機（標籤打印機 > 用途 = 廚房日期標籤）。
 No open counts.,沒有進行中的盤點。
 No open orders,沒有未完成訂單
+"No order lines were found in the email text and it has no PDF. Read it, then enter the order by hand if it is one.",電郵文字沒有訂單行，也沒有 PDF。請閱讀內容，如是訂單請人手輸入。
+No order lines were read.,沒有讀到訂單行。
 No orders,沒有訂單
 No orders going out today.,今日沒有出貨訂單。
 No price,沒有價格
@@ -483,6 +498,7 @@ No selling price,未有售價
 No shifts on the roster today.,今日更表沒有人當值。
 "No storage area set on these items, so nothing was taken out of stock.",這些物品未設定儲存位置，所以未有扣除庫存。
 Not allowed,不允許
+Not an order,非訂單
 Not changed,未更改
 Not checked,未核對
 Not checked for over an hour,已超過一小時沒有檢查
@@ -501,6 +517,7 @@ Nothing left to make today.,今日生產已完成。
 Nothing logged this week.,本週未有生產紀錄。
 Nothing opened yet today,今日尚未開封任何貨品
 Nothing to copy,沒有可複製的更次
+"Nothing to do: the sender is not allowed, nothing changed, or every PO already has an order.",無需處理：寄件人不在許可名單、沒有更改，或每張採購單已有訂單。
 Nothing to make for today's orders.,今日訂單不需生產。
 Nothing to order for the next 3 days.,未來3日不需訂貨。
 Nothing to order.,沒有需要訂購的項目。
@@ -522,6 +539,8 @@ Only Out of Tolerance,只顯示超出容差
 Only Price Changes,只顯示價格變動
 Only Recipes That Need a Look,只顯示需檢查的食譜
 Only a manager can mark a label as checked.,只有經理可以將標籤標記為已檢查。
+Only an email that is Needs review or Failed can be marked as entered by hand.,只有「需檢查」或「失敗」的電郵才可標為人手輸入。
+Only an email that is Needs review or Failed can be marked as not an order.,只有「需檢查」或「失敗」的電郵才可標為非訂單。
 Only an email without a sales order that is Needs review or Failed can be read again.,只有沒有銷售訂單、且狀態為「需檢查」或「失敗」的電郵才能重新讀取。
 Only ingredients with something to do,只顯示需要處理的材料
 Only mail under this label is read. Create the label in Gmail and apply it with a filter or by hand.,"只會讀取此標籤下的郵件。請在 Gmail 建立標籤,並用篩選器或手動套用。"
@@ -672,6 +691,7 @@ Rate Name,費率名稱
 Rates,費率
 Re-cost recipes when an Item Price changes,物品價格變動時重新計算食譜成本
 Read again,重新讀取
+"Reading the email failed (see the error below). Use Read again, or enter the order by hand.",讀取電郵失敗（見下方錯誤）。請按「再讀一次」或人手輸入訂單。
 Reason,原因
 Reason (Chinese),原因（中文）
 Receipt,收貨單
@@ -717,6 +737,7 @@ Replace in selected recipes,在已選食譜中取代
 Replace with,取代為
 Replaced in {0} recipes.,已在 {0} 個食譜中取代。
 Reports,報表
+Review,檢查
 Revised,已修訂
 Revised by,修訂人
 Revised on,修訂時間
@@ -739,6 +760,8 @@ Row {0}: recipe {1} yields {2} but item {3} is stocked in {4}. Make them the sam
 Row {0}: {1} is already on the sheet for {2},第 {0} 行：{1} 已在 {2} 的盤點表上
 SKU,產品編號
 SKUs sold,已售產品編號
+Sales Order you made (optional),你建立的銷售訂單（可選）
+Sales Order {0} does not exist.,銷售訂單 {0} 不存在。
 Sales Orders,銷售訂單
 Save PIN,儲存密碼
 Save the sheet first.,請先儲存盤點表。
@@ -783,6 +806,7 @@ Shown on the roster and the clock-in tablet.,顯示於更表及打卡平板。
 Signed Off By (Client),客戶簽署人
 Simple,簡易
 Some counts aren't saved yet. Check the connection and try again.,部分盤點未儲存。請檢查網絡後再試。
+Someone entered this order by hand and closed the email.,此訂單已由人手輸入並關閉電郵。
 Source must be one of {0},來源必須是 {0} 其中之一
 Specification,規格
 Staff,員工
@@ -841,11 +865,13 @@ Team,團隊
 Team & Clients,員工及客戶
 Test label,測試標籤
 Test label {0} sent. It prints within a few seconds if the Pi is online.,測試標籤 {0} 已送出。如 Pi 在線，數秒內會列印。
+"The PDF has no table or item lines this reader knows yet. Enter the order by hand from the PDF, then mark it entered by hand.",系統尚未認得此 PDF 的表格或項目行。請按 PDF 人手輸入訂單，然後標為已人手輸入。
 The PIN must be exactly 4 digits.,密碼必須是 4 位數字。
 The Raspberry Pi has never connected.,Raspberry Pi 從未連線。
 The closing stock take must be after the opening one,期末盤點必須在期初盤點之後
 The email this order was picked up from.,建立此訂單的電郵。
 The last check failed,上次檢查失敗
+"The lines were read but the order is held back, usually because it follows an order already submitted. Check it by hand.",行已讀取但訂單被擱置，通常因為它跟隨一張已提交的訂單。請人手檢查。
 The quantity factor must be more than 0.,數量倍數必須大於 0。
 The recipe this client version is made from.,此客戶版本所用的食譜。
 "The recipe, an ingredient or a label field changed since the last check. Labels wait until it is checked again.",自上次檢查後，食譜、材料或標籤欄位已更改。標籤會等候再次檢查。
@@ -855,6 +881,7 @@ The supplier's own product code. Our SKU is the item code the system gives it.,�
 The user whose API key the Pi uses. It only needs the Label Printer role.,Pi 使用其 API 金鑰的用戶。只需要 Label Printer 角色。
 This count is waiting for approval and can't be changed. Ask an approver to reject it first.,此盤點正等候審批，不能修改。請先請審批人退回。
 This count is {0} and can't be changed.,此盤點狀態為 {0}，不能修改。
+This email changed an earlier order. The draft sales order now shows the new lines.,這封電郵修改了先前的訂單，銷售訂單草稿已顯示新的行。
 This ingredient appears on product labels as <b>{0}</b>.,此材料在產品標籤上顯示為 <b>{0}</b>。
 This job belongs to another printer.,此工作屬於另一部打印機。
 This label is waiting for its product to be checked.,此標籤正等候其產品被檢查。
@@ -955,6 +982,9 @@ Weights & Cooking Yield,重量及成品率
 What changed,修改內容
 "What customers read, without brand or pack size, e.g. Wheat flour, Unsalted butter. Blank = item name.",顧客看到的名稱，不含品牌或包裝尺寸，例如 Wheat flour、Unsalted butter。留空 = 物料名稱。
 "What the extra time was for (big order, stock count, cover).",加班原因（大訂單、盤點、代更）。
+What the reader got from the PDFs,系統從 PDF 讀到的文字
+What the system understood,系統的理解
+What was sent,收到的內容
 Why is it rejected?,退回原因？
 With a recipe: show usage for this many batches instead of the date range.,選擇食譜時：顯示此批數的用量，而非日期範圍內的用量。
 Within Tolerance,在容差內
@@ -1094,3 +1124,4 @@ waiting for the printer,等待打印機
 {0}'s SKU {1} is already used by item {2}.,{0} 的貨號 {1} 已用於貨品 {2}。
 "{0}, counted {1}",{0}，盤點日期 {1}
 {0}: a count can't be negative,{0}：盤點數量不能為負數
+{unparsed} line(s) could not be read (listed below). Add them to the draft order by hand.,有 {unparsed} 行讀不到（見下方）。請人手加入訂單草稿。

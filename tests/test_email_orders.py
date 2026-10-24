@@ -247,3 +247,11 @@ def test_search_query_extra_senders():
 def test_search_query_drops_unsafe_entries():
 	q = eo.search_query("Orders", 14, 'a.com) (label:"x" or ok.com')
 	assert q == '(label:"Orders" OR from:ok.com) newer_than:14d'
+
+
+def test_review_reasons_by_status():
+	assert eo.review_reasons("Draft order", 3, 0, True, 1, True)
+	assert any("by hand" in r for r in eo.review_reasons("Done by hand", 0, 0, False, 0, False))
+	assert eo.review_reasons("Needs review", 0, 0, False, 1, False) != eo.review_reasons("Needs review", 0, 0, False, 0, False)
+	assert any("{unparsed} line(s)" in r for r in eo.review_reasons("Needs review", 3, 2, True, 1, True))
+	assert eo.review_reasons("Failed", 0, 0, False, 0, False)
