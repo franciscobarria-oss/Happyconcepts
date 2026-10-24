@@ -23,6 +23,11 @@ def run():
 		_check(frappe.db.count("Overtime Rate") >= 3, "overtime rates seeded")
 		_check(frappe.db.exists("Department", f"Sweet - {abbr}"), "departments seeded")
 
+		# a live site already has employees: move the naming series past the highest one (rolled back with the rest)
+		numbers = [int(n.rsplit("-", 1)[-1]) for n in frappe.get_all("Employee", pluck="name") if n.rsplit("-", 1)[-1].isdigit()]
+		if numbers:
+			frappe.db.sql("insert into `tabSeries` (name, current) values ('HR-EMP-', %s) "
+			              "on duplicate key update current = greatest(current, %s)", (max(numbers), max(numbers)))
 		emp = frappe.get_doc({
 			"doctype": "Employee", "first_name": P + "Ah", "last_name": "Chan", "gender": "Female",
 			"date_of_birth": "1990-01-01", "date_of_joining": "2024-01-01", "company": company, "status": "Active",

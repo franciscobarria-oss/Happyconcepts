@@ -17,6 +17,7 @@
   "enabled",
   "label_name",
   "allowed_senders",
+  "extra_senders",
   "look_back_days",
   "default_lead_days",
   "max_per_run",
@@ -49,6 +50,12 @@
    "fieldtype": "Small Text",
    "label": "Only these senders",
    "description": "Addresses or @domains, separated by commas or lines. Blank = anyone whose mail carries the label."
+  },
+  {
+   "fieldname": "extra_senders",
+   "fieldtype": "Small Text",
+   "label": "Also pick up from these senders",
+   "description": "Addresses or domains (plaza-network.com), separated by commas or lines. Their mail is read even without the label."
   },
   {
    "fieldname": "look_back_days",

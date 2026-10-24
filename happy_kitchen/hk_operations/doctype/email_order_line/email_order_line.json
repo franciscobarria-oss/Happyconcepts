@@ -18,7 +18,11 @@
   "description",
   "qty",
   "item",
-  "item_created"
+  "item_created",
+  "po_no",
+  "delivery_date",
+  "sales_order",
+  "item_confirmed"
  ],
  "fields": [
   {
@@ -61,6 +65,33 @@
    "read_only": 1,
    "in_list_view": 1,
    "columns": 1
+  },
+  {
+   "fieldname": "po_no",
+   "fieldtype": "Data",
+   "label": "PO No.",
+   "read_only": 1,
+   "in_list_view": 0
+  },
+  {
+   "fieldname": "delivery_date",
+   "fieldtype": "Date",
+   "label": "Delivery Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "options": "Sales Order",
+   "label": "Sales Order",
+   "read_only": 1
+  },
+  {
+   "fieldname": "item_confirmed",
+   "fieldtype": "Check",
+   "label": "Item confirmed",
+   "read_only": 1,
+   "default": "0"
   }
  ],
  "permissions": []

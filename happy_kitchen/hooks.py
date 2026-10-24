@@ -9,7 +9,11 @@ required_apps = ["erpnext", "hrms"]
 
 after_install = "happy_kitchen.setup.install.after_install"
 # Custom HTML Blocks are kept as files in happy_kitchen/blocks/ and upserted on every migrate.
-after_migrate = ["happy_kitchen.setup.blocks.sync", "happy_kitchen.patches.encryption_key_setup.ensure_key"]
+after_migrate = [
+	"happy_kitchen.setup.blocks.sync",
+	"happy_kitchen.setup.blocks.place",  # "HK Sales" on top of the Selling workspace
+	"happy_kitchen.patches.encryption_key_setup.ensure_key",
+]
 
 # Desk-wide CSS/JS. /assets is served with a long cache lifetime and these files are not
 # bundled, so each URL carries ?v=<_HK_ASSET_VERSION>.
@@ -42,6 +46,7 @@ doctype_js = {
 	"Employee": "public/js/employee.js",
 	"Sales Order": "public/js/sales_order.js",
 	"Gmail Settings": "public/js/gmail_settings.js",
+	"Email Order": "public/js/email_order.js",
 }
 
 jinja = {

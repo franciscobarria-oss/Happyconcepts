@@ -46,7 +46,7 @@ def run():
 	frappe.set_user("Administrator")
 	try:
 		frappe.db.set_single_value("Gmail Settings", {"label_name": "Orders", "look_back_days": 14, "default_lead_days": 2,
-		                                              "max_per_run": 25, "allowed_senders": "@e2e-cafe.example"})
+		                                              "max_per_run": 25, "allowed_senders": "@e2e-cafe.example", "extra_senders": ""})
 		existing = frappe.get_doc({
 			"doctype": "Item", "item_code": P + "BROWNIE", "item_name": P + "Chocolate brownie", "stock_uom": "Nos",
 			"item_group": "Products", "is_stock_item": 1, "is_sales_item": 1}).insert().name
@@ -91,6 +91,19 @@ def run():
 		_check(frappe.db.get_value("Email Order", {"message_id": "m3"}, "status") == "Ignored", "other senders are ignored")
 		o4 = frappe.get_doc("Email Order", {"message_id": "m4"})
 		_check(o4.status == "Needs review" and not o4.sales_order, "mail with no order lines makes no sales order")
+
+		# review screen and closing a review
+		rd = gmail_orders.review_data(o4.name)
+		_check(rd["status"] == "Needs review" and not rd["lines"] and rd["reasons"], f"review data: {rd}")
+		rd2 = gmail_orders.review_data(o2.name)
+		_check(rd2["lines"] and rd2["unparsed"] and rd2["sales_order"] == o2.sales_order, "review shows lines, unparsed and the order")
+		_check(gmail_orders.mark_done_by_hand(o4.name) == "Done by hand", "marked as entered by hand")
+		_check(frappe.db.get_value("Email Order", o4.name, "status") == "Done by hand", "status saved")
+		try:
+			gmail_orders.mark_done_by_hand(o4.name)
+			raise AssertionError("second mark should be refused")
+		except frappe.ValidationError:
+			pass
 
 		# never picked up twice
 		again = gmail_orders.fetch(client=fake)
@@ -145,8 +158,61 @@ def run():
 		proposal = frappe.get_doc("Order Revision", {"sales_order": so6.name})
 		_check(not proposal.applied and "10 → 14" in proposal.summary, f"proposal kept: {proposal.summary}")
 
-		# scheduled run is a no-op while switched off
-		gmail_orders.scheduled_fetch()
+		# --- several purchase orders in one email: one draft Sales Order per PO, each with its PO no. and delivery date ---
+		soon, past = frappe.utils.add_days(frappe.utils.nowdate(), 5), frappe.utils.add_days(frappe.utils.nowdate(), -3)
+		body = (f"--- Attachment: orders.pdf ---\n--- PO {P}PO-1 | {soon} ---\nMP-1 | {P}Multi A | 4\nMP-2 | {P}Multi B | 6\n"
+		        f"--- PO {P}PO-2 | {past} ---\nMP-3 | {P}Multi C | 8\n")
+		fake.messages["m9"] = _msg("m9", "Hotel <h@e2e-hotel.example>", "Orders", body, thread="t9")
+		gmail_orders.fetch(client=fake)
+		o9 = frappe.get_doc("Email Order", {"message_id": "m9"})
+		sos = frappe.get_all("Sales Order", filters={"po_no": ("like", f"{P}PO-%"), "customer": o9.customer},
+		                     fields=["name", "po_no", "delivery_date", "docstatus"], order_by="po_no")
+		_check([s.po_no for s in sos] == [f"{P}PO-1", f"{P}PO-2"] and all(s.docstatus == 0 for s in sos), f"one draft per PO: {sos}")
+		_check(str(sos[0].delivery_date) == soon, f"PO-1 keeps its own delivery date: {sos[0].delivery_date}")
+		_check(str(sos[1].delivery_date) >= frappe.utils.nowdate(), "a past delivery date falls back to a valid one")
+		_check(len(frappe.get_doc("Sales Order", sos[0].name).items) == 2 and len(frappe.get_doc("Sales Order", sos[1].name).items) == 1,
+		       "each order has only its own lines")
+		_check(o9.sales_order == sos[0].name and {(l.po_no, l.sales_order) for l in o9.lines} == {(s.po_no, s.name) for s in sos},
+		       "email lines point at their order")
+		# a later email carrying the same PO numbers does not make more orders
+		fake.messages["m10"] = _msg("m10", "Hotel <h@e2e-hotel.example>", "Orders again", body, thread="t10")
+		gmail_orders.fetch(client=fake)
+		_check(frappe.db.count("Sales Order", {"po_no": ("like", f"{P}PO-%"), "customer": o9.customer}) == 2, "an existing PO is skipped")
+		_check(frappe.db.get_value("Email Order", {"message_id": "m10"}, "status") == "Ignored", "all POs known: ignored")
+
+		# Today: emails to read by hand and draft orders from email are the first lines of "Waiting on you"
+		from happy_kitchen.recipe_management import dashboard
+		labels = [w["label"] for w in dashboard.kitchen_today()["waiting"]]
+		_check(labels[:2] == ["Emails to read by hand", "Draft orders from email to check"], f"Today lines: {labels}")
+		from happy_kitchen.hk_operations import email_card
+		card = email_card.card()
+		_check(card and card["review"] >= 1 and card["drafts"] >= 1 and card["health"]["tone"] in ("off", "ok", "warning", "danger"), f"card: {card}")
+		_check(sum(b["count"] for b in card["buckets"]) == card["drafts"], "every draft order is in a delivery bucket")
+
+		# extra senders are searched even without the label
+		frappe.db.set_single_value("Gmail Settings", "extra_senders", "e2e-plaza.example")
+		gmail_orders.fetch(client=fake)
+		_check('(label:"Orders" OR from:e2e-plaza.example) newer_than:14d' in fake.queries, f"extra sender query: {fake.queries[-1]}")
+
+		# scheduled run is a no-op while switched off (never call it on a site where pick-up is on: it would read real mail)
+		if not frappe.db.get_single_value("Gmail Settings", "enabled"):
+			gmail_orders.scheduled_fetch()
+		# confirm / change item (last: it moves the customer's code off the shared test item)
+		first = o2.lines[0]
+		_check(gmail_orders.confirm_line_item(o2.name, first.idx) == first.item, "item confirmed")
+		_check(frappe.db.get_value("Email Order Line", first.name, "item_confirmed") == 1, "confirmed flag saved")
+		other = frappe.get_all("Item", filters={"name": ("!=", first.item), "disabled": 0}, pluck="name", limit=1)[0]
+		_check(gmail_orders.confirm_line_item(o2.name, first.idx, other) == other, "item changed")
+		_check(any(r.item_code == other for r in frappe.get_doc("Sales Order", o2.sales_order).items), "draft order follows the change")
+		_check(not frappe.db.exists("Item Customer Detail", {"parent": first.item, "ref_code": first.external_sku, "customer_name": o2.customer})
+		       or not first.external_sku, "customer code moved off the old item")
+		o1b = frappe.get_doc("Email Order", {"message_id": "m1"})
+		po_of_first = o1b.lines[0].po_no or ""
+		_check(gmail_orders.confirm_po(o1b.name, po_of_first) >= 1, "one PO confirmed")
+		_check(gmail_orders.review_data(o1b.name)["lines"][0]["item_confirmed"] == 1, "review shows the PO as confirmed")
+		_check(gmail_orders.confirm_order(o1b.name) == "Order confirmed", "order confirmed")
+		_check(all(l.item_confirmed for l in frappe.get_doc("Email Order", o1b.name).lines if l.item), "lines confirmed")
+		_check(frappe.db.get_value("Sales Order", o1b.sales_order, "docstatus") == 1, "the draft sales order was submitted")
 		print("ok: email orders e2e passed")
 	finally:
 		frappe.db.rollback()

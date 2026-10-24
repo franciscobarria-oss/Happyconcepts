@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import frappe
 from frappe import _
-from frappe.utils import add_days, get_datetime, getdate, now_datetime, nowdate
+from frappe.utils import add_days, flt, get_datetime, getdate, now_datetime, nowdate
 
 from happy_kitchen.hk_operations import email_orders, revisions_api, sku
 
@@ -70,6 +70,12 @@ class GmailClient:
 			frappe.throw(_("Gmail answered {0}.").format(f"{r.status_code} ({why})" if why else r.status_code))
 		return r.json()
 
+	def get_attachment(self, message_id: str, attachment_id: str) -> bytes:
+		import base64
+
+		data = self._get(f"messages/{message_id}/attachments/{attachment_id}").get("data") or ""
+		return base64.urlsafe_b64decode(data + "=" * (-len(data) % 4))
+
 	def profile(self) -> str:
 		return self._get("profile").get("emailAddress") or ""
 
@@ -88,9 +94,8 @@ class GmailClient:
 		return self._get(f"messages/{message_id}", format="full")
 
 
-def build_query(label: str, look_back_days: int) -> str:
-	label = (label or "").replace('"', "").strip()
-	return f'label:"{label}" newer_than:{int(look_back_days or 14)}d'
+def build_query(label: str, look_back_days: int, extra_senders: str | None = None) -> str:
+	return email_orders.search_query(label, look_back_days, extra_senders)
 
 
 # --- pick-up ----------------------------------------------------------------------------
@@ -106,7 +111,7 @@ def fetch(client=None) -> dict:
 		client = GmailClient(s)
 	made = {"new": 0, "draft": 0, "revised": 0, "review": 0, "ignored": 0, "failed": 0}
 	try:
-		ids = client.list_ids(build_query(s.label_name, s.look_back_days), int(s.max_per_run or 25))
+		ids = client.list_ids(build_query(s.label_name, s.look_back_days, s.extra_senders), int(s.max_per_run or 25))
 		known = set(frappe.get_all("Email Order", filters={"message_id": ("in", ids or [""])}, pluck="message_id"))
 		for mid in ids:
 			if mid in known:
@@ -138,8 +143,11 @@ def _take(client, message_id: str, s) -> str:
 		order.status = "Ignored"
 		order.insert(ignore_permissions=True)
 		return order.status
-	order.body = email_orders.body_text(payload)
+	files = _pdf_files(client, message_id, payload)
+	order.body = email_orders.join_attachment_text(
+		email_orders.body_text(payload), [(n, pdf_text(raw)) for n, raw in files])
 	order.insert(ignore_permissions=True)
+	_save_files(order, files)
 	point = f"hk_email_{frappe.generate_hash(length=8)}"
 	frappe.db.savepoint(point)
 	try:
@@ -151,6 +159,71 @@ def _take(client, message_id: str, s) -> str:
 		order.error = frappe.get_traceback(with_context=False)[-500:]
 		order.save(ignore_permissions=True)
 	return order.status
+
+
+def _pdf_files(client, message_id: str, payload: dict) -> list[tuple[str, bytes]]:
+	"""(file name, bytes) of each PDF attached to the message; one that cannot be fetched is skipped."""
+	import base64
+
+	out = []
+	for att in email_orders.pdf_attachments(payload):
+		try:
+			if att.get("data"):
+				data = att["data"]
+				raw = base64.urlsafe_b64decode(data + "=" * (-len(data) % 4))
+			else:
+				raw = client.get_attachment(message_id, att["attachment_id"])
+			out.append((att["filename"], raw))
+		except Exception:
+			continue
+	return out
+
+
+def pdf_text(raw: bytes) -> str:
+	"""What the order reader gets from a PDF: the lines of its tables when it has a table with a
+	quantity column, else its page text. Needs no network; a scanned PDF has no text (no OCR)."""
+	import io
+
+	import pdfplumber
+
+	rows, texts = [], []
+	try:
+		with pdfplumber.open(io.BytesIO(raw)) as pdf:
+			for page in pdf.pages[:10]:
+				texts.append(page.extract_text() or "")
+				for table in page.extract_tables() or []:
+					rows += table
+	except Exception:
+		rows = []
+	lines = email_orders.table_to_lines(rows)
+	if lines:
+		# a table PDF is one purchase order: its number and delivery date come from the page text
+		whole = "\n".join(texts)
+		po, date = email_orders.po_number(whole), email_orders.delivery_date_of(whole)
+		return "\n".join(([f"--- PO {po}{' | ' + date if date else ''} ---"] if po else []) + lines)
+	pages = []
+	try:
+		with pdfplumber.open(io.BytesIO(raw)) as pdf:
+			pages = [(page.extract_text() or "") for page in pdf.pages[:10]]
+	except Exception:
+		try:
+			from pypdf import PdfReader
+
+			pages = [(page.extract_text() or "") for page in PdfReader(io.BytesIO(raw)).pages[:10]]
+		except Exception:
+			return ""
+	out = []
+	for po, date, page_lines in email_orders.text_item_pages(pages):
+		if page_lines:
+			out += ([f"--- PO {po}{' | ' + date if date else ''} ---"] if po else []) + page_lines
+	return "\n".join(out) or "\n".join(pages)
+
+
+def _save_files(order, files):
+	"""Keep the PDFs on the Email Order (private files) so the order can be checked against them."""
+	for name, raw in files:
+		frappe.get_doc({"doctype": "File", "file_name": name[:140], "content": raw, "is_private": 1,
+		                "attached_to_doctype": "Email Order", "attached_to_name": order.name}).insert(ignore_permissions=True)
 
 
 def _received(msg: dict):
@@ -178,28 +251,68 @@ def find_prior(order):
 
 
 def process(order, lead_days: int = 1, prior=None):
-	"""Read the order lines, find or create the customer and products, and make the draft Sales Order."""
+	"""Read the order lines, find or create the customer and products, and make the draft Sales Order(s):
+	one per purchase order number in the email or its PDFs (lines without a PO number are one order).
+	A follow-up in the same thread revises the earlier order only when it carries no PO numbers."""
 	lines, unparsed = email_orders.parse_lines(order.body or "")
 	order.unparsed = "\n".join(unparsed)
 	if not lines:
 		order.status = "Needs review"
 		order.save(ignore_permissions=True)
 		return
-	if prior:
+	if prior and not any(ln["po_no"] for ln in lines):
 		return revise(order, prior, lines, unparsed)
 	customer = find_or_create_customer(order.sender_name, order.sender_email)
 	order.customer = customer
 	order.set("lines", [])
-	so_items = []
+	groups = {}
 	for ln in lines:
-		item, created = find_or_create_item(customer, ln["external_sku"], ln["description"])
-		order.append("lines", {**ln, "item": item, "item_created": 1 if created else 0})
-		so_items.append({"item_code": item, "qty": ln["qty"]})
-	# the lead time counts from the later of the email date and today: ERPNext rejects a delivery
-	# date before the order date, and an email picked up days late is still ordered today
-	delivery = add_days(max(getdate(order.received_on or nowdate()), getdate(nowdate())), lead_days)
+		groups.setdefault(ln["po_no"], []).append(ln)
+	notes, made = [], []
+	for po, group in groups.items():
+		if po and frappe.db.exists("Sales Order", {"customer": customer, "po_no": po, "docstatus": ("<", 2)}):
+			notes.append(_("PO {0} already has a sales order.").format(po))
+			continue
+		items = []
+		for ln in group:
+			item, created = find_or_create_item(customer, ln["external_sku"], ln["description"])
+			items.append((ln, item, created))
+		so = _make_sales_order(order, customer, po, items, lead_days)
+		made.append(so.name)
+		for ln, item, created in items:
+			order.append("lines", {**ln, "item": item, "item_created": 1 if created else 0,
+			                       "delivery_date": ln["delivery_date"] or None, "sales_order": so.name})
+	if notes:
+		order.unparsed = "\n".join(([order.unparsed] if order.unparsed else []) + notes)
+	if not made:
+		order.status = "Ignored"
+		order.save(ignore_permissions=True)
+		return
+	order.sales_order = made[0]
+	order.status = "Needs review" if unparsed or notes else "Draft order"
+	order.save(ignore_permissions=True)
+
+
+def _make_sales_order(order, customer, po, items, lead_days):
+	"""One draft Sales Order for one PO. A delivery date from the PO is used when it is today or later,
+	otherwise the lead time counts from the later of the email date and today (ERPNext rejects a delivery
+	date before the order date, and an email picked up days late is still ordered today)."""
+	today = getdate(nowdate())
+	fallback = add_days(max(getdate(order.received_on or nowdate()), today), lead_days)
+
+	def usable(d):
+		return d if d and getdate(d) >= today else None
+
+	so_items = []
+	for ln, item, _created in items:
+		row = {"item_code": item, "qty": ln["qty"]}
+		if usable(ln["delivery_date"]):
+			row["delivery_date"] = ln["delivery_date"]
+		so_items.append(row)
+	dates = [r["delivery_date"] for r in so_items if r.get("delivery_date")]
+	delivery = min(dates) if dates else fallback
 	so = frappe.get_doc({
-		"doctype": "Sales Order", "customer": customer, "delivery_date": str(delivery)[:10],
+		"doctype": "Sales Order", "customer": customer, "delivery_date": str(delivery)[:10], "po_no": po or None,
 		"transaction_date": nowdate(), "items": so_items, "hk_email_order": order.name,
 	})
 	so.insert(ignore_permissions=True)
@@ -207,9 +320,7 @@ def process(order, lead_days: int = 1, prior=None):
 	                "reference_name": so.name,
 	                "content": _("Picked up from the email '{0}' from {1} ({2}). Check it before submitting.").format(
 		                order.subject, order.sender_email, order.name)}).insert(ignore_permissions=True)
-	order.sales_order = so.name
-	order.status = "Needs review" if unparsed else "Draft order"
-	order.save(ignore_permissions=True)
+	return so
 
 
 def revise(order, prior, lines, unparsed):
@@ -328,3 +439,164 @@ def test_connection() -> str:
 	frappe.only_for("System Manager")
 	s = frappe.get_single("Gmail Settings")
 	return GmailClient(s).profile()
+
+
+@frappe.whitelist()
+def reprocess(name: str):
+	"""Read an Email Order again from Gmail (new reading rules, or its PDFs): only while it has no
+	Sales Order and is Needs review or Failed. Replaces its body, PDFs and lines; makes the draft order."""
+	frappe.only_for(("Sales Manager", "System Manager"))
+	order = frappe.get_doc("Email Order", name)
+	if order.sales_order or order.status not in ("Needs review", "Failed"):
+		frappe.throw(_("Only an email without a sales order that is Needs review or Failed can be read again."))
+	s = frappe.get_single("Gmail Settings")
+	client = GmailClient(s)
+	payload = client.get_message(order.message_id).get("payload") or {}
+	files = _pdf_files(client, order.message_id, payload)
+	order.body = email_orders.join_attachment_text(
+		email_orders.body_text(payload), [(n, pdf_text(raw)) for n, raw in files])
+	order.error = ""
+	order.save(ignore_permissions=True)
+	if not frappe.get_all("File", filters={"attached_to_doctype": "Email Order", "attached_to_name": order.name}):
+		_save_files(order, files)
+	process(order, lead_days=int(s.default_lead_days or 1), prior=find_prior(order))
+	return frappe.db.get_value("Email Order", name, "status")
+
+
+@frappe.whitelist()
+def review_data(name: str) -> dict:
+	"""Everything the review screen on an Email Order shows: the email, its files, and what the system understood."""
+	order = frappe.get_doc("Email Order", name)
+	order.check_permission("read")
+	files = frappe.get_all("File", filters={"attached_to_doctype": "Email Order", "attached_to_name": name},
+	                       fields=["file_name", "file_url"], order_by="creation asc")
+	body = order.body or ""
+	text, _sep, attached = body.partition("--- Attachment:")
+	attached = ("--- Attachment:" + attached) if _sep else ""
+	lines = [{"external_sku": l.external_sku, "description": l.description, "qty": l.qty, "item": l.item, "po_no": l.po_no,
+	          "delivery_date": str(l.delivery_date or ""), "sales_order": l.sales_order, "idx": l.idx,
+		          "item_created": l.item_created, "item_confirmed": l.item_confirmed,
+		          "item_name": frappe.db.get_value("Item", l.item, "item_name") if l.item else ""} for l in order.lines]
+	unparsed = [u for u in (order.unparsed or "").split("\n") if u.strip()]
+	pdfs = [f for f in files if (f.file_name or "").lower().endswith(".pdf")]
+	reasons = email_orders.review_reasons(order.status, len(lines), len(unparsed), bool(order.sales_order), len(pdfs), bool(attached.strip()))
+	return {"status": order.status, "files": files, "email_text": text.strip()[:6000], "pdf_text": attached.strip()[:12000],
+	        "lines": lines, "unparsed": unparsed, "reasons": [_(r).replace("{unparsed}", str(len(unparsed))) for r in reasons], "sales_order": order.sales_order,
+	        "customer": order.customer, "error": order.error}
+
+
+@frappe.whitelist()
+def mark_done_by_hand(name: str, sales_order: str | None = None):
+	"""Close an email whose order a person entered by hand, so it leaves the Today count."""
+	frappe.only_for(("Sales Manager", "System Manager"))
+	order = frappe.get_doc("Email Order", name)
+	if order.status not in ("Needs review", "Failed"):
+		frappe.throw(_("Only an email that is Needs review or Failed can be marked as entered by hand."))
+	if sales_order and not frappe.db.exists("Sales Order", sales_order):
+		frappe.throw(_("Sales Order {0} does not exist.").format(sales_order))
+	order.status = "Done by hand"
+	if sales_order and not order.sales_order:
+		order.sales_order = sales_order
+	order.save(ignore_permissions=True)
+	order.add_comment("Comment", _("Marked as entered by hand by {0}.").format(frappe.utils.get_fullname(frappe.session.user)))
+	return order.status
+
+
+@frappe.whitelist()
+def mark_not_order(name: str):
+	"""Close an email that is not an order (a note, a reply), so it leaves the Today count."""
+	frappe.only_for(("Sales Manager", "System Manager"))
+	order = frappe.get_doc("Email Order", name)
+	if order.status not in ("Needs review", "Failed"):
+		frappe.throw(_("Only an email that is Needs review or Failed can be marked as not an order."))
+	order.status = "Ignored"
+	order.save(ignore_permissions=True)
+	order.add_comment("Comment", _("Marked as not an order by {0}.").format(frappe.utils.get_fullname(frappe.session.user)))
+	return order.status
+
+
+@frappe.whitelist()
+def confirm_line_item(name: str, idx: int, item: str | None = None):
+	"""Confirm the product the reader chose for a line, or change it to another item.
+	A change also moves the customer's code to the new item and fixes the draft Sales Order row."""
+	frappe.only_for(("Sales Manager", "System Manager"))
+	order = frappe.get_doc("Email Order", name)
+	line = next((l for l in order.lines if l.idx == int(idx)), None)
+	if not line:
+		frappe.throw(_("Line {0} not found.").format(idx))
+	old = line.item
+	if item and item != old:
+		if not frappe.db.exists("Item", item):
+			frappe.throw(_("Item {0} does not exist.").format(item))
+		so = frappe.get_doc("Sales Order", line.sales_order) if line.sales_order else None
+		if so and so.docstatus != 0:
+			frappe.throw(_("The sales order {0} is already submitted. Change the item on the order itself.").format(so.name))
+		code = sku.clean(line.external_sku)
+		if code and order.customer:
+			frappe.db.delete("Item Customer Detail", {"parent": old, "parenttype": "Item", "customer_name": order.customer, "ref_code": code})
+			if not frappe.db.exists("Item Customer Detail", {"parent": item, "customer_name": order.customer, "ref_code": code}):
+				new = frappe.get_doc("Item", item)
+				new.append("customer_items", {"customer_name": order.customer, "ref_code": code})
+				new.save(ignore_permissions=True)
+		if so:
+			for row in so.items:
+				if row.item_code == old and flt(row.qty) == flt(line.qty):
+					delivery = row.delivery_date
+					so.remove(row)
+					so.append("items", {"item_code": item, "qty": line.qty, "delivery_date": delivery})
+					break
+			so.save(ignore_permissions=True)
+		line.item = item
+		line.item_created = 0
+	line.item_confirmed = 1
+	order.save(ignore_permissions=True)
+	return line.item
+
+
+@frappe.whitelist()
+def confirm_order(name: str):
+	"""A person checked the email against the PDF and the order is right: confirm every line's item, submit the
+	draft Sales Order(s) the email made (one per PO) and close the email. All or nothing: if one order cannot
+	be submitted, nothing is changed and the reason is shown."""
+	frappe.only_for(("Sales Manager", "System Manager"))
+	order = frappe.get_doc("Email Order", name)
+	if order.status not in ("Draft order", "Revised", "Needs review", "Failed"):
+		frappe.throw(_("This email cannot be marked as order confirmed."))
+	names = sorted({l.sales_order for l in order.lines if l.sales_order} | ({order.sales_order} if order.sales_order else set()))
+	submitted = []
+	for so_name in names:
+		so = frappe.get_doc("Sales Order", so_name)
+		if so.docstatus != 0:
+			continue
+		try:
+			so.submit()
+		except Exception as e:
+			frappe.db.rollback()
+			frappe.throw(_("Sales Order {0} could not be submitted: {1}").format(so_name, str(e)[:300]))
+		submitted.append(so_name)
+	order = frappe.get_doc("Email Order", name)
+	for line in order.lines:
+		if line.item:
+			line.item_confirmed = 1
+	order.status = "Order confirmed"
+	order.save(ignore_permissions=True)
+	note = _("Order confirmed by {0}.").format(frappe.utils.get_fullname(frappe.session.user))
+	if submitted:
+		note += " " + _("Submitted: {0}.").format(", ".join(submitted))
+	order.add_comment("Comment", note)
+	return order.status
+
+
+@frappe.whitelist()
+def confirm_po(name: str, po_no: str = ""):
+	"""Confirm the items of the lines on one PO (one page of the order). Lines with no PO number are po_no ''."""
+	frappe.only_for(("Sales Manager", "System Manager"))
+	order = frappe.get_doc("Email Order", name)
+	changed = 0
+	for line in order.lines:
+		if (line.po_no or "") == (po_no or "") and line.item and not line.item_confirmed:
+			line.item_confirmed = 1
+			changed += 1
+	if changed:
+		order.save(ignore_permissions=True)
+	return changed
