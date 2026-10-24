@@ -200,6 +200,7 @@ Discarded,已丟棄
 Don't print labels for this item,此項目不列印標籤
 Done,完成
 Draft order,訂單草稿
+Draft orders from email to check,待核對的電郵訂單草稿
 Draft orders get this delivery date; change it on the order.,訂單草稿會用這個送貨日期;可在訂單上修改。
 Draft sales order,銷售訂單草稿
 Draft {0} created. Check it and submit it to send.,已建立草稿 {0}。請檢查後提交發送。
@@ -210,6 +211,7 @@ Email Order,電郵訂單
 Email Order Line,電郵訂單行
 Email customer,電郵客戶
 Email text,電郵內容
+Emails to read by hand,需人手處理的電郵
 Employee Name,員工姓名
 Enter a quantity,請輸入數量
 Enter how much was thrown away.,請輸入丟棄的數量。
@@ -1023,7 +1025,9 @@ waiting for the printer,等待打印機
 {0} doesn't exist or is disabled.,{0} 不存在或已停用。
 {0} draft orders in this range are not counted. Tick Include drafts to add them.,此期間有 {0} 張草稿訂單未計算。勾選「包括草稿」即可加入。
 {0} drafts,{0} 張草稿
+"{0} drafts: check quantities and dates, then submit",{0} 張草稿：核對數量和日期後提交
 {0} due today · {1} late,今日到期 {0} 張 · 逾期 {1} 張
+{0} emails with no order made,{0} 封電郵未能建立訂單
 {0} entries,{0} 項
 {0} entries are saved on this iPad and will be sent when you're back online.,{0} 項已存於此 iPad，恢復網絡後會自動傳送。
 "{0} has no monthly base / working days / hours per day (or hourly rate) on the Employee record, so a multiple of their wage can't be worked out.",{0} 的員工資料未有月薪／工作日數／每日時數（或時薪），所以未能按時薪倍數計算。

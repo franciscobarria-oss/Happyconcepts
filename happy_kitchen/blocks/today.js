@@ -12,13 +12,18 @@
 	const day = (d) => `${__(moment(d).format("ddd"))} ${frappe.datetime.str_to_user(d)}`;
 	const SHEET = "/api/method/happy_kitchen.recipe_management.production_sheet.sheet";
 	const REFRESH_MS = 5 * 60 * 1000;
-	const WAIT_SIMPLE = 3; // rows on "Waiting on you" in the simple view
+	const WAIT_SIMPLE = 4; // rows on "Waiting on you" in the simple view
 	const TONES = { success: 1, info: 1, warning: 1, danger: 1 };
 	// "List/Purchase Order?status=Open" -> frappe.set_route("List", "Purchase Order", {status: "Open"})
 	const go = (route) => {
 		const [path, query] = route.split("?");
 		const args = path.split("/");
-		if (query) args.push(Object.fromEntries(new URLSearchParams(query)));
+		if (query) {
+			// a value that starts with "[" is a JSON filter, e.g. hk_email_order=["is","set"]
+			const f = Object.fromEntries(new URLSearchParams(query));
+			for (const k in f) if (f[k].startsWith("[")) { try { f[k] = JSON.parse(f[k]); } catch (e) { /* keep the text */ } }
+			args.push(f);
+		}
 		frappe.set_route(...args);
 	};
 	// static English text in the HTML -> the user's language (EN / 中 toggle)

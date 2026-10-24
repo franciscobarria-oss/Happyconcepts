@@ -184,6 +184,24 @@ def kitchen_today() -> dict:
 					 "route": "List/Sales Order?hk_needs_review=1", "tone": "warning"}
 				)
 
+	# orders that came in by email: they come first, since nothing happens until someone checks them
+	email_lines = []
+	if _can("Email Order"):
+		review = frappe.db.count("Email Order", {"status": ("in", ["Needs review", "Failed"]), "sales_order": ("is", "not set")})
+		if review:
+			email_lines.append(
+				{"label": _("Emails to read by hand"), "detail": _("{0} emails with no order made").format(review),
+				 "route": 'List/Email Order?status=["in",["Needs review","Failed"]]&sales_order=["is","not set"]', "tone": "danger"}
+			)
+	if _can("Sales Order") and frappe.get_meta("Sales Order").has_field("hk_email_order"):
+		drafts = frappe.db.count("Sales Order", {"docstatus": 0, "hk_email_order": ("is", "set")})
+		if drafts:
+			email_lines.append(
+				{"label": _("Draft orders from email to check"), "detail": _("{0} drafts: check quantities and dates, then submit").format(drafts),
+				 "route": 'List/Sales Order?docstatus=0&hk_email_order=["is","set"]', "tone": "warning"}
+			)
+	out["waiting"][:0] = email_lines
+
 	if _can("Purchase Order"):
 		open_pos = frappe.get_all(
 			"Purchase Order",

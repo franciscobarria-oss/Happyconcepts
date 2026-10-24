@@ -167,6 +167,11 @@ def run():
 		_check(frappe.db.count("Sales Order", {"po_no": ("like", f"{P}PO-%"), "customer": o9.customer}) == 2, "an existing PO is skipped")
 		_check(frappe.db.get_value("Email Order", {"message_id": "m10"}, "status") == "Ignored", "all POs known: ignored")
 
+		# Today: emails to read by hand and draft orders from email are the first lines of "Waiting on you"
+		from happy_kitchen.recipe_management import dashboard
+		labels = [w["label"] for w in dashboard.kitchen_today()["waiting"]]
+		_check(labels[:2] == ["Emails to read by hand", "Draft orders from email to check"], f"Today lines: {labels}")
+
 		# extra senders are searched even without the label
 		frappe.db.set_single_value("Gmail Settings", "extra_senders", "e2e-plaza.example")
 		gmail_orders.fetch(client=fake)
