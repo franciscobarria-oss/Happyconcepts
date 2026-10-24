@@ -255,3 +255,7 @@ def test_review_reasons_by_status():
 	assert eo.review_reasons("Needs review", 0, 0, False, 1, False) != eo.review_reasons("Needs review", 0, 0, False, 0, False)
 	assert any("{unparsed} line(s)" in r for r in eo.review_reasons("Needs review", 3, 2, True, 1, True))
 	assert eo.review_reasons("Failed", 0, 0, False, 0, False)
+
+
+def test_review_reasons_order_confirmed():
+	assert eo.review_reasons("Order confirmed", 2, 0, True, 1, True)

@@ -56,7 +56,14 @@ frappe.ui.form.on("Email Order", {
 		} catch (e) {
 			frm.get_field("review_html").$wrapper.html(`<div class="text-danger">${__("The review could not be shown.")} ${hk_eo_esc(e && (e.message || e))}</div>`);
 		}
-		if (!["Needs review", "Failed"].includes(frm.doc.status)) return;
+		if (!["Needs review", "Failed", "Draft order", "Revised"].includes(frm.doc.status)) return;
+		const confirmOrder = () => frm.add_custom_button(__("Order confirmed"), () => {
+			frappe.confirm(__("The order matches the PDF? Mark it as confirmed."), async () => {
+				await frappe.xcall(HK_EO + "confirm_order", { name: frm.doc.name });
+				frm.reload_doc();
+			});
+		});
+		if (!["Needs review", "Failed"].includes(frm.doc.status)) return confirmOrder();
 		if (!frm.doc.sales_order) {
 			frm.add_custom_button(__("Read again"), async () => {
 				const status = await frappe.xcall(HK_EO + "reprocess", { name: frm.doc.name });
@@ -78,5 +85,6 @@ frappe.ui.form.on("Email Order", {
 				frm.reload_doc();
 			});
 		});
+		confirmOrder();
 	},
 });

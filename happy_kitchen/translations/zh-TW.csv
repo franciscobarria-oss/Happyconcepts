@@ -569,6 +569,8 @@ Optional. Used to work out the cooking yield.,選填。用於計算烹煮後份�
 "Optional: count in up to 3 pack sizes (Bag, Box, Bottle) plus loose units. Each pack must have a UOM conversion on the Item.",可選：最多以 3 種包裝規格（袋、箱、瓶）加散裝數量盤點。每種包裝須在物品的單位換算中設定。
 Optional: the batch the pack came from.,可選：該包裝所屬的批次。
 Order Revision,訂單修訂
+Order confirmed,訂單已確認
+Order confirmed by {0}.,{0} 已確認訂單。
 Order in Multiples Of,訂貨倍數
 Order line,訂單行
 Order lines,訂單行
@@ -814,6 +816,7 @@ Shown on the roster and the clock-in tablet.,顯示於更表及打卡平板。
 Signed Off By (Client),客戶簽署人
 Simple,簡易
 Some counts aren't saved yet. Check the connection and try again.,部分盤點未儲存。請檢查網絡後再試。
+Someone checked this order against the PDF and confirmed it.,已有人對照 PDF 檢查並確認此訂單。
 Someone entered this order by hand and closed the email.,此訂單已由人手輸入並關閉電郵。
 Source must be one of {0},來源必須是 {0} 其中之一
 Specification,規格
@@ -881,6 +884,7 @@ The closing stock take must be after the opening one,期末盤點必須在期初
 The email this order was picked up from.,建立此訂單的電郵。
 The last check failed,上次檢查失敗
 "The lines were read but the order is held back, usually because it follows an order already submitted. Check it by hand.",行已讀取但訂單被擱置，通常因為它跟隨一張已提交的訂單。請人手檢查。
+The order matches the PDF? Mark it as confirmed.,訂單與 PDF 相符？標為已確認。
 The quantity factor must be more than 0.,數量倍數必須大於 0。
 The recipe this client version is made from.,此客戶版本所用的食譜。
 "The recipe, an ingredient or a label field changed since the last check. Labels wait until it is checked again.",自上次檢查後，食譜、材料或標籤欄位已更改。標籤會等候再次檢查。
@@ -892,6 +896,7 @@ The supplier's own product code. Our SKU is the item code the system gives it.,�
 The user whose API key the Pi uses. It only needs the Label Printer role.,Pi 使用其 API 金鑰的用戶。只需要 Label Printer 角色。
 This count is waiting for approval and can't be changed. Ask an approver to reject it first.,此盤點正等候審批，不能修改。請先請審批人退回。
 This count is {0} and can't be changed.,此盤點狀態為 {0}，不能修改。
+This email cannot be marked as order confirmed.,這封電郵不能標為訂單已確認。
 This email changed an earlier order. The draft sales order now shows the new lines.,這封電郵修改了先前的訂單，銷售訂單草稿已顯示新的行。
 This ingredient appears on product labels as <b>{0}</b>.,此材料在產品標籤上顯示為 <b>{0}</b>。
 This job belongs to another printer.,此工作屬於另一部打印機。

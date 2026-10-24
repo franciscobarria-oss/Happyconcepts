@@ -7,6 +7,11 @@
 # to list the strings that still need a translation here.
 
 ZH_TW = {
+	"Someone checked this order against the PDF and confirmed it.": "已有人對照 PDF 檢查並確認此訂單。",
+	"Order confirmed": "訂單已確認",
+	"The order matches the PDF? Mark it as confirmed.": "訂單與 PDF 相符？標為已確認。",
+	"This email cannot be marked as order confirmed.": "這封電郵不能標為訂單已確認。",
+	"Order confirmed by {0}.": "{0} 已確認訂單。",
 	"Matched by the reader": "系統已配對",
 	"Confirm item": "確認產品",
 	"No product": "沒有產品",

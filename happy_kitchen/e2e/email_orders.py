@@ -206,6 +206,9 @@ def run():
 		_check(any(r.item_code == other for r in frappe.get_doc("Sales Order", o2.sales_order).items), "draft order follows the change")
 		_check(not frappe.db.exists("Item Customer Detail", {"parent": first.item, "ref_code": first.external_sku, "customer_name": o2.customer})
 		       or not first.external_sku, "customer code moved off the old item")
+		o1b = frappe.get_doc("Email Order", {"message_id": "m1"})
+		_check(gmail_orders.confirm_order(o1b.name) == "Order confirmed", "order confirmed")
+		_check(all(l.item_confirmed for l in frappe.get_doc("Email Order", o1b.name).lines if l.item), "lines confirmed")
 		print("ok: email orders e2e passed")
 	finally:
 		frappe.db.rollback()

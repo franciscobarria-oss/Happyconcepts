@@ -551,3 +551,20 @@ def confirm_line_item(name: str, idx: int, item: str | None = None):
 	line.item_confirmed = 1
 	order.save(ignore_permissions=True)
 	return line.item
+
+
+@frappe.whitelist()
+def confirm_order(name: str):
+	"""A person checked the email against the PDF and the order is right: mark every line's item as confirmed
+	and close the email, so it leaves the Today count."""
+	frappe.only_for(("Sales Manager", "System Manager"))
+	order = frappe.get_doc("Email Order", name)
+	if order.status not in ("Draft order", "Revised", "Needs review", "Failed"):
+		frappe.throw(_("This email cannot be marked as order confirmed."))
+	for line in order.lines:
+		if line.item:
+			line.item_confirmed = 1
+	order.status = "Order confirmed"
+	order.save(ignore_permissions=True)
+	order.add_comment("Comment", _("Order confirmed by {0}.").format(frappe.utils.get_fullname(frappe.session.user)))
+	return order.status

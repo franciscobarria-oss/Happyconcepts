@@ -68,6 +68,8 @@ def review_reasons(status: str, lines: int, unparsed: int, has_sales_order: bool
 		out.append("This email changed an earlier order. The draft sales order now shows the new lines.")
 	elif status == "Ignored":
 		out.append("Nothing to do: the sender is not allowed, nothing changed, or every PO already has an order.")
+	elif status == "Order confirmed":
+		out.append("Someone checked this order against the PDF and confirmed it.")
 	elif status == "Done by hand":
 		out.append("Someone entered this order by hand and closed the email.")
 	elif status == "Failed":

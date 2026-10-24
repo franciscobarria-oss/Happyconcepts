@@ -41,7 +41,7 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "New\nDraft order\nRevised\nNeeds review\nIgnored\nFailed\nDone by hand",
+   "options": "New\nDraft order\nRevised\nNeeds review\nIgnored\nFailed\nDone by hand\nOrder confirmed",
    "default": "New",
    "in_list_view": 1,
    "in_standard_filter": 1
