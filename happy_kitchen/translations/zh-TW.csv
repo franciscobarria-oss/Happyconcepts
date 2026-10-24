@@ -771,6 +771,7 @@ Row {0}: {1} is already on the sheet for {2},第 {0} 行：{1} 已在 {2} 的盤
 SKU,產品編號
 SKUs sold,已售產品編號
 Sales Order you made (optional),你建立的銷售訂單（可選）
+Sales Order {0} could not be submitted: {1},銷售訂單 {0} 無法提交：{1}
 Sales Order {0} does not exist.,銷售訂單 {0} 不存在。
 Sales Orders,銷售訂單
 Save PIN,儲存密碼
@@ -853,6 +854,7 @@ Submit {0} item(s),提交 {0} 項
 Submitted By,提交人
 Submitted On,提交日期
 Submitted for approval,已提交審批
+Submitted: {0}.,已提交：{0}。
 Suggest allergens,建議致敏原
 Suggested Price (target food cost),建議售價
 Suggested item,建議產品
@@ -884,7 +886,7 @@ The closing stock take must be after the opening one,期末盤點必須在期初
 The email this order was picked up from.,建立此訂單的電郵。
 The last check failed,上次檢查失敗
 "The lines were read but the order is held back, usually because it follows an order already submitted. Check it by hand.",行已讀取但訂單被擱置，通常因為它跟隨一張已提交的訂單。請人手檢查。
-The order matches the PDF? Mark it as confirmed.,訂單與 PDF 相符？標為已確認。
+The order matches the PDF? This confirms the items and submits the draft sales order.,訂單與 PDF 相符？這會確認產品並提交銷售訂單草稿。
 The quantity factor must be more than 0.,數量倍數必須大於 0。
 The recipe this client version is made from.,此客戶版本所用的食譜。
 "The recipe, an ingredient or a label field changed since the last check. Labels wait until it is checked again.",自上次檢查後，食譜、材料或標籤欄位已更改。標籤會等候再次檢查。

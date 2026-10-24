@@ -555,16 +555,33 @@ def confirm_line_item(name: str, idx: int, item: str | None = None):
 
 @frappe.whitelist()
 def confirm_order(name: str):
-	"""A person checked the email against the PDF and the order is right: mark every line's item as confirmed
-	and close the email, so it leaves the Today count."""
+	"""A person checked the email against the PDF and the order is right: confirm every line's item, submit the
+	draft Sales Order(s) the email made (one per PO) and close the email. All or nothing: if one order cannot
+	be submitted, nothing is changed and the reason is shown."""
 	frappe.only_for(("Sales Manager", "System Manager"))
 	order = frappe.get_doc("Email Order", name)
 	if order.status not in ("Draft order", "Revised", "Needs review", "Failed"):
 		frappe.throw(_("This email cannot be marked as order confirmed."))
+	names = sorted({l.sales_order for l in order.lines if l.sales_order} | ({order.sales_order} if order.sales_order else set()))
+	submitted = []
+	for so_name in names:
+		so = frappe.get_doc("Sales Order", so_name)
+		if so.docstatus != 0:
+			continue
+		try:
+			so.submit()
+		except Exception as e:
+			frappe.db.rollback()
+			frappe.throw(_("Sales Order {0} could not be submitted: {1}").format(so_name, str(e)[:300]))
+		submitted.append(so_name)
+	order = frappe.get_doc("Email Order", name)
 	for line in order.lines:
 		if line.item:
 			line.item_confirmed = 1
 	order.status = "Order confirmed"
 	order.save(ignore_permissions=True)
-	order.add_comment("Comment", _("Order confirmed by {0}.").format(frappe.utils.get_fullname(frappe.session.user)))
+	note = _("Order confirmed by {0}.").format(frappe.utils.get_fullname(frappe.session.user))
+	if submitted:
+		note += " " + _("Submitted: {0}.").format(", ".join(submitted))
+	order.add_comment("Comment", note)
 	return order.status

@@ -209,6 +209,7 @@ def run():
 		o1b = frappe.get_doc("Email Order", {"message_id": "m1"})
 		_check(gmail_orders.confirm_order(o1b.name) == "Order confirmed", "order confirmed")
 		_check(all(l.item_confirmed for l in frappe.get_doc("Email Order", o1b.name).lines if l.item), "lines confirmed")
+		_check(frappe.db.get_value("Sales Order", o1b.sales_order, "docstatus") == 1, "the draft sales order was submitted")
 		print("ok: email orders e2e passed")
 	finally:
 		frappe.db.rollback()

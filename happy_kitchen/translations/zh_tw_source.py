@@ -9,7 +9,9 @@
 ZH_TW = {
 	"Someone checked this order against the PDF and confirmed it.": "已有人對照 PDF 檢查並確認此訂單。",
 	"Order confirmed": "訂單已確認",
-	"The order matches the PDF? Mark it as confirmed.": "訂單與 PDF 相符？標為已確認。",
+	"The order matches the PDF? This confirms the items and submits the draft sales order.": "訂單與 PDF 相符？這會確認產品並提交銷售訂單草稿。",
+	"Sales Order {0} could not be submitted: {1}": "銷售訂單 {0} 無法提交：{1}",
+	"Submitted: {0}.": "已提交：{0}。",
 	"This email cannot be marked as order confirmed.": "這封電郵不能標為訂單已確認。",
 	"Order confirmed by {0}.": "{0} 已確認訂單。",
 	"Matched by the reader": "系統已配對",

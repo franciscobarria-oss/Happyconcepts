@@ -58,7 +58,7 @@ frappe.ui.form.on("Email Order", {
 		}
 		if (!["Needs review", "Failed", "Draft order", "Revised"].includes(frm.doc.status)) return;
 		const confirmOrder = () => frm.add_custom_button(__("Order confirmed"), () => {
-			frappe.confirm(__("The order matches the PDF? Mark it as confirmed."), async () => {
+			frappe.confirm(__("The order matches the PDF? This confirms the items and submits the draft sales order."), async () => {
 				await frappe.xcall(HK_EO + "confirm_order", { name: frm.doc.name });
 				frm.reload_doc();
 			});
