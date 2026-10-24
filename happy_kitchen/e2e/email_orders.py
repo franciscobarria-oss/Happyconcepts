@@ -181,8 +181,9 @@ def run():
 		gmail_orders.fetch(client=fake)
 		_check('(label:"Orders" OR from:e2e-plaza.example) newer_than:14d' in fake.queries, f"extra sender query: {fake.queries[-1]}")
 
-		# scheduled run is a no-op while switched off
-		gmail_orders.scheduled_fetch()
+		# scheduled run is a no-op while switched off (never call it on a site where pick-up is on: it would read real mail)
+		if not frappe.db.get_single_value("Gmail Settings", "enabled"):
+			gmail_orders.scheduled_fetch()
 		print("ok: email orders e2e passed")
 	finally:
 		frappe.db.rollback()
