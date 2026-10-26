@@ -43,6 +43,7 @@
    "label": "Status",
    "options": "New\nDraft order\nRevised\nNeeds review\nIgnored\nFailed\nDone by hand\nOrder confirmed",
    "default": "New",
+   "read_only": 1,
    "in_list_view": 1,
    "in_standard_filter": 1
   },

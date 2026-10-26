@@ -197,6 +197,11 @@ def run():
 		except frappe.ValidationError:
 			pass
 
+		# a mail left in "New" for over an hour is not lost: it is counted as one to read by hand
+		stuck = frappe.get_doc({"doctype": "Email Order", "message_id": f"{P}stuck", "subject": "stuck", "status": "New"}).insert(ignore_permissions=True)
+		frappe.db.set_value("Email Order", stuck.name, "modified", "2000-01-01 00:00:00", update_modified=False)
+		from happy_kitchen.hk_operations import email_card as _ec
+		_check(stuck.name in _ec.to_read_by_hand(), "an old New email is in the to-read-by-hand list")
 		# confirm / change item (last: it moves the customer's code off the shared test item)
 		first = o2.lines[0]
 		_check(gmail_orders.confirm_line_item(o2.name, first.idx) == first.item, "item confirmed")

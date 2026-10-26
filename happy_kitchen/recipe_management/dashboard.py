@@ -187,11 +187,12 @@ def kitchen_today() -> dict:
 	# orders that came in by email: they come first, since nothing happens until someone checks them
 	email_lines = []
 	if _can("Email Order"):
-		review = frappe.db.count("Email Order", {"status": ("in", ["Needs review", "Failed"]), "sales_order": ("is", "not set")})
+		from happy_kitchen.hk_operations import email_card
+		review = len(email_card.to_read_by_hand())
 		if review:
 			email_lines.append(
 				{"label": _("Emails to read by hand"), "detail": _("{0} emails with no order made").format(review),
-				 "route": 'List/Email Order?status=["in",["Needs review","Failed"]]&sales_order=["is","not set"]', "tone": "danger"}
+				 "route": 'List/Email Order?status=["in",["Needs review","Failed","New"]]&sales_order=["is","not set"]', "tone": "danger"}
 			)
 	if _can("Sales Order") and frappe.get_meta("Sales Order").has_field("hk_email_order"):
 		drafts = frappe.db.count("Sales Order", {"docstatus": 0, "hk_email_order": ("is", "set")})

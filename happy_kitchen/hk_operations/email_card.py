@@ -1,11 +1,22 @@
 """Data for the "Email orders" card on the Today page (one call from today.today)."""
 
 import frappe
-from frappe.utils import add_days, get_datetime, nowdate, time_diff_in_seconds, now_datetime
+from frappe.utils import add_days, add_to_date, get_datetime, now_datetime, nowdate, time_diff_in_seconds
 
 from happy_kitchen.hk_operations import email_card_rules as rules
 
 REVIEW = ["Needs review", "Failed"]
+STUCK_NEW_HOURS = 1
+
+
+def to_read_by_hand() -> list[str]:
+	"""Email Orders with no sales order that a person has to look at: Needs review / Failed, and any still 'New'
+	after an hour (it should only be New while it is being read)."""
+	names = frappe.get_all("Email Order", filters={"status": ("in", REVIEW), "sales_order": ("is", "not set")}, pluck="name")
+	cutoff = add_to_date(now_datetime(), hours=-STUCK_NEW_HOURS)
+	names += frappe.get_all("Email Order", filters={"status": "New", "sales_order": ("is", "not set"), "modified": ("<", cutoff)},
+	                        pluck="name")
+	return names
 
 
 def card() -> dict | None:
@@ -13,7 +24,7 @@ def card() -> dict | None:
 	if not (frappe.db.exists("DocType", "Email Order") and frappe.has_permission("Email Order", "read")):
 		return None
 	today = nowdate()
-	review = frappe.get_all("Email Order", filters={"status": ("in", REVIEW), "sales_order": ("is", "not set")}, pluck="name")
+	review = to_read_by_hand()
 	with_pdf = 0
 	if review:
 		with_pdf = len(set(frappe.get_all("File", filters={"attached_to_doctype": "Email Order", "attached_to_name": ("in", review)},
