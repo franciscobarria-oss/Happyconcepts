@@ -1,9 +1,29 @@
 // Email Order: the email and its PDFs next to what the system read, plus ways to close a review.
 const HK_EO = "happy_kitchen.hk_operations.gmail_orders.";
 
+// Text read from mail can already hold "&amp;": show it as "&", then escape once.
 function hk_eo_esc(s) {
-	return frappe.utils.escape_html(s == null ? "" : String(s));
+	const t = s == null ? "" : String(s).replace(/&amp;/g, "&");
+	return frappe.utils.escape_html(t);
 }
+
+const HK_EO_CSS = `<style>
+.hk-eo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.hk-eo-left, .hk-eo-right { min-width: 0; }
+.hk-eo-left iframe { width: 100%; height: 70vh; border: 1px solid var(--border-color); border-radius: 6px; margin-top: 4px; background: #fff; }
+.hk-eo-page { border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 12px; overflow: hidden; background: var(--card-bg, #fff); }
+.hk-eo-page-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 10px; background: var(--control-bg); }
+.hk-eo-page table { width: 100%; table-layout: fixed; margin: 0; }
+.hk-eo-page th, .hk-eo-page td { overflow-wrap: anywhere; vertical-align: top; }
+.hk-eo-page th:nth-child(2), .hk-eo-page td:nth-child(2) { width: 56px; text-align: right; }
+.hk-eo-page th:nth-child(4), .hk-eo-page td:nth-child(4) { width: 110px; }
+.hk-eo-open td { background: var(--yellow-highlight-color, #fff8e1); }
+@media (min-width: 1000px) {
+	.hk-eo { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+	.hk-eo-left { position: sticky; top: 70px; align-self: start; }
+	.hk-eo-left iframe { height: calc(100vh - 230px); }
+}
+</style>`;
 
 function hk_eo_render(frm, d) {
 	frm._hk_review = d;
@@ -11,7 +31,7 @@ function hk_eo_render(frm, d) {
 	const files = d.files.map((f) => {
 		const pdf = (f.file_name || "").toLowerCase().endsWith(".pdf");
 		const link = `<a href="${hk_eo_esc(f.file_url)}" target="_blank">${hk_eo_esc(f.file_name)}</a>`;
-		return pdf ? `<div style="margin-bottom:8px">${link}<iframe src="${hk_eo_esc(f.file_url)}" style="width:100%;height:70vh;border:1px solid var(--border-color);margin-top:4px"></iframe></div>` : `<div>${link}</div>`;
+		return pdf ? `<div style="margin-bottom:8px">${link}<iframe src="${hk_eo_esc(f.file_url)}"></iframe></div>` : `<div>${link}</div>`;
 	}).join("");
 	const left = `<h6>${__("What was sent")}</h6>${files || ""}
 		<details${files ? "" : " open"}><summary class="text-muted small">${__("Email text")}</summary>${pre(d.email_text || __("(empty)"))}</details>
@@ -33,18 +53,18 @@ function hk_eo_render(frm, d) {
 		const rows = g.lines.map((l) => {
 			const state = !l.item ? __("No product") : l.item_confirmed ? __("Item confirmed") : l.item_created ? __("New product made") : __("Matched by the reader");
 			const change = canEdit && l.item ? `<button class="btn btn-xs btn-default hk-eo-change" data-idx="${l.idx}">${__("Change item")}</button>` : "";
-			return `<tr${l.item && l.item_confirmed ? "" : ' style="background:var(--yellow-highlight-color, #fff8e1)"'}>
+			return `<tr${l.item && l.item_confirmed ? "" : ' class="hk-eo-open"'}>
 				<td>${hk_eo_esc(l.external_sku)}<div class="small">${hk_eo_esc(l.description)}</div></td>
 				<td class="text-right">${hk_eo_esc(l.qty)}</td>
 				<td>${hk_eo_esc(l.item)} ${hk_eo_esc(l.item_name)}<div class="text-muted small">${state}</div></td>
-				<td style="white-space:nowrap">${change}</td></tr>`;
+				<td>${change}</td></tr>`;
 		}).join("");
 		const title = g.po ? __("PO {0}", [g.po]) : __("Lines without a PO number");
 		const btn = canEdit && open ? `<button class="btn btn-xs btn-primary hk-eo-po" data-po="${hk_eo_esc(g.po)}">${__("Confirm PO items")}</button>` : (open ? "" : `<span class="text-success">&#10003; ${__("PO confirmed")}</span>`);
-		return `<div style="border:1px solid var(--border-color);border-radius:6px;margin-bottom:12px">
-			<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--control-bg)">
+		return `<div class="hk-eo-page">
+			<div class="hk-eo-page-head">
 				<div><b>${hk_eo_esc(title)}</b><span class="text-muted small"> ${dates ? hk_eo_esc(dates) : ""} ${sos ? "&middot; " + hk_eo_esc(sos) : ""}</span></div>${btn}</div>
-			<table class="table table-sm" style="margin:0"><thead><tr><th>${__("Code")} / ${__("Description")}</th><th class="text-right">${__("Qty")}</th><th>${__("Suggested item")}</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+			<table class="table table-sm"><thead><tr><th>${__("Code")} / ${__("Description")}</th><th class="text-right">${__("Qty")}</th><th>${__("Suggested item")}</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
 	}).join("");
 	const unread = d.unparsed.length ? `<div class="text-danger small">${__("Lines it could not read")}</div>${pre(d.unparsed.join("\n"))}` : "";
 	const err = d.error ? `<div class="text-danger small">${__("Error")}</div>${pre(d.error)}` : "";
@@ -53,7 +73,7 @@ function hk_eo_render(frm, d) {
 	const right = `<h6>${__("What the system understood")}</h6><ul>${why}</ul>${progress}
 		${pages || `<p class="text-muted">${__("No order lines were read.")}</p>`}${unread}${err}`;
 	frm.get_field("review_html").$wrapper.html(
-		`<div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start"><div style="flex:1 1 420px;min-width:0;position:sticky;top:70px">${left}</div><div style="flex:1 1 420px;min-width:0">${right}</div></div>`);
+		`${HK_EO_CSS}<div class="hk-eo"><div class="hk-eo-left">${left}</div><div class="hk-eo-right">${right}</div></div>`);
 
 	const w = frm.get_field("review_html").$wrapper;
 	w.find(".hk-eo-po").on("click", async (e) => {
