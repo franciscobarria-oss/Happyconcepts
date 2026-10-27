@@ -143,6 +143,10 @@ def _take(client, message_id: str, s) -> str:
 		order.status = "Ignored"
 		order.insert(ignore_permissions=True)
 		return order.status
+	if email_orders.skip_reply(address, order.subject, payload, bool(email_orders.pdf_attachments(payload)), s.skip_reply_senders):
+		order.status = "Ignored"
+		order.insert(ignore_permissions=True)
+		return order.status
 	files = _pdf_files(client, message_id, payload)
 	order.body = email_orders.join_attachment_text(
 		email_orders.body_text(payload), [(n, pdf_text(raw)) for n, raw in files])

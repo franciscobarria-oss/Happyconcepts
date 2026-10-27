@@ -46,7 +46,7 @@ def run():
 	frappe.set_user("Administrator")
 	try:
 		frappe.db.set_single_value("Gmail Settings", {"label_name": "Orders", "look_back_days": 14, "default_lead_days": 2,
-		                                              "max_per_run": 25, "allowed_senders": "@e2e-cafe.example", "extra_senders": ""})
+		                                              "max_per_run": 25, "allowed_senders": "@e2e-cafe.example", "extra_senders": "", "skip_reply_senders": ""})
 		existing = frappe.get_doc({
 			"doctype": "Item", "item_code": P + "BROWNIE", "item_name": P + "Chocolate brownie", "stock_uom": "Nos",
 			"item_group": "Products", "is_stock_item": 1, "is_sales_item": 1}).insert().name
@@ -180,6 +180,15 @@ def run():
 		frappe.db.set_single_value("Gmail Settings", "extra_senders", "e2e-plaza.example")
 		gmail_orders.fetch(client=fake)
 		_check('(label:"Orders" OR from:e2e-plaza.example) newer_than:14d' in fake.queries, f"extra sender query: {fake.queries[-1]}")
+
+		# plain replies from a listed sender are skipped (recorded Ignored); a forward is still read
+		frappe.db.set_single_value("Gmail Settings", "skip_reply_senders", "e2e-cafe.example")
+		fake.messages["m10"] = _msg("m10", f"{P}Cafe <orders@e2e-cafe.example>", "Re: thanks", f"CK-001 | {P}Butter cookie | 3", thread="t10")
+		fake.messages["m11"] = _msg("m11", f"{P}Cafe <orders@e2e-cafe.example>", "Fwd: PO", f"CK-001 | {P}Butter cookie | 3", thread="t11")
+		gmail_orders.fetch(client=fake)
+		_check(frappe.db.get_value("Email Order", {"message_id": "m10"}, "status") == "Ignored", "reply from a listed sender is Ignored")
+		_check(frappe.db.get_value("Email Order", {"message_id": "m11"}, "status") != "Ignored", "forward from a listed sender is still read")
+		frappe.db.set_single_value("Gmail Settings", "skip_reply_senders", "")
 
 		# scheduled run is a no-op while switched off (never call it on a site where pick-up is on: it would read real mail)
 		if not frappe.db.get_single_value("Gmail Settings", "enabled"):

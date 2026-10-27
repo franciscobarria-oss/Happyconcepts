@@ -18,6 +18,7 @@
   "label_name",
   "allowed_senders",
   "extra_senders",
+  "skip_reply_senders",
   "look_back_days",
   "default_lead_days",
   "max_per_run",
@@ -56,6 +57,12 @@
    "fieldtype": "Small Text",
    "label": "Also pick up from these senders",
    "description": "Addresses or domains (plaza-network.com), separated by commas or lines. Their mail is read even without the label."
+  },
+  {
+   "fieldname": "skip_reply_senders",
+   "fieldtype": "Small Text",
+   "label": "Skip plain replies from these senders",
+   "description": "Addresses or domains (happyconceptsfood.hk), separated by commas or lines. A reply (Re:) from them without a PDF is skipped; forwards and replies with a PDF are still read."
   },
   {
    "fieldname": "look_back_days",

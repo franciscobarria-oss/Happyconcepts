@@ -23,6 +23,7 @@ INSTALL_PATCHES = [
 	"happy_kitchen.patches.revise_order_fields",
 	"happy_kitchen.patches.encryption_key_setup",
 	"happy_kitchen.patches.gmail_extra_senders",
+	"happy_kitchen.patches.gmail_skip_reply_senders",
 ]
 
 

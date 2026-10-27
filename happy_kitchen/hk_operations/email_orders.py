@@ -44,6 +44,33 @@ def sender_allowed(address: str, allowed: str | None) -> bool:
 	return any(address == e or (e.startswith("@") and address.endswith(e)) for e in entries)
 
 
+def is_reply(subject: str, payload: dict) -> bool:
+	"""A reply, not a forward: the subject starts Re: / AW: / 回覆: / 回复:, or the mail carries In-Reply-To."""
+	if re.match(r"\s*(re|aw|回覆|回复)\s*[:：]", subject or "", re.I):
+		return True
+	return bool(header(payload, "In-Reply-To").strip())
+
+
+def skip_reply(address: str, subject: str, payload: dict, has_pdf: bool, skip_senders: str | None) -> bool:
+	"""True for a plain reply (no PDF) from a sender on the skip list (addresses or domains; a domain also
+	covers its sub-domains). Forwards and replies that carry a PDF are still read."""
+	if has_pdf or not is_reply(subject, payload):
+		return False
+	address = (address or "").strip().lower()
+	for e in re.split(r"[,\s;]+", skip_senders or ""):
+		e = e.strip().lower()
+		if not e:
+			continue
+		if "@" in e.lstrip("@"):
+			if address == e:
+				return True
+		else:
+			d = e.lstrip("@")
+			if address.endswith("@" + d) or address.endswith("." + d):
+				return True
+	return False
+
+
 def search_query(label: str, look_back_days, extra_senders: str | None = None) -> str:
 	"""The Gmail search: mail under the label, plus anything from the extra senders (addresses or @domains,
 	comma / space / line separated), from the last `look_back_days` days."""

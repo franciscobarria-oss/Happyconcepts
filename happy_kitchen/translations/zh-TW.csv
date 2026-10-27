@@ -30,6 +30,7 @@ Add Product from {0},從 {0} 新增產品
 Add all stocked ingredients,加入所有庫存材料
 Add at least one item,請最少加入一項物品
 "Addresses or @domains, separated by commas or lines. Blank = anyone whose mail carries the label.","電郵地址或 @網域,以逗號或換行分隔。留空 = 凡帶有此標籤的郵件皆可。"
+"Addresses or domains (happyconceptsfood.hk), separated by commas or lines. A reply (Re:) from them without a PDF is skipped; forwards and replies with a PDF are still read.",地址或網域（happyconceptsfood.hk），以逗號或換行分隔。其不含 PDF 的回覆（Re:）會略過；轉寄及附有 PDF 的回覆仍會讀取。
 "Addresses or domains (plaza-network.com), separated by commas or lines. Their mail is read even without the label.",地址或網域（plaza-network.com），以逗號或換行分隔。即使沒有標籤，也會讀取其郵件。
 After Usage,使用後
 Agent version,程式版本
@@ -820,6 +821,7 @@ Shown on the Team page 30 days before it expires.,到期前 30 日會在團隊�
 Shown on the roster and the clock-in tablet.,顯示於更表及打卡平板。
 Signed Off By (Client),客戶簽署人
 Simple,簡易
+Skip plain replies from these senders,略過這些寄件人的純回覆郵件
 Some counts aren't saved yet. Check the connection and try again.,部分盤點未儲存。請檢查網絡後再試。
 Someone checked this order against the PDF and confirmed it.,已有人對照 PDF 檢查並確認此訂單。
 Someone entered this order by hand and closed the email.,此訂單已由人手輸入並關閉電郵。

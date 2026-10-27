@@ -249,6 +249,20 @@ def test_search_query_drops_unsafe_entries():
 	assert q == '(label:"Orders" OR from:ok.com) newer_than:14d'
 
 
+def test_skip_reply():
+	hdr = lambda **h: {"headers": [{"name": k.replace("_", "-"), "value": v} for k, v in h.items()]}
+	f = eo.skip_reply
+	own = "happyconceptsfood.hk"
+	assert f("a@happyconceptsfood.hk", "Re: Order", hdr(), False, own)
+	assert f("a@mail.happyconceptsfood.hk", "回覆: 訂單", hdr(), False, "@" + own)
+	assert f("a@happyconceptsfood.hk", "Order", hdr(In_Reply_To="<x@y>"), False, own)
+	assert not f("a@happyconceptsfood.hk", "Re: Order", hdr(), True, own)  # carries a PDF
+	assert not f("a@happyconceptsfood.hk", "Fwd: PO 12", hdr(), False, own)  # a forward
+	assert not f("a@nothappyconceptsfood.hk", "Re: Order", hdr(), False, own)
+	assert not f("b@x.com", "Re: Order", hdr(), False, "a@x.com") and f("a@x.com", "RE: x", hdr(), False, "a@x.com")
+	assert not f("a@happyconceptsfood.hk", "Re: Order", hdr(), False, "")
+
+
 def test_review_reasons_by_status():
 	assert eo.review_reasons("Draft order", 3, 0, True, 1, True)
 	assert any("by hand" in r for r in eo.review_reasons("Done by hand", 0, 0, False, 0, False))
