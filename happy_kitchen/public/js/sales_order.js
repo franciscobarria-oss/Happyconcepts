@@ -117,24 +117,26 @@ function hk_order_stage(frm) {
 	if (s.stage === "Completed" && !s.invoiced) notes.push(__("Delivered, not invoiced yet."));
 	frm.dashboard.add_comment(`<b>${__("Order")}:</b> ${bar}${notes.length ? " &nbsp; " + notes.join(" ") : ""}`, "blue", true);
 
-	if (s.next === "confirm" && !frm.is_dirty() && frm.has_perm("submit"))
-		frm.page.set_primary_action(__("Confirm order"), () => frm.savesubmit(), "check");
+	// The one main button in the top bar: Confirm on a draft, Complete on a confirmed order.
+	if (frm.is_dirty()) return;
+	if (s.next === "confirm" && frm.has_perm("submit"))
+		frm.page.set_primary_action(__("Confirm"), () => frm.savesubmit(), "check");
 	if (s.next === "deliver" && frappe.model.can_create("Delivery Note"))
-		frm.add_custom_button(__("Mark as delivered"), () => hk_mark_delivered(frm)).addClass("btn-primary");
+		frm.page.set_primary_action(__("Complete"), () => hk_mark_delivered(frm), "check");
 }
 
 function hk_mark_delivered(frm) {
 	if (frm.doc.hk_needs_review)
 		return frappe.msgprint(__("This order was revised. Mark the revision as checked before delivering."));
 	frappe.confirm(
-		__("Mark {0} as delivered? This makes and submits a Delivery Note for everything not yet delivered.", [frm.doc.name]),
+		__("Complete {0}? This makes and submits a Delivery Note for everything not yet delivered.", [frm.doc.name]),
 		() => frappe.call({
 			method: "happy_kitchen.hk_operations.order_stage_api.mark_delivered",
 			args: { sales_order: frm.doc.name },
 			freeze: true,
 			freeze_message: __("Making the delivery note..."),
 		}).then(({ message }) => {
-			frappe.show_alert({ message: __("Delivered: {0}", [message]), indicator: "green" });
+			frappe.show_alert({ message: __("Completed: delivered with {0}", [message]), indicator: "green" });
 			frm.reload_doc();
 		})
 	);

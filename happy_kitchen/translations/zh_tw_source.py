@@ -1212,14 +1212,12 @@ ZH_TW = {
 	"{0} units": "{0} 件",
 	"{0} units a week on average": "平均每週 {0} 件",
 	# Sales Order stage (order_stage.py, sales_order.js)
-	"Confirm order": "確認訂單",
 	"Confirmed (late)": "已確認（逾期）",
 	"Delivered, not invoiced yet.": "已送貨，未開發票。",
-	"Delivered: {0}": "已送貨：{0}",
+	"Completed: delivered with {0}": "已完成：送貨單 {0}",
 	"Late: the delivery date has passed.": "逾期：已過送貨日期。",
 	"Making the delivery note...": "正在建立送貨單...",
-	"Mark as delivered": "標為已送貨",
-	"Mark {0} as delivered? This makes and submits a Delivery Note for everything not yet delivered.": "要把 {0} 標為已送貨嗎？這會為所有未送的貨品建立並提交送貨單。",
+	"Complete {0}? This makes and submits a Delivery Note for everything not yet delivered.": "要完成 {0} 嗎？這會為所有未送的貨品建立並提交送貨單。",
 	"Nothing is left to deliver on this order.": "此訂單沒有未送的貨品。",
 	"This order was revised. Mark the revision as checked before delivering.": "此訂單已被修改，請先標記修訂已檢查再送貨。",
 	"You are not allowed to submit a Delivery Note.": "你沒有權限提交送貨單。",
@@ -1247,7 +1245,7 @@ LEAVE_AS_IS = {
 	# words ERPNext already translates (Sales block)
 	"Amount", "Average", "Orders", "Sales", "Total",
 	# Sales Order stage words ERPNext already translates
-	"Completed", "Confirmed", "Order",
+	"Completed", "Confirmed", "Order", "Confirm", "Complete",
 }
 
 
