@@ -44,8 +44,8 @@ function hk_render_label(frm) {
 		const c = m.content;
 		const tone = { Checked: "green", "Not checked": "orange", "Changed since check": "red" }[m.state.state] || "gray";
 		const state_txt = {
-			Checked: __("Label checked. Labels print automatically when an order is submitted."),
-			"Not checked": __("Not checked yet. Labels for orders wait until a manager checks this label."),
+			Checked: __("Label checked. Print labels from an order's Labels menu when you want them."),
+			"Not checked": __("Not checked yet. Labels asked for on an order wait until a manager checks this label."),
 			"Changed since check": __("The recipe, an ingredient or a label field changed since the last check. Labels wait until it is checked again."),
 		}[m.state.state];
 		const missing = m.state.missing.length

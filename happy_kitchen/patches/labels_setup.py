@@ -91,6 +91,6 @@ def execute():
 
 	settings = frappe.get_single("Label Settings")
 	if not settings.date_basis:
-		settings.create_on_submit = 1
+		settings.create_on_submit = 0  # labels are optional: printed from the order's Labels menu
 		settings.date_basis = "Print date"
 		settings.save(ignore_permissions=True)

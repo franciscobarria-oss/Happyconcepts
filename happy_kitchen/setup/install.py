@@ -25,6 +25,7 @@ INSTALL_PATCHES = [
 	"happy_kitchen.patches.gmail_extra_senders",
 	"happy_kitchen.patches.gmail_skip_reply_senders",
 	"happy_kitchen.patches.current_purchase_flag",
+	"happy_kitchen.patches.labels_optional",
 ]
 
 

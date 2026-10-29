@@ -103,6 +103,8 @@ def run():
 		lines = json.loads(job.label_json)["lines"]
 		_check(job.kind == "Opened" and job.label_count == 2 and ["title", milk] in lines, f"opened job {lines}")
 		_check(any(t.startswith("USE BY") for _s, t in lines), "USE BY line")
+		r0 = dates_api.open_item(milk, labels=0)
+		_check(r0["use_by"] and not r0["label_job"], "opening with 0 labels prints nothing")
 		try:
 			dates_api.open_item(flour)
 			raise AssertionError("an item with no open life must be refused")
