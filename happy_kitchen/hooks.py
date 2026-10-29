@@ -49,6 +49,11 @@ doctype_js = {
 	"Email Order": "public/js/email_order.js",
 }
 
+# Draft / Confirmed / Completed badge on the Sales Order list and form (hk_operations/order_stage.py)
+doctype_list_js = {
+	"Sales Order": "public/js/sales_order_list.js",
+}
+
 jinja = {
 	"methods": ["happy_kitchen.recipe_management.utils.get_recipe_branding"],
 }

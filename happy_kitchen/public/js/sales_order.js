@@ -1,6 +1,7 @@
 // Product labels for a submitted order: a summary line, "Print labels" and the label queue.
 frappe.ui.form.on("Sales Order", {
 	refresh(frm) {
+		hk_order_stage(frm);
 		hk_revision_buttons(frm);
 		if (frm.doc.docstatus !== 1) return;
 		frappe.call("happy_kitchen.hk_operations.labels.sales_order_labels", { sales_order: frm.doc.name }).then(({ message: jobs }) => {
@@ -82,4 +83,59 @@ function hk_revision_buttons(frm) {
 			await frappe.xcall("happy_kitchen.hk_operations.revisions_api.mark_checked", { sales_order: frm.doc.name });
 			frm.reload_doc();
 		}, __("Revision")).addClass("btn-primary");
+}
+
+// Draft -> Confirmed -> Completed: a step bar on top and one button for the next step.
+// Same rules as hk_operations/order_stage.py (built on docstatus / status / per_delivered only).
+function hk_so_stage(doc) {
+	const delivered = flt(doc.per_delivered);
+	if (doc.docstatus === 0) return { stage: "Draft", color: "gray", next: "confirm" };
+	if (doc.docstatus === 2) return { stage: "Cancelled", color: "red" };
+	if (delivered >= 100 || doc.status === "Completed")
+		return { stage: "Completed", color: "green", invoiced: flt(doc.per_billed) >= 100 };
+	if (doc.status === "On Hold" || doc.status === "Closed")
+		return { stage: doc.status, color: doc.status === "On Hold" ? "orange" : "gray" };
+	const late = !!doc.delivery_date && doc.delivery_date < frappe.datetime.get_today();
+	return { stage: "Confirmed", color: late ? "red" : "blue", late, part: delivered > 0, next: "deliver" };
+}
+
+function hk_order_stage(frm) {
+	if (frm.is_new()) return;
+	const s = hk_so_stage(frm.doc);
+	const steps = ["Draft", "Confirmed", "Completed"];
+	const at = steps.indexOf(s.stage);
+	const bar = steps.map((name, i) => {
+		const done = at >= 0 && i <= at;
+		const now = i === at;
+		return `<span style="display:inline-flex;align-items:center;gap:6px;${now ? "font-weight:600;" : done ? "" : "opacity:.45;"}">
+			<span class="indicator-pill ${now ? s.color : done ? "green" : "gray"}" style="padding:2px 10px">${i + 1}. ${__(name)}</span></span>`;
+	}).join(`<span style="opacity:.4;margin:0 6px">&rarr;</span>`);
+	const notes = [];
+	if (at < 0) notes.push(`<b>${__(s.stage)}</b>`);
+	if (s.late) notes.push(`<span class="text-danger">${__("Late: the delivery date has passed.")}</span>`);
+	if (s.part) notes.push(__("{0}% delivered so far.", [Math.round(flt(frm.doc.per_delivered))]));
+	if (s.stage === "Completed" && !s.invoiced) notes.push(__("Delivered, not invoiced yet."));
+	frm.dashboard.add_comment(`<b>${__("Order")}:</b> ${bar}${notes.length ? " &nbsp; " + notes.join(" ") : ""}`, "blue", true);
+
+	if (s.next === "confirm" && !frm.is_dirty() && frm.has_perm("submit"))
+		frm.page.set_primary_action(__("Confirm order"), () => frm.savesubmit(), "check");
+	if (s.next === "deliver" && frappe.model.can_create("Delivery Note"))
+		frm.add_custom_button(__("Mark as delivered"), () => hk_mark_delivered(frm)).addClass("btn-primary");
+}
+
+function hk_mark_delivered(frm) {
+	if (frm.doc.hk_needs_review)
+		return frappe.msgprint(__("This order was revised. Mark the revision as checked before delivering."));
+	frappe.confirm(
+		__("Mark {0} as delivered? This makes and submits a Delivery Note for everything not yet delivered.", [frm.doc.name]),
+		() => frappe.call({
+			method: "happy_kitchen.hk_operations.order_stage_api.mark_delivered",
+			args: { sales_order: frm.doc.name },
+			freeze: true,
+			freeze_message: __("Making the delivery note..."),
+		}).then(({ message }) => {
+			frappe.show_alert({ message: __("Delivered: {0}", [message]), indicator: "green" });
+			frm.reload_doc();
+		})
+	);
 }
