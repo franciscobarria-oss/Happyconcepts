@@ -1,0 +1,131 @@
+{
+ "columns": [
+  {
+   "group": "IKEA",
+   "label": "CWB",
+   "zh": "銅鑼灣",
+   "sort": 1
+  },
+  {
+   "group": "IKEA",
+   "label": "K11",
+   "zh": "尖沙咀",
+   "sort": 2
+  },
+  {
+   "group": "IKEA",
+   "label": "KBS 3/F SFM",
+   "zh": "九龍灣 3/F SFM",
+   "sort": 3
+  },
+  {
+   "group": "IKEA",
+   "label": "KBS CAFE",
+   "zh": "九龍灣 CAFE",
+   "sort": 4
+  },
+  {
+   "group": "IKEA",
+   "label": "KBS KITCHEN",
+   "zh": "九龍灣4 CK",
+   "sort": 5
+  },
+  {
+   "group": "IKEA",
+   "label": "ST BISTRO",
+   "zh": "沙田 Bistro",
+   "sort": 6
+  },
+  {
+   "group": "IKEA",
+   "label": "ST REST",
+   "zh": "沙田 Rest",
+   "sort": 7
+  },
+  {
+   "group": "IKEA",
+   "label": "TKS",
+   "zh": "太古城",
+   "sort": 8
+  },
+  {
+   "group": "IKEA",
+   "label": "TSW POP",
+   "zh": "天水圍",
+   "sort": 9
+  },
+  {
+   "group": "IKEA",
+   "label": "TWS 3/F BISTRO",
+   "zh": "荃灣 3/F Bistro",
+   "sort": 10
+  },
+  {
+   "group": "IKEA",
+   "label": "TWS 7/F KITCHEN",
+   "zh": "荃灣 7/F Kitchen",
+   "sort": 11
+  },
+  {
+   "group": "PPL",
+   "label": "AMEX",
+   "zh": "機場",
+   "sort": 12
+  },
+  {
+   "group": "SODEXO",
+   "label": "UA",
+   "zh": "機場",
+   "sort": 13
+  },
+  {
+   "group": "SODEXO",
+   "label": "SA",
+   "zh": "新加坡航空 機場",
+   "sort": 14
+  },
+  {
+   "group": "SODEXO",
+   "label": "Qantas",
+   "zh": "澳航 機場",
+   "sort": 15
+  },
+  {
+   "group": "W Hotel",
+   "label": "KLN W hotel",
+   "zh": "九龍 W Hotel",
+   "sort": 16
+  }
+ ],
+ "shelf_life_days": {
+  "798815002": 4,
+  "798815003": 4,
+  "798815004": 4,
+  "798815005": 4,
+  "798816104": 4,
+  "798816105": 4,
+  "798816106": 4,
+  "798816134": 4,
+  "798816139": 4,
+  "798816166": 4,
+  "798816167": 4,
+  "798816168": 4,
+  "798819208": 4,
+  "798819270": 4,
+  "798819304": 4,
+  "798819375": 30,
+  "798819379": 14,
+  "798819380": 3,
+  "798819381": 14,
+  "798819382": 14,
+  "798819386": 14,
+  "798819387": 14,
+  "798819388": 14,
+  "798819389": 14,
+  "RC009": 7,
+  "RC011": 7,
+  "RC015": 7,
+  "RC016": 7,
+  "SD007": 7
+ }
+}
