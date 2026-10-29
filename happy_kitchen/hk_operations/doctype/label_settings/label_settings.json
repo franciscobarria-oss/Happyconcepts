@@ -1,0 +1,143 @@
+{
+ "actions": [],
+ "creation": "2026-10-14 16:00:00.000000",
+ "modified": "2026-10-19 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "HK Operations",
+ "name": "Label Settings",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "field_order": [
+  "create_on_submit",
+  "default_printer",
+  "date_label_printer",
+  "batch_labels_on_submit",
+  "date_basis",
+  "column_break_1",
+  "maker_lines",
+  "origin_line",
+  "section_text",
+  "default_note",
+  "column_break_2",
+  "factory_statement"
+ ],
+ "fields": [
+  {
+   "fieldname": "create_on_submit",
+   "fieldtype": "Check",
+   "label": "Create labels when a sales order is submitted",
+   "default": "1"
+  },
+  {
+   "fieldname": "default_printer",
+   "fieldtype": "Link",
+   "label": "Default printer",
+   "options": "Label Printer"
+  },
+  {
+   "fieldname": "date_label_printer",
+   "fieldtype": "Link",
+   "label": "Kitchen date label printer",
+   "options": "Label Printer",
+   "description": "Prints opened-product and batch labels. Blank = the first enabled printer set to Kitchen date labels."
+  },
+  {
+   "fieldname": "batch_labels_on_submit",
+   "fieldtype": "Check",
+   "label": "Print batch labels when production is logged",
+   "default": "1"
+  },
+  {
+   "fieldname": "date_basis",
+   "fieldtype": "Select",
+   "label": "Made-on date",
+   "options": "Print date\nDelivery date",
+   "default": "Print date",
+   "description": "Best before = made-on date + the product's shelf life."
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "maker_lines",
+   "fieldtype": "Small Text",
+   "label": "Manufacturer",
+   "description": "Printed under \"Manufacturers:\", one line each: company name, then address."
+  },
+  {
+   "fieldname": "origin_line",
+   "fieldtype": "Data",
+   "label": "Origin line",
+   "description": "e.g. Made in Hong Kong"
+  },
+  {
+   "fieldname": "section_text",
+   "fieldtype": "Section Break",
+   "label": "Label text"
+  },
+  {
+   "fieldname": "default_note",
+   "fieldtype": "Small Text",
+   "label": "Default note",
+   "description": "Top of the right column, e.g. For immediate consumption after opening. A product's \"Extra line on label\" replaces it."
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "factory_statement",
+   "fieldtype": "Small Text",
+   "label": "Factory statement",
+   "description": "Allergens also handled in the kitchen (cross-contact), printed under the note."
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1,
+   "print": 1
+  },
+  {
+   "role": "Stock Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1,
+   "print": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1,
+   "report": 1,
+   "print": 1
+  },
+  {
+   "role": "Stock User",
+   "read": 1,
+   "report": 1,
+   "print": 1
+  }
+ ],
+ "issingle": 1
+}

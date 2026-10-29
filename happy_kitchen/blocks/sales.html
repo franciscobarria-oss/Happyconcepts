@@ -1,0 +1,55 @@
+<div class="hk">
+	<div class="head">
+		<div>
+			<div class="eyebrow range"></div>
+			<h1 data-t>Sales</h1>
+		</div>
+		<div class="acts">
+			<div class="seg presets" role="group">
+				<button type="button" data-days="28" data-t>4 weeks</button>
+				<button type="button" data-days="84" data-t>12 weeks</button>
+				<button type="button" data-days="182" data-t>6 months</button>
+				<button type="button" data-days="365" data-t>1 year</button>
+				<button type="button" data-days="all" data-t>All</button>
+			</div>
+			<label class="dt"><span data-t>From</span> <input type="date" name="from"></label>
+			<label class="dt"><span data-t>To</span> <input type="date" name="to"></label>
+			<label class="chk"><input type="checkbox" name="drafts"> <span data-t>Include drafts</span></label>
+		</div>
+	</div>
+	<div class="filter" hidden>
+		<span class="badge info item"></span>
+		<button type="button" class="btn small clear" data-t>Show all SKUs</button>
+	</div>
+	<div class="tiles"></div>
+	<p class="note drafts-note" hidden></p>
+
+	<section class="card">
+		<h3><span data-t>Units sold per week</span><span class="cap legend" data-t>Monday to Sunday, by delivery date</span></h3>
+		<div class="weeks"></div>
+	</section>
+
+	<div class="grid two">
+		<section class="card">
+			<h3><span data-t>SKUs sold</span><span class="count skus-count"></span></h3>
+			<input type="search" class="search" name="search" placeholder="Search SKU or name">
+			<p class="cap" data-t>Click a SKU to see its weeks and busiest days.</p>
+			<div class="table-wrap">
+				<table class="skus">
+					<thead><tr>
+						<th data-t>SKU</th>
+						<th class="num" data-t>Units</th>
+						<th class="num" data-t>Orders</th>
+						<th class="num" data-t>Amount</th>
+					</tr></thead>
+					<tbody></tbody>
+				</table>
+			</div>
+		</section>
+		<section class="card recent">
+			<h3><span data-t>Busiest days, last 4 weeks</span></h3>
+			<p class="cap recent-range"></p>
+			<div class="recent-body"></div>
+		</section>
+	</div>
+</div>

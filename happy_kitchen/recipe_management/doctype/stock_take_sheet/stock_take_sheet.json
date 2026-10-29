@@ -1,0 +1,110 @@
+{
+ "actions": [],
+ "creation": "2026-10-03 12:00:00.000000",
+ "modified": "2026-10-03 12:30:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "Recipe Management",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "name": "Stock Take Sheet",
+ "autoname": "field:sheet_name",
+ "naming_rule": "By fieldname",
+ "track_changes": 1,
+ "title_field": "sheet_name",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "share": 1
+  },
+  {
+   "role": "Stock Manager",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Stock Take Approver",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1
+  },
+  {
+   "role": "Stock User",
+   "read": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1
+  }
+ ],
+ "fields": [
+  {
+   "fieldname": "sheet_name",
+   "fieldtype": "Data",
+   "label": "Sheet Name",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "active_rows",
+   "fieldtype": "Int",
+   "label": "Active Ingredients",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "items_section",
+   "fieldtype": "Section Break",
+   "label": "Ingredients on the Count Sheet",
+   "description": "One row per ingredient and storage area. Drag rows to change the counting order; the count screen groups them by storage area in this order. Untick Active to hide a row."
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Ingredients",
+   "options": "Stock Take Sheet Item"
+  }
+ ],
+ "field_order": [
+  "sheet_name",
+  "company",
+  "column_break_1",
+  "active_rows",
+  "items_section",
+  "items"
+ ]
+}

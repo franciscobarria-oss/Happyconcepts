@@ -1,0 +1,80 @@
+<div class="hk">
+	<div class="head">
+		<div>
+			<div class="eyebrow date"></div>
+			<h1 data-t>Today</h1>
+		</div>
+		<div class="acts">
+			<div class="seg" role="group">
+				<button type="button" data-view="simple" data-t>Simple</button>
+				<button type="button" data-view="detailed" data-t>Detailed</button>
+			</div>
+			<a class="btn sheet" target="_blank" rel="noopener" data-t>Production sheet (A4)</a>
+			<button type="button" class="btn refresh" data-t>Refresh</button>
+		</div>
+	</div>
+	<div class="tiles"></div>
+
+	<h2 class="section" data-t>Happening today</h2>
+	<div class="grid now">
+		<section class="card" data-part="orders" hidden>
+			<h3><span data-t>Orders going out</span><a class="more" href="/app/sales-order?status=To%20Deliver%20and%20Bill" data-t>All orders</a></h3>
+			<div class="list"></div>
+		</section>
+		<section class="card" data-part="production" hidden>
+			<h3><span data-t>Production</span><a class="more" href="/app/kitchen-production" data-t>Log production</a></h3>
+			<div class="list"></div>
+		</section>
+		<section class="card" data-part="deliveries" hidden>
+			<h3><span data-t>Deliveries in</span><a class="more" href="/app/receive-delivery" data-t>Receive</a></h3>
+			<div class="list"></div>
+		</section>
+		<section class="card" data-part="team" hidden>
+			<h3><span data-t>On shift</span></h3>
+			<div class="chips"></div>
+		</section>
+	</div>
+
+	<section class="card" data-part="email" hidden>
+		<h3><span data-t>Email orders</span><span class="count"></span></h3>
+		<div class="list"></div>
+	</section>
+
+	<div class="grid two">
+		<section class="card" data-part="days" hidden>
+			<h3><span data-t>Orders by day</span><a class="more" href="/app/sales-order?status=To%20Deliver%20and%20Bill" data-t>View all</a></h3>
+			<div class="days"></div>
+		</section>
+		<section class="card" data-part="waiting">
+			<h3><span data-t>Waiting on you</span><span class="count"></span></h3>
+			<div class="list"></div>
+		</section>
+	</div>
+
+	<section class="card" data-part="week" hidden>
+		<h3><span data-t>Week ahead</span><span class="cap legend"></span></h3>
+		<div class="week"></div>
+	</section>
+
+	<section class="card" data-part="dates" hidden>
+		<h3><span data-t>Use by</span><span class="count"></span></h3>
+		<div class="list"></div>
+	</section>
+
+	<h2 class="section" data-t>Tasks</h2>
+	<div class="grid tasks">
+		<section class="card col" data-task="ordering" hidden>
+			<h3><span data-t>Ordering</span><span class="count"></span></h3>
+			<div class="list"></div>
+		</section>
+		<section class="card col" data-task="receiving" hidden>
+			<h3><span data-t>Receiving</span><span class="count"></span></h3>
+			<div class="list"></div>
+		</section>
+		<section class="card col" data-task="production" hidden>
+			<h3><span data-t>Production</span><span class="count"></span></h3>
+			<div class="list"></div>
+		</section>
+	</div>
+	<p class="cap updated"></p>
+</div>

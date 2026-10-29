@@ -1,0 +1,409 @@
+{
+ "app": "happy_kitchen",
+ "charts": [],
+ "content": "[{\"id\": \"hk-h1b\", \"type\": \"paragraph\", \"data\": {\"text\": \"<span class=\\\"text-muted\\\">Daily tasks</span>\", \"col\": 12}}, {\"id\": \"hk-s1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Count Stock\", \"col\": 4}}, {\"id\": \"hk-s2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Production\", \"col\": 4}}, {\"id\": \"hk-s3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Log Wastage\", \"col\": 4}}, {\"id\": \"hk-s4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Receive Delivery\", \"col\": 4}}, {\"id\": \"hk-s5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Purchase Orders\", \"col\": 4}}, {\"id\": \"hk-s6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Stock Levels\", \"col\": 4}}, {\"id\": \"hk-s7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Recipes\", \"col\": 4}}, {\"id\": \"hk-s8\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Suppliers\", \"col\": 4}}, {\"id\": \"hk-s9\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Inventory Variance\", \"col\": 4}}, {\"id\": \"hk-sp\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"hk-h2\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h5\\\"><b>Recipes</b></span>\", \"col\": 12}}, {\"id\": \"hk-q1\", \"type\": \"quick_list\", \"data\": {\"quick_list_name\": \"Finished Products\", \"col\": 4}}, {\"id\": \"hk-q2\", \"type\": \"quick_list\", \"data\": {\"quick_list_name\": \"Batch Preparations\", \"col\": 4}}, {\"id\": \"hk-q3\", \"type\": \"quick_list\", \"data\": {\"quick_list_name\": \"Recipe Components\", \"col\": 4}}, {\"id\": \"hk-sp2\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"hk-h3\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h5\\\"><b>More</b></span>\", \"col\": 12}}, {\"id\": \"hk-c1\", \"type\": \"card\", \"data\": {\"card_name\": \"Recipes\", \"col\": 3}}, {\"id\": \"hk-c2\", \"type\": \"card\", \"data\": {\"card_name\": \"Stock Take\", \"col\": 3}}, {\"id\": \"hk-c3\", \"type\": \"card\", \"data\": {\"card_name\": \"Reports\", \"col\": 3}}, {\"id\": \"hk-c4\", \"type\": \"card\", \"data\": {\"card_name\": \"Masters\", \"col\": 3}}, {\"id\": \"hk-c-team\", \"type\": \"card\", \"data\": {\"card_name\": \"Team & Clients\", \"col\": 4}}]",
+ "creation": "2026-10-19 12:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "notepad-text",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Recipes",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Recipes",
+   "link_count": 4,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Recipe",
+   "link_count": 0,
+   "link_to": "Recipe",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Recipe Production Log",
+   "link_count": 0,
+   "link_to": "Recipe Production Log",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Recipe Settings",
+   "link_count": 0,
+   "link_to": "Recipe Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Orders",
+   "link_count": 0,
+   "link_to": "Sales Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link",
+   "dependencies": "",
+   "only_for": ""
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_count": 6,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Recipe Cost Analysis",
+   "link_count": 0,
+   "link_to": "Recipe Cost Analysis",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Ingredient Cost Analysis",
+   "link_count": 0,
+   "link_to": "Ingredient Cost Analysis",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Ingredients and Packaging by Supplier",
+   "link_count": 0,
+   "link_to": "Ingredients and Packaging by Supplier",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Recipe Ingredient Usage",
+   "link_count": 0,
+   "link_to": "Recipe Ingredient Usage",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Price Variance",
+   "link_count": 0,
+   "link_to": "Price Variance",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link",
+   "dependencies": "",
+   "only_for": ""
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Ingredient Label Check",
+   "link_count": 0,
+   "link_to": "Ingredient Label Check",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Masters",
+   "link_count": 4,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Ingredient (Item)",
+   "link_count": 0,
+   "link_to": "Item",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Supplier",
+   "link_count": 0,
+   "link_to": "Supplier",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Item Price",
+   "link_count": 0,
+   "link_to": "Item Price",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Wastage Reasons",
+   "link_count": 0,
+   "link_to": "Wastage Reason",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link",
+   "dependencies": "",
+   "only_for": ""
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Stock Take",
+   "link_count": 5,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Count Screen (iPad)",
+   "link_count": 0,
+   "link_to": "stock-take-count",
+   "link_type": "Page",
+   "onboard": 0,
+   "type": "Link",
+   "dependencies": "",
+   "only_for": ""
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Stock Take",
+   "link_count": 0,
+   "link_to": "Stock Take",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link",
+   "dependencies": "",
+   "only_for": ""
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Count Sheets",
+   "link_count": 0,
+   "link_to": "Stock Take Sheet",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link",
+   "dependencies": "",
+   "only_for": ""
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Inventory Variance",
+   "link_count": 0,
+   "link_to": "Inventory Variance",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link",
+   "dependencies": "",
+   "only_for": ""
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Wastage Logs",
+   "link_count": 0,
+   "link_to": "Wastage Log",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link",
+   "dependencies": "",
+   "only_for": ""
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Team & Clients",
+   "link_count": 4,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Overtime Entry",
+   "link_count": 0,
+   "link_to": "Overtime Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link",
+   "dependencies": "",
+   "only_for": ""
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Overtime Summary",
+   "link_count": 0,
+   "link_to": "Overtime Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link",
+   "dependencies": "",
+   "only_for": ""
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Overtime Rate",
+   "link_count": 0,
+   "link_to": "Overtime Rate",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link",
+   "dependencies": "",
+   "only_for": ""
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "OEM Spec Sheet",
+   "link_count": 0,
+   "link_to": "OEM Spec Sheet",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link",
+   "dependencies": "",
+   "only_for": ""
+  }
+ ],
+ "modified": "2026-10-19 15:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Recipe Management",
+ "name": "Recipes",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Recipe",
+   "label": "Finished Products",
+   "quick_list_filter": "{\"recipe_type\": [\"=\", \"Finished Product\"], \"status\": [\"=\", \"Active\"]}"
+  },
+  {
+   "document_type": "Recipe",
+   "label": "Batch Preparations",
+   "quick_list_filter": "{\"recipe_type\": [\"=\", \"Batch Preparation\"], \"status\": [\"=\", \"Active\"]}"
+  },
+  {
+   "document_type": "Recipe",
+   "label": "Recipe Components",
+   "quick_list_filter": "{\"recipe_type\": [\"=\", \"Recipe Component\"], \"status\": [\"=\", \"Active\"]}"
+  }
+ ],
+ "roles": [],
+ "sequence_id": 30.0,
+ "shortcuts": [
+  {
+   "color": "Orange",
+   "doc_view": "",
+   "label": "Count Stock",
+   "link_to": "stock-take-count",
+   "type": "Page"
+  },
+  {
+   "color": "Green",
+   "doc_view": "",
+   "label": "Production",
+   "link_to": "kitchen-production",
+   "type": "Page"
+  },
+  {
+   "color": "Red",
+   "doc_view": "",
+   "label": "Log Wastage",
+   "link_to": "kitchen-wastage",
+   "type": "Page"
+  },
+  {
+   "color": "Blue",
+   "doc_view": "",
+   "label": "Receive Delivery",
+   "link_to": "receive-delivery",
+   "type": "Page"
+  },
+  {
+   "color": "Cyan",
+   "doc_view": "List",
+   "label": "Purchase Orders",
+   "link_to": "Purchase Order",
+   "type": "DocType",
+   "stats_filter": "{\"docstatus\": 1, \"status\": [\"in\", [\"To Receive and Bill\", \"To Receive\"]]}"
+  },
+  {
+   "color": "Yellow",
+   "doc_view": "",
+   "label": "Stock Levels",
+   "link_to": "Stock Balance",
+   "type": "Report",
+   "report_ref_doctype": "Stock Ledger Entry"
+  },
+  {
+   "color": "Purple",
+   "doc_view": "List",
+   "label": "Recipes",
+   "link_to": "Recipe",
+   "type": "DocType",
+   "stats_filter": "{\"status\": \"Active\"}"
+  },
+  {
+   "color": "Pink",
+   "doc_view": "List",
+   "label": "Suppliers",
+   "link_to": "Supplier",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "",
+   "label": "Inventory Variance",
+   "link_to": "Inventory Variance",
+   "type": "Report",
+   "report_ref_doctype": "Stock Take"
+  }
+ ],
+ "title": "Recipes",
+ "type": "Workspace"
+}

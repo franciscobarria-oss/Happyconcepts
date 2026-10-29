@@ -1,0 +1,98 @@
+{
+ "actions": [],
+ "creation": "2026-10-20 12:00:00.000000",
+ "modified": "2026-10-20 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "HK Operations",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "name": "Email Order Line",
+ "istable": 1,
+ "field_order": [
+  "external_sku",
+  "description",
+  "qty",
+  "item",
+  "item_created",
+  "po_no",
+  "delivery_date",
+  "sales_order",
+  "item_confirmed"
+ ],
+ "fields": [
+  {
+   "fieldname": "external_sku",
+   "fieldtype": "Data",
+   "label": "External SKU",
+   "in_list_view": 1,
+   "read_only": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "label": "Description",
+   "in_list_view": 1,
+   "read_only": 1,
+   "columns": 3
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Float",
+   "label": "Qty",
+   "in_list_view": 1,
+   "read_only": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Item (internal SKU)",
+   "options": "Item",
+   "in_list_view": 1,
+   "read_only": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "item_created",
+   "fieldtype": "Check",
+   "label": "New item",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "po_no",
+   "fieldtype": "Data",
+   "label": "PO No.",
+   "read_only": 1,
+   "in_list_view": 0
+  },
+  {
+   "fieldname": "delivery_date",
+   "fieldtype": "Date",
+   "label": "Delivery Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "options": "Sales Order",
+   "label": "Sales Order",
+   "read_only": 1
+  },
+  {
+   "fieldname": "item_confirmed",
+   "fieldtype": "Check",
+   "label": "Item confirmed",
+   "read_only": 1,
+   "default": "0"
+  }
+ ],
+ "permissions": []
+}

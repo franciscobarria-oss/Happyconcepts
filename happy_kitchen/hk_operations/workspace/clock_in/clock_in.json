@@ -1,0 +1,42 @@
+{
+ "app": "happy_kitchen",
+ "charts": [],
+ "content": "[{\"id\": \"hk-b0\", \"type\": \"custom_block\", \"data\": {\"custom_block_name\": \"HK Clock In\", \"col\": 12}}]",
+ "creation": "2026-10-19 09:00:00.000000",
+ "custom_blocks": [
+  {
+   "custom_block_name": "HK Clock In",
+   "label": "HK Clock In"
+  }
+ ],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "clock",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Clock In",
+ "links": [],
+ "modified": "2026-10-19 09:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "HK Operations",
+ "name": "Clock In",
+ "number_cards": [],
+ "owner": "Administrator",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "HR Manager"
+  },
+  {
+   "role": "Kitchen Tablet"
+  }
+ ],
+ "shortcuts": [],
+ "title": "Clock In"
+}

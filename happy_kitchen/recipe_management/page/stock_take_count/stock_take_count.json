@@ -1,0 +1,23 @@
+{
+ "content": null,
+ "creation": "2026-10-03 12:00:00.000000",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2026-10-03 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Recipe Management",
+ "name": "stock-take-count",
+ "owner": "Administrator",
+ "page_name": "stock-take-count",
+ "roles": [
+  {"role": "Stock User"},
+  {"role": "Stock Manager"},
+  {"role": "Stock Take Approver"},
+  {"role": "System Manager"}
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "title": "Stock Take Count"
+}

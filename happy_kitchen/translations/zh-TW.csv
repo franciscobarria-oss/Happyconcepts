@@ -1,0 +1,1153 @@
+# Recipes,食譜數目
+"$ for Per Batch / Per Unit / Per Labour Hour, or % for the percentage bases.",每批／每件／每工時以 $ 計，百分比基準則以 % 計。
+% of Cost,佔成本 %
+% of Ingredient Cost,佔食材成本 %
+% of Labour Cost,佔人工成本 %
+% of Total,佔總額 %
+"(Monthly base + employer MPF 5%, capped 1,500) / (days x hours), or hourly wage x 1.05. Recalculated on save.","（每月底薪 + 僱主強積金 5%，上限 1,500）/（日數 x 時數），或時薪 x 1.05。儲存時重新計算。"
+(empty),（空白）
+(no subject),(無主旨)
+(quantity × {0}),（數量 × {0}）
++ Add Product,+ 新增產品
++{0} more,另有 {0} 項
+1 = a label on every piece. 48 = one label per carton of 48; an order of 200 prints 4 × 48 and 1 × 8.,1 = 每件一張標籤。48 = 每箱 48 件一張；訂單 200 件會印 4 張 × 48 及 1 張 × 8。
+1 year,1 年
+12 weeks,12 週
+4 weeks,4 週
+4-digit PIN,4 位數密碼
+6 months,6 個月
+<b>{0}</b> is used in {1} recipes. Choose what to use instead and where.,<b>{0}</b> 用於 {1} 個食譜。請選擇取代的材料及食譜。
+A client spec sheet may change shelf life and storage for that client.,客戶規格表可為該客戶更改保質期及儲存方法。
+A draft sales order was made from the lines that could be read. Check it against the PDF.,已用讀得到的行建立銷售訂單草稿。請對照 PDF 檢查。
+A newer email proposes changes to this submitted order ({0}): {1},較新的電郵建議修改這張已提交的訂單({0}):{1}
+"A pack or container opened in the kitchen, with its use-by time (logged from the Opened screen).",廚房內開封的包裝或容器及其使用期限（由「開封」畫面記錄）。
+Accent Colour,強調色
+Active Ingredients,啟用材料
+Actual Used,實際用量
+Add,加入
+Add Batch Preparations to Stock,半成品入庫
+Add Product from {0},從 {0} 新增產品
+Add all stocked ingredients,加入所有庫存材料
+Add at least one item,請最少加入一項物品
+"Addresses or @domains, separated by commas or lines. Blank = anyone whose mail carries the label.","電郵地址或 @網域,以逗號或換行分隔。留空 = 凡帶有此標籤的郵件皆可。"
+"Addresses or domains (happyconceptsfood.hk), separated by commas or lines. A reply (Re:) from them without a PDF is skipped; forwards and replies with a PDF are still read.",地址或網域（happyconceptsfood.hk），以逗號或換行分隔。其不含 PDF 的回覆（Re:）會略過；轉寄及附有 PDF 的回覆仍會讀取。
+"Addresses or domains (plaza-network.com), separated by commas or lines. Their mail is read even without the label.",地址或網域（plaza-network.com），以逗號或換行分隔。即使沒有標籤，也會讀取其郵件。
+After Usage,使用後
+Agent version,程式版本
+All,全部
+All arrived as ordered,全部按單收貨
+All clear.,全部處理完畢。
+All orders,全部訂單
+All saved,已全部儲存
+Allergen,致敏原
+Allergens,致敏原
+Allergens Declared,申報致敏原
+"Allergens also handled in the kitchen (cross-contact), printed under the note.",廚房亦有處理的致敏物（交叉接觸），印在備註下方。
+Allergens reviewed,已核對致敏原
+Already printed,已列印
+Also pick up from these senders,同時讀取這些寄件人的郵件
+Also replace pack sizes that are already set,同時取代已設定的包裝規格
+"Also typed in the Raspberry Pi's settings file, e.g. Kitchen Zebra.",亦須填入 Raspberry Pi 的設定檔，例如 Kitchen Zebra。
+Ambient,常溫
+Amount (HK$),金額（港元）
+Amount / Batch,每批金額
+An approved stock take is locked.,已批准的盤點已鎖定。
+Applied to the order,已套用到訂單
+Approval,審批
+Approve,批准
+Approve stock count {0},審批盤點 {0}
+Approve this count? It will be locked and used as stock for the variance report.,確認批准此盤點？批准後會鎖定，並用作盤點差異報表的庫存。
+Approved By,審批人
+Approved On,批准日期
+Approved Spec File,已批准規格文件
+Approved amount,已批金額
+Approved hours,已批時數
+Approving a Stock Take posts a Stock Reconciliation so ERPNext stock matches the count.,審批盤點後會建立庫存調整，使系統庫存與盤點數量一致。
+Archived,已封存
+"As it appears in ""This product contains ... and their products."", e.g. cereals containing gluten.",用於「This product contains ... and their products.」句中，例如 cereals containing gluten。
+"As printed after CONTAINS: on labels, e.g. Milk.",標籤上 CONTAINS: 之後的寫法，例如 Milk。
+Back to orders,返回採購單
+Base Unit,基本單位
+Based On,計算基礎
+Basis,計算方式
+Batch Preparation,半成品
+Batch Preparation Stock Entries,半成品入庫紀錄
+Batch Preparations,半成品
+Batch Yield (# of units),每批份量（件數）
+Batch prep,半成品
+Batch preparation {0} x {1} from Recipe Production Log {2},半成品 {0} x {1}，來自生產紀錄 {2}
+Batch status,批次狀態
+Batches,批數
+Before it can be checked,核對前需要
+"Below {0}'s minimum order of {1} ({2} more needed). You can keep the draft, but it can't be submitted yet.",低於 {0} 的最低訂貨額 {1}（尚欠 {2}）。可以保留草稿，但暫時不能提交。
+Best before,此日期前最佳
+Best before = made-on date + the product's shelf life.,此日期前最佳 = 製造日期 + 產品保質期。
+Blank = default labour rate from Recipe Settings.,留空 = 使用食譜設定中的預設人工費率。
+Blank = item name.,留空 = 物料名稱。
+Blank = the recipe's unit weight.,留空 = 食譜的單位重量。
+Brand Name,品牌名稱
+Brand line,品牌行
+Branding (A4 recipe print),品牌（A4 食譜列印）
+"Brown / blush Happy Concepts colours and Oswald headings on every screen, in Light and Dark. Untick to go back to the standard look. Applies after each user reloads the page.",所有畫面使用 Happy Concepts 啡色／粉紅色及 Oswald 標題，淺色及深色模式皆適用。取消勾選即回復標準外觀。每位用戶重新載入頁面後生效。
+Busiest date,最忙日期
+"Busiest days, last 4 weeks",最忙日子（最近 4 週）
+Busiest weekday,最忙星期
+Busy day,繁忙
+Buying Price,採購價
+Buying Price List,採購價目表
+By,經手人
+Can't reach the server.,未能連接伺服器。
+Change clock-in PIN,更改打卡密碼
+Change item,更改產品
+Changed by,修改者
+Changed since check,核對後有更改
+Cheapest,最便宜
+Cheapest Supplier,最便宜供應商
+Check,檢查
+Check connection,檢查連線
+Check delivery from {0},檢查 {0} 的送貨
+Check ingredients,檢查材料
+Check product labels,核對產品標籤
+Check the label,核對標籤
+Check these against the email and add them to the draft order by hand.,"請對照電郵,把這些行手動加到訂單草稿。"
+Checked by,核對人
+Checked for new mail,已檢查新郵件
+Checked label fingerprint,已檢查標籤的指紋
+Checked mail a moment ago,剛剛檢查過郵件
+Checked on,核對時間
+Chilled,冷藏
+Chinese name,中文名稱
+Chinese name on kitchen labels,廚房標籤上的中文名稱
+Choose a Stock Take Sheet or a Stock Take.,請選擇盤點表或盤點紀錄。
+Choose a different ingredient to replace {0} with.,請選擇另一項材料取代 {0}。
+Choose a reason,請選擇原因
+Choose an opening and a closing approved stock take.,請選擇已批准的期初及期末盤點。
+Choose at least one recipe and a number of batches,請選擇最少一個食譜及批數
+Click a SKU to see its weeks and busiest days.,按一個產品編號，查看它的每週數量和最忙日子。
+Client,客戶
+Client Spec Sheets,客戶規格表
+Clock In,打卡
+Clock in,打卡
+Clock-in PIN,打卡密碼
+Clock-in PIN Hash,打卡密碼雜湊
+Clock-in tablet,打卡平板
+Clock-ins,打卡紀錄
+Close this email as not an order?,要把這封電郵標為非訂單並關閉嗎？
+Closed at,結束時間
+Closing,期末
+Closing Count,期末盤點
+Code,代碼
+Component,組件
+Confirm PO items,確認此採購單的產品
+Confirm item,確認產品
+Connected to {0}. Read-only access.,已連接 {0}(唯讀)。
+Continue a count,繼續盤點
+Cooking Yield %,成品率
+Copied into every new recipe. Edit them per recipe as needed.,會複製到每個新食譜，可按需要逐個食譜修改。
+Copy last week's shifts into this week's empty days?,將上星期的更次複製到本星期未排更的日子？
+Cost,成本
+Cost / Batch,每批成本
+Cost / UOM,每單位成本
+Cost / Unit,每件成本
+Cost / kg,每公斤成本
+Cost Analysis,成本分析
+Cost Card,成本卡
+Cost Summary,成本摘要
+"Cost per Unit (all-in, incl. services)",每件總成本（連服務）
+Cost per Unit (excl. Labour),每件成本（不連人工）
+Cost per Unit (incl. Labour),每件成本（連人工）
+Cost per unit,每件成本
+Costing,成本
+Costs appear after the first save.,儲存後顯示成本。
+Couldn't load the sales figures.,無法載入銷售數字。
+Couldn't load today's board.,無法載入今日看板。
+Couldn't load today's figures.,未能載入今日數據。
+Count Date,盤點日期
+Count Screen (iPad),盤點畫面（iPad）
+Count Sheet,盤點表
+Count Sheets,盤點表
+Count Stock,盤點
+Count Time,盤點時間
+Count Unit,盤點單位
+Counted,已盤點
+Counted At,盤點時間
+Counted By,盤點人
+Counted Packs 1,規格 1 已盤點包數
+Counted Packs 2,規格 2 已盤點包數
+Counted Packs 3,規格 3 已盤點包數
+Counted Qty,已盤點數量
+Counted as 0 when submitted (no quantity entered): {0},提交時按 0 計算(未輸入數量):{0}
+Counts,盤點
+Create Material Issue,建立發料單
+Create a Stock Take Sheet first.,請先建立盤點表。
+Create draft Material Issue when a Production Log is submitted,提交生產紀錄時建立發料草稿
+Create draft order,建立採購單草稿
+Create labels when a sales order is submitted,提交銷售訂單時建立標籤
+Daily,日常
+Daily tasks,日常工作
+Day after,後天
+Day after tomorrow,後日
+Days count the opening day as day 1 and end at 23:59; hours count from the minute it is opened.,以日計：開封當天算第1天，至23:59止；以小時計：由開封那一分鐘起計。
+Default Labour Rate ($/hr),預設時薪
+Default Overheads,預設雜費
+Default Overheads & Services,預設雜費及服務
+Default Overtime Rate,預設加班費率
+Default Production Warehouse,預設生產倉庫
+Default note,預設說明
+Default printer,預設打印機
+"Defaults to the item's default warehouse (Dry Stock, Fridge, Freezer).",預設為物品的預設倉庫（乾貨、雪櫃、冰格）。
+Defaults to the person's rate on the Employee record.,預設為員工紀錄上的費率。
+Deliveries due,待收貨
+Deliveries in,今日收貨
+Delivery,送貨
+Delivery Check,收貨檢查
+Delivery date,送貨日期
+Delivery date: days after the email,送貨日期:電郵後第幾日
+Delivery differs from the order,送貨與訂單不符
+Detailed,詳細
+Details,詳情
+Differs from Order,與訂單不符
+Discard {0},丟棄 {0}
+Discarded,已丟棄
+Don't print labels for this item,此項目不列印標籤
+Done,完成
+Done by hand,已人手處理
+Draft order,訂單草稿
+Draft orders from email to check,待核對的電郵訂單草稿
+Draft orders get this delivery date; change it on the order.,訂單草稿會用這個送貨日期;可在訂單上修改。
+Draft sales order,銷售訂單草稿
+Draft {0} created. Check it and submit it to send.,已建立草稿 {0}。請檢查後提交發送。
+Drawing the label...,正在生成標籤…
+Each changed recipe is re-costed and gets a comment. Products with labels will need their label checked again.,每個已更改的食譜會重新計算成本並加上備註。有標籤的產品需要重新檢查標籤。
+Each recipe's quantity is multiplied by this. Keep 1 to use the same amount (e.g. 0.8 if the new product is stronger).,每個食譜的用量會乘以此數。保持 1 即用量不變（例如新產品味道較濃可用 0.8）。
+Email Order,電郵訂單
+Email Order Line,電郵訂單行
+Email customer,電郵客戶
+Email text,電郵內容
+Emails to read by hand,需人手處理的電郵
+Employee Name,員工姓名
+Enter a quantity,請輸入數量
+Enter how much was thrown away.,請輸入丟棄的數量。
+Enter what arrived for at least one line.,請最少輸入一行的實收數量。
+Entered by hand,人手輸入
+Entries,項數
+Est. Cost,估計成本
+Estimated Cost,估計成本
+"Every line was read and a draft sales order was made. Check it against the PDF, then submit it.",所有行都已讀取並建立銷售訂單草稿。請對照 PDF 檢查後提交。
+Everything is in stock,全部有貨
+Everything matches the order.,與訂單相符。
+Expected Used,預計用量
+Expected but not counted,預計有但未盤點
+Expiry after opening,開封後保質期
+External SKU,外部貨號
+External SKUs,外部貨號
+Extra line on label,標籤附加說明
+Factory statement,工場致敏原聲明
+"Fallback only: each ingredient is taken from its own default warehouse (Dry Stock, Fridge or Freezer) set on the Item.",只作後備：每項食材會從物品上設定的預設倉庫（乾貨、雪櫃或冰格）扣除。
+Files,檔案
+Fill,填入
+Fill pack sizes from items,從物品填入包裝規格
+Filled from the Supplier Items table above so the item is found by any supplier's SKU.,"由上方「供應商項目」表自動填寫,讓任何供應商的貨號都能搜尋到此貨品。"
+Filled from the selling price list when blank.,留空時會從銷售價格表填入。
+Find ingredient,搜尋材料
+Find item,搜尋物品
+Find recipe,搜尋食譜
+Find supplier or PO,搜尋供應商或採購單
+Finished,成品
+Finished Product,成品
+"Finished Product = sold · Batch Preparation = made ahead and stocked (dough, bases) · Recipe Component = part made fresh inside another recipe",成品 = 出售 · 半成品 = 預先製作並入庫（麵團、底料） · 食譜組件 = 在另一食譜內即場製作的部分
+Finished Products,成品
+Finished Weight per Batch (g),每批成品重量（克）
+Finished Weight per Unit (g),每件成品重量（克）
+Fixed per hour,每小時定額
+Flagged,已標記
+Food Cost %,食材成本率
+Food Cost per Unit,每件食物成本
+Food cost,食材成本率
+"For delivery charges, services and other non-food lines.",用於運費、服務及其他非食品項目。
+"For sales items sold under another code than the recipe's own item, e.g. a customer's article number or a box.",用於以食譜物品以外編號出售的銷售物品，例如客戶的貨號或一盒裝。
+"From Item > Weight Per Unit. Lets a recipe use grams for an item priced per piece, or pieces for one priced per gram.",取自物品 > 每單位重量。讓食譜可用克計算按件定價的物品，或用件計算按克定價的物品。
+From Storage,由儲存位置
+From approved Stock Take {0},來自已批准盤點 {0}
+"From approved Stock Take {0}, approved by {1}",來自已審批盤點 {0}，審批人 {1}
+From the item's Expiry after opening (Label tab). Blank = the item has none.,取自貨品的「開封後保質期」（標籤分頁）。留空 = 沒有。
+From the one-time sign-in on your own computer (deploy/gmail_orders.md). Read-only Gmail access.,來自在你自己電腦上做的一次性登入(deploy/gmail_orders.md)。只讀取 Gmail。
+Frozen,冷凍
+Full-time only. Leave empty for hourly staff.,只適用於全職員工。時薪員工請留空。
+"Gas, electricity, packaging, cleaning, rent share... New recipes start with the defaults from Recipe Settings.",煤氣、電費、包裝、清潔、租金分攤…… 新食譜會以食譜設定中的預設值開始。
+Gmail Settings,Gmail 設定
+Gmail Settings is missing the Google sign-in,Gmail 設定缺少 Google 登入資料
+Gmail Settings is missing: {0}.,Gmail 設定缺少:{0}。
+"Gmail Settings needs the Google client ID, secret and refresh token first.",請先在 Gmail 設定填寫 Google 用戶端 ID、密鑰及更新權杖。
+Gmail answered {0}.,Gmail 回應 {0}。
+Gmail label,Gmail 標籤
+Gmail message ID,Gmail 郵件 ID
+Gmail pick-up is switched off,Gmail 讀取已關閉
+Gmail thread ID,Gmail 對話 ID
+Goods received,已收貨
+Google client ID,Google 用戶端 ID
+Google client secret,Google 用戶端密鑰
+Google refresh token,Google 更新權杖
+Google refused the sign-in ({0}). Run the Google sign-in step again.,Google 拒絕登入({0})。請重新進行 Google 登入步驟。
+Grams per Piece,每件克數
+Gross Base Qty,毛用量（基本單位）
+Gross Qty (issue),毛用量（發料）
+HK Clock In,HK 打卡
+HK Team Roster,HK 團隊更表
+HK Team Today,HK 今日團隊
+HK Today,HK 今日
+"HK$ per hour (Fixed), or how many times the person's own hourly wage (1.5 = time and a half).",每小時港幣（固定），或員工本身時薪的倍數（1.5 = 一點五倍）。
+Happening today,今日進行中
+Happy Concepts desk theme,Happy Concepts 介面主題
+Happy Kitchen,快樂廚房
+"Have you read the whole label, including allergens, storage and shelf life, and is it correct?",你是否已閱讀整張標籤（包括致敏物、儲存方法及保質期），並確認正確？
+Hourly Labour Cost (incl. MPF),每小時人工成本（包括強積金）
+Hourly Wage,時薪
+Hours,時數
+Hours must be more than 0.,時數必須大於 0。
+Hours per Day,每日工時
+"How long it keeps once opened (or, for a batch preparation, once taken out). Blank = no opened label date.",開封後（批量預製品為取出後）可存放多久。留空 = 開封標籤不顯示日期。
+"How many of the recipe's yield units one of this item contains, e.g. 200 for a box of 200 dough pieces.",此物品一件包含多少個食譜份量單位，例如一盒 200 件麵團即為 200。
+How much was thrown away?,丟棄了多少？
+Hygiene Cert Expiry,衞生證書到期日
+Ignore Changes Under %,忽略低於此 % 的變動
+Ignored,已略過
+In Stock,現有庫存
+In stock,現有庫存
+"In the UOM above, e.g. 12 for eggs by the dozen. 0 = any quantity.",以上面的單位計，例如雞蛋按打訂為 12。0 = 任何數量。
+In the UOM above. 0 = no minimum.,以上面的單位計。0 = 沒有最低數量。
+In the company currency (HKD). A Purchase Order below it can be saved but not submitted. 0 = no minimum.,以公司貨幣（港幣）計。低於此金額的採購單可以儲存，但不能提交。0 = 沒有最低金額。
+"In the stock UOM, e.g. 12 for eggs by the dozen. Purchase Orders must use a whole multiple. 0 = any quantity.",以庫存單位計，例如雞蛋按打訂為 12。採購單數量必須是此數的整數倍。0 = 任何數量。
+Inactive rows are hidden on the count sheet.,停用的行不會在盤點表上顯示。
+Include Archived,包括已封存
+Include drafts,包括草稿
+Include items with no price,包括未有價格的物品
+Includes {0} draft orders in this range (not yet confirmed).,已包括此期間 {0} 張草稿訂單（尚未確認）。
+Ingredient,食材
+Ingredient (Item),食材（物品）
+Ingredient (heaviest first),配料（按重量排列）
+Ingredient / Packaging,食材／包裝
+Ingredient Cost Analysis,食材成本分析
+Ingredient ID,食材編號
+Ingredient Label Check,材料標籤檢查
+Ingredient Name,食材名稱
+Ingredient Usage,食材用量
+Ingredient Weight per Batch (g),每批食材重量（克）
+Ingredient cost,材料成本
+Ingredient lines with no price,未配對價格的食材行數
+Ingredient usage from Recipe Production Log {0},生產紀錄 {0} 的食材用量
+Ingredients,使用食材
+Ingredients & Packaging,食材及包裝
+Ingredients & Packaging by Supplier,按供應商列出食材及包裝
+Ingredients + packaging + working recipes.,食材 + 包裝 + 半成品食譜。
+Ingredients / Unit,每件食材
+Ingredients Used (kg),食材用量（公斤）
+Ingredients and Packaging by Supplier,按供應商列出食材及包裝
+Ingredients needed,所需材料
+Ingredients on the Count Sheet,盤點表上的材料
+Ingredients row {0} ({1}): {2},食材第 {0} 行（{1}）：{2}
+Ingredients row {0}: a recipe can't use itself,食材第 {0} 行：食譜不能使用自己
+Ingredients row {0}: {1},食材第 {0} 行：{1}
+Ingredients to Count,需盤點材料
+Ingredients whose actual usage differs from expected usage by more than this (either way) are flagged in the Inventory Variance report.,實際用量與預計用量相差超過此百分比（多或少）的食材，會在盤點差異報表中標示。
+Instructions,說明
+Inventory Variance,盤點差異
+Invoice Price,發票價
+Invoice price,發票價
+Item (internal SKU),貨品(內部貨號)
+Item Allergen,物料致敏物
+Item ID,物品編號
+Item confirmed,產品已確認
+Item {0} does not exist.,產品 {0} 不存在。
+Items after,修改後貨品
+Items before,修改前貨品
+Items in these groups (or their sub-groups) count as Packaging.,屬於這些組別（或其子組別）的物品會計作包裝。
+Just over target,略高於目標
+Keeps {0} {1} once opened,開封後可存放 {0} {1}
+Keywords,關鍵字
+Kitchen date label printer,廚房日期標籤打印機
+Kitchen date labels,廚房日期標籤
+Label,標籤
+Label Artwork,標籤設計
+Label Job,標籤列印
+Label Printer,標籤打印機
+Label Printers,標籤打印機
+Label Queue,標籤列印隊列
+Label Settings,標籤設定
+Label checked,標籤已核對
+Label checked. Labels print automatically when an order is submitted.,標籤已檢查。提交訂單時會自動列印標籤。
+Label checked. {0} waiting label job(s) sent to the printer.,標籤已檢查。{0} 個等候中的標籤工作已送往打印機。
+Label content,標籤內容
+Label height (mm),標籤高度（毫米）
+Label job,標籤工作
+Label not ready,標籤未準備好
+Label preview,標籤預覽
+Label queue,標籤列印隊列
+Label queued. Use by {0},標籤已排隊。使用期限 {0}
+Label sent to the printer,標籤已送往打印機
+Label text,標籤文字
+Label width (mm),標籤寬度（毫米）
+Label: {0},標籤：{0}
+Labels,標籤
+Labels failed to print,標籤列印失敗
+Labels per batch,每批標籤數
+Labels printed,標籤已列印
+Labels printing,標籤列印中
+Labels to check,標籤待核對
+Labour,人工
+Labour & Overheads,人工及雜費
+Labour / Unit,每件人工
+Labour Cost,人工成本
+Labour Cost ($),人工成本（$）
+Labour Hours,工作時數
+Labour Minutes,工作分鐘
+Language must be one of: {0},語言必須是以下其中之一：{0}
+Last Costed On,最後計算成本日期
+Last Paid,上次價格
+Last Rejected By,最後退回人
+Last Rejected On,最後退回日期
+Last check {0},上次檢查 {0}
+Last checked,上次檢查
+Last error,上次錯誤
+Last heard from {0},最後聯絡：{0}
+Last seen,最後連線
+Late,逾期
+Later,稍後
+Leave balances,假期結餘
+Leave blank to use the cheapest supplier on the buying price list.,留空即使用採購價格表中最便宜的供應商。
+Less,收起
+Line ID,行編號
+Line {0} not found.,找不到第 {0} 行。
+Lines it could not read,讀不到的行
+Lines that could not be read,無法讀取的行
+Lines were found in the PDF but none could be turned into an order. Enter the order by hand.,PDF 內有行但無法轉成訂單。請人手輸入訂單。
+Lines without a PO number,沒有採購單號的行
+List Price,牌價
+Loaded Cost / Batch,全成本（每批）
+Loaded Cost / Unit,全成本（每件）
+Loading count sheet...,載入盤點表中…
+Loading products...,正在載入產品...
+Log,紀錄
+Log Production,記錄生產
+Log Wastage,報廢
+Log production,記錄生產
+Log {0} recipe(s) as produced on {1}?,確認記錄於 {1} 生產 {0} 個食譜？
+Logged By,記錄人
+Look back (days),回溯日數
+Lot,批次
+"Lot printed on the label (the batch, or a lot from the production log).",標籤上印的批號（批次，或生產紀錄的批號）。
+Made From Recipe,按食譜製作
+Made by (bottom of label),製造商（標籤底部）
+Made on,生產日期
+Made-on date,生產日期依據
+Make {0},製作 {0}
+Manufacture entries that move ingredients out of stock and add the batch preparations to their warehouse (e.g. Freezer).,生產記錄會扣除食材庫存，並將半成品加入其倉庫（例如冰格）。
+Manufacturer,製造商
+Margin,毛利
+Margin / Unit,每件毛利
+Margin per unit,每件毛利
+Mark as entered by hand,標為已人手輸入
+Mark label as checked,標記標籤已核對
+Mark revision as checked,標記修訂已檢查
+Marked as entered by hand by {0}.,{0} 已標為人手輸入。
+Marked as not an order by {0}.,{0} 已標為非訂單。
+Masters,主檔
+Matched by the reader,系統已配對
+Material Issue (ingredients),發料單（食材）
+Method,製作方法
+Minimum Order Amount (MOQ),最低訂貨金額（MOQ）
+Minimum Order Qty,最低訂貨數量
+Minimum order not reached,未達最低訂貨額
+Minimum order: {0},最低訂貨額：{0}
+Minutes per Batch,每批分鐘
+"Monday to Sunday, by delivery date",星期一至星期日，按送貨日期
+Monthly Base Salary,每月底薪
+Most emails per run,每次最多電郵數
+Multiple of own hourly wage,本人時薪倍數
+Name in ingredient lists,配料表名稱
+Name is required.,必須填寫名稱。
+Need,需要
+Need a look,需檢查
+Needed {0},需要日期 {0}
+Needs check,待核對
+Needs review,待檢查
+Net Base Qty,淨用量（基本單位）
+Net Qty,淨用量
+Net Qty Used,淨用量
+Net weight per piece (g),每件淨重（克）
+New count,新盤點
+New item,新貨品
+New product made,已新增產品
+No Price,未有價格
+No Price Found,找不到價格
+No SKU matches.,沒有相符的產品編號。
+No allergen keywords found in the name. Check the supplier's pack or spec sheet.,名稱中找不到致敏物關鍵字。請查看供應商包裝或規格表。
+No batch,無批次
+"No count was entered, so it was counted as 0 when the count was submitted.","未輸入盤點數量,提交盤點時按 0 計算。"
+No date,未有日期
+No default supplier,未設預設供應商
+No deliveries expected today.,今日沒有預計收貨。
+No ingredients to issue: this log only has Batch Preparation recipes.,沒有食材需要發料：此紀錄只有半成品食譜。
+No item found,找不到貨品
+No kitchen label printer is set up (Label Printer > Use = Kitchen date labels).,尚未設定廚房標籤打印機（標籤打印機 > 用途 = 廚房日期標籤）。
+No open counts.,沒有進行中的盤點。
+No open orders,沒有未完成訂單
+"No order lines were found in the email text and it has no PDF. Read it, then enter the order by hand if it is one.",電郵文字沒有訂單行，也沒有 PDF。請閱讀內容，如是訂單請人手輸入。
+No order lines were read.,沒有讀到訂單行。
+No orders,沒有訂單
+No orders going out today.,今日沒有出貨訂單。
+No price,沒有價格
+No product,沒有產品
+No products are linked to this supplier yet.,此供應商尚未連結任何產品。
+No purchase orders waiting for delivery.,沒有待收貨的採購單。
+No reason,未註明原因
+No recipe found for this product. Link one with Made From Recipe on the Sales tab.,找不到此產品的食譜。請在「銷售」分頁的「Made From Recipe」連結一個。
+No recipes found,找不到食譜
+No row in this log has a lot (only batch preparations and products do).,此紀錄沒有任何帶批號的行（只有批量預製品和成品有）。
+No sales in this range.,此期間沒有銷售。
+No selling price,未有售價
+No shifts on the roster today.,今日更表沒有人當值。
+"No storage area set on these items, so nothing was taken out of stock.",這些物品未設定儲存位置，所以未有扣除庫存。
+Not allowed,不允許
+Not an order,非訂單
+Not changed,未更改
+Not checked,未核對
+Not checked for over an hour,已超過一小時沒有檢查
+Not checked yet,尚未檢查
+Not checked yet. Labels for orders wait until a manager checks this label.,尚未檢查。訂單的標籤會等候經理檢查此標籤。
+Not now,暫不
+Not sold on its own,不單獨出售
+Not ticked = a later email proposes these changes to an order that is already submitted; make them on the order yourself.,未剔選 = 較新的電郵建議修改已提交的訂單;請自行在訂單上修改。
+Note (optional),備註（選填）
+Notes (size / qty),備註（尺寸／數量）
+"Notes, e.g. damaged box",備註，例如紙箱損壞
+Nothing due today,今日沒有待收貨
+Nothing found,找不到
+Nothing is near its use-by date.,沒有接近使用期限的貨品。
+Nothing left to make today.,今日生產已完成。
+Nothing logged this week.,本週未有生產紀錄。
+Nothing opened yet today,今日尚未開封任何貨品
+Nothing to copy,沒有可複製的更次
+"Nothing to do: the sender is not allowed, nothing changed, or every PO already has an order.",無需處理：寄件人不在許可名單、沒有更改，或每張採購單已有訂單。
+Nothing to make for today's orders.,今日訂單不需生產。
+Nothing to order for the next 3 days.,未來3日不需訂貨。
+Nothing to order.,沒有需要訂購的項目。
+Nothing to receive today or tomorrow.,今明兩日沒有收貨。
+Nothing was received. Enter the quantity that arrived for at least one line.,未有收貨。請最少輸入一行的實收數量。
+Nothing yet.,暫無記錄。
+OEM Spec Sheet,客戶產品規格表
+Off,已關閉
+"Off until the Google steps are done. Read-only: the system never sends, labels or deletes mail.",完成 Google 步驟前保持關閉。只讀:系統不會發送、標記或刪除郵件。
+Offline,離線
+"Offline: {0} saved on this iPad, retrying",離線：{0} 項已存於此 iPad，稍後重試
+"Older mail is ignored, so the first run does not pull in the whole label.","較舊的郵件會被略過,首次執行不會讀取整個標籤。"
+On other products' labels,用於其他產品標籤
+On shift,當值
+On target,達標
+One row per ingredient and storage area. Drag rows to change the counting order; the count screen groups them by storage area in this order. Untick Active to hide a row.,每項食材及儲存位置一行。拖動行可更改盤點次序；盤點畫面會按此次序以儲存位置分組。取消勾選「使用中」可隱藏該行。
+Online,在線
+Only Out of Tolerance,只顯示超出容差
+Only Price Changes,只顯示價格變動
+Only Recipes That Need a Look,只顯示需檢查的食譜
+Only a manager can mark a label as checked.,只有經理可以將標籤標記為已檢查。
+Only an email that is Needs review or Failed can be marked as entered by hand.,只有「需檢查」或「失敗」的電郵才可標為人手輸入。
+Only an email that is Needs review or Failed can be marked as not an order.,只有「需檢查」或「失敗」的電郵才可標為非訂單。
+Only an email without a sales order that is Needs review or Failed can be read again.,只有沒有銷售訂單、且狀態為「需檢查」或「失敗」的電郵才能重新讀取。
+Only ingredients with something to do,只顯示需要處理的材料
+Only mail under this label is read. Create the label in Gmail and apply it with a filter or by hand.,"只會讀取此標籤下的郵件。請在 Gmail 建立標籤,並用篩選器或手動套用。"
+Only these senders,只限這些寄件人
+Open Count Screen,開啟盤點畫面
+Open and print label,開封並打印標籤
+Open purchase orders,未完成採購單
+Opened,已開封
+Opened Item,開封貨品
+Opened Items,開封貨品
+Opened at,開封時間
+Opened by,開封人
+Opened item,開封貨品
+Opened today,今日開封
+Opening,期初
+Opening Count,期初盤點
+Optional. Used to work out the cooking yield.,選填。用於計算烹煮後份量。
+"Optional: count in up to 3 pack sizes (Bag, Box, Bottle) plus loose units. Each pack must have a UOM conversion on the Item.",可選：最多以 3 種包裝規格（袋、箱、瓶）加散裝數量盤點。每種包裝須在物品的單位換算中設定。
+Optional: the batch the pack came from.,可選：該包裝所屬的批次。
+Order Revision,訂單修訂
+Order confirmed,訂單已確認
+Order confirmed by {0}.,{0} 已確認訂單。
+Order in Multiples Of,訂貨倍數
+Order line,訂單行
+Order lines,訂單行
+Order on labels,標籤排序
+Order quantity not allowed,訂貨數量不符
+Ordered,訂購
+Ordering,訂貨
+Ordering (optional),訂貨（選填）
+"Orders due that day, what to make, dough to top up and short ingredients",當日訂單、需生產的產品、需補做的麵糰及不足的材料
+Orders going out,今日出貨訂單
+Orders to deliver,待送貨訂單
+Origin line,產地
+Out of Tolerance,超出容差
+Out of tolerance,超出容差
+Over target,超出目標
+Over target ({0}%),超出目標（{0}%）
+Overall Variance %,整體差異 %
+Overhead / Service,雜費／服務
+Overheads,雜費
+Overheads & Services,其他費用及服務
+Overheads / Batch,其他費用（每批）
+Overheads / Unit,每件其他費用
+Overtime,加班
+Overtime Entry,加班紀錄
+Overtime Rate,加班費率
+Overtime Rate {0} is disabled.,加班費率 {0} 已停用。
+Overtime Rates,加班費率
+Overtime Summary,加班摘要
+"Overtime hours worked, e.g. 1.5",加班時數，例如 1.5
+Overtime to approve,待審批加班
+PIN set for {0},已為 {0} 設定密碼
+PO,採購單
+PO No.,採購單編號
+PO Price,採購單價
+PO confirmed,採購單已確認
+PO {0},採購單 {0}
+PO {0} already has a sales order.,採購單 {0} 已有銷售訂單。
+Pack Size 1,包裝規格 1
+Pack Size 2,包裝規格 2
+Pack Size 3,包裝規格 3
+Pack sizes set on {0} ingredients.,已為 {0} 項材料設定包裝規格。
+Packaging,包裝
+Packaging Item Groups,包裝物品組別
+Packaging and Case Pack,包裝及箱規
+Part-time / hourly staff only.,只適用於兼職／時薪員工。
+Past use-by,已過期
+Pay,薪酬
+Pay Method,計算方法
+Per,每
+Per Batch,每批
+Per Hour (HK$),每小時（港元）
+Per Labour Hour,每人工小時
+Per Unit,每件
+Per batch,每批
+Per piece,每件
+Photo,相片
+Pi reports a problem,Raspberry Pi 報告問題
+Pick a method: {0} or {1}.,請選擇計算方法：{0} 或 {1}。
+Pick a rate (or set a default overtime rate on the Employee).,請選擇費率（或在員工資料設定預設加班費率）。
+Pick the lines to print. Pieces = how many pieces the labels cover; the item's Pieces per label decides how many labels that is.,選擇要列印的行。件數 = 標籤涵蓋的件數；物料的「每張標籤件數」決定共印多少張。
+Pick up orders from Gmail,從 Gmail 讀取訂單
+Pick up orders now,立即讀取訂單
+Picked up from the email '{0}' from {1} ({2}). Check it before submitting.,"由電郵「{0}」(來自 {1},{2})讀取。提交前請先檢查。"
+Pieces,件數
+Pieces per label,每張標籤件數
+Planned Batches,計劃批數
+Please log in first.,請先登入。
+Prep fresh: {0},即日準備：{0}
+Price / Base Unit,每單位價格
+Price / Unit,每單位價格
+Price / kg,每公斤價格
+Price Source,價格來源
+Price Variance,價格差異
+Price for Target,目標售價
+Price must be greater than zero.,價格必須大於零。
+"Price on the supplier's delivery note / invoice, typed on Receive Delivery. Stock is still received at the PO price.",供應商送貨單／發票上的價格，於收貨畫面輸入。庫存仍按採購單價格入帳。
+Price per unit. Kg prices are stored per gram (price ÷ 1000).,每單位價格。以公斤計的價格會按每克儲存（價格 ÷ 1000）。
+Pricing,定價
+Primary Colour,主色
+Print A4,列印 A4
+Print Count Sheet,列印盤點表
+Print Footer,列印頁尾
+Print again,重新列印
+Print batch labels,打印批次標籤
+Print batch labels when production is logged,記錄生產時打印批次標籤
+Print date,列印日期
+Print label again,重新打印標籤
+Print labels,列印標籤
+Print labels for {0},為 {0} 列印標籤
+Print resolution (dpi),列印解析度（dpi）
+Print test label,列印測試標籤
+Printed at,列印時間
+"Printed under ""Manufacturers:"", one line each: company name, then address.",印在「Manufacturers:」下方，每行一項：公司名稱，然後地址。
+Printed under the item name on opened and batch labels.,印在開封及批次標籤的貨品名稱下方。
+Printer,打印機
+Printer error,打印機錯誤
+Printer language,打印機語言
+Printer name,打印機名稱
+Printing,列印中
+Prints,打印張數
+Prints as,標籤上顯示為
+Prints opened-product and batch labels. Blank = the first enabled printer set to Kitchen date labels.,用於打印開封及批次標籤。留空 = 第一部設為「廚房日期標籤」的啟用打印機。
+Produced,已生產
+Produced today,今日已生產
+Product,產品
+Product Name,產品名稱
+Product label,產品標籤
+Product labels,產品標籤
+"Product labels: 100 × 150 mm labels for sales orders. Kitchen date labels: small opened-product and batch labels (e.g. a SATO printer, 50 × 30 mm).",產品標籤：銷售訂單用的 100 × 150 mm 標籤。廚房日期標籤：開封及批次小標籤（例如 SATO 打印機，50 × 30 mm）。
+Product name,產品名稱
+Product name on label,標籤上的產品名稱
+Production,生產
+Production Date,生產日期
+Production Log,生產紀錄
+Production log,生產紀錄
+Production logged,已記錄生產
+Production sheet,生產單
+Production sheet (A4),生產單（A4）
+"Production, last 7 days",近 7 日生產
+Products,產品
+Purchase Orders,採購單
+Purchase orders to send,待發出採購單
+Qty in Stock UOM,庫存單位數量
+Quantity factor,數量倍數
+Quiet day,清閒
+Raspberry Pi user,Raspberry Pi 用戶
+Rate ($/hr),時薪
+Rate (per basis),費率（按計算方式）
+Rate Name,費率名稱
+Rates,費率
+Re-cost recipes when an Item Price changes,物品價格變動時重新計算食譜成本
+Read again,重新讀取
+"Reading the email failed (see the error below). Use Read again, or enter the order by hand.",讀取電郵失敗（見下方錯誤）。請按「再讀一次」或人手輸入訂單。
+Reason,原因
+Reason (Chinese),原因（中文）
+Receipt,收貨單
+Receive,收貨
+Receive Delivery,收貨
+Receive into stock,收貨入庫
+Receive these goods into stock?,確認收貨入庫？
+Receive {0},收貨：{0}
+Received,實收
+Receiving,收貨
+Recipe,食譜
+Recipe Component,食譜組件
+Recipe Components,食譜組件
+Recipe Cost Analysis,食譜成本分析
+Recipe Ingredient,食譜食材
+Recipe Ingredient Usage,食譜食材用量
+Recipe Labour,食譜人工
+Recipe Name,食譜名稱
+Recipe Overhead,食譜雜費
+Recipe Packaging Group,食譜包裝組別
+Recipe Production Log,生產紀錄
+Recipe Production Log Item,生產紀錄項目
+Recipe Settings,食譜設定
+Recipe Step,製作步驟
+Recipe Type,食譜類型
+Recipe Units per Sales Unit,每銷售單位的食譜單位數
+Recipe Utensil,食譜器具
+Recipes,食譜
+Recipes Produced,已生產食譜
+Recorded Wastage,已記錄報廢
+Recorded Waste,已記錄報廢
+Refresh,重新整理
+Refresh Prices,更新價格
+Reject Count,退回盤點
+Rejected - Draft,已退回（草稿）
+Rejected by {0},由 {0} 退回
+Rejected: {0},已退回：{0}
+Rejection Comment,退回原因
+Reload the page to try again.,請重新載入頁面再試。
+Replace in all recipes,在所有食譜中取代
+Replace in recipes…,在食譜中取代…
+Replace in selected recipes,在已選食譜中取代
+Replace with,取代為
+Replaced in {0} recipes.,已在 {0} 個食譜中取代。
+Reports,報表
+Review,檢查
+Revised,已修訂
+Revised by,修訂人
+Revised on,修訂時間
+Revised orders to check,待檢查的修訂訂單
+Revised: check before delivering,已修訂:送貨前請檢查
+Revises email order,修訂的電郵訂單
+Revision,修訂
+Revision checked by {0}.,{0} 已檢查修訂。
+Revision history,修訂記錄
+Revisions,修訂次數
+Roster,更表
+Row not found,找不到該行
+Row {0} ({1}): add {2} to the Item's Units of Measure (with how many {3} it holds) before counting in it,第 {0} 行（{1}）：以 {2} 盤點前，請先在物品的計量單位加入 {2}（註明每個等於多少 {3}）
+Row {0} ({1}): set a storage area,第 {0} 行（{1}）：請設定儲存位置
+Row {0} ({1}): {2},第 {0} 行（{1}）：{2}
+Row {0}: batches must be more than 0,第 {0} 行：批數必須大於 0
+Row {0}: quantity must be more than 0,第 {0} 行：數量必須大於 0
+Row {0}: recipe {1} is {2}. Only Active recipes can be produced.,第 {0} 行：食譜 {1} 狀態為 {2}。只有使用中的食譜可以生產。
+Row {0}: recipe {1} yields {2} but item {3} is stocked in {4}. Make them the same.,第 {0} 行：食譜 {1} 的份量單位是 {2}，但物品 {3} 的庫存單位是 {4}。請統一單位。
+Row {0}: {1} is already on the sheet for {2},第 {0} 行：{1} 已在 {2} 的盤點表上
+SKU,產品編號
+SKUs sold,已售產品編號
+Sales Order you made (optional),你建立的銷售訂單（可選）
+Sales Order {0} could not be submitted: {1},銷售訂單 {0} 無法提交：{1}
+Sales Order {0} does not exist.,銷售訂單 {0} 不存在。
+Sales Orders,銷售訂單
+Save PIN,儲存密碼
+Save the sheet first.,請先儲存盤點表。
+Save the supplier to see its products.,請先儲存供應商才可查看其產品。
+"Saved, but no kitchen label printer is set up",已儲存，但尚未設定廚房標籤打印機
+Saving {0}…,儲存中（{0}）…
+Scan or search an item,掃描或搜尋貨品
+Search SKU or name,搜尋產品編號或名稱
+Search products,搜尋產品
+Selling Price,售價
+Selling Price / Unit,每件售價
+Selling Price List,銷售價目表
+Selling price,售價
+Send to printer,送往打印機
+Sender email,寄件人電郵
+Sent back,已退回
+Sent to printer,已送往打印機
+Service / Expense,服務／費用
+Services,服務
+Services & Overheads,服務及雜費
+Set 'Expiry after opening' on item {0} first (Label tab).,請先在貨品 {0} 設定「開封後保質期」（標籤分頁）。
+Set 'Expiry after opening' on {0} first (Item > Label tab).,請先在 {0} 設定「開封後保質期」（貨品 > 標籤分頁）。
+Set a default supplier on these items to order them from here.,請為這些項目設定預設供應商，以便在此訂貨。
+Set a warehouse on the Production Log (or a default in Recipe Settings),請在生產紀錄設定倉庫（或在食譜設定設定預設倉庫）
+Set clock-in PIN,設定打卡密碼
+Set to 0 at submit,提交時設為 0
+Set when the count is approved.,盤點獲審批時設定。
+Set when this email changes an order picked up from an earlier email in the same thread.,當此電郵修改同一對話中較早電郵所建立的訂單時填寫。
+Share of Ingredient Cost,佔食材成本比例
+Sheet Name,盤點表名稱
+Shelf Life (days),保質期（日）
+Shelf life: {0} days (Inventory tab → Shelf Life In Days).,保質期：{0} 天（存貨分頁 → Shelf Life In Days）。
+Shifts,更次
+Short Name,簡稱
+Short on Stock,庫存不足
+Shortage,不足
+Show all SKUs,顯示所有產品編號
+Show details,顯示詳情
+Show less,收起詳情
+Shown on the Team page 30 days before it expires.,到期前 30 日會在團隊頁面顯示。
+Shown on the roster and the clock-in tablet.,顯示於更表及打卡平板。
+Signed Off By (Client),客戶簽署人
+Simple,簡易
+Skip plain replies from these senders,略過這些寄件人的純回覆郵件
+Some counts aren't saved yet. Check the connection and try again.,部分盤點未儲存。請檢查網絡後再試。
+Someone checked this order against the PDF and confirmed it.,已有人對照 PDF 檢查並確認此訂單。
+Someone entered this order by hand and closed the email.,此訂單已由人手輸入並關閉電郵。
+Source must be one of {0},來源必須是 {0} 其中之一
+Specification,規格
+Staff,員工
+Staff Role,職位
+Start Stock Take,開始盤點
+Start a new count,開始新盤點
+Status: {0},狀態:{0}
+Steps,步驟
+Still to approve,待審批
+Stock,庫存
+Stock Levels,庫存
+Stock Note,庫存備註
+Stock Take,盤點
+Stock Take & Inventory Variance,盤點及盤點差異
+Stock Take Count,盤點
+Stock Take Item,盤點項目
+Stock Take Sheet,盤點表
+Stock Take Sheet Item,盤點表項目
+Stock Takes,盤點紀錄
+Stock Units per Pack 1,規格 1 每包庫存單位數量
+Stock Units per Pack 2,規格 2 每包庫存單位數量
+Stock Units per Pack 3,規格 3 每包庫存單位數量
+Storage,儲存方式
+Storage Area,儲存位置
+Storage once opened,開封後存放方式
+Sub-Recipe (Batch Preparation / Component),子食譜（半成品／組件）
+Submit for Approval,提交審批
+Submit the Production Log first,請先提交生產紀錄
+Submit the sales order first.,請先提交銷售訂單。
+Submit this count for approval? It can't be changed while it waits.,確認提交審批？等候審批期間不能修改。
+Submit this wastage? It will be taken out of stock.,確認提交報廢？物品將從庫存扣除。
+Submit {0} item(s),提交 {0} 項
+Submitted By,提交人
+Submitted On,提交日期
+Submitted for approval,已提交審批
+Submitted: {0}.,已提交：{0}。
+Suggest allergens,建議致敏原
+Suggested Price (target food cost),建議售價
+Suggested item,建議產品
+"Suggested: {0}. Check the pack, then tick Allergens reviewed and save.",建議：{0}。請核對包裝，然後勾選「已審核致敏物」並儲存。
+Sum of net weights of all gram-based ingredient lines.,所有以克計食材的淨重總和。
+Superseded,已取代
+Supplier Price,供應商價格
+Supplier Prices & Recipes,供應商價格及食譜
+Supplier SKU,供應商貨號
+Supplier SKUs,供應商貨號
+"Supplier and customer part numbers from the tables on this form, so the item is found by any of them.","來自此表單內表格的供應商及客戶貨號,令貨品可用其中任何一個搜尋。"
+Supplier delivery note / invoice no.,送貨單號／發票號碼
+Suppliers,供應商
+Tagline,標語
+"Takes up to 3 pack sizes from each item's units of measure, biggest first. Rows without pack sizes are always filled.",從每項物品的計量單位取最多 3 種包裝規格，由大至小。未設定包裝規格的行一定會填入。
+Tap a recipe to add it.,點選食譜加入。
+Target Food Cost %,目標食材成本率
+Target food cost,目標食材成本率
+Task,工序
+Tasks,工作
+Team,團隊
+Team & Clients,員工及客戶
+Test label,測試標籤
+Test label {0} sent. It prints within a few seconds if the Pi is online.,測試標籤 {0} 已送出。如 Pi 在線，數秒內會列印。
+"The PDF has no table or item lines this reader knows yet. Enter the order by hand from the PDF, then mark it entered by hand.",系統尚未認得此 PDF 的表格或項目行。請按 PDF 人手輸入訂單，然後標為已人手輸入。
+The PIN must be exactly 4 digits.,密碼必須是 4 位數字。
+The Raspberry Pi has never connected.,Raspberry Pi 從未連線。
+The closing stock take must be after the opening one,期末盤點必須在期初盤點之後
+The email this order was picked up from.,建立此訂單的電郵。
+The last check failed,上次檢查失敗
+"The lines were read but the order is held back, usually because it follows an order already submitted. Check it by hand.",行已讀取但訂單被擱置，通常因為它跟隨一張已提交的訂單。請人手檢查。
+The order matches the PDF? This confirms the items and submits the draft sales order.,訂單與 PDF 相符？這會確認產品並提交銷售訂單草稿。
+The quantity factor must be more than 0.,數量倍數必須大於 0。
+The recipe this client version is made from.,此客戶版本所用的食譜。
+"The recipe, an ingredient or a label field changed since the last check. Labels wait until it is checked again.",自上次檢查後，食譜、材料或標籤欄位已更改。標籤會等候再次檢查。
+The review could not be shown.,無法顯示檢查畫面。
+The sales order {0} is already submitted. Change the item on the order itself.,銷售訂單 {0} 已提交，請在訂單上直接更改產品。
+The sheet {0} has no active ingredients,盤點表 {0} 沒有啟用的材料
+The start date is after the end date.,開始日期晚於結束日期。
+The supplier's own product code. Our SKU is the item code the system gives it.,供應商自己的產品編號。我們的貨號是系統給此貨品的貨品編號。
+The user whose API key the Pi uses. It only needs the Label Printer role.,Pi 使用其 API 金鑰的用戶。只需要 Label Printer 角色。
+This count is waiting for approval and can't be changed. Ask an approver to reject it first.,此盤點正等候審批，不能修改。請先請審批人退回。
+This count is {0} and can't be changed.,此盤點狀態為 {0}，不能修改。
+This email cannot be marked as order confirmed.,這封電郵不能標為訂單已確認。
+This email changed an earlier order. The draft sales order now shows the new lines.,這封電郵修改了先前的訂單，銷售訂單草稿已顯示新的行。
+This ingredient appears on product labels as <b>{0}</b>.,此材料在產品標籤上顯示為 <b>{0}</b>。
+This job belongs to another printer.,此工作屬於另一部打印機。
+This label is waiting for its product to be checked.,此標籤正等候其產品被檢查。
+This log has no Batch Preparation recipes.,此紀錄沒有半成品食譜。
+This order was changed after it came in. Check the changes before delivering.,此訂單在收到後被修改。送貨前請檢查修改內容。
+Thrown away and logged as wastage,已丟棄並記錄為報廢
+"Tick after checking the allergens against the supplier's pack or spec sheet, even if there are none.",按供應商包裝或規格表核對致敏物後勾選，即使沒有致敏物亦然。
+Tick at least one line.,請至少勾選一行。
+Tick at least one recipe.,請至少選擇一個食譜。
+Time off,休假
+Time off to approve,待審批假期
+Times sent,發送次數
+To approve,待審批
+To do,待辦
+To make today,今日待生產
+To submit,待提交
+Today,今日
+Today in the kitchen,今日廚房
+Today's run,今日生產
+Tolerance,容差
+Tomorrow,明日
+Too many wrong PINs. Wait 5 minutes or ask your manager.,密碼錯誤次數過多。請等 5 分鐘或聯絡主管。
+"Top of the right column, e.g. For immediate consumption after opening. A product's ""Extra line on label"" replaces it.",右欄頂部，例如 For immediate consumption after opening。產品的「標籤額外一行」會取代它。
+Top up {0},補充 {0}
+Total / Unit,每件總成本
+Total Cost,總成本
+Total Cost %,總成本率
+Total Cost / Batch,總成本（每批）
+Total Cost incl. Labour,總成本（連人工）
+Total Ingredient Cost (excl. Labour),食材總成本（不連人工）
+Total Ingredient Used (g),食材總用量（克）
+Total Ingredients & Packaging,食材及包裝總計
+Total Pieces Used,總件數
+Total Qty Used (gross),總用量（毛）
+Total Used (kg),總用量（公斤）
+Total Variance Cost,總差異成本
+Total cost,總成本率
+Try again,重試
+Unexplained Cost,未能解釋成本
+Unexplained Loss,未能解釋損失
+Unit / Basis,單位／計算方式
+Unit Cost,單位成本
+Unit Cost (per Stock UOM),單位成本（每庫存單位）
+Units,件數
+"Units by delivery day, {0} to {1}",按送貨日的數量，{0} 至 {1}
+Units sold,已售數量
+Units sold per week,每週銷售數量
+Unknown action,未知操作
+Unknown kind,未知類型
+Unknown label printer {0},未知的標籤打印機 {0}
+Upcoming,即將到期
+Update ERPNext stock when a count is approved,盤點批准後更新 ERPNext 庫存
+Updated {0},更新於 {0}
+"Usable share of what is bought, after trimming or other losses.",購入後經修剪或其他損耗後可用的比例。
+Usage & Inventory,用量及庫存
+Usage for how many batches?,計算多少批的用量？
+Use Approve to approve a stock take.,請使用「批准」來批准盤點。
+Use by,使用期限
+Used In,用於
+Used In Recipes,用於食譜
+"Used by recipes but not on the count sheets, so not in the table: {0}",食譜有用但不在盤點表上，所以不在表內：{0}
+Used for the suggested selling price.,用於計算建議售價。
+Used up,已用完
+Used when an Overtime Entry is created for this person.,為此員工建立加班紀錄時使用。
+Utensil / Equipment,器具／設備
+Utensils,器具
+Utensils & Equipment,器具與設備
+Valid From,生效日期
+Value must be more than 0.,數值必須大於 0。
+Variance %,差異 %
+Variance Cost,差異成本
+Variance Qty,差異數量
+Variance Tolerance %,差異容差 %
+View all,查看全部
+Wages,工資
+Wages (Labour) - {0} h,工資（人工）－ {0} 小時
+Waiting because,等待原因
+Waiting for Approval,等候審批
+Waiting on you,待處理
+Wastage Log,報廢紀錄
+Wastage Log Item,報廢物品
+Wastage Logs,報廢紀錄
+Wastage Reason,報廢原因
+Wastage Reasons,報廢原因
+Wastage log,報廢紀錄
+Wastage logged,已記錄報廢
+Wastage {0},報廢 {0}
+Waste (yield loss) Cost,損耗（可用率）成本
+"Waste recorded, but stock was not updated: {0}",已記錄報廢，但庫存未有更新：{0}
+Waste this week,本週報廢
+Wasted Items,報廢物品
+Week ahead,未來一週
+Week of,週
+Week of {0},{0} 當週
+Weight Tolerance (± g),重量誤差（± 克）
+Weight per Piece (g),每件重量（克）
+Weights & Cooking Yield,重量及成品率
+What changed,修改內容
+"What customers read, without brand or pack size, e.g. Wheat flour, Unsalted butter. Blank = item name.",顧客看到的名稱，不含品牌或包裝尺寸，例如 Wheat flour、Unsalted butter。留空 = 物料名稱。
+"What the extra time was for (big order, stock count, cover).",加班原因（大訂單、盤點、代更）。
+What the reader got from the PDFs,系統從 PDF 讀到的文字
+What the system understood,系統的理解
+What was sent,收到的內容
+Why is it rejected?,退回原因？
+With a recipe: show usage for this many batches instead of the date range.,選擇食譜時：顯示此批數的用量，而非日期範圍內的用量。
+Within Tolerance,在容差內
+Within tolerance,在容差內
+Wording on labels,標籤用語
+"Words in an ingredient name that suggest this allergen, one per line. Only used for suggestions; a person still reviews every ingredient.",材料名稱中提示此致敏物的字詞，每行一個。只用作建議；每種材料仍須由人審核。
+Working,運作中
+Working Days per Month,每月工作日數
+Yield,份量
+Yield %,可用率
+Yield Loss,可用率損耗
+Yield Unit,份量單位
+You can't create purchase orders.,你沒有權限建立採購單。
+You replaced <b>{0}</b> with <b>{1}</b>. {0} is also used in {2} other recipes. Replace it there too?,你已將 <b>{0}</b> 取代為 <b>{1}</b>。{0} 亦用於另外 {2} 個食譜。是否一併取代？
+"You submitted this count, so another approver has to approve or reject it.",此盤點由你提交，須由另一位審批人批准或退回。
+ZPL for Zebra and other thermal printers that speak ZPL. PNG sends a picture through the Pi's printer driver (CUPS) for anything else.,ZPL 適用於 Zebra 及其他支援 ZPL 的熱感打印機。其他打印機用 PNG，經 Pi 的打印驅動（CUPS）傳送圖片。
+all SKUs,所有產品編號
+and {0} more,另有 {0} 張
+archived,已封存
+batch,批
+batch cost,每批成本
+batches,批
+batches · {0} of {1} recipes done,批 · 已完成 {0} / {1} 個食譜
+confirmed and draft,已確認及草稿
+confirmed only,只計已確認
+could not be saved,無法儲存
+deliveries in,到貨
+different items,不同貨品
+doesn't use {0},沒有使用 {0}
+due,到期
+due today,今日到期
+e.g. Made in Hong Kong,例如 Made in Hong Kong
+e.g. May contain traces of nuts. / Heat before serving.,例如 May contain traces of nuts. / Heat before serving.
+expected today,預計今日到貨
+failed,失敗
+from recipe {0},來自食譜 {0}
+in since {0},{0} 上班
+ingredients,食材
+ingredients {0},食材 {0}
+labour,人工
+last 4 weeks,最近 4 週
+multiples of,倍數
+n/a,不適用
+needs another Stock Take Approver,需由另一位盤點審批人審批
+"net, before tax",淨額，未計稅
+new emails since yesterday,封新電郵（自昨日起）
+no permission to change it,沒有更改權限
+nothing planned,沒有計劃
+of which Packaging,其中包裝
+only if different,只在不同時
+orders out,出貨訂單
+out at {0},{0} 下班
+overheads,雜費
+part week,不完整的一週
+printed,已列印
+received,已收
+same,相同
+short {0},欠 {0}
+some already on order,部分已訂購
+suggested price,建議售價
+target {0}%,目標 {0}%
+today,今日
+units,件
+use by,使用期限
+vs Cheapest %,對比最便宜 %
+vs Last Paid,對比上次
+vs List,對比牌價
+vs PO,對比採購單
+waiting for a label check,等待核對標籤
+waiting for the printer,等待打印機
+{0} ({1}) is sold in multiples of {2} {3}. You ordered {4}; try {5}.,{0}（{1}）以 {2} {3} 為倍數出售。你訂了 {4}，可改為 {5}。
+{0} added,已新增 {0}
+{0} already exists as {1} and is measured in {2}. Choose {2} as the UOM.,{0} 已存在為 {1}，以 {2} 計量。請選擇 {2} 作為單位。
+{0} already exists as {1}. Link it to {2} and add this price?,{0} 已存在為 {1}。是否連結到 {2} 並加入此價格？
+{0} already has a price from {1}. Edit it on the Item Price list instead.,{0} 已有來自 {1} 的價格。請在物品價格列表中修改。
+{0} archived recipes are left as they were.,{0} 個已封存食譜保持不變。
+{0} batches,{0} 批
+{0} batches · short {1},{0} 批 · 欠 {1}
+{0} batches · {1} still to make,{0} 批 · 尚需製作 {1}
+{0} clocked in,{0} 人已打卡
+{0} deliveries,{0} 批到貨
+{0} differs from the order,{0} 與訂單不符
+{0} doesn't exist or is disabled.,{0} 不存在或已停用。
+{0} draft orders in this range are not counted. Tick Include drafts to add them.,此期間有 {0} 張草稿訂單未計算。勾選「包括草稿」即可加入。
+{0} drafts,{0} 張草稿
+"{0} drafts: check quantities and dates, then submit",{0} 張草稿：核對數量和日期後提交
+{0} due today · {1} late,今日到期 {0} 張 · 逾期 {1} 張
+{0} emails with no order made,{0} 封電郵未能建立訂單
+{0} entries,{0} 項
+{0} entries are saved on this iPad and will be sent when you're back online.,{0} 項已存於此 iPad，恢復網絡後會自動傳送。
+"{0} has no monthly base / working days / hours per day (or hourly rate) on the Employee record, so a multiple of their wage can't be worked out.",{0} 的員工資料未有月薪／工作日數／每日時數（或時薪），所以未能按時薪倍數計算。
+{0} have a PDF the reader could not use. Open the PDF and enter the order by hand.,{0} 封附有系統讀不到的 PDF，請打開 PDF 並手動輸入訂單。
+{0} hours of overtime in one day looks wrong. Split it over the right dates.,一日加班 {0} 小時似乎有誤，請按正確日期分開記錄。
+{0} ingredient line(s) have no buying price. Their cost counts as 0.,{0} 行食材未有採購價，成本以 0 計算。
+{0} ingredient price(s) missing,{0} 項食材未有價格
+{0} ingredient(s) short in stock,{0} 項材料庫存不足
+{0} ingredient(s) without a price,{0} 項食材未有價格
+{0} ingredients added,已加入 {0} 項材料
+{0} ingredients have no count yet (enter 0 if there is none): {1},尚有 {0} 項材料未盤點（如沒有請輸入 0）：{1}
+{0} ingredients have no count yet. Enter 0 if there is none.,尚有 {0} 項材料未盤點。如沒有，請輸入 0。
+"{0} ingredients have no pack size on their Item yet, so they are counted in loose units only.",{0} 項材料的物品尚未設定包裝規格，只會以散裝數量盤點。
+{0} is listed twice with the SKU {1}.,{0} 重複列出貨號 {1}。
+{0} is not an approved stock take,{0} 不是已批准的盤點
+{0} isn't used in any active recipe.,{0} 沒有用於任何使用中的食譜。
+{0} items have no count and will be set to 0:,"有 {0} 項貨品沒有盤點數量,將會設為 0:"
+{0} items have no count: {1}. Confirm to count them as 0.,有 {0} 項貨品沒有盤點數量:{1}。請確認按 0 計算。
+{0} jobs,{0} 個工作
+{0} label job(s) added.,已加入 {0} 個標籤工作。
+{0} label job(s) queued,已排隊 {0} 個標籤工作
+{0} label job(s) waiting for a printer.,{0} 個標籤工作正等候打印機。
+{0} label jobs waiting for a check,{0} 個標籤工作待檢查
+{0} label(s) are waiting: the product label has not been checked yet. Open the item's Label tab to check it.,{0} 張標籤正在等候：產品標籤尚未檢查。請打開物料的「標籤」分頁進行檢查。
+{0} label(s). The first one is shown.,{0} 張標籤。顯示第一張。
+{0} late,{0} 個逾期
+{0} line(s) differ from the order. Stock is received at the ordered price; the differences are flagged on the receipt for the office.,{0} 行與訂單不符。貨品按訂單價格入庫，差異會標記在收貨單上交辦公室跟進。
+{0} lines,{0} 行
+{0} lines are not confirmed yet. Confirm the whole order anyway? This confirms the items and submits the draft sales order.,仍有 {0} 行未確認。要確認整張訂單嗎？這會確認產品並提交銷售訂單草稿。
+{0} logs since Monday,週一至今 {0} 份紀錄
+{0} logs · HK$ {1} ingredients,{0} 份紀錄 · 材料 HK$ {1}
+{0} new emails read,已讀取 {0} 封新電郵
+"{0} new emails: {1} draft orders, {2} revised, {3} to review, {4} ignored, {5} failed.",{0} 封新電郵:{1} 張訂單草稿、{2} 張已修訂、{3} 張待檢查、{4} 封略過、{5} 封失敗。
+{0} of {1} counted,已盤點 {0} / {1}
+{0} of {1} lines confirmed,已確認 {0} / {1} 行
+{0} of {1} made,已製作 {0} / {1}
+{0} orders,{0} 張訂單
+{0} orders changed after they came in,{0} 張訂單在收到後被修改
+{0} orders to receive,{0} 張採購單待收貨
+{0} production logs,{0} 張生產紀錄
+{0} products from this supplier,此供應商的 {0} 項產品
+{0} replaced by {1},{0} 已取代為 {1}
+{0} requests,{0} 個申請
+"{0} requires a minimum order of {1}. This order is {2}, so {3} more is needed.",{0} 的最低訂貨額為 {1}。此訂單為 {2}，尚欠 {3}。
+{0} shifts copied,已複製 {0} 個更次
+{0} units,{0} 件
+{0} units a week on average,平均每週 {0} 件
+{0} · {1} lines{2},{0} · {1} 行{2}
+{0}% delivered,已送貨 {0}%
+{0}% received,已收貨 {0}%
+{0}'s SKU {1} is already used by item {2}.,{0} 的貨號 {1} 已用於貨品 {2}。
+"{0}, counted {1}",{0}，盤點日期 {1}
+{0}: a count can't be negative,{0}：盤點數量不能為負數
+{unparsed} line(s) could not be read (listed below). Add them to the draft order by hand.,有 {unparsed} 行讀不到（見下方）。請人手加入訂單草稿。

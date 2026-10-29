@@ -1,0 +1,136 @@
+{
+ "actions": [],
+ "creation": "2026-10-20 12:00:00.000000",
+ "modified": "2026-10-20 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "HK Operations",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "name": "Gmail Settings",
+ "issingle": 1,
+ "field_order": [
+  "enabled",
+  "label_name",
+  "allowed_senders",
+  "extra_senders",
+  "skip_reply_senders",
+  "look_back_days",
+  "default_lead_days",
+  "max_per_run",
+  "column_break_1",
+  "client_id",
+  "client_secret",
+  "refresh_token",
+  "section_status",
+  "last_checked",
+  "last_error"
+ ],
+ "fields": [
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Pick up orders from Gmail",
+   "default": "0",
+   "description": "Off until the Google steps are done. Read-only: the system never sends, labels or deletes mail."
+  },
+  {
+   "fieldname": "label_name",
+   "fieldtype": "Data",
+   "label": "Gmail label",
+   "default": "Orders",
+   "reqd": 1,
+   "description": "Only mail under this label is read. Create the label in Gmail and apply it with a filter or by hand."
+  },
+  {
+   "fieldname": "allowed_senders",
+   "fieldtype": "Small Text",
+   "label": "Only these senders",
+   "description": "Addresses or @domains, separated by commas or lines. Blank = anyone whose mail carries the label."
+  },
+  {
+   "fieldname": "extra_senders",
+   "fieldtype": "Small Text",
+   "label": "Also pick up from these senders",
+   "description": "Addresses or domains (plaza-network.com), separated by commas or lines. Their mail is read even without the label."
+  },
+  {
+   "fieldname": "skip_reply_senders",
+   "fieldtype": "Small Text",
+   "label": "Skip plain replies from these senders",
+   "description": "Addresses or domains (happyconceptsfood.hk), separated by commas or lines. A reply (Re:) from them without a PDF is skipped; forwards and replies with a PDF are still read."
+  },
+  {
+   "fieldname": "look_back_days",
+   "fieldtype": "Int",
+   "label": "Look back (days)",
+   "default": "14",
+   "description": "Older mail is ignored, so the first run does not pull in the whole label."
+  },
+  {
+   "fieldname": "default_lead_days",
+   "fieldtype": "Int",
+   "label": "Delivery date: days after the email",
+   "default": "1",
+   "description": "Draft orders get this delivery date; change it on the order."
+  },
+  {
+   "fieldname": "max_per_run",
+   "fieldtype": "Int",
+   "label": "Most emails per run",
+   "default": "25"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "client_id",
+   "fieldtype": "Data",
+   "label": "Google client ID"
+  },
+  {
+   "fieldname": "client_secret",
+   "fieldtype": "Password",
+   "label": "Google client secret"
+  },
+  {
+   "fieldname": "refresh_token",
+   "fieldtype": "Password",
+   "label": "Google refresh token",
+   "description": "From the one-time sign-in on your own computer (deploy/gmail_orders.md). Read-only Gmail access."
+  },
+  {
+   "fieldname": "section_status",
+   "fieldtype": "Section Break",
+   "label": "Status"
+  },
+  {
+   "fieldname": "last_checked",
+   "fieldtype": "Datetime",
+   "label": "Last checked",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_error",
+   "fieldtype": "Small Text",
+   "label": "Last error",
+   "read_only": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  }
+ ]
+}

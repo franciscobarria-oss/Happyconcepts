@@ -1,0 +1,202 @@
+{
+ "actions": [],
+ "creation": "2026-10-14 16:00:00.000000",
+ "modified": "2026-10-19 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "HK Operations",
+ "name": "Label Printer",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "field_order": [
+  "printer_name",
+  "enabled",
+  "label_use",
+  "api_user",
+  "column_break_1",
+  "status_html",
+  "last_seen",
+  "agent_version",
+  "agent_host",
+  "agent_problem",
+  "section_labels",
+  "mode",
+  "dpi",
+  "column_break_2",
+  "width_mm",
+  "height_mm",
+  "section_notes",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "printer_name",
+   "fieldtype": "Data",
+   "label": "Printer name",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "description": "Also typed in the Raspberry Pi's settings file, e.g. Kitchen Zebra."
+  },
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "label_use",
+   "fieldtype": "Select",
+   "label": "Prints",
+   "options": "Product labels\nKitchen date labels",
+   "default": "Product labels",
+   "in_list_view": 1,
+   "description": "Product labels: 100 × 150 mm labels for sales orders. Kitchen date labels: small opened-product and batch labels (e.g. a SATO printer, 50 × 30 mm)."
+  },
+  {
+   "fieldname": "api_user",
+   "fieldtype": "Link",
+   "label": "Raspberry Pi user",
+   "options": "User",
+   "description": "The user whose API key the Pi uses. It only needs the Label Printer role."
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status_html",
+   "fieldtype": "HTML",
+   "label": "Status"
+  },
+  {
+   "fieldname": "last_seen",
+   "fieldtype": "Datetime",
+   "label": "Last seen",
+   "read_only": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "agent_version",
+   "fieldtype": "Data",
+   "label": "Agent version",
+   "read_only": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "agent_host",
+   "fieldtype": "Data",
+   "label": "Raspberry Pi",
+   "read_only": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "agent_problem",
+   "fieldtype": "Data",
+   "label": "Pi reports a problem",
+   "read_only": 1,
+   "no_copy": 1,
+   "depends_on": "agent_problem"
+  },
+  {
+   "fieldname": "section_labels",
+   "fieldtype": "Section Break",
+   "label": "Labels"
+  },
+  {
+   "fieldname": "mode",
+   "fieldtype": "Select",
+   "label": "Printer language",
+   "options": "ZPL\nPNG (CUPS)",
+   "default": "ZPL",
+   "description": "ZPL for Zebra and other thermal printers that speak ZPL. PNG sends a picture through the Pi's printer driver (CUPS) for anything else."
+  },
+  {
+   "fieldname": "dpi",
+   "fieldtype": "Select",
+   "label": "Print resolution (dpi)",
+   "options": "203\n300",
+   "default": "203"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "width_mm",
+   "fieldtype": "Float",
+   "label": "Label width (mm)",
+   "default": "100"
+  },
+  {
+   "fieldname": "height_mm",
+   "fieldtype": "Float",
+   "label": "Label height (mm)",
+   "default": "150"
+  },
+  {
+   "fieldname": "section_notes",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1,
+   "print": 1
+  },
+  {
+   "role": "Stock Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1,
+   "print": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1,
+   "report": 1,
+   "print": 1
+  },
+  {
+   "role": "Stock User",
+   "read": 1,
+   "report": 1,
+   "print": 1
+  },
+  {
+   "role": "Manufacturing User",
+   "read": 1,
+   "report": 1,
+   "print": 1
+  }
+ ],
+ "autoname": "field:printer_name",
+ "naming_rule": "By fieldname",
+ "title_field": "printer_name"
+}

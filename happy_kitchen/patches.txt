@@ -1,5 +1,23 @@
 [pre_model_sync]
 # Patches added here run before DocType JSON is synced (e.g. renames, roles a DocType needs).
+happy_kitchen.patches.add_stock_take_approver_role
 
 [post_model_sync]
 # Patches added here run after the DocTypes exist (custom fields, settings, seed data).
+happy_kitchen.patches.base_setup
+happy_kitchen.patches.supplier_moq_fields
+happy_kitchen.patches.item_recipe_link_fields
+happy_kitchen.patches.stock_take_defaults
+happy_kitchen.patches.wastage_receiving_setup
+happy_kitchen.patches.team_fields
+happy_kitchen.patches.team_setup
+happy_kitchen.patches.theme_defaults
+happy_kitchen.patches.labels_setup
+happy_kitchen.patches.label_design_defaults
+happy_kitchen.patches.date_tracking_setup
+happy_kitchen.patches.supplier_sku_fields
+happy_kitchen.patches.gmail_orders_setup
+happy_kitchen.patches.revise_order_fields
+happy_kitchen.patches.encryption_key_setup
+happy_kitchen.patches.gmail_extra_senders
+happy_kitchen.patches.gmail_skip_reply_senders

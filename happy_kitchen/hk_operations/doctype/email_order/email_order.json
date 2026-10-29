@@ -1,0 +1,193 @@
+{
+ "actions": [],
+ "creation": "2026-10-20 12:00:00.000000",
+ "modified": "2026-10-20 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "HK Operations",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "name": "Email Order",
+ "autoname": "MAIL-.YYYY.-.#####",
+ "naming_rule": "Expression (old style)",
+ "title_field": "subject",
+ "field_order": [
+  "status",
+  "review_html",
+  "subject",
+  "sender_name",
+  "sender_email",
+  "received_on",
+  "column_break_1",
+  "message_id",
+  "thread_id",
+  "revises",
+  "customer",
+  "sales_order",
+  "section_lines",
+  "lines",
+  "unparsed",
+  "section_error",
+  "error",
+  "section_body",
+  "body"
+ ],
+ "fields": [
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "New\nDraft order\nRevised\nNeeds review\nIgnored\nFailed\nDone by hand\nOrder confirmed",
+   "default": "New",
+   "read_only": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "review_html",
+   "fieldtype": "HTML",
+   "label": "Review"
+  },
+  {
+   "fieldname": "subject",
+   "fieldtype": "Data",
+   "label": "Subject",
+   "in_list_view": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "sender_name",
+   "fieldtype": "Data",
+   "label": "Sender",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sender_email",
+   "fieldtype": "Data",
+   "label": "Sender email",
+   "read_only": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "received_on",
+   "fieldtype": "Datetime",
+   "label": "Received",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "message_id",
+   "fieldtype": "Data",
+   "label": "Gmail message ID",
+   "read_only": 1,
+   "unique": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "thread_id",
+   "fieldtype": "Data",
+   "label": "Gmail thread ID",
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "revises",
+   "fieldtype": "Link",
+   "label": "Revises email order",
+   "options": "Email Order",
+   "read_only": 1,
+   "description": "Set when this email changes an order picked up from an earlier email in the same thread."
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "label": "Draft sales order",
+   "options": "Sales Order",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_lines",
+   "fieldtype": "Section Break",
+   "label": "Order lines"
+  },
+  {
+   "fieldname": "lines",
+   "fieldtype": "Table",
+   "label": "Lines",
+   "options": "Email Order Line",
+   "read_only": 1
+  },
+  {
+   "fieldname": "unparsed",
+   "fieldtype": "Small Text",
+   "label": "Lines that could not be read",
+   "read_only": 1,
+   "description": "Check these against the email and add them to the draft order by hand."
+  },
+  {
+   "fieldname": "section_error",
+   "fieldtype": "Section Break",
+   "label": "Error",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "error",
+   "fieldtype": "Small Text",
+   "label": "Error",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_body",
+   "fieldtype": "Section Break",
+   "label": "Email text",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "body",
+   "fieldtype": "Long Text",
+   "label": "Text",
+   "read_only": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "write": 1,
+   "create": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "write": 1
+  }
+ ]
+}

@@ -1,0 +1,208 @@
+{
+ "actions": [],
+ "creation": "2026-10-03 12:00:00.000000",
+ "modified": "2026-10-16 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "Recipe Management",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "name": "Stock Take Item",
+ "istable": 1,
+ "editable_grid": 0,
+ "permissions": [],
+ "fields": [
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Ingredient",
+   "options": "Item",
+   "reqd": 1,
+   "in_list_view": 1,
+   "columns": 2,
+   "read_only": 1
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Ingredient Name",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 3
+  },
+  {
+   "fieldname": "storage_area",
+   "fieldtype": "Link",
+   "label": "Storage Area",
+   "options": "Warehouse",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "count_uom",
+   "fieldtype": "Select",
+   "label": "Count Unit",
+   "options": "g\nkg\nml\nl\npiece",
+   "read_only": 1
+  },
+  {
+   "fieldname": "pack_uom",
+   "fieldtype": "Link",
+   "label": "Pack Size 1",
+   "options": "UOM",
+   "read_only": 1
+  },
+  {
+   "fieldname": "pack_factor",
+   "fieldtype": "Float",
+   "label": "Stock Units per Pack 1",
+   "read_only": 1
+  },
+  {
+   "fieldname": "counted_packs",
+   "fieldtype": "Float",
+   "label": "Counted Packs 1"
+  },
+  {
+   "fieldname": "pack_uom_2",
+   "fieldtype": "Link",
+   "label": "Pack Size 2",
+   "options": "UOM",
+   "read_only": 1,
+   "depends_on": "eval:doc.pack_uom_2"
+  },
+  {
+   "fieldname": "pack_factor_2",
+   "fieldtype": "Float",
+   "label": "Stock Units per Pack 2",
+   "read_only": 1,
+   "depends_on": "eval:doc.pack_uom_2"
+  },
+  {
+   "fieldname": "counted_packs_2",
+   "fieldtype": "Float",
+   "label": "Counted Packs 2",
+   "depends_on": "eval:doc.pack_uom_2"
+  },
+  {
+   "fieldname": "pack_uom_3",
+   "fieldtype": "Link",
+   "label": "Pack Size 3",
+   "options": "UOM",
+   "read_only": 1,
+   "depends_on": "eval:doc.pack_uom_3"
+  },
+  {
+   "fieldname": "pack_factor_3",
+   "fieldtype": "Float",
+   "label": "Stock Units per Pack 3",
+   "read_only": 1,
+   "depends_on": "eval:doc.pack_uom_3"
+  },
+  {
+   "fieldname": "counted_packs_3",
+   "fieldtype": "Float",
+   "label": "Counted Packs 3",
+   "depends_on": "eval:doc.pack_uom_3"
+  },
+  {
+   "fieldname": "counted_qty",
+   "fieldtype": "Float",
+   "label": "Counted Qty",
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "counted",
+   "fieldtype": "Check",
+   "label": "Counted",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "auto_zero",
+   "fieldtype": "Check",
+   "label": "Set to 0 at submit",
+   "read_only": 1,
+   "description": "No count was entered, so it was counted as 0 when the count was submitted."
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "stock_uom",
+   "fieldtype": "Link",
+   "label": "Stock UOM",
+   "options": "UOM",
+   "read_only": 1
+  },
+  {
+   "fieldname": "stock_qty",
+   "fieldtype": "Float",
+   "label": "Qty in Stock UOM",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "grams_per_piece",
+   "fieldtype": "Float",
+   "label": "Grams per Piece",
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "valuation_rate",
+   "fieldtype": "Currency",
+   "label": "Unit Cost (per Stock UOM)",
+   "read_only": 1,
+   "precision": "6",
+   "description": "Set when the count is approved."
+  },
+  {
+   "fieldname": "counted_by",
+   "fieldtype": "Link",
+   "label": "Counted By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "counted_at",
+   "fieldtype": "Datetime",
+   "label": "Counted At",
+   "read_only": 1
+  }
+ ],
+ "field_order": [
+  "item",
+  "item_name",
+  "storage_area",
+  "count_uom",
+  "pack_uom",
+  "pack_factor",
+  "counted_packs",
+  "pack_uom_2",
+  "pack_factor_2",
+  "counted_packs_2",
+  "pack_uom_3",
+  "pack_factor_3",
+  "counted_packs_3",
+  "counted_qty",
+  "counted",
+  "auto_zero",
+  "column_break_1",
+  "stock_uom",
+  "stock_qty",
+  "grams_per_piece",
+  "valuation_rate",
+  "counted_by",
+  "counted_at"
+ ]
+}
