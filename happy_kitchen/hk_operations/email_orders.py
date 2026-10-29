@@ -11,6 +11,8 @@ import html
 import re
 from email.utils import parseaddr
 
+from happy_kitchen.hk_operations import order_prices
+
 NUM = r"\d+(?:\.\d+)?"
 QTY_FIRST = re.compile(rf"^(?P<qty>{NUM})\s*(?:[x×*]\s+|(?:pcs?|pieces?|boxes|box|kg|g)\s+(?:of\s+)?)(?P<rest>.+)$", re.I)
 QTY_LAST = re.compile(rf"^(?P<rest>.+?)\s*(?:[x×*]\s*)(?P<qty>{NUM})\s*(?:pcs?|pieces?|boxes|box|kg|g)?$", re.I)
@@ -90,8 +92,10 @@ def search_query(label: str, look_back_days, extra_senders: str | None = None) -
 	return "(" + " OR ".join([f'label:"{label}"'] + [f"from:{e}" for e in senders]) + f") newer_than:{days}d"
 
 
-def review_reasons(status: str, lines: int, unparsed: int, has_sales_order: bool, pdfs: int, pdf_lines_found: bool) -> list[str]:
-	"""Plain sentences for a person looking at an Email Order: why it has this status and what to do."""
+def review_reasons(status: str, lines: int, unparsed: int, has_sales_order: bool, pdfs: int, pdf_lines_found: bool,
+                   prices: dict | None = None) -> list[str]:
+	"""Plain sentences for a person looking at an Email Order: why it has this status and what to do.
+	`prices` counts lines per order_prices status; price warnings never change the status."""
 	out = []
 	if status == "Draft order":
 		out.append("Every line was read and a draft sales order was made. Check it against the PDF, then submit it.")
@@ -119,6 +123,14 @@ def review_reasons(status: str, lines: int, unparsed: int, has_sales_order: bool
 			out.append("A draft sales order was made from the lines that could be read. Check it against the PDF.")
 		if lines and not has_sales_order and not unparsed:
 			out.append("The lines were read but the order is held back, usually because it follows an order already submitted. Check it by hand.")
+	prices = prices or {}
+	if status not in ("Ignored", "Done by hand"):
+		if prices.get(order_prices.DIFFERS):
+			out.append("{differs} line(s): the customer's PO price is not our price (highlighted). Our price is on the order; check which one is right.")
+		if prices.get(order_prices.USED):
+			out.append("{used} line(s) had no price of ours: the customer's PO price was put on the order.")
+		if prices.get(order_prices.NONE):
+			out.append("{none} line(s) have no price on the PO and none of ours: add the price on the order.")
 	return out
 
 
@@ -183,6 +195,23 @@ def pdf_attachments(payload: dict) -> list[dict]:
 QTY_HEADS = ("qty", "quantity", "qnty", "order qty", "ordered", "pcs", "數量", "数量")
 CODE_HEADS = ("code", "sku", "item code", "item no", "item no.", "product code", "article", "ref", "編號", "货号", "貨號")
 DESC_HEADS = ("description", "item", "product", "item name", "product name", "name", "品名", "名稱", "描述")
+PRICE_HEADS = ("unit price", "price", "u/price", "u. price", "unit cost", "price/unit", "unit rate", "rate", "單價", "单价")
+PRICE_COL = re.compile(r"@\s*(?P<price>\d[\d,]*(?:\.\d+)?)")
+
+
+def is_price_head(cell: str) -> bool:
+	"""'Unit Price', 'Unit Price (HKD)', 'Price' are unit price columns; 'Amount' / 'Total' are not."""
+	c = re.sub(r"\s*\(.*?\)\s*", "", cell or "").strip()
+	return c in PRICE_HEADS
+
+
+def price_col(price: float) -> list[str]:
+	"""The unit price as an extra "@ 12.50" column of an order line, or nothing when there is none."""
+	return [f"@ {price:.4f}".rstrip("0").rstrip(".")] if price and price > 0 else []
+
+
+def _price(text: str) -> float:
+	return order_prices.parse_price(text)
 
 
 def _split_cell(cell, n: int) -> list[str]:
@@ -199,8 +228,8 @@ def _split_cell(cell, n: int) -> list[str]:
 
 
 def table_to_lines(rows: list[list]) -> list[str]:
-	"""Rows of a PDF table -> "CODE | Description | Qty" lines for parse_lines. The header row (the
-	first that has a quantity column and a description or code column) says which column is which;
+	"""Rows of a PDF table -> "CODE | Description | Qty [| @ unit price]" lines for parse_lines. The header
+	row (the first that has a quantity column and a description or code column) says which column is which;
 	rows before it, rows without a positive number in the quantity column and total rows are skipped.
 	A row that merges several order lines (its quantity cell holds several numbers) is split."""
 	head = None
@@ -215,10 +244,11 @@ def table_to_lines(rows: list[list]) -> list[str]:
 			qty = next((i for i, c in enumerate(low) if c in QTY_HEADS), None)
 			desc = next((i for i, c in enumerate(low) if c in DESC_HEADS), None)
 			code = next((i for i, c in enumerate(low) if c in CODE_HEADS), None)
+			price = next((i for i, c in enumerate(low) if is_price_head(c)), None)
 			if qty is not None and (desc is not None or code is not None):
-				head = (code, desc, qty)
+				head = (code, desc, qty, price)
 			continue
-		code, desc, qty = head
+		code, desc, qty, price = head
 		if qty >= len(cells):
 			continue
 		qty_text = cells[qty].replace(",", "")
@@ -228,11 +258,13 @@ def table_to_lines(rows: list[list]) -> list[str]:
 		k = len(nums)
 		names = _split_cell(raw[desc], k) if desc is not None and desc < len(raw) else [""] * k
 		skus = _split_cell(raw[code], k) if code is not None and code < len(raw) else [""] * k
-		for name, sku, q in zip(names, skus, nums):
+		prices = _split_cell(raw[price], k) if price is not None and price < len(raw) else [""] * k
+		for name, sku, q, pr in zip(names, skus, nums, prices):
 			n = float(q)
 			if n <= 0 or not (name or sku) or "total" in (name + sku).lower():
 				continue
-			out.append(f"{sku} | {name or sku} | {q}" if sku else f"{name} | {q}")
+			parts = ([sku, name or sku] if sku else [name]) + [q] + price_col(_price(pr))
+			out.append(" | ".join(parts))
 	return out
 
 
@@ -297,7 +329,8 @@ def text_item_pages(pages: list[str]) -> list[tuple[str, str, list[str]]]:
 	and "Quantity" and stops at any line with the word "total"; it carries across pages, so a table
 	that continues on the next page is read whole. A page that repeats an earlier page (same PO number,
 	same lines) is dropped: a reprinted copy. Different PO numbers are never merged, even with
-	identical lines. A line's own date (last column) is added as a final "| YYYY-MM-DD" column."""
+	identical lines. The unit price is kept as an "| @ price" column, and a line's own date (last column)
+	is added as a final "| YYYY-MM-DD" column."""
 	out, seen = [], set()
 	reading = False
 	for page in pages:
@@ -317,13 +350,13 @@ def text_item_pages(pages: list[str]) -> list[tuple[str, str, list[str]]]:
 				m = TEXT_ITEM_NOCODE.match(line)
 			if m:
 				date = parse_date(m.groupdict().get("date") or "")
-				items.append([code, m.group("desc").strip(), m.group("qty"), date])
+				items.append([code, m.group("desc").strip(), m.group("qty"), date, _price(m.group("price"))])
 			elif items and line and len(line) <= MAX_CONTINUATION and not re.search(r"\d{1,3}(,\d{3})*\.\d{2}\b", line):
 				items[-1][1] = f"{items[-1][1]} {line}"
 		lines = []
-		for c, d, q, dt in items:
+		for c, d, q, dt, pr in items:
 			if float(q) > 0:
-				parts = ([c] if c else []) + [d, q] + ([dt] if dt else [])
+				parts = ([c] if c else []) + [d, q] + price_col(pr) + ([dt] if dt else [])
 				lines.append(" | ".join(parts))
 		po = po_number(page)
 		key = (po, tuple(lines))
@@ -382,7 +415,8 @@ def _split_code(rest: str) -> tuple[str, str]:
 
 
 def parse_lines(text: str) -> tuple[list[dict], list[str]]:
-	"""Order lines [{"external_sku", "description", "qty"}] and the lines that could not be read."""
+	"""Order lines [{"external_sku", "description", "qty", "po_rate", "po_no", "delivery_date"}] and the lines
+	that could not be read. "po_rate" is the customer's unit price from an "@ 12.50" column (0 = none)."""
 	lines, unparsed = [], []
 	po, po_date = "", ""
 	for raw in (text or "").split("\n"):
@@ -398,13 +432,16 @@ def parse_lines(text: str) -> tuple[list[dict], list[str]]:
 			line_date = ""
 			if cols and re.fullmatch(r"\d{4}-\d{2}-\d{2}", cols[-1]):
 				line_date = cols.pop()
+			po_rate = 0.0
+			if cols and PRICE_COL.fullmatch(cols[-1]):
+				po_rate = _price(cols.pop())
 			if not cols or {c.lower() for c in cols} & HEADER_WORDS and _number(" ".join(cols)) is None:
 				continue
 			qty = _number(cols[-1]) if len(cols) >= 2 and re.fullmatch(rf"{NUM}\s*[A-Za-z]*", cols[-1]) else None
 			if qty and qty > 0:
 				cols = cols[:-1]
 				code, name = (cols[0], cols[1]) if len(cols) >= 2 else ("", cols[0])
-				lines.append({"external_sku": code, "description": name, "qty": qty,
+				lines.append({"external_sku": code, "description": name, "qty": qty, "po_rate": po_rate,
 				              "po_no": po, "delivery_date": line_date or po_date})
 				continue
 			digits = any(c.isdigit() for c in line)
@@ -424,7 +461,7 @@ def parse_lines(text: str) -> tuple[list[dict], list[str]]:
 			unparsed.append(raw.strip())
 			continue
 		code, name = _split_code(rest)
-		lines.append({"external_sku": code, "description": name, "qty": qty, "po_no": po, "delivery_date": po_date})
+		lines.append({"external_sku": code, "description": name, "qty": qty, "po_rate": 0.0, "po_no": po, "delivery_date": po_date})
 	return lines, unparsed
 
 

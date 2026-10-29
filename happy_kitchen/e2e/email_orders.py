@@ -215,6 +215,29 @@ def run():
 		_check(frappe.db.count("Sales Order", {"po_no": ("like", f"{P}PO-%"), "customer": o9.customer}) == 2, "an existing PO is skipped")
 		_check(frappe.db.get_value("Email Order", {"message_id": "m10"}, "status") == "Ignored", "all POs known: ignored")
 
+		# --- customer PO prices: a missing price of ours takes the PO price, a different one is flagged ---
+		price_list = frappe.db.get_single_value("Selling Settings", "selling_price_list") or "Standard Selling"
+		priced = frappe.get_doc({"doctype": "Item", "item_code": P + "PRICED", "item_name": P + "Priced tart", "stock_uom": "Nos",
+		                         "item_group": "Products", "is_stock_item": 1, "is_sales_item": 1}).insert().name
+		frappe.get_doc({"doctype": "Item Price", "item_code": priced, "price_list": price_list, "price_list_rate": 10}).insert()
+		fake.messages["m12"] = _msg("m12", "Deli <d@e2e-deli.example>", "PO", (
+			f"PR-1 | {P}Priced tart | 3 | @ 12\nPR-2 | {P}Unpriced pie | 2 | @ 7.5\n4 x {P}No price bun"), thread="t12")
+		gmail_orders.fetch(client=fake)
+		o12 = frappe.get_doc("Email Order", {"message_id": "m12"})
+		_check([l.price_check for l in o12.lines] == ["Price differs", "PO price used", "No price"],
+		       f"price checks: {[(l.description, l.po_rate, l.our_rate, l.price_check) for l in o12.lines]}")
+		_check(o12.lines[0].po_rate == 12 and o12.lines[0].our_rate == 10, "PO price and our price kept on the line")
+		so12 = frappe.get_doc("Sales Order", o12.sales_order)
+		rates = [(r.item_code, r.rate, r.hk_po_rate) for r in so12.items]
+		_check(rates[0][1] == 10 and rates[0][2] == 12, f"a different PO price keeps our price: {rates}")
+		_check(rates[1][1] == 7.5 and rates[2][1] == 0, f"a missing price takes the PO price: {rates}")
+		_check(so12.docstatus == 0 and o12.status == "Draft order", f"price warnings do not change the status: {o12.status}")
+		_check(frappe.db.exists("Comment", {"reference_doctype": "Sales Order", "reference_name": so12.name,
+		                                    "content": ("like", "%PO price 12.00, our price 10.00%")}), "comment lists the difference")
+		rd12 = gmail_orders.review_data(o12.name)
+		_check(rd12["price_differs"] == 1 and any("1 line(s): the customer's PO price" in r for r in rd12["reasons"]),
+		       f"review shows the price warning: {rd12['reasons']}")
+
 		# Today: emails to read by hand and draft orders from email are the first lines of "Waiting on you"
 		from happy_kitchen.recipe_management import dashboard
 		labels = [w["label"] for w in dashboard.kitchen_today()["waiting"]]

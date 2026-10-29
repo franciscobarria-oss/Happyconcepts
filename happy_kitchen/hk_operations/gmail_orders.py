@@ -13,7 +13,7 @@ import frappe
 from frappe import _
 from frappe.utils import add_days, flt, get_datetime, getdate, now_datetime, nowdate
 
-from happy_kitchen.hk_operations import email_orders, revisions_api, sku
+from happy_kitchen.hk_operations import email_orders, order_prices, revisions_api, sku
 
 GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
 GMAIL_API = "https://gmail.googleapis.com/gmail/v1/users/me"
@@ -295,9 +295,10 @@ def process(order, lead_days: int = 1, prior=None):
 			items.append((ln, item, created))
 		so = _make_sales_order(order, customer, po, items, lead_days)
 		made.append(so.name)
-		for ln, item, created in items:
+		for (ln, item, created), chk in zip(items, so.flags.hk_price_checks):
 			order.append("lines", {**ln, "item": item, "item_created": 1 if created else 0,
-			                       "delivery_date": ln["delivery_date"] or None, "sales_order": so.name})
+			                       "delivery_date": ln["delivery_date"] or None, "sales_order": so.name,
+			                       "our_rate": chk["our_rate"], "price_check": chk["status"]})
 	if notes:
 		order.unparsed = "\n".join(([order.unparsed] if order.unparsed else []) + notes)
 	if not made:
@@ -321,7 +322,7 @@ def _make_sales_order(order, customer, po, items, lead_days):
 
 	so_items = []
 	for ln, item, _created in items:
-		row = {"item_code": item, "qty": ln["qty"]}
+		row = {"item_code": item, "qty": ln["qty"], "hk_po_rate": flt(ln.get("po_rate"))}
 		if usable(ln["delivery_date"]):
 			row["delivery_date"] = ln["delivery_date"]
 		so_items.append(row)
@@ -336,7 +337,36 @@ def _make_sales_order(order, customer, po, items, lead_days):
 	                "reference_name": so.name,
 	                "content": _("Picked up from the email '{0}' from {1} ({2}). Check it before submitting.").format(
 		                order.subject, order.sender_email, order.name)}).insert(ignore_permissions=True)
+	so.flags.hk_price_checks = apply_po_prices(so)
 	return so
+
+
+def apply_po_prices(so, rows=None) -> list[dict]:
+	"""Each Sales Order row (in order; or only `rows`) checked against the customer's PO price
+	(order_prices.check): a row without a price of ours takes the PO price; a different price keeps ours
+	and is only reported. The order is saved when a price was filled, and a comment lists what was filled
+	or differs. Never blocks."""
+	checks, filled, notes = [], False, []
+	for row in (so.items if rows is None else rows):
+		chk = order_prices.check(row.get("hk_po_rate"), row.rate)
+		chk["our_rate"] = flt(row.rate)
+		name = row.item_name or row.item_code
+		if chk["fill"]:
+			row.rate = chk["rate"]
+			filled = True
+			notes.append(_("{0}: no price of ours, the PO price {1} was used").format(name, order_prices.money(chk["rate"])))
+		elif chk["status"] == order_prices.DIFFERS:
+			notes.append(_("{0}: PO price {1}, our price {2} ({3})").format(
+				name, order_prices.money(row.hk_po_rate), order_prices.money(row.rate), order_prices.signed(chk)))
+		checks.append(chk)
+	if filled:
+		so.save(ignore_permissions=True)
+	if notes:
+		frappe.get_doc({"doctype": "Comment", "comment_type": "Info", "reference_doctype": "Sales Order",
+		                "reference_name": so.name,
+		                "content": _("Prices checked against the customer's PO:") + "<br>" + "<br>".join(
+			                frappe.utils.escape_html(n) for n in notes)}).insert(ignore_permissions=True)
+	return checks
 
 
 def revise(order, prior, lines, unparsed):
@@ -350,7 +380,7 @@ def revise(order, prior, lines, unparsed):
 	for ln in lines:
 		item, created = find_or_create_item(customer, ln["external_sku"], ln["description"])
 		order.append("lines", {**ln, "item": item, "item_created": 1 if created else 0})
-		new_items.append({"item_code": item, "qty": ln["qty"]})
+		new_items.append({"item_code": item, "qty": ln["qty"], "hk_po_rate": flt(ln.get("po_rate"))})
 	so = frappe.get_doc("Sales Order", prior.sales_order)
 	if so.docstatus == 0:
 		so.flags.hk_revision_source = "Email"
@@ -361,6 +391,8 @@ def revise(order, prior, lines, unparsed):
 		count = int(so.get("hk_revision_count") or 0)
 		so.save(ignore_permissions=True)
 		changed = int(so.get("hk_revision_count") or 0) > count
+		for line, chk in zip(order.lines, apply_po_prices(so)):
+			line.our_rate, line.price_check = chk["our_rate"], chk["status"]
 	else:
 		rev = revisions_api.record(so.name, revisions_api.lines(so.items), new_items, "Email", applied=0, email_order=order.name)
 		changed = bool(rev)
@@ -575,12 +607,25 @@ def review_data(name: str) -> dict:
 	lines = [{"external_sku": l.external_sku, "description": l.description, "qty": l.qty, "item": l.item, "po_no": l.po_no,
 	          "delivery_date": str(l.delivery_date or ""), "sales_order": l.sales_order, "idx": l.idx,
 		          "item_created": l.item_created, "item_confirmed": l.item_confirmed,
+		          "po_rate": flt(l.po_rate), "our_rate": flt(l.our_rate), "price_check": l.price_check or "",
 		          "item_name": frappe.db.get_value("Item", l.item, "item_name") if l.item else ""} for l in order.lines]
 	unparsed = [u for u in (order.unparsed or "").split("\n") if u.strip()]
 	pdfs = [f for f in files if (f.file_name or "").lower().endswith(".pdf")]
-	reasons = email_orders.review_reasons(order.status, len(lines), len(unparsed), bool(order.sales_order), len(pdfs), bool(attached.strip()))
+	prices = order_prices.counts(l["price_check"] for l in lines)
+	reasons = email_orders.review_reasons(order.status, len(lines), len(unparsed), bool(order.sales_order), len(pdfs),
+	                                      bool(attached.strip()), prices)
+	counts = {"{unparsed}": len(unparsed), "{differs}": prices[order_prices.DIFFERS], "{used}": prices[order_prices.USED],
+	          "{none}": prices[order_prices.NONE]}
+
+	def fill(r):
+		r = _(r)
+		for k, v in counts.items():
+			r = r.replace(k, str(v))
+		return r
+
 	return {"status": order.status, "files": files, "email_text": text.strip()[:6000], "pdf_text": attached.strip()[:12000],
-	        "lines": lines, "unparsed": unparsed, "reasons": [_(r).replace("{unparsed}", str(len(unparsed))) for r in reasons], "sales_order": order.sales_order,
+	        "lines": lines, "unparsed": unparsed, "reasons": [fill(r) for r in reasons], "sales_order": order.sales_order,
+	        "price_differs": prices[order_prices.DIFFERS],
 	        "customer": order.customer, "error": order.error}
 
 
@@ -638,13 +683,20 @@ def confirm_line_item(name: str, idx: int, item: str | None = None):
 				new.append("customer_items", {"customer_name": order.customer, "ref_code": code})
 				new.save(ignore_permissions=True)
 		if so:
+			new_row = None
 			for row in so.items:
 				if row.item_code == old and flt(row.qty) == flt(line.qty):
 					delivery = row.delivery_date
 					so.remove(row)
-					so.append("items", {"item_code": item, "qty": line.qty, "delivery_date": delivery})
+					new_row = so.append("items", {"item_code": item, "qty": line.qty, "delivery_date": delivery,
+					                              "hk_po_rate": flt(line.po_rate)})
 					break
 			so.save(ignore_permissions=True)
+			if new_row:
+				# the new item's own price, then the PO price check for that row only
+				new_row = next(r for r in so.items if r.name == new_row.name)
+				chk = apply_po_prices(so, [new_row])[0]
+				line.our_rate, line.price_check = chk["our_rate"], chk["status"]
 		line.item = item
 		line.item_created = 0
 	line.item_confirmed = 1
