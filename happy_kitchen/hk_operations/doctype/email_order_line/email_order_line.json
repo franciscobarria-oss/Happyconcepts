@@ -1,7 +1,7 @@
 {
  "actions": [],
  "creation": "2026-10-20 12:00:00.000000",
- "modified": "2026-10-20 12:00:00.000000",
+ "modified": "2026-10-29 12:00:00.000000",
  "modified_by": "Administrator",
  "owner": "Administrator",
  "doctype": "DocType",
@@ -22,7 +22,10 @@
   "po_no",
   "delivery_date",
   "sales_order",
-  "item_confirmed"
+  "item_confirmed",
+  "po_rate",
+  "our_rate",
+  "price_check"
  ],
  "fields": [
   {
@@ -92,6 +95,26 @@
    "label": "Item confirmed",
    "read_only": 1,
    "default": "0"
+  },
+  {
+   "fieldname": "po_rate",
+   "fieldtype": "Currency",
+   "label": "PO unit price",
+   "read_only": 1,
+   "description": "The customer's unit price on the PO (0 = none)."
+  },
+  {
+   "fieldname": "our_rate",
+   "fieldtype": "Currency",
+   "label": "Our price",
+   "read_only": 1,
+   "description": "Our price for the item when the order was made (price list or pricing rule)."
+  },
+  {
+   "fieldname": "price_check",
+   "fieldtype": "Data",
+   "label": "Price check",
+   "read_only": 1
   }
  ],
  "permissions": []

@@ -3,6 +3,7 @@ frappe.ui.form.on("Sales Order", {
 	refresh(frm) {
 		hk_order_stage(frm);
 		hk_revision_buttons(frm);
+		hk_price_warnings(frm);
 		if (frm.doc.docstatus !== 1) return;
 		frappe.call("happy_kitchen.hk_operations.labels.sales_order_labels", { sales_order: frm.doc.name }).then(({ message: jobs }) => {
 			jobs = jobs || [];
@@ -144,4 +145,21 @@ function hk_mark_delivered(frm) {
 			frm.reload_doc();
 		})
 	);
+}
+
+// Price warnings (never blocking): lines whose rate is not the customer's PO price, and draft lines
+// with no price at all. Same rule as hk_operations/order_prices.differs (half a cent tolerance).
+function hk_price_warnings(frm) {
+	if (frm.is_new() || frm.doc.docstatus === 2) return;
+	const money = (v) => format_currency(v, frm.doc.currency, 2);
+	const name = (r) => frappe.utils.escape_html(r.item_name || r.item_code || "");
+	const differs = (frm.doc.items || []).filter((r) => flt(r.hk_po_rate) > 0 && flt(r.rate) > 0 && Math.abs(flt(r.hk_po_rate) - flt(r.rate)) >= 0.005);
+	if (differs.length) {
+		const rows = differs.map((r) => __("{0}: PO {1}, order {2}", [name(r), money(r.hk_po_rate), money(r.rate)])).join("; ");
+		frm.dashboard.add_comment(`<b>${__("Price differs from the customer's PO")}:</b> ${rows}`, "orange", true);
+	}
+	if (frm.doc.docstatus !== 0) return;
+	const missing = (frm.doc.items || []).filter((r) => r.item_code && !flt(r.rate));
+	if (missing.length)
+		frm.dashboard.add_comment(`<b>${__("No price")}:</b> ${missing.map(name).join(", ")}`, "orange", true);
 }

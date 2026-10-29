@@ -11,6 +11,8 @@ def _b64(text):
 def test_parse_sender_and_allow_list():
 	assert eo.parse_sender('"Cafe A" <Orders@CafeA.com>') == ("Cafe A", "orders@cafea.com")
 	assert eo.parse_sender("") == ("", "")
+	assert eo.parse_sender("'Lau, Jackison' via Orders <orders@x.hk>") == ("Lau, Jackison' via Orders", "orders@x.hk")
+	assert eo.parse_sender("Lau, Jackison <J.Lau@ikea.com.hk>") == ("Lau, Jackison", "j.lau@ikea.com.hk")
 	assert eo.sender_allowed("a@x.com", "")
 	assert eo.sender_allowed("a@x.com", "b@y.com, a@x.com")
 	assert eo.sender_allowed("a@x.com", "@x.com")
@@ -115,10 +117,11 @@ Page 1 of 1
 
 def test_text_item_lines_reads_positioned_text_with_wrapping_descriptions():
 	lines = eo.text_item_lines(LAYOUT_A)
-	assert lines == ["123456789 | Butter cookie box tin of 24 | 12", "987654321 | Brownie tray | 6"]
+	assert lines == ["123456789 | Butter cookie box tin of 24 | 12 | @ 10.5", "987654321 | Brownie tray | 6 | @ 99"]
 	parsed, unparsed = eo.parse_lines("\n".join(lines))
 	assert [(l["external_sku"], l["description"], l["qty"]) for l in parsed] == [
 		("123456789", "Butter cookie box tin of 24", 12), ("987654321", "Brownie tray", 6)]
+	assert [l["po_rate"] for l in parsed] == [10.5, 99]
 	assert unparsed == []
 
 
@@ -133,13 +136,13 @@ def test_table_row_with_merged_order_lines_is_split():
 		["3333333333", "Eggs tray", "TR", "30.000", "4.00", "120.00"],
 	]
 	assert eo.table_to_lines(rows) == [
-		"1111111111 | Flour 25kg | 12.000", "2222222222 | Sugar 10kg | 6.500", "3333333333 | Eggs tray | 30.000"]
+		"1111111111 | Flour 25kg | 12.000 | @ 9.99", "2222222222 | Sugar 10kg | 6.500 | @ 5", "3333333333 | Eggs tray | 30.000 | @ 4"]
 
 
 def test_table_without_code_column_and_decimal_quantity():
 	rows = [["Description", "Quantity", "Unit", "Unit Price", "Amount", "Del. Date"],
 	        ["Lemon tart", "9.50", "Pcs", "12.00", "114.00", "21/Oct/2026"]]
-	assert eo.table_to_lines(rows) == ["Lemon tart | 9.50"]
+	assert eo.table_to_lines(rows) == ["Lemon tart | 9.50 | @ 12"]
 
 
 def test_up_to_eight_pdfs_are_listed():
@@ -149,19 +152,20 @@ def test_up_to_eight_pdfs_are_listed():
 
 def test_table_quantity_cell_with_its_unit():
 	rows = [["Description", "Quantity", "Unit Price", "Amount"], ["Lemon tart", "9.50 Pcs", "12.00", "114.00"]]
-	assert eo.table_to_lines(rows) == ["Lemon tart | 9.50"]
+	assert eo.table_to_lines(rows) == ["Lemon tart | 9.50 | @ 12"]
 
 
 def test_text_items_without_item_code():
 	text = "Description Quantity Unit Unit Price Amount Del. Date\nLemon tart large 9.50 Pcs 12.00 114.00 21/Oct/2026\nTotal: 114.00\n"
-	assert eo.text_item_lines(text) == ["Lemon tart large | 9.50 | 2026-10-21"]
+	assert eo.text_item_lines(text) == ["Lemon tart large | 9.50 | @ 12 | 2026-10-21"]
 
 
 def test_text_item_with_its_own_date():
 	text = "Description Quantity Unit Unit Price Amount Del. Date\nLemon tart 9.50 Pcs 12.00 114.00 21/Oct/2026\n"
-	assert eo.text_item_lines(text) == ["Lemon tart | 9.50 | 2026-10-21"]
-	lines, _ = eo.parse_lines("--- PO A1-12345 | 2026-10-25 ---\nLemon tart | 9.50 | 2026-10-21\nCake | 2")
-	assert [(l["po_no"], l["delivery_date"], l["qty"]) for l in lines] == [("A1-12345", "2026-10-21", 9.5), ("A1-12345", "2026-10-25", 2)]
+	assert eo.text_item_lines(text) == ["Lemon tart | 9.50 | @ 12 | 2026-10-21"]
+	lines, _ = eo.parse_lines("--- PO A1-12345 | 2026-10-25 ---\nLemon tart | 9.50 | @ 12 | 2026-10-21\nCake | 2")
+	assert [(l["po_no"], l["delivery_date"], l["qty"], l["po_rate"]) for l in lines] == [
+		("A1-12345", "2026-10-21", 9.5, 12), ("A1-12345", "2026-10-25", 2, 0)]
 
 
 def test_total_lines_are_not_unparsed():
@@ -188,19 +192,19 @@ def test_same_po_printed_twice_is_read_once_but_different_pos_are_kept():
 	pages = [_page("AB1-0001", [row]), _page("AB1-0001", [row]), _page("AB1-0002", [row]), _page("AB1-0003", [row])]
 	got = eo.text_item_pages(pages)
 	assert [po for po, _, _ in got] == ["AB1-0001", "AB1-0002", "AB1-0003"]
-	assert all(lines == ["123456789 | Butter cookie | 12"] for _, _, lines in got)
+	assert all(lines == ["123456789 | Butter cookie | 12 | @ 10.5"] for _, _, lines in got)
 
 
 def test_table_that_continues_on_the_next_page_is_read_whole():
 	p1 = "Description Quantity Unit Unit Price Amount\nCookie 123456789 1 box 1.00 1.00\n"
 	p2 = "Page 2\nCake 987654321 2 box 2.00 4.00\nTotal 5.00\n"
-	assert [l for _, _, ls in eo.text_item_pages([p1, p2]) for l in ls] == ["123456789 | Cookie | 1", "987654321 | Cake | 2"]
+	assert [l for _, _, ls in eo.text_item_pages([p1, p2]) for l in ls] == ["123456789 | Cookie | 1 | @ 1", "987654321 | Cake | 2 | @ 2"]
 
 
 def test_wrapped_description_stays_short_and_terms_text_is_not_swallowed():
 	text = ("Description Quantity Unit Unit Price Amount\nLemon tart 9.50 Pcs 12.00 114.00\n"
 	        "Item Total: 114.00\n" + "Terms and conditions apply to every order. " * 30 + "\n")
-	assert eo.text_item_lines(text) == ["Lemon tart | 9.50"]
+	assert eo.text_item_lines(text) == ["Lemon tart | 9.50 | @ 12"]
 
 
 def test_po_number():
@@ -273,3 +277,125 @@ def test_review_reasons_by_status():
 
 def test_review_reasons_order_confirmed():
 	assert eo.review_reasons("Order confirmed", 2, 0, True, 1, True)
+
+
+def test_unit_price_column_is_read():
+	rows = [["Item Code", "Description", "Qty", "Unit Price (HKD)", "Amount"],
+	        ["CK-001", "Butter cookie", "12", "1,050.50", "12,606.00"],
+	        ["CK-002", "Brownie", "3", "", ""]]
+	assert eo.table_to_lines(rows) == ["CK-001 | Butter cookie | 12 | @ 1050.5", "CK-002 | Brownie | 3"]
+	lines, unparsed = eo.parse_lines("\n".join(eo.table_to_lines(rows)) + "\nCK-3 | Cake | 2 | @ 7.25\n4 x Scone")
+	assert [(l["external_sku"], l["qty"], l["po_rate"]) for l in lines] == [
+		("CK-001", 12, 1050.5), ("CK-002", 3, 0), ("CK-3", 2, 7.25), ("", 4, 0)]
+	assert unparsed == []
+
+
+def test_amount_or_total_column_is_not_the_unit_price():
+	rows = [["Description", "Qty", "Amount"], ["Brownie", "3", "30.00"]]
+	assert eo.table_to_lines(rows) == ["Brownie | 3"]
+	assert eo.is_price_head("unit price (hkd)") and eo.is_price_head("單價") and not eo.is_price_head("amount")
+
+
+def test_review_reasons_price_warnings():
+	from happy_kitchen.hk_operations import order_prices as op
+
+	got = eo.review_reasons("Draft order", 3, 0, True, 1, True, {op.DIFFERS: 2, op.USED: 1, op.NONE: 1})
+	assert any("{differs} line(s)" in r for r in got) and any("{used} line(s)" in r for r in got)
+	assert any("{none} line(s)" in r for r in got)
+	assert not any("price" in r for r in eo.review_reasons("Draft order", 3, 0, True, 1, True, {op.SAME: 3}))
+	assert not any("price" in r for r in eo.review_reasons("Ignored", 3, 0, True, 1, True, {op.DIFFERS: 1}))
+
+def _payload(headers, text):
+	return {"mimeType": "text/plain", "headers": [{"name": k, "value": v} for k, v in headers],
+	        "body": {"data": _b64(text)}}
+
+
+def test_original_sender_google_group_rewrite():
+	p = _payload([("From", "'Lau, Jackison' via Orders <orders@happyconceptsfood.hk>"),
+	              ("X-Original-From", '"Lau, Jackison" <Jackison.Lau@ikea.com.hk>'),
+	              ("Reply-To", "Jackison.Lau@ikea.com.hk")], "PO attached")
+	assert eo.original_sender(p, "IKEA PO 123", "happyconceptsfood.hk") == (
+		"Lau, Jackison", "jackison.lau@ikea.com.hk", "orders@happyconceptsfood.hk")
+	# only Reply-To kept
+	p = _payload([("From", "'Chef W' via Orders <orders@happyconceptsfood.hk>"), ("Reply-To", "chef@whotels.com")], "")
+	assert eo.original_sender(p, "PO", "happyconceptsfood.hk") == ("Chef W", "chef@whotels.com", "orders@happyconceptsfood.hk")
+	# no author address anywhere: the name only, never the group address
+	p = _payload([("From", "'Chef W' via Orders <orders@happyconceptsfood.hk>")], "")
+	assert eo.original_sender(p, "PO", "happyconceptsfood.hk") == ("Chef W", "", "orders@happyconceptsfood.hk")
+
+
+def test_original_sender_direct_mail_unchanged():
+	p = _payload([("From", '"Cafe A" <orders@cafea.com>'), ("Reply-To", "boss@cafea.com")], "12 x Brownie")
+	assert eo.original_sender(p, "Order", "happyconceptsfood.hk") == ("Cafe A", "orders@cafea.com", "")
+	# a name with "via" in it is not a Google Group
+	p = _payload([("From", "Trattoria via Roma <info@viaroma.hk>"), ("Reply-To", "boss@viaroma.hk")], "")
+	assert eo.original_sender(p, "Order", "happyconceptsfood.hk") == ("Trattoria via Roma", "info@viaroma.hk", "")
+	assert eo.VIA_NAME.match("'Lau, Jackison' via Orders") and not eo.VIA_NAME.match("Trattoria via Roma")
+
+
+GMAIL_FWD = """FYI
+
+---------- Forwarded message ---------
+From: Ritz Purchasing <purchasing@ritzcarlton.com>
+Date: Mon, 26 Oct 2026 at 10:01
+Subject: PO HKPO123
+To: <sales@happyconceptsfood.hk>
+
+Please deliver:
+CK-001 | Butter cookie | 24
+"""
+
+OUTLOOK_FWD = """Order below
+
+________________________________
+From: Lau, Jackison <jackison.lau@ikea.com.hk>
+Sent: Monday, October 26, 2026 10:00 AM
+To: Sales <sales@happyconceptsfood.hk>
+Subject: IKEA PO
+
+12 x Chocolate brownie
+"""
+
+
+def test_forwarded_sender_and_body():
+	assert eo.forwarded_sender(GMAIL_FWD) == ("Ritz Purchasing", "purchasing@ritzcarlton.com")
+	assert eo.forwarded_sender(OUTLOOK_FWD) == ("Lau, Jackison", "jackison.lau@ikea.com.hk")
+	assert eo.forwarded_sender("From: x@y.com\n12 x Cake") == ("", "")
+	assert eo.forwarded_sender("-----Original Message-----\nFrom: Bob [mailto:bob@x.com]\n") == ("Bob", "bob@x.com")
+	p = _payload([("From", "Francisco <francisco@happyconceptsfood.hk>")], GMAIL_FWD)
+	assert eo.original_sender(p, "Fwd: PO HKPO123", "happyconceptsfood.hk") == (
+		"Ritz Purchasing", "purchasing@ritzcarlton.com", "francisco@happyconceptsfood.hk")
+	# a forward from someone who is not us keeps its sender
+	p = _payload([("From", "Boss <boss@cafea.com>")], GMAIL_FWD)
+	assert eo.original_sender(p, "Fwd: PO", "happyconceptsfood.hk")[1] == "boss@cafea.com"
+	# a forward of our own colleague's mail is not an outside author
+	p = _payload([("From", "A <a@happyconceptsfood.hk>")], GMAIL_FWD.replace("purchasing@ritzcarlton.com", "b@happyconceptsfood.hk"))
+	assert eo.original_sender(p, "Fwd: PO", "happyconceptsfood.hk")[1] == "a@happyconceptsfood.hk"
+	# the forwarded order is read; the forward's header block is not
+	body = eo.body_text(_payload([], GMAIL_FWD), forward=True)
+	assert "CK-001 | Butter cookie | 24" in body and "purchasing@" not in body
+	assert "12 x Chocolate brownie" in eo.body_text(_payload([], OUTLOOK_FWD), forward=True)
+	assert "Butter cookie" not in eo.body_text(_payload([], GMAIL_FWD))  # a reply still drops quoted mail
+	assert eo.is_forward("FW: PO") and eo.is_forward("Fwd: x") and eo.is_forward("轉寄: x") and not eo.is_forward("Re: x")
+
+
+def test_match_outlet():
+	customers = [
+		("W HOTEL", ["W HOTEL", "W Hong Kong"]),
+		("IKEA KOWLOON BAY", ["IKEA Kowloon Bay", "Unit 1, Megabox, 38 Wang Chiu Road"]),
+		("IKEA CAUSEWAY BAY", ["IKEA Causeway Bay"]),
+		("DAIRY FARM", ["Dairy Farm"]),
+		("PLAZA PREMIUM LOUNGE HKG - AMEX", ["PLAZA PREMIUM LOUNGE HKG - AMEX", ""]),
+	]
+	assert eo.match_outlet("Deliver to: W Hong Kong, 1 Austin Road West", customers) == "W HOTEL"
+	assert eo.match_outlet("Ship to Unit 1, MegaBox, 38 Wang Chiu Road, Kowloon Bay", customers) == "IKEA KOWLOON BAY"
+	# the outlet beats the parent company named on the same PO (longest match)
+	assert eo.match_outlet("Dairy Farm Co Ltd\nDeliver to IKEA Kowloon Bay", customers) == "IKEA KOWLOON BAY"
+	# two outlets named equally: no guess
+	assert eo.match_outlet("IKEA Kowloon Bay / IKEA Kowloon Tsi", customers + [("IKEA KT", ["IKEA Kowloon Tsi"])]) is None
+	assert eo.match_outlet("nothing here", customers) is None
+	# whole words only: "w" inside another word is not W HOTEL; short phrases never match
+	assert eo.match_outlet("Swhotel Group", customers) is None
+	assert eo.match_outlet("ABC", [("ABC LTD", ["ABC"])]) is None
+	assert eo.match_outlet("IKEA order", [("IKEA", ["IKEA"])]) is None
+	assert eo.order_names("W Hong Kong\n Kowloon Bay, IKEA \n\n") == ["W Hong Kong", "Kowloon Bay, IKEA"]

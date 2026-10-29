@@ -191,7 +191,10 @@ Create draft Material Issue when a Production Log is submitted,提交生產紀�
 Create draft order,建立採購單草稿
 Create labels when a sales order is submitted,提交銷售訂單時建立標籤
 Current Purchase,目前採購
+Customer PO price,客戶採購單價
+"Customers with the same heading sit together, e.g. IKEA, SODEXO.",相同標題的客戶排在一起，例如 IKEA、SODEXO。
 Daily,日常
+Daily Sales Overview,每日送貨總覽
 Daily tasks,日常工作
 Day after,後天
 Day after tomorrow,後日
@@ -274,6 +277,8 @@ Food Cost per Unit,每件食物成本
 Food cost,食材成本率
 "For delivery charges, services and other non-food lines.",用於運費、服務及其他非食品項目。
 "For sales items sold under another code than the recipe's own item, e.g. a customer's article number or a box.",用於以食譜物品以外編號出售的銷售物品，例如客戶的貨號或一盒裝。
+Forwarded by,轉寄者
+"Forwarded through {0} without the original sender's address, and no outlet name was found: enter it by hand, or add the outlet's name under the customer's Names in order emails and Read again.",經 {0} 轉寄，沒有原寄件人地址，也找不到分店名稱：請手動輸入，或在客戶的「訂單電郵中的名稱」加入分店名稱後再讀一次。
 "From Item > Weight Per Unit. Lets a recipe use grams for an item priced per piece, or pieces for one priced per gram.",取自物品 > 每單位重量。讓食譜可用克計算按件定價的物品，或用件計算按克定價的物品。
 From Storage,由儲存位置
 From approved Stock Take {0},來自已批准盤點 {0}
@@ -445,6 +450,7 @@ Logged By,記錄人
 Look back (days),回溯日數
 Lot,批次
 "Lot printed on the label (the batch, or a lot from the production log).",標籤上印的批號（批次，或生產紀錄的批號）。
+"Lower numbers first. Blank = after the numbered ones, by heading and name.",數字小的排先。留空＝排在有數字的後面，按標題及名稱。
 Made From Recipe,按食譜製作
 Made by (bottom of label),製造商（標籤底部）
 Made on,生產日期
@@ -475,6 +481,7 @@ Most emails per run,每次最多電郵數
 Multiple of own hourly wage,本人時薪倍數
 Name in ingredient lists,配料表名稱
 Name is required.,必須填寫名稱。
+Names in order emails,訂單電郵中的名稱
 Need,需要
 Need a look,需檢查
 Needed {0},需要日期 {0}
@@ -485,6 +492,7 @@ Net Qty,淨用量
 Net Qty Used,淨用量
 Net weight per piece (g),每件淨重（克）
 New count,新盤點
+"New customer {0} made from the original sender of a forwarded email: check it, or add the outlet's name under the customer's Names in order emails.",已按轉寄電郵的原寄件人建立新客戶 {0}：請檢查，或在客戶的「訂單電郵中的名稱」加入分店名稱。
 New item,新貨品
 New product made,已新增產品
 No Price,未有價格
@@ -506,6 +514,8 @@ No order lines were read.,沒有讀到訂單行。
 No orders,沒有訂單
 No orders going out today.,今日沒有出貨訂單。
 No price,沒有價格
+No price of ours: PO price {0} used,我們沒有價格：已用採購單價 {0}
+No price on the PO or ours,採購單和我們都沒有價格
 No product,沒有產品
 No products are linked to this supplier yet.,此供應商尚未連結任何產品。
 No purchase orders waiting for delivery.,沒有待收貨的採購單。
@@ -556,6 +566,7 @@ Offline,離線
 On other products' labels,用於其他產品標籤
 On shift,當值
 On target,達標
+"One per line: how this outlet is named on its purchase orders (e.g. W Hong Kong, IKEA Kowloon Bay). Email order pick-up files an order under the customer whose name, one of these names or a shipping address line appears in the email or its PDF.",每行一個：此分店在採購單上的名稱（例如 W Hong Kong、IKEA Kowloon Bay）。電郵訂單會歸入名稱、這些名稱或送貨地址出現在電郵或 PDF 中的客戶。
 One row per ingredient and storage area. Drag rows to change the counting order; the count screen groups them by storage area in this order. Untick Active to hide a row.,每項食材及儲存位置一行。拖動行可更改盤點次序；盤點畫面會按此次序以儲存位置分組。取消勾選「使用中」可隱藏該行。
 Online,在線
 Only Out of Tolerance,只顯示超出容差
@@ -602,6 +613,8 @@ Ordering (optional),訂貨（選填）
 Orders going out,今日出貨訂單
 Orders to deliver,待送貨訂單
 Origin line,產地
+Our price,我們的價格
+Our price for the item when the order was made (price list or pricing rule).,建立訂單時此產品的我方價格（價目表或定價規則）。
 Out of Tolerance,超出容差
 Out of tolerance,超出容差
 Over target,超出目標
@@ -620,13 +633,18 @@ Overtime Rates,加班費率
 Overtime Summary,加班摘要
 "Overtime hours worked, e.g. 1.5",加班時數，例如 1.5
 Overtime to approve,待審批加班
+Overview,總覽
 PIN set for {0},已為 {0} 設定密碼
 PO,採購單
 PO No.,採購單編號
 PO Price,採購單價
 PO confirmed,採購單已確認
+PO price {0} (same as ours),採購單價 {0}（與我們相同）
+"PO price {0}, our price {1}",採購單價 {0}，我們的價格 {1}
+PO unit price,採購單單價
 PO {0},採購單 {0}
 PO {0} already has a sales order.,採購單 {0} 已有銷售訂單。
+PO {0} already has sales order {1} under {2}: check the customer.,採購單 {0} 已有銷售訂單 {1}（客戶 {2}）：請檢查客戶。
 Pack Size 1,包裝規格 1
 Pack Size 2,包裝規格 2
 Pack Size 3,包裝規格 3
@@ -663,10 +681,13 @@ Price / Unit,每單位價格
 Price / kg,每公斤價格
 Price Source,價格來源
 Price Variance,價格差異
+Price check,價格核對
+Price differs from the customer's PO,價格與客戶採購單不同
 Price for Target,目標售價
 Price must be greater than zero.,價格必須大於零。
 "Price on the supplier's delivery note / invoice, typed on Receive Delivery. Stock is still received at the PO price.",供應商送貨單／發票上的價格，於收貨畫面輸入。庫存仍按採購單價格入帳。
 Price per unit. Kg prices are stored per gram (price ÷ 1000).,每單位價格。以公斤計的價格會按每克儲存（價格 ÷ 1000）。
+Prices checked against the customer's PO:,已按客戶採購單核對價格：
 Pricing,定價
 Primary Colour,主色
 Print A4,列印 A4
@@ -683,6 +704,7 @@ Print resolution (dpi),列印解析度（dpi）
 Print test label,列印測試標籤
 Printed at,列印時間
 "Printed under ""Manufacturers:"", one line each: company name, then address.",印在「Manufacturers:」下方，每行一項：公司名稱，然後地址。
+"Printed under the column name, e.g. 銅鑼灣.",印在欄名下方，例如 銅鑼灣。
 Printed under the item name on opened and batch labels.,印在開封及批次標籤的貨品名稱下方。
 Printer,打印機
 Printer error,打印機錯誤
@@ -824,11 +846,16 @@ Set when the count is approved.,盤點獲審批時設定。
 Set when this email changes an order picked up from an earlier email in the same thread.,當此電郵修改同一對話中較早電郵所建立的訂單時填寫。
 Share of Ingredient Cost,佔食材成本比例
 Sheet Name,盤點表名稱
+Sheet column name,總覽欄名
+Sheet heading,總覽標題
+Sheet location (Chinese),總覽地點（中文）
+Sheet order,總覽排序
 Shelf Life (days),保質期（日）
 Shelf life: {0} days (Inventory tab → Shelf Life In Days).,保質期：{0} 天（存貨分頁 → Shelf Life In Days）。
 Shifts,更次
 Short Name,簡稱
 Short on Stock,庫存不足
+"Short outlet name, e.g. CWB.",分店簡稱，例如 CWB。
 Shortage,不足
 Show all SKUs,顯示所有產品編號
 Show details,顯示詳情
@@ -904,7 +931,9 @@ Test label {0} sent. It prints within a few seconds if the Pi is online.,測試�
 "The PDF has no table or item lines this reader knows yet. Enter the order by hand from the PDF, then mark it entered by hand.",系統尚未認得此 PDF 的表格或項目行。請按 PDF 人手輸入訂單，然後標為已人手輸入。
 The PIN must be exactly 4 digits.,密碼必須是 4 位數字。
 The Raspberry Pi has never connected.,Raspberry Pi 從未連線。
+The address the email came through (a Google Group or one of our own mailboxes) when the sender above is the original author.,當上方寄件人為原作者時，電郵經過的地址（Google 群組或我們自己的郵箱）。
 The closing stock take must be after the opening one,期末盤點必須在期初盤點之後
+The customer's unit price on the PO (0 = none).,客戶採購單上的單價（0 = 沒有）。
 The email this order was picked up from.,建立此訂單的電郵。
 The last check failed,上次檢查失敗
 "The lines were read but the order is held back, usually because it follows an order already submitted. Check it by hand.",行已讀取但訂單被擱置，通常因為它跟隨一張已提交的訂單。請人手檢查。
@@ -914,9 +943,11 @@ The recipe this client version is made from.,此客戶版本所用的食譜。
 "The recipe, an ingredient or a label field changed since the last check. Labels wait until it is checked again.",自上次檢查後，食譜、材料或標籤欄位已更改。標籤會等候再次檢查。
 The review could not be shown.,無法顯示檢查畫面。
 The sales order {0} is already submitted. Change the item on the order itself.,銷售訂單 {0} 已提交，請在訂單上直接更改產品。
+The sender's email belongs to several customers ({0}); {1} was used: check it.,寄件人電郵屬於多個客戶（{0}）；已使用 {1}：請檢查。
 The sheet {0} has no active ingredients,盤點表 {0} 沒有啟用的材料
 The start date is after the end date.,開始日期晚於結束日期。
 The supplier's own product code. Our SKU is the item code the system gives it.,供應商自己的產品編號。我們的貨號是系統給此貨品的貨品編號。
+The unit price on the customer's PO (orders picked up from email).,客戶採購單上的單價（由電郵讀取的訂單）。
 The user whose API key the Pi uses. It only needs the Label Printer role.,Pi 使用其 API 金鑰的用戶。只需要 Label Printer 角色。
 This count is waiting for approval and can't be changed. Ask an approver to reject it first.,此盤點正等候審批，不能修改。請先請審批人退回。
 This count is {0} and can't be changed.,此盤點狀態為 {0}，不能修改。
@@ -1147,6 +1178,7 @@ waiting for the printer,等待打印機
 {0} line(s) differ from the order. Stock is received at the ordered price; the differences are flagged on the receipt for the office.,{0} 行與訂單不符。貨品按訂單價格入庫，差異會標記在收貨單上交辦公室跟進。
 {0} lines,{0} 行
 {0} lines are not confirmed yet. Confirm the whole order anyway? This confirms the items and submits the draft sales order.,仍有 {0} 行未確認。要確認整張訂單嗎？這會確認產品並提交銷售訂單草稿。
+{0} lines have a PO price that is not our price (our price is on the order).,有 {0} 行的採購單價與我們的價格不同（訂單上用我們的價格）。
 {0} logs since Monday,週一至今 {0} 份紀錄
 {0} logs · HK$ {1} ingredients,{0} 份紀錄 · 材料 HK$ {1}
 {0} new emails read,已讀取 {0} 封新電郵
@@ -1171,5 +1203,11 @@ waiting for the printer,等待打印機
 {0}% received,已收貨 {0}%
 {0}'s SKU {1} is already used by item {2}.,{0} 的貨號 {1} 已用於貨品 {2}。
 "{0}, counted {1}",{0}，盤點日期 {1}
+"{0}: PO price {1}, our price {2} ({3})",{0}：採購單價 {1}，我們的價格 {2}（{3}）
+"{0}: PO {1}, order {2}",{0}：採購單 {1}，訂單 {2}
 {0}: a count can't be negative,{0}：盤點數量不能為負數
+"{0}: no price of ours, the PO price {1} was used",{0}：我們沒有價格，已用採購單價 {1}
+{differs} line(s): the customer's PO price is not our price (highlighted). Our price is on the order; check which one is right.,有 {differs} 行客戶採購單價與我們的價格不同（已標示）。訂單上用我們的價格，請確認哪個正確。
+{none} line(s) have no price on the PO and none of ours: add the price on the order.,有 {none} 行採購單和我們都沒有價格：請在訂單上加入價格。
 {unparsed} line(s) could not be read (listed below). Add them to the draft order by hand.,有 {unparsed} 行讀不到（見下方）。請人手加入訂單草稿。
+{used} line(s) had no price of ours: the customer's PO price was put on the order.,有 {used} 行我們沒有價格：訂單上已用客戶採購單價。
