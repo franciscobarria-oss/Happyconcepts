@@ -70,6 +70,14 @@ def column_for(customer: dict) -> dict:
 	}
 
 
+def sheet_code(line: dict) -> str:
+	"""Placeholder items (SKU-nnnn, made from emails) show under the customer's own item code."""
+	code = line["item_code"]
+	if str(code).startswith("SKU-") and line.get("customer_item_code"):
+		return str(line["customer_item_code"]).strip()
+	return code
+
+
 def best_before(day: date, shelf_life_days) -> date | None:
 	days = int(_f(shelf_life_days))
 	return day + timedelta(days=days) if days > 0 else None
@@ -89,6 +97,8 @@ def build_grid(day: date, lines: list[dict], customers: dict[str, dict], items: 
 	orders_by_col: dict[str, dict[str, float]] = {}
 	po_by_col: dict[str, list] = {}
 	units: dict[tuple, set] = {}
+	drafts: set[tuple] = set()
+	names: dict[str, str] = {}
 	for l in lines:
 		qty = _f(l.get("qty"))
 		if qty <= EPS:
@@ -96,9 +106,13 @@ def build_grid(day: date, lines: list[dict], customers: dict[str, dict], items: 
 		cust = l["customer"]
 		if cust not in cols:
 			cols[cust] = column_for(customers.get(cust) or {"name": cust, "customer_name": l.get("customer_name") or cust})
-		key = (l["item_code"], cust)
+		code = sheet_code(l)
+		names.setdefault(code, l.get("item_name") or code)
+		key = (code, cust)
 		cells[key] = cells.get(key, 0.0) + qty
-		units.setdefault(l["item_code"], set()).add(l.get("uom") or "")
+		if l.get("docstatus") == 0:
+			drafts.add(key)
+		units.setdefault(code, set()).add(l.get("uom") or "")
 		orders_by_col.setdefault(cust, {})[l["sales_order"]] = _f(l.get("so_grand_total"))
 		po = (l.get("po_no") or "").strip()
 		if po and po not in po_by_col.setdefault(cust, []):
@@ -132,6 +146,7 @@ def build_grid(day: date, lines: list[dict], customers: dict[str, dict], items: 
 	rows = []
 	for code in sorted({i for i, _ in cells}, key=lambda c: (str((items.get(c) or {}).get("sheet_code") or c))):
 		info = items.get(code) or {}
+		info = {**info, "item_name": info.get("item_name") or names.get(code)}
 		qtys = [cells.get((code, c["key"])) for c in columns]
 		rows.append({
 			"item_code": code,
@@ -141,6 +156,7 @@ def build_grid(day: date, lines: list[dict], customers: dict[str, dict], items: 
 			"best_before": best_before(day, info.get("shelf_life_days")),
 			"uom": ", ".join(sorted(u for u in units.get(code, ()) if u)),
 			"qtys": qtys,
+			"drafts": [(code, c["key"]) in drafts for c in columns],
 			"total": sum(q for q in qtys if q),
 		})
 	return {
@@ -150,6 +166,8 @@ def build_grid(day: date, lines: list[dict], customers: dict[str, dict], items: 
 		"footer": footer,
 		"grand_total": sum(r["total"] for r in rows),
 		"group_spans": group_spans(columns),
+		"invoice_total": sum(f["amount"] for f in footer),
+		"invoice_count": sum(f["invoice_count"] for f in footer),
 	}
 
 

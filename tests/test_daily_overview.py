@@ -73,3 +73,20 @@ def test_grid_invoices():
 def test_group_spans_split_when_not_adjacent():
 	cols = [{"group": "A"}, {"group": "B"}, {"group": "A"}]
 	assert group_spans(cols) == [("A", 1), ("B", 1), ("A", 1)]
+
+
+def test_placeholder_items_fold_into_customer_code_and_drafts_flagged():
+	lines = [
+		{"sales_order": "SO-1", "customer": "AMEX", "item_code": "SKU-0017", "customer_item_code": "1031001053",
+		 "item_name": "Tropical", "qty": 400, "uom": "Nos", "docstatus": 0},
+		{"sales_order": "SO-2", "customer": "AMEX", "item_code": "1031001053", "item_name": "Tropical", "qty": 100,
+		 "uom": "Nos", "docstatus": 1},
+		{"sales_order": "SO-3", "customer": "K11", "item_code": "1031001053", "item_name": "Tropical", "qty": 5,
+		 "uom": "Nos", "docstatus": 1},
+	]
+	g = build_grid(DAY, lines, CUSTOMERS, {})
+	assert len(g["rows"]) == 1
+	r = g["rows"][0]
+	assert r["item_code"] == "1031001053" and r["total"] == 505
+	assert r["qtys"] == [5, 500]
+	assert r["drafts"] == [False, True]
