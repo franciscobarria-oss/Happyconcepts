@@ -1,7 +1,7 @@
 {
  "actions": [],
  "creation": "2026-10-14 16:00:00.000000",
- "modified": "2026-10-19 12:00:00.000000",
+ "modified": "2026-10-29 15:00:00.000000",
  "modified_by": "Administrator",
  "owner": "Administrator",
  "doctype": "DocType",
@@ -31,7 +31,7 @@
    "fieldname": "create_on_submit",
    "fieldtype": "Check",
    "label": "Create labels when a sales order is submitted",
-   "default": "1"
+   "default": "0"
   },
   {
    "fieldname": "default_printer",
@@ -50,7 +50,7 @@
    "fieldname": "batch_labels_on_submit",
    "fieldtype": "Check",
    "label": "Print batch labels when production is logged",
-   "default": "1"
+   "default": "0"
   },
   {
    "fieldname": "date_basis",

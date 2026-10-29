@@ -383,7 +383,7 @@ Label Printers,標籤打印機
 Label Queue,標籤列印隊列
 Label Settings,標籤設定
 Label checked,標籤已核對
-Label checked. Labels print automatically when an order is submitted.,標籤已檢查。提交訂單時會自動列印標籤。
+Label checked. Print labels from an order's Labels menu when you want them.,標籤已檢查。需要時可在訂單的「標籤」選單列印標籤。
 Label checked. {0} waiting label job(s) sent to the printer.,標籤已檢查。{0} 個等候中的標籤工作已送往打印機。
 Label content,標籤內容
 Label height (mm),標籤高度（毫米）
@@ -523,7 +523,7 @@ Not changed,未更改
 Not checked,未核對
 Not checked for over an hour,已超過一小時沒有檢查
 Not checked yet,尚未檢查
-Not checked yet. Labels for orders wait until a manager checks this label.,尚未檢查。訂單的標籤會等候經理檢查此標籤。
+Not checked yet. Labels asked for on an order wait until a manager checks this label.,尚未檢查。訂單上要求列印的標籤會等候經理檢查此標籤。
 Not invoiced yet.,未開發票。
 Not now,暫不
 Not sold on its own,不單獨出售
@@ -572,6 +572,7 @@ Only these senders,只限這些寄件人
 Open Count Screen,開啟盤點畫面
 Open and print label,開封並打印標籤
 Open purchase orders,未完成採購單
+Open without a label,開封（不打印標籤）
 Opened,已開封
 Opened Item,開封貨品
 Opened Items,開封貨品
@@ -579,6 +580,7 @@ Opened at,開封時間
 Opened by,開封人
 Opened item,開封貨品
 Opened today,今日開封
+Opened. Use by {0},已開封。請於 {0} 前使用
 Opening,期初
 Opening Count,期初盤點
 Optional. Used to work out the cooking yield.,選填。用於計算烹煮後份量。

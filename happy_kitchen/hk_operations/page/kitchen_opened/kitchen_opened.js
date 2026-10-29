@@ -1,5 +1,5 @@
 // Copyright (c) 2026, Happy Kitchen and contributors
-// Opened screen for the iPad: search or scan an item, pick the lot, print the small USE BY label.
+// Opened screen for the iPad: search or scan an item, pick the lot, optionally print the small USE BY label (0 labels = none).
 (() => {
 const API = "happy_kitchen.hk_operations.dates_api.";
 const esc = (s) => frappe.utils.escape_html(s == null ? "" : String(s));
@@ -75,15 +75,18 @@ class Opened {
 			<div class="hko-row hko-step"><label>${__("Labels")}</label><button data-d="-1">−</button><span class="hko-n">1</span><button data-d="1">+</button></div>
 			<button class="btn btn-primary hko-go">${__("Open and print label")}</button></div>`);
 		$p.find(".hko-step button").on("click", (e) => {
-			this.labels = Math.max(1, this.labels + Number($(e.currentTarget).data("d")));
+			// labels are optional: 0 records the opening without printing
+			this.labels = Math.max(0, this.labels + Number($(e.currentTarget).data("d")));
 			$p.find(".hko-n").text(this.labels);
+			$p.find(".hko-go").text(this.labels ? __("Open and print label") : __("Open without a label"));
 		});
 		$p.find(".hko-go").on("click", () => this.go());
 	}
 	async go() {
 		const [batch_no, lot] = (this.$b.find(".hko-lot").val() || "|").split("|");
 		const r = await frappe.xcall(API + "open_item", { item: this.item.name, labels: this.labels, batch_no, lot });
-		frappe.show_alert({ message: r.printer ? __("Label queued. Use by {0}", [r.use_by]) : __("Saved, but no kitchen label printer is set up"), indicator: r.printer ? "green" : "orange" });
+		if (!this.labels) frappe.show_alert({ message: __("Opened. Use by {0}", [r.use_by]), indicator: "green" });
+		else frappe.show_alert({ message: r.printer ? __("Label queued. Use by {0}", [r.use_by]) : __("Saved, but no kitchen label printer is set up"), indicator: r.printer ? "green" : "orange" });
 		this.item = null;
 		this.$b.find(".hko-pick").empty();
 		this.$q.val("").trigger("focus");

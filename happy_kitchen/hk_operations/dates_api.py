@@ -118,17 +118,18 @@ def recent_lots(item: str) -> list[dict]:
 
 @frappe.whitelist(methods=["POST"])
 def open_item(item: str, labels: int | str = 1, batch_no: str | None = None, lot: str | None = None) -> dict:
-	"""Record an opened item and queue its small label."""
+	"""Record an opened item and, when labels > 0, queue its small label (optional)."""
 	_require_kitchen_user()
 	frappe.has_permission("Opened Item", "create", throw=True)
 	if flt(frappe.db.get_value("Item", item, "hk_open_life_value")) <= 0:
 		frappe.throw(_("Set 'Expiry after opening' on item {0} first (Label tab).").format(item))
 	doc = frappe.get_doc({
 		"doctype": "Opened Item", "item": item, "batch_no": batch_no or None, "lot": lot or "",
-		"labels": max(1, cint(labels)), "status": "Open",
+		"labels": max(0, cint(labels)), "status": "Open",
 	})
 	doc.insert()
-	doc.db_set("label_job", print_opened_label(doc.name, doc.labels))
+	if doc.labels:
+		doc.db_set("label_job", print_opened_label(doc.name, doc.labels))
 	doc.reload()
 	return {"name": doc.name, "use_by": doc.use_by, "label_job": doc.label_job, "printer": date_printer()}
 
