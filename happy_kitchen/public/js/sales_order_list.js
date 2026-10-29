@@ -10,9 +10,9 @@
 	settings.get_indicator = function (doc) {
 		if (doc.docstatus === 1) {
 			const delivered = flt(doc.per_delivered);
-			if (delivered >= 100 || doc.status === "Completed")
-				return [__("Completed"), "green", "per_delivered,=,100"];
-			if (doc.status !== "On Hold" && doc.status !== "Closed") {
+			if (delivered >= 100 || doc.status === "Completed" || doc.status === "Closed")
+				return [__("Completed"), "green", "status,=,Completed"];
+			if (doc.status !== "On Hold") {
 				const late = !!doc.delivery_date && doc.delivery_date < frappe.datetime.get_today();
 				return late
 					? [__("Confirmed (late)"), "red", "docstatus,=,1|per_delivered,<,100|delivery_date,<," + frappe.datetime.get_today()]

@@ -1,4 +1,5 @@
-"""Sales Order stage: Draft -> Confirmed -> "Mark as delivered" -> Completed. Rolled back."""
+"""Sales Order stage: Draft -> Confirmed -> Complete -> Completed, with and without a Delivery
+Note (Recipe Settings complete_with_delivery_note). Rolled back."""
 
 import frappe
 from frappe.utils import add_days, nowdate
@@ -31,34 +32,50 @@ def run():
 		                           "customer_group": _leaf("Customer Group"), "territory": _leaf("Territory")}).insert().name
 		item = frappe.get_doc({"doctype": "Item", "item_code": P + "CAKE", "item_name": P + "CAKE", "stock_uom": "Nos",
 		                       "item_group": "Products", "is_stock_item": 0, "is_sales_item": 1}).insert().name
-		so = frappe.get_doc({
-			"doctype": "Sales Order", "customer": customer, "company": company,
-			"transaction_date": nowdate(), "delivery_date": day,
-			"items": [{"item_code": item, "qty": 3, "rate": 10, "delivery_date": day,
-			           "warehouse": f"Finished Goods - {abbr}"}],
-		}).insert()
-		_check(_stage(so)["stage"] == "Draft", f"new order: {_stage(so)}")
-		so.submit()
-		_check(_stage(so)["stage"] == "Confirmed", f"submitted: {_stage(so)}")
+		def order():
+			so = frappe.get_doc({
+				"doctype": "Sales Order", "customer": customer, "company": company,
+				"transaction_date": nowdate(), "delivery_date": day,
+				"items": [{"item_code": item, "qty": 3, "rate": 10, "delivery_date": day,
+				           "warehouse": f"Finished Goods - {abbr}"}],
+			}).insert()
+			_check(_stage(so)["stage"] == "Draft", f"new order: {_stage(so)}")
+			so.submit()
+			_check(_stage(so)["stage"] == "Confirmed", f"submitted: {_stage(so)}")
+			return so
 
+		def refused(name, what):
+			try:
+				order_stage_api.mark_delivered(name)
+			except frappe.ValidationError:
+				return
+			raise AssertionError(what)
+
+		# stock not tracked (Recipe Settings default): Complete closes the order, no Delivery Note
+		frappe.db.set_single_value("Recipe Settings", "complete_with_delivery_note", 0)
+		so = order()
 		frappe.db.set_value("Sales Order", so.name, "hk_needs_review", 1)
-		try:
-			order_stage_api.mark_delivered(so.name)
-			raise AssertionError("a revised order was delivered")
-		except frappe.ValidationError:
-			pass
+		refused(so.name, "a revised order was completed")
 		frappe.db.set_value("Sales Order", so.name, "hk_needs_review", 0)
+		dns = frappe.db.count("Delivery Note")
+		r = order_stage_api.mark_delivered(so.name)
+		so.reload()
+		s = _stage(so)
+		_check(r["delivery_note"] is None and so.status == "Closed", f"closed: {r} {so.status}")
+		_check(s["stage"] == "Completed" and s["no_delivery_note"], f"after complete: {s}")
+		_check(frappe.db.count("Delivery Note") == dns, "a delivery note was made")
+		refused(so.name, "completed twice")
 
-		dn = order_stage_api.mark_delivered(so.name)
+		# stock tracked: Complete makes and submits one Delivery Note
+		frappe.db.set_single_value("Recipe Settings", "complete_with_delivery_note", 1)
+		so = order()
+		dn = order_stage_api.mark_delivered(so.name)["delivery_note"]
 		_check(frappe.db.get_value("Delivery Note", dn, "docstatus") == 1, "delivery note not submitted")
 		so.reload()
 		s = _stage(so)
-		_check(s["stage"] == "Completed" and not s["invoiced"], f"after delivery: {s} ({so.per_delivered}%)")
-		try:
-			order_stage_api.mark_delivered(so.name)
-			raise AssertionError("delivered twice")
-		except frappe.ValidationError:
-			pass
+		_check(s["stage"] == "Completed" and not s["invoiced"] and not s["no_delivery_note"],
+		       f"after delivery: {s} ({so.per_delivered}%)")
+		refused(so.name, "delivered twice")
 		print("order stage e2e: ok")
 	finally:
 		frappe.db.rollback()
