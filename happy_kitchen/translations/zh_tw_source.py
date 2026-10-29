@@ -1213,18 +1213,23 @@ ZH_TW = {
 	"{0} units a week on average": "平均每週 {0} 件",
 	# Sales Order stage (order_stage.py, sales_order.js)
 	"Confirmed (late)": "已確認（逾期）",
-	"Delivered, not invoiced yet.": "已送貨，未開發票。",
+	"Not invoiced yet.": "未開發票。",
+	"Completed without a delivery note.": "已完成，沒有送貨單。",
+	"Order completed.": "訂單已完成。",
+	"Completing the order...": "正在完成訂單...",
+	"Completed by {0} without a delivery note (stock is not tracked yet).": "{0} 已完成訂單，沒有送貨單（尚未追蹤庫存）。",
+	"Complete on a Sales Order makes a Delivery Note (needs stock)": "銷售訂單按「完成」時建立送貨單（需要庫存）",
+	"Off: Complete closes the order without moving stock. Turn on once stock is counted.": "關閉：按「完成」只會關閉訂單，不會扣減庫存。盤點庫存後再開啟。",
 	"Completed: delivered with {0}": "已完成：送貨單 {0}",
 	"Late: the delivery date has passed.": "逾期：已過送貨日期。",
-	"Making the delivery note...": "正在建立送貨單...",
-	"Complete {0}? This makes and submits a Delivery Note for everything not yet delivered.": "要完成 {0} 嗎？這會為所有未送的貨品建立並提交送貨單。",
+	"Complete {0}? This marks everything not yet delivered as delivered.": "要完成 {0} 嗎？這會把所有未送的貨品標為已送。",
 	"Nothing is left to deliver on this order.": "此訂單沒有未送的貨品。",
 	"This order was revised. Mark the revision as checked before delivering.": "此訂單已被修改，請先標記修訂已檢查再送貨。",
 	"You are not allowed to submit a Delivery Note.": "你沒有權限提交送貨單。",
 	"{0}% delivered so far.": "目前已送 {0}%。",
 	"Only a confirmed order can be marked as delivered.": "只有已確認的訂單才可標為已送貨。",
-	"This order is {0}. Take it off hold or reopen it first.": "此訂單狀態為 {0}，請先取消暫停或重新開啟。",
-	"This order is already delivered.": "此訂單已送貨。",
+	"This order is on hold. Take it off hold first.": "此訂單已暫停，請先取消暫停。",
+	"This order is already completed.": "此訂單已完成。",
 }
 
 

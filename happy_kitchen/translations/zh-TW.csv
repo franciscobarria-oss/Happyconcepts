@@ -137,8 +137,12 @@ Closed at,結束時間
 Closing,期末
 Closing Count,期末盤點
 Code,代碼
-Complete {0}? This makes and submits a Delivery Note for everything not yet delivered.,要完成 {0} 嗎？這會為所有未送的貨品建立並提交送貨單。
+Complete on a Sales Order makes a Delivery Note (needs stock),銷售訂單按「完成」時建立送貨單（需要庫存）
+Complete {0}? This marks everything not yet delivered as delivered.,要完成 {0} 嗎？這會把所有未送的貨品標為已送。
+Completed by {0} without a delivery note (stock is not tracked yet).,{0} 已完成訂單，沒有送貨單（尚未追蹤庫存）。
+Completed without a delivery note.,已完成，沒有送貨單。
 Completed: delivered with {0},已完成：送貨單 {0}
+Completing the order...,正在完成訂單...
 Component,組件
 Confirm PO items,確認此採購單的產品
 Confirm item,確認產品
@@ -201,7 +205,6 @@ Default note,預設說明
 Default printer,預設打印機
 "Defaults to the item's default warehouse (Dry Stock, Fridge, Freezer).",預設為物品的預設倉庫（乾貨、雪櫃、冰格）。
 Defaults to the person's rate on the Employee record.,預設為員工紀錄上的費率。
-"Delivered, not invoiced yet.",已送貨，未開發票。
 Deliveries due,待收貨
 Deliveries in,今日收貨
 Delivery,送貨
@@ -447,7 +450,6 @@ Made by (bottom of label),製造商（標籤底部）
 Made on,生產日期
 Made-on date,生產日期依據
 Make {0},製作 {0}
-Making the delivery note...,正在建立送貨單...
 Manufacture entries that move ingredients out of stock and add the batch preparations to their warehouse (e.g. Freezer).,生產記錄會扣除食材庫存，並將半成品加入其倉庫（例如冰格）。
 Manufacturer,製造商
 Margin,毛利
@@ -522,6 +524,7 @@ Not checked,未核對
 Not checked for over an hour,已超過一小時沒有檢查
 Not checked yet,尚未檢查
 Not checked yet. Labels for orders wait until a manager checks this label.,尚未檢查。訂單的標籤會等候經理檢查此標籤。
+Not invoiced yet.,未開發票。
 Not now,暫不
 Not sold on its own,不單獨出售
 Not ticked = a later email proposes these changes to an order that is already submitted; make them on the order yourself.,未剔選 = 較新的電郵建議修改已提交的訂單;請自行在訂單上修改。
@@ -546,6 +549,7 @@ Nothing yet.,暫無記錄。
 OEM Spec Sheet,客戶產品規格表
 Off,已關閉
 "Off until the Google steps are done. Read-only: the system never sends, labels or deletes mail.",完成 Google 步驟前保持關閉。只讀:系統不會發送、標記或刪除郵件。
+Off: Complete closes the order without moving stock. Turn on once stock is counted.,關閉：按「完成」只會關閉訂單，不會扣減庫存。盤點庫存後再開啟。
 Offline,離線
 "Offline: {0} saved on this iPad, retrying",離線：{0} 項已存於此 iPad，稍後重試
 "Older mail is ignored, so the first run does not pull in the whole label.","較舊的郵件會被略過,首次執行不會讀取整個標籤。"
@@ -581,6 +585,7 @@ Optional. Used to work out the cooking yield.,選填。用於計算烹煮後份�
 "Optional: count in up to 3 pack sizes (Bag, Box, Bottle) plus loose units. Each pack must have a UOM conversion on the Item.",可選：最多以 3 種包裝規格（袋、箱、瓶）加散裝數量盤點。每種包裝須在物品的單位換算中設定。
 Optional: the batch the pack came from.,可選：該包裝所屬的批次。
 Order Revision,訂單修訂
+Order completed.,訂單已完成。
 Order confirmed,訂單已確認
 Order confirmed by {0}.,{0} 已確認訂單。
 Order in Multiples Of,訂貨倍數
@@ -919,8 +924,8 @@ This ingredient appears on product labels as <b>{0}</b>.,此材料在產品標�
 This job belongs to another printer.,此工作屬於另一部打印機。
 This label is waiting for its product to be checked.,此標籤正等候其產品被檢查。
 This log has no Batch Preparation recipes.,此紀錄沒有半成品食譜。
-This order is already delivered.,此訂單已送貨。
-This order is {0}. Take it off hold or reopen it first.,此訂單狀態為 {0}，請先取消暫停或重新開啟。
+This order is already completed.,此訂單已完成。
+This order is on hold. Take it off hold first.,此訂單已暫停，請先取消暫停。
 This order was changed after it came in. Check the changes before delivering.,此訂單在收到後被修改。送貨前請檢查修改內容。
 This order was revised. Mark the revision as checked before delivering.,此訂單已被修改，請先標記修訂已檢查再送貨。
 Thrown away and logged as wastage,已丟棄並記錄為報廢

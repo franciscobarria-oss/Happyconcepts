@@ -24,10 +24,11 @@ def test_delivered_is_completed_with_or_without_invoice():
 	assert stage(1, "Completed", 0, 100)["stage"] == "Completed"  # skip-delivery orders
 
 
-def test_hold_closed_cancelled_keep_erpnext_state():
+def test_hold_and_cancelled_keep_erpnext_state_closed_is_completed():
 	assert stage(1, "On Hold")["stage"] == "On Hold"
-	assert stage(1, "Closed", 50)["stage"] == "Closed"
-	assert stage(1, "Closed", 100)["stage"] == "Completed"
+	assert stage(1, "Closed", 50)["stage"] == "Completed"
+	assert stage(1, "Closed", 0)["no_delivery_note"] is True
+	assert stage(1, "Closed", 100)["no_delivery_note"] is False
 	assert stage(2, "Cancelled")["next"] is None
 
 
@@ -36,4 +37,5 @@ def test_deliver_blocker():
 	assert deliver_blocker(0, "Draft", 0)
 	assert deliver_blocker(1, "On Hold", 0)
 	assert deliver_blocker(1, "To Bill", 100)
+	assert deliver_blocker(1, "Closed", 0)
 	assert "revision" in deliver_blocker(1, "To Deliver", 0, needs_review=1)
