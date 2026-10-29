@@ -15,12 +15,60 @@ def _check(cond, msg):
 		raise AssertionError(msg)
 
 
-def _msg(mid, sender, subject, body, age_hours=1, thread=None):
+def _msg(mid, sender, subject, body, age_hours=1, thread=None, headers=None):
 	data = base64.urlsafe_b64encode(body.encode()).decode().rstrip("=")
 	# an hour ago, and a copy from days ago in m2 below, so the date rules are tested whatever today is
 	return {"id": mid, "threadId": thread or mid, "internalDate": str(int((time.time() - age_hours * 3600) * 1000)), "payload": {
 		"mimeType": "text/plain", "body": {"data": data},
-		"headers": [{"name": "From", "value": sender}, {"name": "Subject", "value": subject}]}}
+		"headers": [{"name": "From", "value": sender}, {"name": "Subject", "value": subject}]
+		+ [{"name": k, "value": v} for k, v in (headers or {}).items()]}}
+
+
+def _customer(name, email=None, order_names=None):
+	group = frappe.db.get_single_value("Selling Settings", "customer_group") or frappe.db.get_value("Customer Group", {"is_group": 0}, "name")
+	territory = frappe.db.get_single_value("Selling Settings", "territory") or frappe.db.get_value("Territory", {"is_group": 0}, "name")
+	c = frappe.get_doc({"doctype": "Customer", "customer_name": name, "customer_type": "Company", "customer_group": group,
+	                    "territory": territory, "hk_order_names": order_names}).insert(ignore_permissions=True)
+	if email:
+		frappe.get_doc({"doctype": "Contact", "first_name": name[:60], "email_ids": [{"email_id": email, "is_primary": 1}],
+		                "links": [{"link_doctype": "Customer", "link_name": c.name}]}).insert(ignore_permissions=True)
+	return c.name
+
+
+def _forwarded(fake):
+	"""Forwarded orders are filed under the outlet, not under the group or the colleague who forwarded them."""
+	frappe.db.set_single_value("Gmail Settings", {"skip_reply_senders": "e2e-hk.example", "allowed_senders": ""})
+	junk = _customer(f"'{P}Lau, J' via Orders", "orders@e2e-hk.example")
+	w = _customer(P + "W HOTEL", None, f"{P}W Hong Kong")
+	a = _customer(P + "GROUP OUTLET A", "buyer@e2e-group.example")
+	b = _customer(P + "GROUP OUTLET B", "buyer@e2e-group.example")
+	fake.messages["m20"] = _msg("m20", f"'{P}Lau, J' via Orders <orders@e2e-hk.example>", "PO 2001",
+	                            f"Deliver to: {P}W Hong Kong\nCK-001 | {P}Butter cookie | 2", thread="t20",
+	                            headers={"X-Original-From": f"{P}Lau, J <J.Lau@e2e-w.example>", "Reply-To": "j.lau@e2e-w.example"})
+	fake.messages["m21"] = _msg("m21", "Staff <staff@e2e-hk.example>", "Fwd: PO 2002", "\n".join([
+		"please enter", "", "---------- Forwarded message ---------", f"From: {P}New Outlet <buyer@e2e-new.example>",
+		"Date: Mon, 26 Oct 2026", "Subject: PO 2002", "To: <staff@e2e-hk.example>", "", f"CK-001 | {P}Butter cookie | 5"]), thread="t21")
+	fake.messages["m22"] = _msg("m22", "Buyer <buyer@e2e-group.example>", "Order", f"For {P}GROUP OUTLET B please\n{P}BROWNIE | Brownie as the outlet calls it | 1", thread="t22")
+	fake.messages["m23"] = _msg("m23", f"'{P}Lau, J' via Orders <orders@e2e-hk.example>", "Re: PO 2001", "ok thanks", thread="t23")
+	fake.messages["m24"] = _msg("m24", f"'{P}Nobody' via Orders <orders@e2e-hk.example>", "PO 2004",
+	                            f"{P}BROWNIE | {P}Something else | 4", thread="t24")
+	gmail_orders.fetch(client=fake)
+	o24 = frappe.get_doc("Email Order", {"message_id": "m24"})
+	_check(not o24.customer and not o24.sales_order and o24.status == "Needs review", f"no customer is made from the group: {o24.customer}")
+	o20 = frappe.get_doc("Email Order", {"message_id": "m20"})
+	_check(o20.customer == w, f"group mail goes to the outlet named in it, not {o20.customer}")
+	_check((o20.sender_email, o20.forwarded_by) == ("j.lau@e2e-w.example", "orders@e2e-hk.example"), f"original sender kept: {o20.sender_email} / {o20.forwarded_by}")
+	_check(frappe.db.get_value("Sales Order", o20.sales_order, "customer") == w, "the draft order is the outlet's")
+	o21 = frappe.get_doc("Email Order", {"message_id": "m21"})
+	_check(o21.sender_email == "buyer@e2e-new.example" and o21.forwarded_by == "staff@e2e-hk.example", f"forward author: {o21.sender_email}")
+	_check(o21.customer not in (junk, w) and o21.lines and o21.lines[0].qty == 5, "the forwarded order is read under a new customer")
+	_check(o21.status == "Needs review" and "forwarded" in (o21.unparsed or ""), "a new customer from a forward asks for a check")
+	o22 = frappe.get_doc("Email Order", {"message_id": "m22"})
+	_check(o22.customer == b, "a shared buyer email goes to the outlet named in the mail")
+	_check(o22.lines and o22.lines[0].item == P + "BROWNIE" and not o22.lines[0].item_created, "a code that is our item code reuses the item")
+	_check(frappe.db.get_value("Email Order", {"message_id": "m23"}, "status") == "Ignored", "a plain reply through our group is still skipped")
+	_check(a and not frappe.db.exists("Sales Order", {"customer": junk}), "nothing is filed under the group's placeholder customer")
+	frappe.db.set_single_value("Gmail Settings", "skip_reply_senders", "")
 
 
 class FakeGmail:
@@ -189,6 +237,7 @@ def run():
 		_check(frappe.db.get_value("Email Order", {"message_id": "m10"}, "status") == "Ignored", "reply from a listed sender is Ignored")
 		_check(frappe.db.get_value("Email Order", {"message_id": "m11"}, "status") != "Ignored", "forward from a listed sender is still read")
 		frappe.db.set_single_value("Gmail Settings", "skip_reply_senders", "")
+		_forwarded(fake)
 
 		# scheduled run is a no-op while switched off (never call it on a site where pick-up is on: it would read real mail)
 		if not frappe.db.get_single_value("Gmail Settings", "enabled"):

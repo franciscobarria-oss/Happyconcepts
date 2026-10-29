@@ -30,7 +30,11 @@ def header(payload: dict, name: str) -> str:
 
 
 def parse_sender(value: str) -> tuple[str, str]:
-	"""'"Cafe A" <a@x.com>' -> ('Cafe A', 'a@x.com')."""
+	"""'"Cafe A" <a@x.com>' -> ('Cafe A', 'a@x.com'). An unquoted comma in the name (Outlook and
+	Google Groups write "Lau, Jackison <j@x.com>") stays part of the name."""
+	m = re.match(r"^\s*(?P<name>.*?)\s*<(?P<addr>[^<>@\s]+@[^<>\s]+)>\s*$", value or "")
+	if m:
+		return m.group("name").strip().strip("'\"").strip(), m.group("addr").strip().lower()
 	name, addr = parseaddr(value or "")
 	return name.strip(), addr.strip().lower()
 
@@ -149,22 +153,11 @@ def strip_quoted(text: str) -> str:
 	return "\n".join(out)
 
 
-def body_text(payload: dict) -> str:
-	"""Plain text of a Gmail message payload: the text/plain part, else the HTML part stripped."""
-	plain, rich = [], []
-
-	def walk(part):
-		mime = (part.get("mimeType") or "").lower()
-		data = (part.get("body") or {}).get("data")
-		if mime == "text/plain" and data:
-			plain.append(_b64(data))
-		elif mime == "text/html" and data:
-			rich.append(_strip_html(_b64(data)))
-		for sub in part.get("parts") or []:
-			walk(sub)
-
-	walk(payload or {})
-	text = strip_quoted("\n".join(plain) if plain else "\n".join(rich))
+def body_text(payload: dict, forward: bool = False) -> str:
+	"""Plain text of a Gmail message payload: the text/plain part, else the HTML part stripped.
+	For a forward the forwarded mail is kept (only its "From: / Sent: / To:" block is dropped)."""
+	text = _raw_text(payload)
+	text = strip_quoted(unforward(text) if forward else text)
 	lines = [re.sub(r"[ \t\xa0]+", " ", l).strip() for l in text.replace("\r", "").split("\n")]
 	return "\n".join(l for l in lines if l)[:MAX_BODY]
 
@@ -433,3 +426,149 @@ def parse_lines(text: str) -> tuple[list[dict], list[str]]:
 		code, name = _split_code(rest)
 		lines.append({"external_sku": code, "description": name, "qty": qty, "po_no": po, "delivery_date": po_date})
 	return lines, unparsed
+
+
+# --- who really sent it: Google Group rewrites and forwards ---------------------------------
+
+# Google Groups rewrites the sender as "'Lau, Jackison' via Orders" <orders@...> (the quotes are its own)
+VIA_NAME = re.compile(r"^\s*\"?'(?P<name>[^']+)'\s+via\s+[^<\"]+", re.I)
+FORWARD_SUBJECT = re.compile(r"^\s*(fwd?|fw|轉寄|转发)\s*[:：]", re.I)
+FORWARD_MARK = re.compile(r"^\s*(-{2,}\s*forwarded message\s*-{2,}|-{2,}\s*original message\s*-{2,}|_{5,}|begin forwarded message:)\s*$", re.I)
+FORWARD_HEAD = re.compile(r"^\s*(from|sent|date|to|cc|subject|寄件者|寄件日期|收件者|主旨|发件人|收件人|主题)\s*[:：]\s*(?P<value>.*)$", re.I)
+
+
+def _own(address: str, own: str | None) -> bool:
+	"""True when the address is one of ours: an entry of `own` (addresses, or domains with sub-domains)."""
+	address = (address or "").strip().lower()
+	for e in re.split(r"[,\s;]+", own or ""):
+		e = e.strip().lower()
+		if not e:
+			continue
+		if "@" in e.lstrip("@"):
+			if address == e:
+				return True
+		else:
+			d = e.lstrip("@")
+			if address.endswith("@" + d) or address.endswith("." + d):
+				return True
+	return False
+
+
+def is_forward(subject: str) -> bool:
+	return bool(FORWARD_SUBJECT.match(subject or ""))
+
+
+def _raw_text(payload: dict) -> str:
+	plain, rich = [], []
+
+	def walk(part):
+		mime = (part.get("mimeType") or "").lower()
+		data = (part.get("body") or {}).get("data")
+		if mime == "text/plain" and data:
+			plain.append(_b64(data))
+		elif mime == "text/html" and data:
+			rich.append(_strip_html(_b64(data)))
+		for sub in part.get("parts") or []:
+			walk(sub)
+
+	walk(payload or {})
+	return ("\n".join(plain) if plain else "\n".join(rich)).replace("\r", "")
+
+
+def forwarded_sender(text: str) -> tuple[str, str]:
+	"""(name, address) of the first "From:" in a forwarded block (Gmail, Outlook, Apple Mail),
+	else ("", ""). Outlook writes "From: Lau, Jackison <j@x.com>" or "From: j@x.com"."""
+	lines = (text or "").split("\n")
+	for i, line in enumerate(lines):
+		if not FORWARD_MARK.match(line.strip()):
+			continue
+		for nxt in lines[i + 1:i + 8]:
+			m = FORWARD_HEAD.match(nxt.replace("*", ""))
+			if m and m.group(1).lower() in ("from", "寄件者", "发件人"):
+				value = m.group("value").strip()
+				# Outlook may write "Name [mailto:a@x.com]"
+				value = re.sub(r"\[mailto:([^\]]+)\]", r"<\1>", value)
+				name, addr = parse_sender(value)
+				if "@" in addr:
+					return name.strip("'\" "), addr
+	return "", ""
+
+
+def unforward(text: str) -> str:
+	"""The text of a forwarded mail with the forward's header block ("From: / Sent: / To: / Subject:")
+	taken out, so the order inside the forward is read like the order of a direct mail."""
+	out, lines, i = [], (text or "").split("\n"), 0
+	while i < len(lines):
+		line = lines[i]
+		if FORWARD_MARK.match(line.strip()):
+			j = i + 1
+			while j < len(lines) and (not lines[j].strip() or FORWARD_HEAD.match(lines[j].replace("*", ""))):
+				j += 1
+			if j > i + 1 and any(FORWARD_HEAD.match(l.replace("*", "")) for l in lines[i + 1:j]):
+				i = j
+				continue
+		out.append(line)
+		i += 1
+	return "\n".join(out)
+
+
+def original_sender(payload: dict, subject: str, own: str | None = None) -> tuple[str, str, str]:
+	"""(name, address, via) of the person who really sent the order.
+
+	- A Google Group that rewrites the sender ("'Lau, Jackison' via Orders" <orders@ours>) keeps the
+	  author in X-Original-From, Reply-To or X-Original-Sender.
+	- A forward (Fwd: / FW:) from one of our own addresses (`own`) carries the author in the
+	  forwarded block's "From:" line.
+	`via` is the address the mail came through when it is not the author's own, else ""."""
+	raw_from = header(payload, "From")
+	name, addr = parse_sender(raw_from)
+	via = VIA_NAME.match(raw_from or "")
+	if via or header(payload, "X-Original-From"):
+		for h in ("X-Original-From", "Reply-To", "X-Original-Sender"):
+			n, a = parse_sender(header(payload, h))
+			if a and "@" in a and a != addr and not _own(a, own):
+				return (n or (via.group("name") if via else "") or a), a, addr
+		if via:
+			name = via.group("name")
+	if is_forward(subject) and (_own(addr, own) or via):
+		n, a = forwarded_sender(_raw_text(payload))
+		if a and not _own(a, own) and a != addr:
+			return (n or a), a, addr
+	if via:
+		return name, "", addr
+	return name, addr, ""
+
+
+# --- which outlet: names and addresses found in the order -------------------------------------
+
+def _norm(text: str) -> str:
+	return " " + re.sub(r"[^0-9a-z㐀-鿿]+", " ", (text or "").lower()).strip() + " "
+
+
+MIN_PHRASE = 5  # "IKEA" alone is too common to name one outlet
+
+
+def match_outlet(text: str, customers: list[tuple[str, list[str]]]) -> str | None:
+	"""The customer whose name, order name or address line appears in the order text (whole words),
+	the longest match winning; None when nothing matches or two customers tie for the best match.
+	`customers` = [(customer, [phrases...])]."""
+	hay = _norm(text)
+	best, best_len, tie = None, 0, False
+	for customer, phrases in customers:
+		score = 0
+		for p in phrases:
+			p = _norm(p)
+			if len(p.strip()) >= MIN_PHRASE and p in hay:
+				score = max(score, len(p.strip()))
+		if not score:
+			continue
+		if score > best_len:
+			best, best_len, tie = customer, score, False
+		elif score == best_len and customer != best:
+			tie = True
+	return None if tie else best
+
+
+def order_names(value: str | None) -> list[str]:
+	"""A customer's "names in order emails" field: one name per line (or separated by ";")."""
+	return [p.strip() for p in re.split(r"[\n;]+", value or "") if p.strip()]

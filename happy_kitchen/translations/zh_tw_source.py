@@ -7,6 +7,14 @@
 # to list the strings that still need a translation here.
 
 ZH_TW = {
+	"Forwarded through {0} without the original sender's address, and no outlet name was found: enter it by hand, or add the outlet's name under the customer's Names in order emails and Read again.": "經 {0} 轉寄，沒有原寄件人地址，也找不到分店名稱：請手動輸入，或在客戶的「訂單電郵中的名稱」加入分店名稱後再讀一次。",
+	"PO {0} already has sales order {1} under {2}: check the customer.": "採購單 {0} 已有銷售訂單 {1}（客戶 {2}）：請檢查客戶。",
+	"Forwarded by": "轉寄者",
+	"Names in order emails": "訂單電郵中的名稱",
+	"New customer {0} made from the original sender of a forwarded email: check it, or add the outlet's name under the customer's Names in order emails.": "已按轉寄電郵的原寄件人建立新客戶 {0}：請檢查，或在客戶的「訂單電郵中的名稱」加入分店名稱。",
+	"One per line: how this outlet is named on its purchase orders (e.g. W Hong Kong, IKEA Kowloon Bay). Email order pick-up files an order under the customer whose name, one of these names or a shipping address line appears in the email or its PDF.": "每行一個：此分店在採購單上的名稱（例如 W Hong Kong、IKEA Kowloon Bay）。電郵訂單會歸入名稱、這些名稱或送貨地址出現在電郵或 PDF 中的客戶。",
+	"The address the email came through (a Google Group or one of our own mailboxes) when the sender above is the original author.": "當上方寄件人為原作者時，電郵經過的地址（Google 群組或我們自己的郵箱）。",
+	"The sender's email belongs to several customers ({0}); {1} was used: check it.": "寄件人電郵屬於多個客戶（{0}）；已使用 {1}：請檢查。",
 	"PO {0}": "採購單 {0}",
 	"Lines without a PO number": "沒有採購單號的行",
 	"{0} of {1} lines confirmed": "已確認 {0} / {1} 行",

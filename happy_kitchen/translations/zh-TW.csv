@@ -274,6 +274,8 @@ Food Cost per Unit,每件食物成本
 Food cost,食材成本率
 "For delivery charges, services and other non-food lines.",用於運費、服務及其他非食品項目。
 "For sales items sold under another code than the recipe's own item, e.g. a customer's article number or a box.",用於以食譜物品以外編號出售的銷售物品，例如客戶的貨號或一盒裝。
+Forwarded by,轉寄者
+"Forwarded through {0} without the original sender's address, and no outlet name was found: enter it by hand, or add the outlet's name under the customer's Names in order emails and Read again.",經 {0} 轉寄，沒有原寄件人地址，也找不到分店名稱：請手動輸入，或在客戶的「訂單電郵中的名稱」加入分店名稱後再讀一次。
 "From Item > Weight Per Unit. Lets a recipe use grams for an item priced per piece, or pieces for one priced per gram.",取自物品 > 每單位重量。讓食譜可用克計算按件定價的物品，或用件計算按克定價的物品。
 From Storage,由儲存位置
 From approved Stock Take {0},來自已批准盤點 {0}
@@ -475,6 +477,7 @@ Most emails per run,每次最多電郵數
 Multiple of own hourly wage,本人時薪倍數
 Name in ingredient lists,配料表名稱
 Name is required.,必須填寫名稱。
+Names in order emails,訂單電郵中的名稱
 Need,需要
 Need a look,需檢查
 Needed {0},需要日期 {0}
@@ -485,6 +488,7 @@ Net Qty,淨用量
 Net Qty Used,淨用量
 Net weight per piece (g),每件淨重（克）
 New count,新盤點
+"New customer {0} made from the original sender of a forwarded email: check it, or add the outlet's name under the customer's Names in order emails.",已按轉寄電郵的原寄件人建立新客戶 {0}：請檢查，或在客戶的「訂單電郵中的名稱」加入分店名稱。
 New item,新貨品
 New product made,已新增產品
 No Price,未有價格
@@ -556,6 +560,7 @@ Offline,離線
 On other products' labels,用於其他產品標籤
 On shift,當值
 On target,達標
+"One per line: how this outlet is named on its purchase orders (e.g. W Hong Kong, IKEA Kowloon Bay). Email order pick-up files an order under the customer whose name, one of these names or a shipping address line appears in the email or its PDF.",每行一個：此分店在採購單上的名稱（例如 W Hong Kong、IKEA Kowloon Bay）。電郵訂單會歸入名稱、這些名稱或送貨地址出現在電郵或 PDF 中的客戶。
 One row per ingredient and storage area. Drag rows to change the counting order; the count screen groups them by storage area in this order. Untick Active to hide a row.,每項食材及儲存位置一行。拖動行可更改盤點次序；盤點畫面會按此次序以儲存位置分組。取消勾選「使用中」可隱藏該行。
 Online,在線
 Only Out of Tolerance,只顯示超出容差
@@ -627,6 +632,7 @@ PO Price,採購單價
 PO confirmed,採購單已確認
 PO {0},採購單 {0}
 PO {0} already has a sales order.,採購單 {0} 已有銷售訂單。
+PO {0} already has sales order {1} under {2}: check the customer.,採購單 {0} 已有銷售訂單 {1}（客戶 {2}）：請檢查客戶。
 Pack Size 1,包裝規格 1
 Pack Size 2,包裝規格 2
 Pack Size 3,包裝規格 3
@@ -904,6 +910,7 @@ Test label {0} sent. It prints within a few seconds if the Pi is online.,測試�
 "The PDF has no table or item lines this reader knows yet. Enter the order by hand from the PDF, then mark it entered by hand.",系統尚未認得此 PDF 的表格或項目行。請按 PDF 人手輸入訂單，然後標為已人手輸入。
 The PIN must be exactly 4 digits.,密碼必須是 4 位數字。
 The Raspberry Pi has never connected.,Raspberry Pi 從未連線。
+The address the email came through (a Google Group or one of our own mailboxes) when the sender above is the original author.,當上方寄件人為原作者時，電郵經過的地址（Google 群組或我們自己的郵箱）。
 The closing stock take must be after the opening one,期末盤點必須在期初盤點之後
 The email this order was picked up from.,建立此訂單的電郵。
 The last check failed,上次檢查失敗
@@ -914,6 +921,7 @@ The recipe this client version is made from.,此客戶版本所用的食譜。
 "The recipe, an ingredient or a label field changed since the last check. Labels wait until it is checked again.",自上次檢查後，食譜、材料或標籤欄位已更改。標籤會等候再次檢查。
 The review could not be shown.,無法顯示檢查畫面。
 The sales order {0} is already submitted. Change the item on the order itself.,銷售訂單 {0} 已提交，請在訂單上直接更改產品。
+The sender's email belongs to several customers ({0}); {1} was used: check it.,寄件人電郵屬於多個客戶（{0}）；已使用 {1}：請檢查。
 The sheet {0} has no active ingredients,盤點表 {0} 沒有啟用的材料
 The start date is after the end date.,開始日期晚於結束日期。
 The supplier's own product code. Our SKU is the item code the system gives it.,供應商自己的產品編號。我們的貨號是系統給此貨品的貨品編號。

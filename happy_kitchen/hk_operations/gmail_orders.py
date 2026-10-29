@@ -19,6 +19,7 @@ GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
 GMAIL_API = "https://gmail.googleapis.com/gmail/v1/users/me"
 PRODUCT_GROUP = "Products"
 CODE_PREFIX = "SKU-"
+MIN_SHARED_PO = 6  # a PO number this long is taken as unique across customers (short ones can repeat)
 TIMEOUT = 30
 
 
@@ -132,24 +133,25 @@ def _take(client, message_id: str, s) -> str:
 	"""One message -> one Email Order. A failure on one message never stops the others."""
 	payload_msg = client.get_message(message_id)
 	payload = payload_msg.get("payload") or {}
-	name, address = email_orders.parse_sender(email_orders.header(payload, "From"))
+	subject = email_orders.header(payload, "Subject") or _("(no subject)")
+	name, address, via = email_orders.original_sender(payload, subject, s.skip_reply_senders)
 	order = frappe.get_doc({
 		"doctype": "Email Order", "message_id": message_id, "status": "New",
-		"subject": (email_orders.header(payload, "Subject") or _("(no subject)"))[:140],
-		"sender_name": name, "sender_email": address,
+		"subject": subject[:140],
+		"sender_name": name, "sender_email": address, "forwarded_by": via,
 		"received_on": _received(payload_msg), "thread_id": payload_msg.get("threadId"),
 	})
-	if not email_orders.sender_allowed(address, s.allowed_senders):
+	if not email_orders.sender_allowed(via or address, s.allowed_senders):
 		order.status = "Ignored"
 		order.insert(ignore_permissions=True)
 		return order.status
-	if email_orders.skip_reply(address, order.subject, payload, bool(email_orders.pdf_attachments(payload)), s.skip_reply_senders):
+	if email_orders.skip_reply(via or address, order.subject, payload, bool(email_orders.pdf_attachments(payload)), s.skip_reply_senders):
 		order.status = "Ignored"
 		order.insert(ignore_permissions=True)
 		return order.status
 	files = _pdf_files(client, message_id, payload)
 	order.body = email_orders.join_attachment_text(
-		email_orders.body_text(payload), [(n, pdf_text(raw)) for n, raw in files])
+		email_orders.body_text(payload, forward=email_orders.is_forward(subject)), [(n, pdf_text(raw)) for n, raw in files])
 	order.insert(ignore_permissions=True)
 	_save_files(order, files)
 	point = f"hk_email_{frappe.generate_hash(length=8)}"
@@ -266,16 +268,26 @@ def process(order, lead_days: int = 1, prior=None):
 		return
 	if prior and not any(ln["po_no"] for ln in lines):
 		return revise(order, prior, lines, unparsed)
-	customer = find_or_create_customer(order.sender_name, order.sender_email)
+	customer, customer_note = resolve_customer(order)
+	if not customer:
+		order.unparsed = "\n".join(([order.unparsed] if order.unparsed else []) + [customer_note])
+		order.status = "Needs review"
+		order.save(ignore_permissions=True)
+		return
 	order.customer = customer
 	order.set("lines", [])
 	groups = {}
 	for ln in lines:
 		groups.setdefault(ln["po_no"], []).append(ln)
-	notes, made = [], []
+	notes, made = ([customer_note] if customer_note else []), []
 	for po, group in groups.items():
 		if po and frappe.db.exists("Sales Order", {"customer": customer, "po_no": po, "docstatus": ("<", 2)}):
 			notes.append(_("PO {0} already has a sales order.").format(po))
+			continue
+		other = po and len(po) >= MIN_SHARED_PO and frappe.db.get_value(
+			"Sales Order", {"po_no": po, "docstatus": ("<", 2)}, ["name", "customer"], as_dict=True)
+		if other:
+			notes.append(_("PO {0} already has sales order {1} under {2}: check the customer.").format(po, other.name, other.customer))
 			continue
 		items = []
 		for ln in group:
@@ -358,6 +370,73 @@ def revise(order, prior, lines, unparsed):
 	order.save(ignore_permissions=True)
 
 
+def _email_customers(address: str) -> list[str]:
+	"""Customers that have this email: on the Customer itself or on a Contact linked to it."""
+	if not address:
+		return []
+	found = frappe.get_all("Customer", filters={"email_id": address, "disabled": 0}, pluck="name")
+	rows = frappe.db.sql(
+		"""select distinct dl.link_name from `tabContact Email` ce
+		   join `tabContact` c on c.name = ce.parent
+		   join `tabDynamic Link` dl on dl.parent = c.name and dl.parenttype = 'Contact' and dl.link_doctype = 'Customer'
+		   join `tabCustomer` cu on cu.name = dl.link_name and cu.disabled = 0
+		   where lower(ce.email_id) = %s order by dl.link_name""",
+		(address.lower(),),
+	)
+	return list(dict.fromkeys(found + [r[0] for r in rows]))
+
+
+def _outlet_phrases(names: list[str] | None = None) -> list[tuple[str, list[str]]]:
+	"""[(customer, [customer name, names in order emails, shipping address first lines])]."""
+	filters = {"disabled": 0}
+	if names is not None:
+		filters["name"] = ("in", names or [""])
+	out = {}
+	for c in frappe.get_all("Customer", filters=filters, fields=["name", "customer_name", "hk_order_names"]):
+		if email_orders.VIA_NAME.match(c.customer_name or ""):
+			continue  # never match an old "'Name' via Orders" placeholder customer
+		out[c.name] = [c.customer_name, *email_orders.order_names(c.hk_order_names)]
+	if out:
+		for a in frappe.db.sql(
+			"""select dl.link_name, a.address_line1 from `tabAddress` a
+			   join `tabDynamic Link` dl on dl.parent = a.name and dl.parenttype = 'Address' and dl.link_doctype = 'Customer'
+			   where a.disabled = 0 and dl.link_name in %s and char_length(a.address_line1) >= 10""",
+			(tuple(out),), as_dict=True,
+		):
+			out[a.link_name].append(a.address_line1)
+	return list(out.items())
+
+
+def resolve_customer(order) -> tuple[str, str]:
+	"""(customer, note) for an email order. The outlet named in the order (customer name, its "names in
+	order emails" or a shipping address line found in the email or PDF) wins among the customers that
+	have the sender's email; then the sender's only customer; then the outlet named anywhere; else a new
+	customer from the sender. The note asks for a check when the customer is new on a forwarded mail."""
+	text = "\n".join([order.subject or "", order.body or ""])
+	by_email = [c for c in _email_customers(order.sender_email)
+	            if not email_orders.VIA_NAME.match(frappe.db.get_value("Customer", c, "customer_name") or "")]
+	if by_email:
+		named = email_orders.match_outlet(text, _outlet_phrases(by_email))
+		if named:
+			return named, ""
+		if len(by_email) == 1:
+			return by_email[0], ""
+	named = email_orders.match_outlet(text, _outlet_phrases())
+	if named:
+		return named, ""
+	if by_email:
+		return by_email[0], _("The sender's email belongs to several customers ({0}); {1} was used: check it.").format(
+			", ".join(by_email), by_email[0])
+	if order.get("forwarded_by") and not order.sender_email:
+		# a group mail without its author's address: never make a customer from the group
+		return None, _("Forwarded through {0} without the original sender's address, and no outlet name was found: enter it by hand, or add the outlet's name under the customer's Names in order emails and Read again.").format(order.forwarded_by)
+	customer = find_or_create_customer(order.sender_name, order.sender_email)
+	note = ""
+	if order.get("forwarded_by"):
+		note = _("New customer {0} made from the original sender of a forwarded email: check it, or add the outlet's name under the customer's Names in order emails.").format(customer)
+	return customer, note
+
+
 def find_or_create_customer(sender_name: str, address: str) -> str:
 	if address:
 		found = frappe.db.get_value("Customer", {"email_id": address}, "name")
@@ -399,6 +478,8 @@ def find_or_create_item(customer: str, external_sku: str, description: str) -> t
 	if external_sku:
 		found = frappe.db.get_value("Item Customer Detail", {"customer_name": customer, "ref_code": external_sku,
 		                                                     "parenttype": "Item"}, "parent")
+	if not found and external_sku:
+		found = _known_code(external_sku)
 	if not found and description:
 		found = frappe.db.get_value("Item", {"item_name": description, "disabled": 0}, "name")
 	if found:
@@ -417,6 +498,17 @@ def find_or_create_item(customer: str, external_sku: str, description: str) -> t
 		"item_defaults": [{"company": company}] if company else [],
 	}).insert(ignore_permissions=True)
 	return item.name, True
+
+
+def _known_code(code: str) -> str | None:
+	"""A real item for a customer's code that this customer has not used yet: the code is our own item
+	code, or exactly one real item carries it for another customer (outlets of one chain share codes).
+	Placeholder items made by the pick-up (SKU-nnnn) never count."""
+	if not code.startswith(CODE_PREFIX) and frappe.db.exists("Item", {"name": code, "disabled": 0, "is_sales_item": 1}):
+		return code
+	parents = {p for p in frappe.get_all("Item Customer Detail", filters={"ref_code": code, "parenttype": "Item"}, pluck="parent")
+	           if not p.startswith(CODE_PREFIX) and not frappe.db.get_value("Item", p, "disabled")}
+	return parents.pop() if len(parents) == 1 else None
 
 
 # --- entry points ------------------------------------------------------------------------
@@ -456,9 +548,12 @@ def reprocess(name: str):
 	s = frappe.get_single("Gmail Settings")
 	client = GmailClient(s)
 	payload = client.get_message(order.message_id).get("payload") or {}
+	subject = email_orders.header(payload, "Subject") or order.subject or ""
+	order.sender_name, order.sender_email, order.forwarded_by = email_orders.original_sender(
+		payload, subject, s.skip_reply_senders)
 	files = _pdf_files(client, order.message_id, payload)
 	order.body = email_orders.join_attachment_text(
-		email_orders.body_text(payload), [(n, pdf_text(raw)) for n, raw in files])
+		email_orders.body_text(payload, forward=email_orders.is_forward(subject)), [(n, pdf_text(raw)) for n, raw in files])
 	order.error = ""
 	order.save(ignore_permissions=True)
 	if not frappe.get_all("File", filters={"attached_to_doctype": "Email Order", "attached_to_name": order.name}):

@@ -11,6 +11,8 @@ def _b64(text):
 def test_parse_sender_and_allow_list():
 	assert eo.parse_sender('"Cafe A" <Orders@CafeA.com>') == ("Cafe A", "orders@cafea.com")
 	assert eo.parse_sender("") == ("", "")
+	assert eo.parse_sender("'Lau, Jackison' via Orders <orders@x.hk>") == ("Lau, Jackison' via Orders", "orders@x.hk")
+	assert eo.parse_sender("Lau, Jackison <J.Lau@ikea.com.hk>") == ("Lau, Jackison", "j.lau@ikea.com.hk")
 	assert eo.sender_allowed("a@x.com", "")
 	assert eo.sender_allowed("a@x.com", "b@y.com, a@x.com")
 	assert eo.sender_allowed("a@x.com", "@x.com")
@@ -273,3 +275,99 @@ def test_review_reasons_by_status():
 
 def test_review_reasons_order_confirmed():
 	assert eo.review_reasons("Order confirmed", 2, 0, True, 1, True)
+
+
+def _payload(headers, text):
+	return {"mimeType": "text/plain", "headers": [{"name": k, "value": v} for k, v in headers],
+	        "body": {"data": _b64(text)}}
+
+
+def test_original_sender_google_group_rewrite():
+	p = _payload([("From", "'Lau, Jackison' via Orders <orders@happyconceptsfood.hk>"),
+	              ("X-Original-From", '"Lau, Jackison" <Jackison.Lau@ikea.com.hk>'),
+	              ("Reply-To", "Jackison.Lau@ikea.com.hk")], "PO attached")
+	assert eo.original_sender(p, "IKEA PO 123", "happyconceptsfood.hk") == (
+		"Lau, Jackison", "jackison.lau@ikea.com.hk", "orders@happyconceptsfood.hk")
+	# only Reply-To kept
+	p = _payload([("From", "'Chef W' via Orders <orders@happyconceptsfood.hk>"), ("Reply-To", "chef@whotels.com")], "")
+	assert eo.original_sender(p, "PO", "happyconceptsfood.hk") == ("Chef W", "chef@whotels.com", "orders@happyconceptsfood.hk")
+	# no author address anywhere: the name only, never the group address
+	p = _payload([("From", "'Chef W' via Orders <orders@happyconceptsfood.hk>")], "")
+	assert eo.original_sender(p, "PO", "happyconceptsfood.hk") == ("Chef W", "", "orders@happyconceptsfood.hk")
+
+
+def test_original_sender_direct_mail_unchanged():
+	p = _payload([("From", '"Cafe A" <orders@cafea.com>'), ("Reply-To", "boss@cafea.com")], "12 x Brownie")
+	assert eo.original_sender(p, "Order", "happyconceptsfood.hk") == ("Cafe A", "orders@cafea.com", "")
+	# a name with "via" in it is not a Google Group
+	p = _payload([("From", "Trattoria via Roma <info@viaroma.hk>"), ("Reply-To", "boss@viaroma.hk")], "")
+	assert eo.original_sender(p, "Order", "happyconceptsfood.hk") == ("Trattoria via Roma", "info@viaroma.hk", "")
+	assert eo.VIA_NAME.match("'Lau, Jackison' via Orders") and not eo.VIA_NAME.match("Trattoria via Roma")
+
+
+GMAIL_FWD = """FYI
+
+---------- Forwarded message ---------
+From: Ritz Purchasing <purchasing@ritzcarlton.com>
+Date: Mon, 26 Oct 2026 at 10:01
+Subject: PO HKPO123
+To: <sales@happyconceptsfood.hk>
+
+Please deliver:
+CK-001 | Butter cookie | 24
+"""
+
+OUTLOOK_FWD = """Order below
+
+________________________________
+From: Lau, Jackison <jackison.lau@ikea.com.hk>
+Sent: Monday, October 26, 2026 10:00 AM
+To: Sales <sales@happyconceptsfood.hk>
+Subject: IKEA PO
+
+12 x Chocolate brownie
+"""
+
+
+def test_forwarded_sender_and_body():
+	assert eo.forwarded_sender(GMAIL_FWD) == ("Ritz Purchasing", "purchasing@ritzcarlton.com")
+	assert eo.forwarded_sender(OUTLOOK_FWD) == ("Lau, Jackison", "jackison.lau@ikea.com.hk")
+	assert eo.forwarded_sender("From: x@y.com\n12 x Cake") == ("", "")
+	assert eo.forwarded_sender("-----Original Message-----\nFrom: Bob [mailto:bob@x.com]\n") == ("Bob", "bob@x.com")
+	p = _payload([("From", "Francisco <francisco@happyconceptsfood.hk>")], GMAIL_FWD)
+	assert eo.original_sender(p, "Fwd: PO HKPO123", "happyconceptsfood.hk") == (
+		"Ritz Purchasing", "purchasing@ritzcarlton.com", "francisco@happyconceptsfood.hk")
+	# a forward from someone who is not us keeps its sender
+	p = _payload([("From", "Boss <boss@cafea.com>")], GMAIL_FWD)
+	assert eo.original_sender(p, "Fwd: PO", "happyconceptsfood.hk")[1] == "boss@cafea.com"
+	# a forward of our own colleague's mail is not an outside author
+	p = _payload([("From", "A <a@happyconceptsfood.hk>")], GMAIL_FWD.replace("purchasing@ritzcarlton.com", "b@happyconceptsfood.hk"))
+	assert eo.original_sender(p, "Fwd: PO", "happyconceptsfood.hk")[1] == "a@happyconceptsfood.hk"
+	# the forwarded order is read; the forward's header block is not
+	body = eo.body_text(_payload([], GMAIL_FWD), forward=True)
+	assert "CK-001 | Butter cookie | 24" in body and "purchasing@" not in body
+	assert "12 x Chocolate brownie" in eo.body_text(_payload([], OUTLOOK_FWD), forward=True)
+	assert "Butter cookie" not in eo.body_text(_payload([], GMAIL_FWD))  # a reply still drops quoted mail
+	assert eo.is_forward("FW: PO") and eo.is_forward("Fwd: x") and eo.is_forward("轉寄: x") and not eo.is_forward("Re: x")
+
+
+def test_match_outlet():
+	customers = [
+		("W HOTEL", ["W HOTEL", "W Hong Kong"]),
+		("IKEA KOWLOON BAY", ["IKEA Kowloon Bay", "Unit 1, Megabox, 38 Wang Chiu Road"]),
+		("IKEA CAUSEWAY BAY", ["IKEA Causeway Bay"]),
+		("DAIRY FARM", ["Dairy Farm"]),
+		("PLAZA PREMIUM LOUNGE HKG - AMEX", ["PLAZA PREMIUM LOUNGE HKG - AMEX", ""]),
+	]
+	assert eo.match_outlet("Deliver to: W Hong Kong, 1 Austin Road West", customers) == "W HOTEL"
+	assert eo.match_outlet("Ship to Unit 1, MegaBox, 38 Wang Chiu Road, Kowloon Bay", customers) == "IKEA KOWLOON BAY"
+	# the outlet beats the parent company named on the same PO (longest match)
+	assert eo.match_outlet("Dairy Farm Co Ltd\nDeliver to IKEA Kowloon Bay", customers) == "IKEA KOWLOON BAY"
+	# two outlets named equally: no guess
+	assert eo.match_outlet("IKEA Kowloon Bay / IKEA Kowloon Tsi", customers + [("IKEA KT", ["IKEA Kowloon Tsi"])]) is None
+	assert eo.match_outlet("nothing here", customers) is None
+	# whole words only: "w" inside another word is not W HOTEL; short phrases never match
+	assert eo.match_outlet("Swhotel Group", customers) is None
+	assert eo.match_outlet("ABC", [("ABC LTD", ["ABC"])]) is None
+	assert eo.match_outlet("IKEA order", [("IKEA", ["IKEA"])]) is None
+	assert eo.order_names("W Hong Kong\n Kowloon Bay, IKEA \n\n") == ["W Hong Kong", "Kowloon Bay, IKEA"]
