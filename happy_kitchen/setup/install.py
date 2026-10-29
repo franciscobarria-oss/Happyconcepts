@@ -27,6 +27,7 @@ INSTALL_PATCHES = [
 	"happy_kitchen.patches.current_purchase_flag",
 	"happy_kitchen.patches.labels_optional",
 	"happy_kitchen.patches.po_price_fields",
+	"happy_kitchen.patches.daily_overview_fields",
 ]
 
 
