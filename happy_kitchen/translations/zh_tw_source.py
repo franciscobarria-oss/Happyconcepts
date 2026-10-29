@@ -1211,6 +1211,22 @@ ZH_TW = {
 	"{0} draft orders in this range are not counted. Tick Include drafts to add them.": "此期間有 {0} 張草稿訂單未計算。勾選「包括草稿」即可加入。",
 	"{0} units": "{0} 件",
 	"{0} units a week on average": "平均每週 {0} 件",
+	# Sales Order stage (order_stage.py, sales_order.js)
+	"Confirm order": "確認訂單",
+	"Confirmed (late)": "已確認（逾期）",
+	"Delivered, not invoiced yet.": "已送貨，未開發票。",
+	"Delivered: {0}": "已送貨：{0}",
+	"Late: the delivery date has passed.": "逾期：已過送貨日期。",
+	"Making the delivery note...": "正在建立送貨單...",
+	"Mark as delivered": "標為已送貨",
+	"Mark {0} as delivered? This makes and submits a Delivery Note for everything not yet delivered.": "要把 {0} 標為已送貨嗎？這會為所有未送的貨品建立並提交送貨單。",
+	"Nothing is left to deliver on this order.": "此訂單沒有未送的貨品。",
+	"This order was revised. Mark the revision as checked before delivering.": "此訂單已被修改，請先標記修訂已檢查再送貨。",
+	"You are not allowed to submit a Delivery Note.": "你沒有權限提交送貨單。",
+	"{0}% delivered so far.": "目前已送 {0}%。",
+	"Only a confirmed order can be marked as delivered.": "只有已確認的訂單才可標為已送貨。",
+	"This order is {0}. Take it off hold or reopen it first.": "此訂單狀態為 {0}，請先取消暫停或重新開啟。",
+	"This order is already delivered.": "此訂單已送貨。",
 }
 
 
@@ -1230,6 +1246,8 @@ LEAVE_AS_IS = {
 	"g", "kg", "l", "lb", "min", "ml", "oz", "pc", "piece",
 	# words ERPNext already translates (Sales block)
 	"Amount", "Average", "Orders", "Sales", "Total",
+	# Sales Order stage words ERPNext already translates
+	"Completed", "Confirmed", "Order",
 }
 
 

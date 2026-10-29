@@ -140,6 +140,8 @@ Code,代碼
 Component,組件
 Confirm PO items,確認此採購單的產品
 Confirm item,確認產品
+Confirm order,確認訂單
+Confirmed (late),已確認（逾期）
 Connected to {0}. Read-only access.,已連接 {0}(唯讀)。
 Continue a count,繼續盤點
 Cooking Yield %,成品率
@@ -198,6 +200,8 @@ Default note,預設說明
 Default printer,預設打印機
 "Defaults to the item's default warehouse (Dry Stock, Fridge, Freezer).",預設為物品的預設倉庫（乾貨、雪櫃、冰格）。
 Defaults to the person's rate on the Employee record.,預設為員工紀錄上的費率。
+"Delivered, not invoiced yet.",已送貨，未開發票。
+Delivered: {0},已送貨：{0}
 Deliveries due,待收貨
 Deliveries in,今日收貨
 Delivery,送貨
@@ -413,6 +417,7 @@ Last error,上次錯誤
 Last heard from {0},最後聯絡：{0}
 Last seen,最後連線
 Late,逾期
+Late: the delivery date has passed.,逾期：已過送貨日期。
 Later,稍後
 Leave balances,假期結餘
 Leave blank to use the cheapest supplier on the buying price list.,留空即使用採購價格表中最便宜的供應商。
@@ -442,14 +447,17 @@ Made by (bottom of label),製造商（標籤底部）
 Made on,生產日期
 Made-on date,生產日期依據
 Make {0},製作 {0}
+Making the delivery note...,正在建立送貨單...
 Manufacture entries that move ingredients out of stock and add the batch preparations to their warehouse (e.g. Freezer).,生產記錄會扣除食材庫存，並將半成品加入其倉庫（例如冰格）。
 Manufacturer,製造商
 Margin,毛利
 Margin / Unit,每件毛利
 Margin per unit,每件毛利
+Mark as delivered,標為已送貨
 Mark as entered by hand,標為已人手輸入
 Mark label as checked,標記標籤已核對
 Mark revision as checked,標記修訂已檢查
+Mark {0} as delivered? This makes and submits a Delivery Note for everything not yet delivered.,要把 {0} 標為已送貨嗎？這會為所有未送的貨品建立並提交送貨單。
 Marked as entered by hand by {0}.,{0} 已標為人手輸入。
 Marked as not an order by {0}.,{0} 已標為非訂單。
 Masters,主檔
@@ -524,6 +532,7 @@ Notes (size / qty),備註（尺寸／數量）
 "Notes, e.g. damaged box",備註，例如紙箱損壞
 Nothing due today,今日沒有待收貨
 Nothing found,找不到
+Nothing is left to deliver on this order.,此訂單沒有未送的貨品。
 Nothing is near its use-by date.,沒有接近使用期限的貨品。
 Nothing left to make today.,今日生產已完成。
 Nothing logged this week.,本週未有生產紀錄。
@@ -550,6 +559,7 @@ Online,在線
 Only Out of Tolerance,只顯示超出容差
 Only Price Changes,只顯示價格變動
 Only Recipes That Need a Look,只顯示需檢查的食譜
+Only a confirmed order can be marked as delivered.,只有已確認的訂單才可標為已送貨。
 Only a manager can mark a label as checked.,只有經理可以將標籤標記為已檢查。
 Only an email that is Needs review or Failed can be marked as entered by hand.,只有「需檢查」或「失敗」的電郵才可標為人手輸入。
 Only an email that is Needs review or Failed can be marked as not an order.,只有「需檢查」或「失敗」的電郵才可標為非訂單。
@@ -911,7 +921,10 @@ This ingredient appears on product labels as <b>{0}</b>.,此材料在產品標�
 This job belongs to another printer.,此工作屬於另一部打印機。
 This label is waiting for its product to be checked.,此標籤正等候其產品被檢查。
 This log has no Batch Preparation recipes.,此紀錄沒有半成品食譜。
+This order is already delivered.,此訂單已送貨。
+This order is {0}. Take it off hold or reopen it first.,此訂單狀態為 {0}，請先取消暫停或重新開啟。
 This order was changed after it came in. Check the changes before delivering.,此訂單在收到後被修改。送貨前請檢查修改內容。
+This order was revised. Mark the revision as checked before delivering.,此訂單已被修改，請先標記修訂已檢查再送貨。
 Thrown away and logged as wastage,已丟棄並記錄為報廢
 "Tick after checking the allergens against the supplier's pack or spec sheet, even if there are none.",按供應商包裝或規格表核對致敏物後勾選，即使沒有致敏物亦然。
 Tick at least one line.,請至少勾選一行。
@@ -1023,6 +1036,7 @@ Yield,份量
 Yield %,可用率
 Yield Loss,可用率損耗
 Yield Unit,份量單位
+You are not allowed to submit a Delivery Note.,你沒有權限提交送貨單。
 You can't create purchase orders.,你沒有權限建立採購單。
 You replaced <b>{0}</b> with <b>{1}</b>. {0} is also used in {2} other recipes. Replace it there too?,你已將 <b>{0}</b> 取代為 <b>{1}</b>。{0} 亦用於另外 {2} 個食譜。是否一併取代？
 "You submitted this count, so another approver has to approve or reject it.",此盤點由你提交，須由另一位審批人批准或退回。
@@ -1148,6 +1162,7 @@ waiting for the printer,等待打印機
 {0} units a week on average,平均每週 {0} 件
 {0} · {1} lines{2},{0} · {1} 行{2}
 {0}% delivered,已送貨 {0}%
+{0}% delivered so far.,目前已送 {0}%。
 {0}% received,已收貨 {0}%
 {0}'s SKU {1} is already used by item {2}.,{0} 的貨號 {1} 已用於貨品 {2}。
 "{0}, counted {1}",{0}，盤點日期 {1}
