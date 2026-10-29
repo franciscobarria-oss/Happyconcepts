@@ -191,6 +191,7 @@ Create draft Material Issue when a Production Log is submitted,提交生產紀�
 Create draft order,建立採購單草稿
 Create labels when a sales order is submitted,提交銷售訂單時建立標籤
 Current Purchase,目前採購
+Customer PO price,客戶採購單價
 Daily,日常
 Daily tasks,日常工作
 Day after,後天
@@ -506,6 +507,8 @@ No order lines were read.,沒有讀到訂單行。
 No orders,沒有訂單
 No orders going out today.,今日沒有出貨訂單。
 No price,沒有價格
+No price of ours: PO price {0} used,我們沒有價格：已用採購單價 {0}
+No price on the PO or ours,採購單和我們都沒有價格
 No product,沒有產品
 No products are linked to this supplier yet.,此供應商尚未連結任何產品。
 No purchase orders waiting for delivery.,沒有待收貨的採購單。
@@ -602,6 +605,8 @@ Ordering (optional),訂貨（選填）
 Orders going out,今日出貨訂單
 Orders to deliver,待送貨訂單
 Origin line,產地
+Our price,我們的價格
+Our price for the item when the order was made (price list or pricing rule).,建立訂單時此產品的我方價格（價目表或定價規則）。
 Out of Tolerance,超出容差
 Out of tolerance,超出容差
 Over target,超出目標
@@ -625,6 +630,9 @@ PO,採購單
 PO No.,採購單編號
 PO Price,採購單價
 PO confirmed,採購單已確認
+PO price {0} (same as ours),採購單價 {0}（與我們相同）
+"PO price {0}, our price {1}",採購單價 {0}，我們的價格 {1}
+PO unit price,採購單單價
 PO {0},採購單 {0}
 PO {0} already has a sales order.,採購單 {0} 已有銷售訂單。
 Pack Size 1,包裝規格 1
@@ -663,10 +671,13 @@ Price / Unit,每單位價格
 Price / kg,每公斤價格
 Price Source,價格來源
 Price Variance,價格差異
+Price check,價格核對
+Price differs from the customer's PO,價格與客戶採購單不同
 Price for Target,目標售價
 Price must be greater than zero.,價格必須大於零。
 "Price on the supplier's delivery note / invoice, typed on Receive Delivery. Stock is still received at the PO price.",供應商送貨單／發票上的價格，於收貨畫面輸入。庫存仍按採購單價格入帳。
 Price per unit. Kg prices are stored per gram (price ÷ 1000).,每單位價格。以公斤計的價格會按每克儲存（價格 ÷ 1000）。
+Prices checked against the customer's PO:,已按客戶採購單核對價格：
 Pricing,定價
 Primary Colour,主色
 Print A4,列印 A4
@@ -905,6 +916,7 @@ Test label {0} sent. It prints within a few seconds if the Pi is online.,測試�
 The PIN must be exactly 4 digits.,密碼必須是 4 位數字。
 The Raspberry Pi has never connected.,Raspberry Pi 從未連線。
 The closing stock take must be after the opening one,期末盤點必須在期初盤點之後
+The customer's unit price on the PO (0 = none).,客戶採購單上的單價（0 = 沒有）。
 The email this order was picked up from.,建立此訂單的電郵。
 The last check failed,上次檢查失敗
 "The lines were read but the order is held back, usually because it follows an order already submitted. Check it by hand.",行已讀取但訂單被擱置，通常因為它跟隨一張已提交的訂單。請人手檢查。
@@ -917,6 +929,7 @@ The sales order {0} is already submitted. Change the item on the order itself.,�
 The sheet {0} has no active ingredients,盤點表 {0} 沒有啟用的材料
 The start date is after the end date.,開始日期晚於結束日期。
 The supplier's own product code. Our SKU is the item code the system gives it.,供應商自己的產品編號。我們的貨號是系統給此貨品的貨品編號。
+The unit price on the customer's PO (orders picked up from email).,客戶採購單上的單價（由電郵讀取的訂單）。
 The user whose API key the Pi uses. It only needs the Label Printer role.,Pi 使用其 API 金鑰的用戶。只需要 Label Printer 角色。
 This count is waiting for approval and can't be changed. Ask an approver to reject it first.,此盤點正等候審批，不能修改。請先請審批人退回。
 This count is {0} and can't be changed.,此盤點狀態為 {0}，不能修改。
@@ -1147,6 +1160,7 @@ waiting for the printer,等待打印機
 {0} line(s) differ from the order. Stock is received at the ordered price; the differences are flagged on the receipt for the office.,{0} 行與訂單不符。貨品按訂單價格入庫，差異會標記在收貨單上交辦公室跟進。
 {0} lines,{0} 行
 {0} lines are not confirmed yet. Confirm the whole order anyway? This confirms the items and submits the draft sales order.,仍有 {0} 行未確認。要確認整張訂單嗎？這會確認產品並提交銷售訂單草稿。
+{0} lines have a PO price that is not our price (our price is on the order).,有 {0} 行的採購單價與我們的價格不同（訂單上用我們的價格）。
 {0} logs since Monday,週一至今 {0} 份紀錄
 {0} logs · HK$ {1} ingredients,{0} 份紀錄 · 材料 HK$ {1}
 {0} new emails read,已讀取 {0} 封新電郵
@@ -1171,5 +1185,11 @@ waiting for the printer,等待打印機
 {0}% received,已收貨 {0}%
 {0}'s SKU {1} is already used by item {2}.,{0} 的貨號 {1} 已用於貨品 {2}。
 "{0}, counted {1}",{0}，盤點日期 {1}
+"{0}: PO price {1}, our price {2} ({3})",{0}：採購單價 {1}，我們的價格 {2}（{3}）
+"{0}: PO {1}, order {2}",{0}：採購單 {1}，訂單 {2}
 {0}: a count can't be negative,{0}：盤點數量不能為負數
+"{0}: no price of ours, the PO price {1} was used",{0}：我們沒有價格，已用採購單價 {1}
+{differs} line(s): the customer's PO price is not our price (highlighted). Our price is on the order; check which one is right.,有 {differs} 行客戶採購單價與我們的價格不同（已標示）。訂單上用我們的價格，請確認哪個正確。
+{none} line(s) have no price on the PO and none of ours: add the price on the order.,有 {none} 行採購單和我們都沒有價格：請在訂單上加入價格。
 {unparsed} line(s) could not be read (listed below). Add them to the draft order by hand.,有 {unparsed} 行讀不到（見下方）。請人手加入訂單草稿。
+{used} line(s) had no price of ours: the customer's PO price was put on the order.,有 {used} 行我們沒有價格：訂單上已用客戶採購單價。

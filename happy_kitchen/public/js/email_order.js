@@ -18,12 +18,32 @@ const HK_EO_CSS = `<style>
 .hk-eo-page th:nth-child(2), .hk-eo-page td:nth-child(2) { width: 56px; text-align: right; }
 .hk-eo-page th:nth-child(4), .hk-eo-page td:nth-child(4) { width: 110px; }
 .hk-eo-open td { background: var(--yellow-highlight-color, #fff8e1); }
+.hk-eo-price { font-size: 11px; margin-top: 2px; }
+.hk-eo-price-warn { color: var(--orange-600, #c05621); font-weight: 600; }
 @media (min-width: 1000px) {
 	.hk-eo { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
 	.hk-eo-left { position: sticky; top: 70px; align-self: start; }
 	.hk-eo-left iframe { height: calc(100vh - 230px); }
 }
 </style>`;
+
+// The customer's PO price next to ours (gmail_orders.apply_po_prices / order_prices.py).
+function hk_eo_money(v) {
+	return format_currency(v || 0, frappe.defaults.get_default("currency"), 2);
+}
+
+function hk_eo_price(l) {
+	const po = flt(l.po_rate), ours = flt(l.our_rate);
+	if (l.price_check === "Price differs")
+		return `<div class="hk-eo-price hk-eo-price-warn">&#9888; ${__("PO price {0}, our price {1}", [hk_eo_money(po), hk_eo_money(ours)])}</div>`;
+	if (l.price_check === "PO price used")
+		return `<div class="hk-eo-price hk-eo-price-warn">${__("No price of ours: PO price {0} used", [hk_eo_money(po)])}</div>`;
+	if (l.price_check === "No price")
+		return `<div class="hk-eo-price hk-eo-price-warn">${__("No price on the PO or ours")}</div>`;
+	if (l.price_check === "Same price")
+		return `<div class="hk-eo-price text-muted">${__("PO price {0} (same as ours)", [hk_eo_money(po)])}</div>`;
+	return "";
+}
 
 function hk_eo_render(frm, d) {
 	frm._hk_review = d;
@@ -52,9 +72,10 @@ function hk_eo_render(frm, d) {
 		const dates = [...new Set(g.lines.map((l) => l.delivery_date).filter(Boolean))].join(", ");
 		const rows = g.lines.map((l) => {
 			const state = !l.item ? __("No product") : l.item_confirmed ? __("Item confirmed") : l.item_created ? __("New product made") : __("Matched by the reader");
+			const price = hk_eo_price(l);
 			const change = canEdit && l.item ? `<button class="btn btn-xs btn-default hk-eo-change" data-idx="${l.idx}">${__("Change item")}</button>` : "";
 			return `<tr${l.item && l.item_confirmed ? "" : ' class="hk-eo-open"'}>
-				<td>${hk_eo_esc(l.external_sku)}<div class="small">${hk_eo_esc(l.description)}</div></td>
+				<td>${hk_eo_esc(l.external_sku)}<div class="small">${hk_eo_esc(l.description)}</div>${price}</td>
 				<td class="text-right">${hk_eo_esc(l.qty)}</td>
 				<td>${hk_eo_esc(l.item)} ${hk_eo_esc(l.item_name)}<div class="text-muted small">${state}</div></td>
 				<td>${change}</td></tr>`;
@@ -103,9 +124,11 @@ frappe.ui.form.on("Email Order", {
 			frm.add_custom_button(__("Order confirmed"), () => {
 				const d = frm._hk_review || { lines: [] };
 				const open = d.lines.filter((l) => l.item && !l.item_confirmed).length;
-				const msg = open
+				let msg = open
 					? __("{0} lines are not confirmed yet. Confirm the whole order anyway? This confirms the items and submits the draft sales order.", [open])
 					: __("The order matches the PDF? This confirms the items and submits the draft sales order.");
+				if (d.price_differs)
+					msg = __("{0} lines have a PO price that is not our price (our price is on the order).", [d.price_differs]) + "<br><br>" + msg;
 				frappe.confirm(msg, async () => {
 					await frappe.xcall(HK_EO + "confirm_order", { name: frm.doc.name });
 					frm.reload_doc();

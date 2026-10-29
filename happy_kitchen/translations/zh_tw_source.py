@@ -1232,6 +1232,27 @@ ZH_TW = {
 	"Only a confirmed order can be marked as delivered.": "只有已確認的訂單才可標為已送貨。",
 	"This order is on hold. Take it off hold first.": "此訂單已暫停，請先取消暫停。",
 	"This order is already completed.": "此訂單已完成。",
+	# customer PO price vs our price (order_prices.py)
+	"Customer PO price": "客戶採購單價",
+	"PO unit price": "採購單單價",
+	"Our price": "我們的價格",
+	"Price check": "價格核對",
+	"Our price for the item when the order was made (price list or pricing rule).": "建立訂單時此產品的我方價格（價目表或定價規則）。",
+	"The customer's unit price on the PO (0 = none).": "客戶採購單上的單價（0 = 沒有）。",
+	"The unit price on the customer's PO (orders picked up from email).": "客戶採購單上的單價（由電郵讀取的訂單）。",
+	"No price of ours: PO price {0} used": "我們沒有價格：已用採購單價 {0}",
+	"No price on the PO or ours": "採購單和我們都沒有價格",
+	"PO price {0} (same as ours)": "採購單價 {0}（與我們相同）",
+	"PO price {0}, our price {1}": "採購單價 {0}，我們的價格 {1}",
+	"Price differs from the customer's PO": "價格與客戶採購單不同",
+	"Prices checked against the customer's PO:": "已按客戶採購單核對價格：",
+	"{0} lines have a PO price that is not our price (our price is on the order).": "有 {0} 行的採購單價與我們的價格不同（訂單上用我們的價格）。",
+	"{0}: PO price {1}, our price {2} ({3})": "{0}：採購單價 {1}，我們的價格 {2}（{3}）",
+	"{0}: PO {1}, order {2}": "{0}：採購單 {1}，訂單 {2}",
+	"{0}: no price of ours, the PO price {1} was used": "{0}：我們沒有價格，已用採購單價 {1}",
+	"{differs} line(s): the customer's PO price is not our price (highlighted). Our price is on the order; check which one is right.": "有 {differs} 行客戶採購單價與我們的價格不同（已標示）。訂單上用我們的價格，請確認哪個正確。",
+	"{used} line(s) had no price of ours: the customer's PO price was put on the order.": "有 {used} 行我們沒有價格：訂單上已用客戶採購單價。",
+	"{none} line(s) have no price on the PO and none of ours: add the price on the order.": "有 {none} 行採購單和我們都沒有價格：請在訂單上加入價格。",
 }
 
 
