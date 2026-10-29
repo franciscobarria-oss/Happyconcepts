@@ -137,10 +137,11 @@ Closed at,結束時間
 Closing,期末
 Closing Count,期末盤點
 Code,代碼
+Complete {0}? This makes and submits a Delivery Note for everything not yet delivered.,要完成 {0} 嗎？這會為所有未送的貨品建立並提交送貨單。
+Completed: delivered with {0},已完成：送貨單 {0}
 Component,組件
 Confirm PO items,確認此採購單的產品
 Confirm item,確認產品
-Confirm order,確認訂單
 Confirmed (late),已確認（逾期）
 Connected to {0}. Read-only access.,已連接 {0}(唯讀)。
 Continue a count,繼續盤點
@@ -201,7 +202,6 @@ Default printer,預設打印機
 "Defaults to the item's default warehouse (Dry Stock, Fridge, Freezer).",預設為物品的預設倉庫（乾貨、雪櫃、冰格）。
 Defaults to the person's rate on the Employee record.,預設為員工紀錄上的費率。
 "Delivered, not invoiced yet.",已送貨，未開發票。
-Delivered: {0},已送貨：{0}
 Deliveries due,待收貨
 Deliveries in,今日收貨
 Delivery,送貨
@@ -453,11 +453,9 @@ Manufacturer,製造商
 Margin,毛利
 Margin / Unit,每件毛利
 Margin per unit,每件毛利
-Mark as delivered,標為已送貨
 Mark as entered by hand,標為已人手輸入
 Mark label as checked,標記標籤已核對
 Mark revision as checked,標記修訂已檢查
-Mark {0} as delivered? This makes and submits a Delivery Note for everything not yet delivered.,要把 {0} 標為已送貨嗎？這會為所有未送的貨品建立並提交送貨單。
 Marked as entered by hand by {0}.,{0} 已標為人手輸入。
 Marked as not an order by {0}.,{0} 已標為非訂單。
 Masters,主檔
