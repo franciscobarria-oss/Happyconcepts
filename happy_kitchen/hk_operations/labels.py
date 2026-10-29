@@ -1,6 +1,9 @@
 """Product labels for confirmed sales orders.
 
-Submitting a Sales Order adds one Label Job per line. A job prints straight
+Labels are optional and never prompted: staff print them from the order's
+Labels menu ("Print labels"). Only when Label Settings "Create labels when a
+sales order is submitted" is ticked (off by default) does submitting add one
+Label Job per line, silently. A job prints straight
 away when its product's label has been checked by a person ("Label checked" on
 the Item's Label tab) and nothing on it has changed since; otherwise it waits
 as "Needs check". A small program on a Raspberry Pi (label_agent/ in this app)
@@ -400,15 +403,9 @@ def make_job(so, line, qty: float | None = None):
 def on_sales_order_submit(doc, method=None):
 	if not cint(frappe.db.get_single_value(SETTINGS, "create_on_submit")):
 		return
-	held = 0
+	# Labels are optional: jobs are made quietly, never with a message on submit.
 	for line in doc.items:
-		job = make_job(doc, line)
-		held += bool(job and job.status == "Needs check")
-	if held:
-		frappe.msgprint(
-			_("{0} label(s) are waiting: the product label has not been checked yet. Open the item's Label tab to check it.").format(held),
-			indicator="orange", alert=True,
-		)
+		make_job(doc, line)
 
 
 def on_sales_order_cancel(doc, method=None):

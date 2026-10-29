@@ -26,6 +26,7 @@
   "usage_section",
   "default_warehouse",
   "create_stock_entry_on_submit",
+  "complete_with_delivery_note",
   "stock_take_section",
   "variance_tolerance_pct",
   "column_break_stock_take",
@@ -158,6 +159,13 @@
    "fieldname": "create_stock_entry_on_submit",
    "fieldtype": "Check",
    "label": "Create draft Material Issue when a Production Log is submitted"
+  },
+  {
+   "default": "0",
+   "fieldname": "complete_with_delivery_note",
+   "fieldtype": "Check",
+   "label": "Complete on a Sales Order makes a Delivery Note (needs stock)",
+   "description": "Off: Complete closes the order without moving stock. Turn on once stock is counted."
   },
   {
    "fieldname": "stock_take_section",

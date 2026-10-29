@@ -49,13 +49,21 @@ doctype_js = {
 	"Email Order": "public/js/email_order.js",
 }
 
+# Draft / Confirmed / Completed badge on the Sales Order list and form (hk_operations/order_stage.py)
+doctype_list_js = {
+	"Sales Order": "public/js/sales_order_list.js",
+}
+
 jinja = {
 	"methods": ["happy_kitchen.recipe_management.utils.get_recipe_branding"],
 }
 
 doc_events = {
 	"Item": {
-		"validate": "happy_kitchen.hk_operations.sku_api.item_validate",
+		"validate": [
+			"happy_kitchen.hk_operations.sku_api.item_validate",
+			"happy_kitchen.hk_operations.current_flag_api.item_validate",
+		],
 		"on_update": "happy_kitchen.recipe_management.doctype.recipe.recipe.recost_recipes_for_item_weight",
 	},
 	"Item Price": {

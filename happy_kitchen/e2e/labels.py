@@ -89,7 +89,11 @@ def run():
 
 		printer = frappe.get_doc({"doctype": "Label Printer", "printer_name": P + "Zebra", "enabled": 1,
 		                          "mode": "ZPL", "dpi": "203", "width_mm": 100, "height_mm": 150}).insert().name
-		frappe.db.set_single_value("Label Settings", {"default_printer": printer, "create_on_submit": 1})
+		# --- labels are optional: with the switch off (the default) submitting makes no jobs ---
+		frappe.db.set_single_value("Label Settings", {"default_printer": printer, "create_on_submit": 0})
+		so0 = _order(customer, company, cookie, 12, f"Finished Goods - {abbr}")
+		_check(not _jobs(so0.name), "no label jobs on submit while labels are optional")
+		frappe.db.set_single_value("Label Settings", "create_on_submit", 1)
 
 		# --- order before the check: the job waits ---
 		so1 = _order(customer, company, cookie, 30, f"Finished Goods - {abbr}")

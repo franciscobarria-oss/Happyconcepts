@@ -36,4 +36,4 @@ def execute():
 			base.warehouses(company, abbr)  # adds Chiller next to Fridge and Freezer
 
 	if not frappe.db.exists("Singles", {"doctype": "Label Settings", "field": "batch_labels_on_submit"}):
-		frappe.db.set_single_value("Label Settings", "batch_labels_on_submit", 1)
+		frappe.db.set_single_value("Label Settings", "batch_labels_on_submit", 0)  # optional: "Print batch labels" button

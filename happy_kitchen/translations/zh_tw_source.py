@@ -126,6 +126,8 @@ ZH_TW = {
 	# --- P4 suppliers and MOQ ---
 	"+ Add Product": "+ 新增產品",
 	"Add Product from {0}": "從 {0} 新增產品",
+	"Current Purchase": "目前採購",
+	"Tick the last-purchased version of a repeated item. Its name then ends in (current).": "勾選重複物品中最後一次採購的版本。名稱會加上 (current)。",
 	"Buying Price": "採購價",
 	"Products": "產品",
 	"Search products": "搜尋產品",
@@ -963,14 +965,14 @@ ZH_TW = {
 	'Have you read the whole label, including allergens, storage and shelf life, and is it correct?': '你是否已閱讀整張標籤（包括致敏物、儲存方法及保質期），並確認正確？',
 	'Ingredient Label Check': '材料標籤檢查',
 	'Item Allergen': '物料致敏物',
-	'Label checked. Labels print automatically when an order is submitted.': '標籤已檢查。提交訂單時會自動列印標籤。',
+	"Label checked. Print labels from an order's Labels menu when you want them.": '標籤已檢查。需要時可在訂單的「標籤」選單列印標籤。',
 	'Label checked. {0} waiting label job(s) sent to the printer.': '標籤已檢查。{0} 個等候中的標籤工作已送往打印機。',
 	'Label content': '標籤內容',
 	'Label not ready': '標籤未準備好',
 	'Last heard from {0}': '最後聯絡：{0}',
 	"No allergen keywords found in the name. Check the supplier's pack or spec sheet.": '名稱中找不到致敏物關鍵字。請查看供應商包裝或規格表。',
 	'No recipe found for this product. Link one with Made From Recipe on the Sales tab.': '找不到此產品的食譜。請在「銷售」分頁的「Made From Recipe」連結一個。',
-	'Not checked yet. Labels for orders wait until a manager checks this label.': '尚未檢查。訂單的標籤會等候經理檢查此標籤。',
+	'Not checked yet. Labels asked for on an order wait until a manager checks this label.': '尚未檢查。訂單上要求列印的標籤會等候經理檢查此標籤。',
 	'Offline': '離線',
 	'Online': '在線',
 	'Only a manager can mark a label as checked.': '只有經理可以將標籤標記為已檢查。',
@@ -1035,6 +1037,8 @@ ZH_TW = {
 	"Nothing is near its use-by date.": "沒有接近使用期限的貨品。",
 	"Nothing opened yet today": "今日尚未開封任何貨品",
 	"Open and print label": "開封並打印標籤",
+	"Open without a label": "開封（不打印標籤）",
+	"Opened. Use by {0}": "已開封。請於 {0} 前使用",
 	"Opened": "已開封",
 	"Opened Item": "開封貨品",
 	"Opened Items": "開封貨品",
@@ -1219,6 +1223,25 @@ ZH_TW = {
 	"{0} draft orders in this range are not counted. Tick Include drafts to add them.": "此期間有 {0} 張草稿訂單未計算。勾選「包括草稿」即可加入。",
 	"{0} units": "{0} 件",
 	"{0} units a week on average": "平均每週 {0} 件",
+	# Sales Order stage (order_stage.py, sales_order.js)
+	"Confirmed (late)": "已確認（逾期）",
+	"Not invoiced yet.": "未開發票。",
+	"Completed without a delivery note.": "已完成，沒有送貨單。",
+	"Order completed.": "訂單已完成。",
+	"Completing the order...": "正在完成訂單...",
+	"Completed by {0} without a delivery note (stock is not tracked yet).": "{0} 已完成訂單，沒有送貨單（尚未追蹤庫存）。",
+	"Complete on a Sales Order makes a Delivery Note (needs stock)": "銷售訂單按「完成」時建立送貨單（需要庫存）",
+	"Off: Complete closes the order without moving stock. Turn on once stock is counted.": "關閉：按「完成」只會關閉訂單，不會扣減庫存。盤點庫存後再開啟。",
+	"Completed: delivered with {0}": "已完成：送貨單 {0}",
+	"Late: the delivery date has passed.": "逾期：已過送貨日期。",
+	"Complete {0}? This marks everything not yet delivered as delivered.": "要完成 {0} 嗎？這會把所有未送的貨品標為已送。",
+	"Nothing is left to deliver on this order.": "此訂單沒有未送的貨品。",
+	"This order was revised. Mark the revision as checked before delivering.": "此訂單已被修改，請先標記修訂已檢查再送貨。",
+	"You are not allowed to submit a Delivery Note.": "你沒有權限提交送貨單。",
+	"{0}% delivered so far.": "目前已送 {0}%。",
+	"Only a confirmed order can be marked as delivered.": "只有已確認的訂單才可標為已送貨。",
+	"This order is on hold. Take it off hold first.": "此訂單已暫停，請先取消暫停。",
+	"This order is already completed.": "此訂單已完成。",
 }
 
 
@@ -1238,6 +1261,8 @@ LEAVE_AS_IS = {
 	"g", "kg", "l", "lb", "min", "ml", "oz", "pc", "piece",
 	# words ERPNext already translates (Sales block)
 	"Amount", "Average", "Orders", "Sales", "Total",
+	# Sales Order stage words ERPNext already translates
+	"Completed", "Confirmed", "Order", "Confirm", "Complete",
 }
 
 
