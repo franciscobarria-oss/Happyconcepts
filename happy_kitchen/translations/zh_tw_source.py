@@ -126,6 +126,8 @@ ZH_TW = {
 	# --- P4 suppliers and MOQ ---
 	"+ Add Product": "+ 新增產品",
 	"Add Product from {0}": "從 {0} 新增產品",
+	"Current Purchase": "目前採購",
+	"Tick the last-purchased version of a repeated item. Its name then ends in (current).": "勾選重複物品中最後一次採購的版本。名稱會加上 (current)。",
 	"Buying Price": "採購價",
 	"Products": "產品",
 	"Search products": "搜尋產品",
