@@ -260,13 +260,31 @@ DATE_RES = [
 PO_MARK = re.compile(r"^-{2,}\s*PO\s+(?P<po>\S+?)(?:\s*\|\s*(?P<date>\d{4}-\d{2}-\d{2}))?\s*-{2,}$")
 
 
-def parse_date(text: str) -> str:
+RANGE_RE = re.compile(
+	r"\b(?P<d>\d{1,2})\s*(?:[-\u2013~&,]|to)\s*\d{1,2}\s*[./\s-]?\s*(?P<mon>[A-Za-z]{3})[A-Za-z]*\.?(?:\s*[./\s,-]?\s*(?P<y>20\d\d))?\b")
+COMPACT_RE = re.compile(r"\b(?P<y>20\d\d)(?P<m>\d{2})(?P<d>\d{2})(?=\D|$)")
+
+
+def parse_date(text: str, ref: str = "") -> str:
 	"""The first date in the text as YYYY-MM-DD, or ''. Reads 2026-10-21, 21/Oct/2026, 21. October 2026,
-	21 Oct 2026 and 21/10/2026 (day first). Impossible dates give ''."""
+	21 Oct 2026, 21/10/2026 (day first), 20261021, and a range or list ("25-31 Oct", "27&29 Oct 2026",
+	"20261027&29"), which gives its first day. A range without a year takes the year of ref (YYYY-MM-DD).
+	Impossible dates give ''."""
 	import datetime
 
-	for rx in DATE_RES:
-		m = rx.search(text or "")
+	text = text or ""
+	m = RANGE_RE.search(text)
+	if m:
+		g = m.groupdict()
+		month = MONTHS.get(g["mon"].lower())
+		year = int(g["y"]) if g.get("y") else (int(ref[:4]) if re.match(r"20\d\d", ref or "") else 0)
+		if month and year:
+			try:
+				return datetime.date(year, month, int(g["d"])).isoformat()
+			except ValueError:
+				pass
+	for rx in DATE_RES + [COMPACT_RE]:
+		m = rx.search(text)
 		if not m:
 			continue
 		g = m.groupdict()
