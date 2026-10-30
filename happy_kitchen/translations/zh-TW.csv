@@ -191,7 +191,9 @@ Create draft Material Issue when a Production Log is submitted,提交生產紀�
 Create draft order,建立採購單草稿
 Create labels when a sales order is submitted,提交銷售訂單時建立標籤
 Current Purchase,目前採購
+"Customers with the same heading sit together, e.g. IKEA, SODEXO.",相同標題的客戶排在一起，例如 IKEA、SODEXO。
 Daily,日常
+Daily Sales Overview,每日送貨總覽
 Daily tasks,日常工作
 Day after,後天
 Day after tomorrow,後日
@@ -445,6 +447,7 @@ Logged By,記錄人
 Look back (days),回溯日數
 Lot,批次
 "Lot printed on the label (the batch, or a lot from the production log).",標籤上印的批號（批次，或生產紀錄的批號）。
+"Lower numbers first. Blank = after the numbered ones, by heading and name.",數字小的排先。留空＝排在有數字的後面，按標題及名稱。
 Made From Recipe,按食譜製作
 Made by (bottom of label),製造商（標籤底部）
 Made on,生產日期
@@ -620,6 +623,7 @@ Overtime Rates,加班費率
 Overtime Summary,加班摘要
 "Overtime hours worked, e.g. 1.5",加班時數，例如 1.5
 Overtime to approve,待審批加班
+Overview,總覽
 PIN set for {0},已為 {0} 設定密碼
 PO,採購單
 PO No.,採購單編號
@@ -683,6 +687,7 @@ Print resolution (dpi),列印解析度（dpi）
 Print test label,列印測試標籤
 Printed at,列印時間
 "Printed under ""Manufacturers:"", one line each: company name, then address.",印在「Manufacturers:」下方，每行一項：公司名稱，然後地址。
+"Printed under the column name, e.g. 銅鑼灣.",印在欄名下方，例如 銅鑼灣。
 Printed under the item name on opened and batch labels.,印在開封及批次標籤的貨品名稱下方。
 Printer,打印機
 Printer error,打印機錯誤
@@ -824,11 +829,16 @@ Set when the count is approved.,盤點獲審批時設定。
 Set when this email changes an order picked up from an earlier email in the same thread.,當此電郵修改同一對話中較早電郵所建立的訂單時填寫。
 Share of Ingredient Cost,佔食材成本比例
 Sheet Name,盤點表名稱
+Sheet column name,總覽欄名
+Sheet heading,總覽標題
+Sheet location (Chinese),總覽地點（中文）
+Sheet order,總覽排序
 Shelf Life (days),保質期（日）
 Shelf life: {0} days (Inventory tab → Shelf Life In Days).,保質期：{0} 天（存貨分頁 → Shelf Life In Days）。
 Shifts,更次
 Short Name,簡稱
 Short on Stock,庫存不足
+"Short outlet name, e.g. CWB.",分店簡稱，例如 CWB。
 Shortage,不足
 Show all SKUs,顯示所有產品編號
 Show details,顯示詳情

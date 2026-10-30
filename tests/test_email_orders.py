@@ -221,6 +221,15 @@ def test_dates_and_delivery_date_of_a_page():
 	assert eo.parse_date("21/10/2026") == "2026-10-21"
 	assert eo.parse_date("2026-10-21") == "2026-10-21"
 	assert eo.parse_date("31/02/2026") == "" and eo.parse_date("soon") == ""
+
+
+def test_parse_date_ranges_and_compact():
+	assert eo.parse_date("25-31 Oct 2026") == "2026-10-25"
+	assert eo.parse_date("27&29 Oct 2026") == "2026-10-27"
+	assert eo.parse_date("25-31 Oct", "2026-10-24") == "2026-10-25"
+	assert eo.parse_date("25-31 Oct") == ""
+	assert eo.parse_date("20261027&29") == "2026-10-27"
+	assert eo.parse_date("21 Oct 2026") == "2026-10-21"
 	assert eo.delivery_date_of("Order Date 20 Oct 2026\nDelivery Date 25. October 2026\n") == "2026-10-25"
 	assert eo.delivery_date_of("no dates") == ""
 
