@@ -513,6 +513,10 @@ def find_or_create_item(customer: str, external_sku: str, description: str) -> t
 	if not found and external_sku:
 		found = _known_code(external_sku)
 	if not found and description:
+		# the name this customer uses for the product (its Item Customer Detail row, ref_code = the name)
+		found = frappe.db.get_value("Item Customer Detail", {"customer_name": customer, "ref_code": description,
+		                                                     "parenttype": "Item"}, "parent")
+	if not found and description:
 		found = frappe.db.get_value("Item", {"item_name": description, "disabled": 0}, "name")
 	if found:
 		if external_sku and not frappe.db.exists("Item Customer Detail", {"parent": found, "customer_name": customer,
