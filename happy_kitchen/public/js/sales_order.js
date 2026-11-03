@@ -1,6 +1,7 @@
 // Product labels for a submitted order: a summary line, "Print labels" and the label queue.
 frappe.ui.form.on("Sales Order", {
 	refresh(frm) {
+		hk_hide_side_panel(frm);
 		hk_order_stage(frm);
 		hk_revision_buttons(frm);
 		hk_price_warnings(frm);
@@ -162,4 +163,13 @@ function hk_price_warnings(frm) {
 	const missing = (frm.doc.items || []).filter((r) => r.item_code && !flt(r.rate));
 	if (missing.length)
 		frm.dashboard.add_comment(`<b>${__("No price")}:</b> ${missing.map(name).join(", ")}`, "orange", true);
+}
+
+
+// The right-hand panel (Assign, Attachments, Tags, Share) is hidden when an order opens (Francisco,
+// 2026-11-03). Once per form, so the standard "..." > Toggle Sidebar still brings it back.
+function hk_hide_side_panel(frm) {
+	if (frm.__hk_side_panel_hidden || !frm.page || !frm.page.sidebar) return;
+	frm.__hk_side_panel_hidden = true;
+	frm.page.sidebar.hide();
 }
