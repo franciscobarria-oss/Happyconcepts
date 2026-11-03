@@ -1,12 +1,18 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
+from frappe.utils import now_datetime
 
 from happy_kitchen.hk_compliance import schedule
 
 
 class ChecklistSchedule(Document):
 	def validate(self):
+		before = self.get_doc_before_save()
+		if self.active and (not before or not before.active):
+			self.active_from = now_datetime()  # runs start from this moment, not from earlier windows
+		elif not self.active:
+			self.active_from = None
 		self.title = f"{self.template} · {self.area}"
 		if self.frequency == "Every N hours" and (self.every_hours or 0) < 1:
 			frappe.throw(_("Set how many hours between checks (1 or more)."))

@@ -18,7 +18,7 @@ MANAGER_ROLES = ("System Manager", "Compliance Manager")
 KIOSK_ROLES = MANAGER_ROLES + ("Kitchen Tablet",)
 MAX_PHOTO_BYTES = 6 * 1024 * 1024
 SCHEDULE_FIELDS = ["name", "template", "area", "department", "frequency", "day_of_month", "start_time", "due_time",
-                   "every_hours", "grace_minutes"] + [d.lower() for d in schedule.WEEKDAYS]
+                   "every_hours", "grace_minutes", "active_from"] + [d.lower() for d in schedule.WEEKDAYS]
 
 
 def _require(roles):
@@ -63,6 +63,9 @@ def create_due_runs(now=None, area=None) -> list[str]:
 		"schedule": ("in", list(rows)), "window_start": (">=", add_days(now.date(), -2))}, pluck="run_key"))
 	made = []
 	for r in schedule.runs_to_create({n: as_rule(s) for n, s in rows.items()}, existing, now):
+		since = rows[r["schedule"]].active_from
+		if since and r["window_start"] < get_datetime(since):
+			continue  # a window from before the schedule was switched on
 		made.append(_create_run(rows[r["schedule"]], r["window_start"], r["window_end"], r["key"]).name)
 	return made
 

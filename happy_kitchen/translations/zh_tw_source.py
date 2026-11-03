@@ -1330,6 +1330,8 @@ ZH_TW = {
 	"Due by": "限時",
 	"Every (hours)": "每（小時）",
 	"Every N hours": "每 N 小時",
+	"Active from": "啟用起算",
+	"Set when the schedule is switched on. Runs are only created for windows that start from this time.": "切換為啟用時記錄此時間。只會為此時間之後開始的時段建立記錄。",
 	"Fail": "不合格",
 	"Failed answers": "不合格答案",
 	"Food safety": "食物安全",
