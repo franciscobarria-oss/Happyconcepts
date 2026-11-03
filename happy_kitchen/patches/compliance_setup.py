@@ -7,6 +7,11 @@ def execute():
 	"""Kitchen Checks starting data: one area, three editable checklists with their schedules
 	switched OFF (nothing is due until a manager ticks Active), corrective-action quick picks and
 	settings defaults. Idempotent: records the team already has are left alone."""
+	# the new tables may not exist yet when this runs on a fresh migrate: load them first
+	for doctype in ("check_area", "checklist_template_item", "checklist_template", "checklist_schedule",
+	                "checklist_run_answer", "checklist_run", "corrective_action_preset", "compliance_settings"):
+		frappe.reload_doc("hk_compliance", "doctype", doctype)
+
 	if not frappe.db.exists("Role", "Compliance Manager"):
 		frappe.get_doc({"doctype": "Role", "role_name": "Compliance Manager", "desk_access": 1}).insert(ignore_permissions=True)
 
