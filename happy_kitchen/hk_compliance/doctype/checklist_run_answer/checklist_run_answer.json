@@ -1,0 +1,174 @@
+{
+ "actions": [],
+ "creation": "2026-11-03 10:00:00.000000",
+ "modified": "2026-11-03 10:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "HK Compliance",
+ "name": "Checklist Run Answer",
+ "states": [],
+ "links": [],
+ "field_order": [
+  "prompt",
+  "prompt_zh",
+  "answer_type",
+  "value",
+  "result",
+  "corrective_action",
+  "note",
+  "photo",
+  "answered_by",
+  "answered_at",
+  "column_break_1",
+  "expected",
+  "min_value",
+  "max_value",
+  "unit",
+  "choices",
+  "fail_choices",
+  "required",
+  "photo_required",
+  "critical",
+  "help"
+ ],
+ "fields": [
+  {
+   "fieldname": "prompt",
+   "fieldtype": "Data",
+   "label": "Question",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 3
+  },
+  {
+   "fieldname": "prompt_zh",
+   "fieldtype": "Data",
+   "label": "Question (Chinese)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "answer_type",
+   "fieldtype": "Select",
+   "label": "Answer type",
+   "options": "Yes/No\nNumber\nText\nChoice\nPhoto",
+   "read_only": 1
+  },
+  {
+   "fieldname": "value",
+   "fieldtype": "Data",
+   "label": "Answer",
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "result",
+   "fieldtype": "Select",
+   "label": "Result",
+   "options": "\nPass\nFail",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "corrective_action",
+   "fieldtype": "Small Text",
+   "label": "What was done",
+   "in_list_view": 1,
+   "columns": 3
+  },
+  {
+   "fieldname": "note",
+   "fieldtype": "Small Text",
+   "label": "Note"
+  },
+  {
+   "fieldname": "photo",
+   "fieldtype": "Attach Image",
+   "label": "Photo"
+  },
+  {
+   "fieldname": "answered_by",
+   "fieldtype": "Link",
+   "label": "Answered by",
+   "options": "Employee",
+   "read_only": 1
+  },
+  {
+   "fieldname": "answered_at",
+   "fieldtype": "Datetime",
+   "label": "Answered at",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "expected",
+   "fieldtype": "Data",
+   "label": "Pass when",
+   "read_only": 1
+  },
+  {
+   "fieldname": "min_value",
+   "fieldtype": "Data",
+   "label": "Lowest allowed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "max_value",
+   "fieldtype": "Data",
+   "label": "Highest allowed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "unit",
+   "fieldtype": "Data",
+   "label": "Unit",
+   "read_only": 1
+  },
+  {
+   "fieldname": "choices",
+   "fieldtype": "Small Text",
+   "label": "Choices",
+   "read_only": 1
+  },
+  {
+   "fieldname": "fail_choices",
+   "fieldtype": "Small Text",
+   "label": "Choices that fail",
+   "read_only": 1
+  },
+  {
+   "fieldname": "required",
+   "fieldtype": "Check",
+   "label": "Must be answered",
+   "read_only": 1
+  },
+  {
+   "fieldname": "photo_required",
+   "fieldtype": "Check",
+   "label": "Photo needed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "critical",
+   "fieldtype": "Check",
+   "label": "Critical",
+   "read_only": 1
+  },
+  {
+   "fieldname": "help",
+   "fieldtype": "Small Text",
+   "label": "Help text",
+   "read_only": 1
+  }
+ ],
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "istable": 1,
+ "editable_grid": 1
+}

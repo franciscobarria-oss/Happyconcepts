@@ -1,0 +1,213 @@
+{
+ "actions": [],
+ "creation": "2026-11-03 10:00:00.000000",
+ "modified": "2026-11-03 10:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "HK Compliance",
+ "name": "Checklist Schedule",
+ "states": [],
+ "links": [],
+ "field_order": [
+  "naming_series",
+  "template",
+  "area",
+  "department",
+  "active",
+  "title",
+  "column_break_1",
+  "frequency",
+  "start_time",
+  "due_time",
+  "every_hours",
+  "day_of_month",
+  "grace_minutes",
+  "section_days",
+  "mon",
+  "tue",
+  "wed",
+  "thu",
+  "fri",
+  "sat",
+  "sun"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "CHS-.#####",
+   "default": "CHS-.#####",
+   "hidden": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "template",
+   "fieldtype": "Link",
+   "label": "Checklist",
+   "options": "Checklist Template",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "area",
+   "fieldtype": "Link",
+   "label": "Area",
+   "options": "Check Area",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department",
+   "description": "Optional: who does it. Blank = the area's department, or anyone."
+  },
+  {
+   "fieldname": "active",
+   "fieldtype": "Check",
+   "label": "Active",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Title",
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "frequency",
+   "fieldtype": "Select",
+   "label": "Repeats",
+   "options": "Daily\nSelected weekdays\nMonthly\nEvery N hours",
+   "default": "Daily",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "start_time",
+   "fieldtype": "Time",
+   "label": "Starts at",
+   "reqd": 1,
+   "default": "06:30:00"
+  },
+  {
+   "fieldname": "due_time",
+   "fieldtype": "Time",
+   "label": "Due by",
+   "reqd": 1,
+   "default": "07:30:00",
+   "description": "A time before the start means the next day (e.g. 22:00 to 01:00)."
+  },
+  {
+   "fieldname": "every_hours",
+   "fieldtype": "Int",
+   "label": "Every (hours)",
+   "depends_on": "eval:doc.frequency=='Every N hours'",
+   "description": "Repeats every N hours from the start until the due time."
+  },
+  {
+   "fieldname": "day_of_month",
+   "fieldtype": "Int",
+   "label": "Day of month",
+   "depends_on": "eval:doc.frequency=='Monthly'",
+   "description": "1 to 31; a shorter month uses its last day."
+  },
+  {
+   "fieldname": "grace_minutes",
+   "fieldtype": "Int",
+   "label": "Grace (minutes)",
+   "default": "15",
+   "non_negative": 1,
+   "description": "Minutes after the due time before it shows as Overdue."
+  },
+  {
+   "fieldname": "section_days",
+   "fieldtype": "Section Break",
+   "label": "Days",
+   "depends_on": "eval:doc.frequency=='Selected weekdays'"
+  },
+  {
+   "fieldname": "mon",
+   "fieldtype": "Check",
+   "label": "Mon"
+  },
+  {
+   "fieldname": "tue",
+   "fieldtype": "Check",
+   "label": "Tue"
+  },
+  {
+   "fieldname": "wed",
+   "fieldtype": "Check",
+   "label": "Wed"
+  },
+  {
+   "fieldname": "thu",
+   "fieldtype": "Check",
+   "label": "Thu"
+  },
+  {
+   "fieldname": "fri",
+   "fieldtype": "Check",
+   "label": "Fri"
+  },
+  {
+   "fieldname": "sat",
+   "fieldtype": "Check",
+   "label": "Sat"
+  },
+  {
+   "fieldname": "sun",
+   "fieldtype": "Check",
+   "label": "Sun"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Compliance Manager",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Kitchen Tablet",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "export": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "title",
+ "description": "When and where a checklist is due (Kitchen Checks). Runs are created every 15 minutes.",
+ "track_changes": 1
+}

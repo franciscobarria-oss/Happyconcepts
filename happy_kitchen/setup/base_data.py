@@ -21,12 +21,12 @@ ITEM_GROUPS = {
 LEAF_ITEM_GROUPS = ["Products"]
 
 # role -> desk access
-ROLES = {"Stock Take Approver": 1, "Kitchen Tablet": 1, "Label Printer": 0}
+ROLES = {"Stock Take Approver": 1, "Kitchen Tablet": 1, "Label Printer": 0, "Compliance Manager": 1}
 
 # Starting role profiles (unassigned; pick one on the User record). Roles missing on the site are skipped.
 ROLE_PROFILES = {
 	"HK Owner": ["System Manager", "Accounts Manager", "Purchase Manager", "Sales Manager", "Stock Manager",
-	             "Manufacturing Manager", "HR Manager", "Item Manager", "Stock Take Approver"],
+	             "Manufacturing Manager", "HR Manager", "Item Manager", "Stock Take Approver", "Compliance Manager"],
 	"HK Purchasing Lead": ["Purchase Manager", "Purchase User", "Stock Manager", "Stock User",
 	                       "Manufacturing Manager", "Item Manager", "Employee"],
 	"HK Kitchen Staff": ["Stock User", "Manufacturing User", "Employee"],

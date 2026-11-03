@@ -28,7 +28,7 @@ def test_role_profiles_only_use_known_or_own_roles():
 	assert "Stock Take Approver" in d.ROLE_PROFILES["HK Owner"]
 	for roles in d.ROLE_PROFILES.values():
 		assert len(roles) == len(set(roles))
-	assert own == {"Stock Take Approver", "Kitchen Tablet", "Label Printer"}
+	assert own == {"Stock Take Approver", "Kitchen Tablet", "Label Printer", "Compliance Manager"}
 	assert d.ROLES["Label Printer"] == 0
 
 

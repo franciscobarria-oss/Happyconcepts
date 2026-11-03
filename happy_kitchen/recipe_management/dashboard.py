@@ -337,4 +337,9 @@ def kitchen_today() -> dict:
 				 "route": "List/Overtime Entry?docstatus=0", "tone": "info"}
 			)
 
+	# Kitchen Checks: overdue checklists, and signed ones waiting for a manager
+	from happy_kitchen.hk_compliance.api import waiting_lines
+
+	out["waiting"].extend(waiting_lines())
+
 	return out

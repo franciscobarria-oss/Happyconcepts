@@ -1,0 +1,67 @@
+{
+ "actions": [],
+ "creation": "2026-11-03 10:00:00.000000",
+ "modified": "2026-11-03 10:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "HK Compliance",
+ "name": "Compliance Settings",
+ "states": [],
+ "links": [],
+ "field_order": [
+  "enabled",
+  "missed_after_hours",
+  "column_break_1",
+  "notify_overdue"
+ ],
+ "fields": [
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Create checklist runs",
+   "default": "1",
+   "description": "Untick to stop the 15-minute job creating new runs."
+  },
+  {
+   "fieldname": "missed_after_hours",
+   "fieldtype": "Float",
+   "label": "Overdue becomes Missed after (hours)",
+   "default": "4"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "notify_overdue",
+   "fieldtype": "Check",
+   "label": "Notify managers when a checklist is overdue",
+   "default": "1",
+   "description": "A desk notification to every Compliance Manager, once per run."
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "export": 1,
+   "write": 1
+  },
+  {
+   "role": "Compliance Manager",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "export": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "issingle": 1,
+ "description": "Kitchen Checks settings."
+}

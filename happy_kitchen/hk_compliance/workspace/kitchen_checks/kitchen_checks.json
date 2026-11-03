@@ -1,0 +1,86 @@
+{
+ "app": "happy_kitchen",
+ "charts": [],
+ "content": "[{\"id\": \"hk-h0\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Kitchen Checks</b></span>\", \"col\": 12}}, {\"id\": \"hk-p0\", \"type\": \"paragraph\", \"data\": {\"text\": \"Opening, closing, cleaning and food safety checklists, signed on the kitchen tablet with the staff PIN.\", \"col\": 12}}, {\"id\": \"hk-s0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Tablet screen\", \"col\": 3}}, {\"id\": \"hk-s1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Checklist runs\", \"col\": 3}}, {\"id\": \"hk-s2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Checklists\", \"col\": 3}}, {\"id\": \"hk-s3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Schedules\", \"col\": 3}}, {\"id\": \"hk-s4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Areas\", \"col\": 3}}, {\"id\": \"hk-s5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Kitchen Checks Log\", \"col\": 3}}, {\"id\": \"hk-s6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Quick picks\", \"col\": 3}}, {\"id\": \"hk-s7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Settings\", \"col\": 3}}]",
+ "creation": "2026-11-03 10:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "check",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Kitchen Checks",
+ "links": [],
+ "modified": "2026-11-03 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "HK Compliance",
+ "name": "Kitchen Checks",
+ "number_cards": [],
+ "owner": "Administrator",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Compliance Manager"
+  },
+  {
+   "role": "Kitchen Tablet"
+  }
+ ],
+ "shortcuts": [
+  {
+   "type": "Page",
+   "label": "Tablet screen",
+   "link_to": "kitchen-checks",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Checklist runs",
+   "link_to": "Checklist Run",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Checklists",
+   "link_to": "Checklist Template",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Schedules",
+   "link_to": "Checklist Schedule",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Areas",
+   "link_to": "Check Area",
+   "doc_view": ""
+  },
+  {
+   "type": "Report",
+   "label": "Kitchen Checks Log",
+   "link_to": "Kitchen Checks Log",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Quick picks",
+   "link_to": "Corrective Action Preset",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Settings",
+   "link_to": "Compliance Settings",
+   "doc_view": ""
+  }
+ ],
+ "title": "Kitchen Checks"
+}
