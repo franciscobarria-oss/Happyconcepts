@@ -1,0 +1,77 @@
+{
+ "actions": [],
+ "creation": "2026-11-03 10:00:00.000000",
+ "modified": "2026-11-03 10:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "HK Compliance",
+ "name": "Corrective Action Preset",
+ "states": [],
+ "links": [],
+ "field_order": [
+  "action",
+  "action_zh",
+  "category"
+ ],
+ "fields": [
+  {
+   "fieldname": "action",
+   "fieldtype": "Data",
+   "label": "What was done",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "action_zh",
+   "fieldtype": "Data",
+   "label": "What was done (Chinese)",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Select",
+   "label": "Category",
+   "options": "\nOpening\nClosing\nCleaning\nFood safety\nTemperature\nOther",
+   "in_list_view": 1,
+   "description": "Blank = offered on every checklist."
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Compliance Manager",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "export": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Kitchen Tablet",
+   "read": 1,
+   "report": 1,
+   "print": 1,
+   "export": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "autoname": "field:action",
+ "naming_rule": "By fieldname",
+ "title_field": "action",
+ "description": "Quick picks on the Kitchen Checks screen when an answer fails."
+}
