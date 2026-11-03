@@ -1,0 +1,132 @@
+{
+ "actions": [],
+ "creation": "2026-11-03 10:00:00.000000",
+ "modified": "2026-11-03 10:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "HK Compliance",
+ "name": "Checklist Template Item",
+ "states": [],
+ "links": [],
+ "field_order": [
+  "prompt",
+  "prompt_zh",
+  "answer_type",
+  "expected",
+  "min_value",
+  "max_value",
+  "unit",
+  "column_break_1",
+  "choices",
+  "fail_choices",
+  "required",
+  "photo_required",
+  "critical",
+  "help"
+ ],
+ "fields": [
+  {
+   "fieldname": "prompt",
+   "fieldtype": "Data",
+   "label": "Question",
+   "reqd": 1,
+   "in_list_view": 1,
+   "columns": 4
+  },
+  {
+   "fieldname": "prompt_zh",
+   "fieldtype": "Data",
+   "label": "Question (Chinese)",
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "answer_type",
+   "fieldtype": "Select",
+   "label": "Answer type",
+   "options": "Yes/No\nNumber\nText\nChoice\nPhoto",
+   "default": "Yes/No",
+   "reqd": 1,
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "expected",
+   "fieldtype": "Select",
+   "label": "Pass when",
+   "options": "Yes\nNo",
+   "default": "Yes",
+   "depends_on": "eval:doc.answer_type=='Yes/No'"
+  },
+  {
+   "fieldname": "min_value",
+   "fieldtype": "Data",
+   "label": "Lowest allowed",
+   "depends_on": "eval:doc.answer_type=='Number'",
+   "description": "Blank = no limit."
+  },
+  {
+   "fieldname": "max_value",
+   "fieldtype": "Data",
+   "label": "Highest allowed",
+   "depends_on": "eval:doc.answer_type=='Number'",
+   "description": "Blank = no limit."
+  },
+  {
+   "fieldname": "unit",
+   "fieldtype": "Data",
+   "label": "Unit",
+   "depends_on": "eval:doc.answer_type=='Number'",
+   "description": "e.g. °C, ppm"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "choices",
+   "fieldtype": "Small Text",
+   "label": "Choices",
+   "depends_on": "eval:doc.answer_type=='Choice'",
+   "description": "One per line."
+  },
+  {
+   "fieldname": "fail_choices",
+   "fieldtype": "Small Text",
+   "label": "Choices that fail",
+   "depends_on": "eval:doc.answer_type=='Choice'",
+   "description": "One per line; picking one of these asks what was done about it."
+  },
+  {
+   "fieldname": "required",
+   "fieldtype": "Check",
+   "label": "Must be answered",
+   "default": "1",
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "photo_required",
+   "fieldtype": "Check",
+   "label": "Photo needed"
+  },
+  {
+   "fieldname": "critical",
+   "fieldtype": "Check",
+   "label": "Critical",
+   "description": "A fail is shown in red to managers."
+  },
+  {
+   "fieldname": "help",
+   "fieldtype": "Small Text",
+   "label": "Help text"
+  }
+ ],
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "istable": 1,
+ "editable_grid": 1
+}
