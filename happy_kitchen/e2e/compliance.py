@@ -49,6 +49,8 @@ def run():
 		if (now + timedelta(minutes=30)).date() != now.date() or start.date() != now.date():
 			return print("skipped: too close to midnight")  # window maths around midnight is unit-tested
 
+		# the schedule was switched on before this window opened (active_from is set on switch-on)
+		frappe.db.set_value("Checklist Schedule", sch.name, "active_from", start - timedelta(minutes=5))
 		made = api.create_due_runs(now, area.name)
 		_check(len(made) == 1, f"one run due: {made}")
 		_check(api.create_due_runs(now, area.name) == [], "never twice")

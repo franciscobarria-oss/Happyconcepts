@@ -29,6 +29,7 @@ A signed checklist is an audit record and can't be cancelled.,已簽署的檢查
 A time before the start means the next day (e.g. 22:00 to 01:00).,早於開始時間即表示翌日（例如 22:00 至 01:00）。
 Accent Colour,強調色
 Active Ingredients,啟用材料
+Active from,啟用起算
 Actual Used,實際用量
 Add,加入
 Add Batch Preparations to Stock,半成品入庫
@@ -917,6 +918,7 @@ Set clock-in PIN,設定打卡密碼
 Set how many hours between checks (1 or more).,請設定每次檢查相隔多少小時（1 或以上）。
 Set to 0 at submit,提交時設為 0
 Set when the count is approved.,盤點獲審批時設定。
+Set when the schedule is switched on. Runs are only created for windows that start from this time.,切換為啟用時記錄此時間。只會為此時間之後開始的時段建立記錄。
 Set when this email changes an order picked up from an earlier email in the same thread.,當此電郵修改同一對話中較早電郵所建立的訂單時填寫。
 Share of Ingredient Cost,佔食材成本比例
 Sheet Name,盤點表名稱
