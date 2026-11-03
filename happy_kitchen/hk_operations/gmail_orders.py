@@ -513,9 +513,7 @@ def find_or_create_item(customer: str, external_sku: str, description: str) -> t
 	if not found and external_sku:
 		found = _known_code(external_sku)
 	if not found and description:
-		# the name this customer uses for the product (its Item Customer Detail row, ref_code = the name)
-		found = frappe.db.get_value("Item Customer Detail", {"customer_name": customer, "ref_code": description,
-		                                                     "parenttype": "Item"}, "parent")
+		found = _customer_name_item(customer, description)
 	if not found and description:
 		found = frappe.db.get_value("Item", {"item_name": description, "disabled": 0}, "name")
 	if found:
@@ -534,6 +532,28 @@ def find_or_create_item(customer: str, external_sku: str, description: str) -> t
 		"item_defaults": [{"company": company}] if company else [],
 	}).insert(ignore_permissions=True)
 	return item.name, True
+
+
+def _customer_name_item(customer: str, description: str) -> str | None:
+	"""The real item where this customer's own name for a product is saved (Item Customer Detail, ref_code =
+	the name as the customer writes it on its PO). Case, spaces and HTML escapes are ignored; placeholder
+	SKU-nnnn items never count."""
+	want = _name_key(description)
+	for parent, ref in frappe.db.sql(
+		"""select cd.parent, cd.ref_code from `tabItem Customer Detail` cd
+		   join `tabItem` i on i.name = cd.parent
+		   where cd.customer_name = %s and cd.parenttype = 'Item' and i.disabled = 0 and cd.parent not like %s""",
+		(customer, CODE_PREFIX + "%"),
+	):
+		if _name_key(ref) == want:
+			return parent
+	return None
+
+
+def _name_key(text: str) -> str:
+	import html
+
+	return " ".join(html.unescape(text or "").split()).casefold()
 
 
 def _known_code(code: str) -> str | None:
