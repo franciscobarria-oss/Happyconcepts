@@ -418,8 +418,8 @@ def _email_customers(address: str) -> list[str]:
 	return list(dict.fromkeys(found + [r[0] for r in rows]))
 
 
-def _outlet_phrases(names: list[str] | None = None) -> list[tuple[str, list[str]]]:
-	"""[(customer, [customer name, names in order emails, shipping address first lines])]."""
+def _outlet_phrases(names: list[str] | None = None) -> list[tuple[str, list[str], list[str]]]:
+	"""[(customer, [customer name, shipping address first lines], [names in order emails])]."""
 	filters = {"disabled": 0}
 	if names is not None:
 		filters["name"] = ("in", names or [""])
@@ -427,7 +427,7 @@ def _outlet_phrases(names: list[str] | None = None) -> list[tuple[str, list[str]
 	for c in frappe.get_all("Customer", filters=filters, fields=["name", "customer_name", "hk_order_names"]):
 		if email_orders.VIA_NAME.match(c.customer_name or ""):
 			continue  # never match an old "'Name' via Orders" placeholder customer
-		out[c.name] = [c.customer_name, *email_orders.order_names(c.hk_order_names)]
+		out[c.name] = ([c.customer_name], email_orders.order_names(c.hk_order_names))
 	if out:
 		for a in frappe.db.sql(
 			"""select dl.link_name, a.address_line1 from `tabAddress` a
@@ -435,8 +435,8 @@ def _outlet_phrases(names: list[str] | None = None) -> list[tuple[str, list[str]
 			   where a.disabled = 0 and dl.link_name in %s and char_length(a.address_line1) >= 10""",
 			(tuple(out),), as_dict=True,
 		):
-			out[a.link_name].append(a.address_line1)
-	return list(out.items())
+			out[a.link_name][0].append(a.address_line1)
+	return [(name, phrases, chosen) for name, (phrases, chosen) in out.items()]
 
 
 def resolve_customer(order) -> tuple[str, str]:

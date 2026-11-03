@@ -398,4 +398,12 @@ def test_match_outlet():
 	assert eo.match_outlet("Swhotel Group", customers) is None
 	assert eo.match_outlet("ABC", [("ABC LTD", ["ABC"])]) is None
 	assert eo.match_outlet("IKEA order", [("IKEA", ["IKEA"])]) is None
+	# a typed "name in order emails" beats a longer customer name (the parent company on the same PO)
+	kbs = [("THE DAIRY FARM COMPANY LIMITED", ["The Dairy Farm Company Limited"]),
+	       ("DFI - KBS KITCHEN", ["THE DAIRY FARM COMPANY LIMITED - KBS KITCHEN"], ["L4 Kitchen", "L4 CK&Cafe"]),
+	       ("DFI - KBS CAFE", ["THE DAIRY FARM COMPANY LIMITED - KBS CAFE"], [])]
+	po = "IKEA KBS IFS order _ Happy Concept _ Oct 24＆27 _ L4 CK＆Cafe\nThe Dairy Farm Company Limited\nDeliver to L4 Kitchen"
+	assert eo.match_outlet(po, kbs) == "DFI - KBS KITCHEN"
+	assert eo.match_outlet("The Dairy Farm Company Limited", kbs) == "THE DAIRY FARM COMPANY LIMITED"
+	assert eo.match_outlet("L4 Kitchen / L4 Cafe", kbs + [("DFI - KBS CAFE2", [], ["L4 Cafe"])]) == "DFI - KBS KITCHEN"
 	assert eo.order_names("W Hong Kong\n Kowloon Bay, IKEA \n\n") == ["W Hong Kong", "Kowloon Bay, IKEA"]

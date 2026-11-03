@@ -585,23 +585,28 @@ def _norm(text: str) -> str:
 MIN_PHRASE = 5  # "IKEA" alone is too common to name one outlet
 
 
-def match_outlet(text: str, customers: list[tuple[str, list[str]]]) -> str | None:
-	"""The customer whose name, order name or address line appears in the order text (whole words),
-	the longest match winning; None when nothing matches or two customers tie for the best match.
-	`customers` = [(customer, [phrases...])]."""
+def match_outlet(text: str, customers: list[tuple]) -> str | None:
+	"""The customer whose name, order name or address line appears in the order text (whole words);
+	None when nothing matches or two customers tie for the best match.
+	`customers` = [(customer, [phrases...])] or [(customer, [phrases...], [names in order emails...])].
+	A name someone typed under "Names in order emails" beats any customer name or address line (so the
+	outlet "L4 Kitchen" wins over the parent company named in the same PO); then the longest match wins."""
 	hay = _norm(text)
-	best, best_len, tie = None, 0, False
-	for customer, phrases in customers:
-		score = 0
-		for p in phrases:
-			p = _norm(p)
-			if len(p.strip()) >= MIN_PHRASE and p in hay:
-				score = max(score, len(p.strip()))
-		if not score:
+	best, best_score, tie = None, (0, 0), False
+	for row in customers:
+		customer, phrases = row[0], row[1]
+		chosen = row[2] if len(row) > 2 else []
+		score = (0, 0)
+		for rank, group in ((0, phrases), (1, chosen)):
+			for p in group:
+				p = _norm(p)
+				if len(p.strip()) >= MIN_PHRASE and p in hay:
+					score = max(score, (rank, len(p.strip())))
+		if score == (0, 0):
 			continue
-		if score > best_len:
-			best, best_len, tie = customer, score, False
-		elif score == best_len and customer != best:
+		if score > best_score:
+			best, best_score, tie = customer, score, False
+		elif score == best_score and customer != best:
 			tie = True
 	return None if tie else best
 
