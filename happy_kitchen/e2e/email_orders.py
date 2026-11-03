@@ -261,6 +261,13 @@ def run():
 		_check(frappe.db.get_value("Email Order", {"message_id": "m11"}, "status") != "Ignored", "forward from a listed sender is still read")
 		frappe.db.set_single_value("Gmail Settings", "skip_reply_senders", "")
 		_forwarded(fake)
+		# a customer's own name for a product (no product code on its PO) finds the item it is kept on
+		own_c = _customer(P + "OWN NAMES")
+		own = frappe.get_doc({"doctype": "Item", "item_code": P + "NAMED", "item_name": P + "Real name", "stock_uom": "Nos",
+		                      "item_group": "Products", "is_stock_item": 1, "is_sales_item": 1,
+		                      "customer_items": [{"customer_name": own_c, "ref_code": P + "Cookie's &amp; own name"}]}).insert().name
+		_check(gmail_orders.find_or_create_item(own_c, "", P + "Cookie's & own name") == (own, False),
+		       "a customer's own name, with HTML escapes and case ignored, finds its item")
 
 		# scheduled run is a no-op while switched off (never call it on a site where pick-up is on: it would read real mail)
 		if not frappe.db.get_single_value("Gmail Settings", "enabled"):

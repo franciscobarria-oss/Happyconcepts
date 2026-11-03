@@ -121,10 +121,35 @@ function hk_order_stage(frm) {
 
 	// The one main button in the top bar: Confirm on a draft, Complete on a confirmed order.
 	if (frm.is_dirty()) return;
-	if (s.next === "confirm" && frm.has_perm("submit"))
-		frm.page.set_primary_action(__("Confirm"), () => frm.savesubmit(), "check");
+	if (s.next === "confirm" && frm.has_perm("submit")) {
+		if (frm.doc.hk_email_order)
+			frm.page.set_primary_action(__("Confirm and next"), () => hk_confirm_and_next(frm), "check");
+		else frm.page.set_primary_action(__("Confirm"), () => frm.savesubmit(), "check");
+	}
 	if (s.next === "deliver" && frappe.model.can_create("Delivery Note"))
 		frm.page.set_primary_action(__("Complete"), () => hk_mark_delivered(frm), "check");
+}
+
+// Confirm this draft from an email, then open the next draft from email that still needs checking
+// (oldest delivery date first). Nothing is left to do when there is none.
+function hk_confirm_and_next(frm) {
+	const name = frm.doc.name;
+	frm.savesubmit(null, () => {
+		frappe.call({
+			method: "frappe.client.get_list",
+			args: {
+				doctype: "Sales Order",
+				filters: { docstatus: 0, hk_email_order: ["is", "set"], name: ["!=", name] },
+				fields: ["name"],
+				order_by: "delivery_date asc, creation asc",
+				limit_page_length: 1,
+			},
+		}).then(({ message }) => {
+			const next = message && message[0];
+			if (next) frappe.set_route("Form", "Sales Order", next.name);
+			else frappe.show_alert({ message: __("Confirmed. No more draft orders from email to check."), indicator: "green" });
+		});
+	});
 }
 
 function hk_mark_delivered(frm) {
