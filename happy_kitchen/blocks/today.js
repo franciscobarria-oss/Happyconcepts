@@ -11,6 +11,7 @@
 	const num = (v, p = 2) => format_number(v, null, p).replace(/\.0+$|(\.\d*?)0+$/, "$1");
 	const day = (d) => `${__(moment(d).format("ddd"))} ${frappe.datetime.str_to_user(d)}`;
 	const SHEET = "/api/method/happy_kitchen.recipe_management.production_sheet.sheet";
+	const OVERVIEW = "/api/method/happy_kitchen.hk_operations.daily_overview_sheet.sheet";
 	const REFRESH_MS = 5 * 60 * 1000;
 	const WAIT_SIMPLE = 4; // rows on "Waiting on you" in the simple view
 	const TONES = { success: 1, info: 1, warning: 1, danger: 1 };
@@ -167,7 +168,7 @@
 						<div class="day-head"><span class="badge ${TONE[g.key] || "info"}">${esc(g.label)}</span><span class="cap">${when}${
 							g.count ? `<span class="only-simple"> · ${esc(money(g.amount))}</span>` : ""
 						}</span>${
-							g.date ? `<a class="print" href="${SHEET}?date=${esc(g.date)}" target="_blank" rel="noopener" title="${esc(__("Production sheet"))}">${esc(__("Print A4"))}</a>` : ""
+							g.date ? `<a class="print" href="${SHEET}?date=${esc(g.date)}" target="_blank" rel="noopener" title="${esc(__("Production sheet"))}">${esc(__("Print A4"))}</a><a class="print" href="${OVERVIEW}?date=${esc(g.date)}" target="_blank" rel="noopener" title="${esc(__("Daily Sales Overview"))}">${esc(__("Overview"))}</a>` : ""
 						}<span class="count">${g.count}</span></div>
 						<div class="only-detail">${rows || `<p class="cap none">${esc(__("No orders"))}</p>`}${more}</div>
 					</div>`;
