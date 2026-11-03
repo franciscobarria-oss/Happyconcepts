@@ -295,6 +295,18 @@ ZH_TW = {
 	"and {0} more": "另有 {0} 張",
 	"Print A4": "列印 A4",
 	"Daily Sales Overview": "每日送貨總覽",
+	"Customer name": "客戶名稱",
+	"Date sent": "送出日期",
+	"For someone who is not a customer yet (name or company).": "給尚未成為客戶的人（姓名或公司）。",
+	"Product sent out as a sample on no order. It shows in the Samples box of the Daily Sales Overview and counts in what must be made.": "不屬於任何訂單、作樣辦送出的產品。會顯示在每日送貨總覽的樣辦欄，並計入需要生產的數量。",
+	"Quantity": "數量",
+	"Quantity in stock unit": "庫存單位數量",
+	"Quantity must be more than zero.": "數量必須大於零。",
+	"Sample Sent": "樣辦送出",
+	"Say who the sample went to: pick a customer or type a name.": "請寫明樣辦送給誰：選擇客戶或輸入姓名。",
+	"Sent by": "送出者",
+	"Sent to": "送給",
+	"Why it was sent, who to follow up with.": "送出原因、需要跟進的對象。",
 	"Overview": "總覽",
 	"Sheet heading": "總覽標題",
 	"Customers with the same heading sit together, e.g. IKEA, SODEXO.": "相同標題的客戶排在一起，例如 IKEA、SODEXO。",
@@ -1248,7 +1260,7 @@ ZH_TW = {
 # Left to Frappe / ERPNext's own translation, or never translated (unit symbols).
 # Overriding these would change them everywhere in ERPNext.
 LEAVE_AS_IS = {
-	"Email", "Delivery Date",
+	"Email", "Note", "Delivery Date",
 	"Description", "Error", "Subject", "Text", "Sender", "New", "Lines",
 	"Actions", "Active", "Amended From", "Approved", "Attendance", "Company", "Department", "Disabled", "Draft",
 	"Employee", "From", "From Date", "Grand Total", "Group", "Holidays", "Home", "Item Name", "Items",

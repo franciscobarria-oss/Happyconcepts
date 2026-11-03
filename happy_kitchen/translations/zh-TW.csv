@@ -191,10 +191,12 @@ Create draft Material Issue when a Production Log is submitted,提交生產紀�
 Create draft order,建立採購單草稿
 Create labels when a sales order is submitted,提交銷售訂單時建立標籤
 Current Purchase,目前採購
+Customer name,客戶名稱
 "Customers with the same heading sit together, e.g. IKEA, SODEXO.",相同標題的客戶排在一起，例如 IKEA、SODEXO。
 Daily,日常
 Daily Sales Overview,每日送貨總覽
 Daily tasks,日常工作
+Date sent,送出日期
 Day after,後天
 Day after tomorrow,後日
 Days count the opening day as day 1 and end at 23:59; hours count from the minute it is opened.,以日計：開封當天算第1天，至23:59止；以小時計：由開封那一分鐘起計。
@@ -276,6 +278,7 @@ Food Cost per Unit,每件食物成本
 Food cost,食材成本率
 "For delivery charges, services and other non-food lines.",用於運費、服務及其他非食品項目。
 "For sales items sold under another code than the recipe's own item, e.g. a customer's article number or a box.",用於以食譜物品以外編號出售的銷售物品，例如客戶的貨號或一盒裝。
+For someone who is not a customer yet (name or company).,給尚未成為客戶的人（姓名或公司）。
 "From Item > Weight Per Unit. Lets a recipe use grams for an item priced per piece, or pieces for one priced per gram.",取自物品 > 每單位重量。讓食譜可用克計算按件定價的物品，或用件計算按克定價的物品。
 From Storage,由儲存位置
 From approved Stock Take {0},來自已批准盤點 {0}
@@ -706,6 +709,7 @@ Product labels,產品標籤
 "Product labels: 100 × 150 mm labels for sales orders. Kitchen date labels: small opened-product and batch labels (e.g. a SATO printer, 50 × 30 mm).",產品標籤：銷售訂單用的 100 × 150 mm 標籤。廚房日期標籤：開封及批次小標籤（例如 SATO 打印機，50 × 30 mm）。
 Product name,產品名稱
 Product name on label,標籤上的產品名稱
+Product sent out as a sample on no order. It shows in the Samples box of the Daily Sales Overview and counts in what must be made.,不屬於任何訂單、作樣辦送出的產品。會顯示在每日送貨總覽的樣辦欄，並計入需要生產的數量。
 Production,生產
 Production Date,生產日期
 Production Log,生產紀錄
@@ -718,7 +722,10 @@ Products,產品
 Purchase Orders,採購單
 Purchase orders to send,待發出採購單
 Qty in Stock UOM,庫存單位數量
+Quantity,數量
 Quantity factor,數量倍數
+Quantity in stock unit,庫存單位數量
+Quantity must be more than zero.,數量必須大於零。
 Quiet day,清閒
 Raspberry Pi user,Raspberry Pi 用戶
 Rate ($/hr),時薪
@@ -800,11 +807,13 @@ Sales Order you made (optional),你建立的銷售訂單（可選）
 Sales Order {0} could not be submitted: {1},銷售訂單 {0} 無法提交：{1}
 Sales Order {0} does not exist.,銷售訂單 {0} 不存在。
 Sales Orders,銷售訂單
+Sample Sent,樣辦送出
 Save PIN,儲存密碼
 Save the sheet first.,請先儲存盤點表。
 Save the supplier to see its products.,請先儲存供應商才可查看其產品。
 "Saved, but no kitchen label printer is set up",已儲存，但尚未設定廚房標籤打印機
 Saving {0}…,儲存中（{0}）…
+Say who the sample went to: pick a customer or type a name.,請寫明樣辦送給誰：選擇客戶或輸入姓名。
 Scan or search an item,掃描或搜尋貨品
 Search SKU or name,搜尋產品編號或名稱
 Search products,搜尋產品
@@ -815,6 +824,8 @@ Selling price,售價
 Send to printer,送往打印機
 Sender email,寄件人電郵
 Sent back,已退回
+Sent by,送出者
+Sent to,送給
 Sent to printer,已送往打印機
 Service / Expense,服務／費用
 Services,服務
@@ -1040,6 +1051,7 @@ What the reader got from the PDFs,系統從 PDF 讀到的文字
 What the system understood,系統的理解
 What was sent,收到的內容
 Why is it rejected?,退回原因？
+"Why it was sent, who to follow up with.",送出原因、需要跟進的對象。
 With a recipe: show usage for this many batches instead of the date range.,選擇食譜時：顯示此批數的用量，而非日期範圍內的用量。
 Within Tolerance,在容差內
 Within tolerance,在容差內

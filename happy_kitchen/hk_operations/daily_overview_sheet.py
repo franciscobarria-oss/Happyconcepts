@@ -14,6 +14,7 @@ from frappe.utils import add_days, cint, format_datetime, formatdate, getdate, n
 from werkzeug.wrappers import Response
 
 from happy_kitchen.hk_operations import daily_overview as grid
+from happy_kitchen.hk_operations import samples as sample_rules
 from happy_kitchen.recipe_management.daily_plan import plan_day
 from happy_kitchen.recipe_management.production_sheet import fmt_qty, stock_on_hand
 from happy_kitchen.recipe_management.report.inventory_variance.inventory_variance import recipe_data, sku_aliases
@@ -49,6 +50,15 @@ def invoices_for(sales_orders: list[str]) -> list[dict]:
 		{"so": tuple(sales_orders)}, as_dict=True)
 
 
+def samples_for(day: str) -> list[dict]:
+	"""Samples sent out on this day (empty before the Sample Sent DocType exists)."""
+	if not frappe.db.exists("DocType", "Sample Sent"):
+		return []
+	return frappe.get_all(
+		"Sample Sent", filters={"sample_date": day},
+		fields=["name", "item", "item_name", "qty", "uom", "stock_qty", "customer_name", "recipient"], order_by="creation")
+
+
 def item_info(codes: set[str]) -> dict[str, dict]:
 	meta = frappe.get_meta("Item")
 	fields = ["name", "item_name", "stock_uom", "shelf_life_in_days"]
@@ -79,6 +89,8 @@ def build(day: str) -> dict:
 	demand: dict[str, float] = {}
 	for l in lines:
 		demand[l.item_code] = demand.get(l.item_code, 0.0) + (l.stock_qty or 0)
+	sent = samples_for(day)
+	demand = sample_rules.add_to_demand(demand, sent)  # samples must be made too
 	demand = fold_aliases(demand, sku_aliases())
 	recipe_lines, sub_recipes, recipe_for_item = recipe_data()
 	plan = plan_day(demand, recipe_for_item, sub_recipes, recipe_lines, stock_on_hand(), False)
@@ -106,6 +118,8 @@ def build(day: str) -> dict:
 		k = (n["kind"], n["code"])
 		merged.setdefault(k, n)
 	data["needs"] = list(merged.values())
+	zh = item_info({x["item"] for x in sent})
+	data["samples"] = sample_rules.box_rows([{**x, "item_name_zh": (zh.get(x["item"]) or {}).get("item_name_zh", "")} for x in sent])
 	data["orders"] = len({l.sales_order for l in lines})
 	data["draft_lines"] = sum(1 for l in lines if l.docstatus == 0)
 	data["lines"] = len(lines)
