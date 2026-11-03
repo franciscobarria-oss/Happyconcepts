@@ -7,6 +7,8 @@
 # to list the strings that still need a translation here.
 
 ZH_TW = {
+	"Confirm and next": "確認並下一張",
+	"Confirmed. No more draft orders from email to check.": "已確認。沒有其他待檢查的電郵草稿訂單。",
 	"Forwarded through {0} without the original sender's address, and no outlet name was found: enter it by hand, or add the outlet's name under the customer's Names in order emails and Read again.": "經 {0} 轉寄，沒有原寄件人地址，也找不到分店名稱：請手動輸入，或在客戶的「訂單電郵中的名稱」加入分店名稱後再讀一次。",
 	"PO {0} already has sales order {1} under {2}: check the customer.": "採購單 {0} 已有銷售訂單 {1}（客戶 {2}）：請檢查客戶。",
 	"Forwarded by": "轉寄者",
