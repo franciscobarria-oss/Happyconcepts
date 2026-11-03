@@ -22,7 +22,7 @@ def test_asset_urls_carry_version():
 def test_modules_have_packages():
 	with open(os.path.join(APP, "modules.txt"), encoding="utf-8") as f:
 		modules = [m.strip() for m in f if m.strip()]
-	assert modules == ["Recipe Management", "HK Operations"]
+	assert modules == ["Recipe Management", "HK Operations", "HK Compliance"]
 	for m in modules:
 		pkg = os.path.join(APP, m.lower().replace(" ", "_"), "__init__.py")
 		assert os.path.exists(pkg), pkg

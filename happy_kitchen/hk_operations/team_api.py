@@ -86,10 +86,9 @@ def kiosk_status() -> list[dict]:
 	return rows
 
 
-@frappe.whitelist(methods=["POST"])
-def clock_in(employee: str, pin: str) -> dict:
-	"""Checks the PIN and records an Employee Checkin (IN, or OUT after an IN today)."""
-	_kiosk_roles()
+def verify_pin(employee: str, pin: str) -> bool:
+	"""True when the PIN matches an active employee's stored hash. Shared by clock-in and the
+	Kitchen Checks sign-off: 5 wrong tries lock that employee for 5 minutes on both."""
 	lock_key = f"hk_pin_tries:{employee}"
 	tries = int(frappe.cache.get_value(lock_key) or 0)
 	if tries >= PIN_TRIES:
@@ -97,8 +96,17 @@ def clock_in(employee: str, pin: str) -> dict:
 	stored = frappe.db.get_value("Employee", {"name": employee, "status": "Active"}, "hk_pin_hash")
 	if not stored or not team.valid_pin(pin) or team.pin_hash(employee, pin) != stored:
 		frappe.cache.set_value(lock_key, tries + 1, expires_in_sec=PIN_LOCK_SECONDS)
-		return {"ok": False}
+		return False
 	frappe.cache.delete_value(lock_key)
+	return True
+
+
+@frappe.whitelist(methods=["POST"])
+def clock_in(employee: str, pin: str) -> dict:
+	"""Checks the PIN and records an Employee Checkin (IN, or OUT after an IN today)."""
+	_kiosk_roles()
+	if not verify_pin(employee, pin):
+		return {"ok": False}
 	last = _last_logs(nowdate()).get(employee)
 	log_type = team.next_log_type(last.log_type if last else None)
 	time = now_datetime()
