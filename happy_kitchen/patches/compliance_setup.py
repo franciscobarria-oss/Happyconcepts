@@ -7,12 +7,14 @@ def execute():
 	"""Kitchen Checks starting data: one area, three editable checklists with their schedules
 	switched OFF (nothing is due until a manager ticks Active), corrective-action quick picks and
 	settings defaults. Idempotent: records the team already has are left alone."""
-	# Patches run before DocTypes are synced on migrate, so load the new module's DocTypes first.
+	# Patches run before DocTypes are synced on migrate: the module must be known, or the DocType
+	# path resolves to frappe.core, and each DocType must be loaded before records are inserted.
 	if not frappe.db.exists("Module Def", "HK Compliance"):
-		frappe.get_doc({"doctype": "Module Def", "module_name": "HK Compliance", "app_name": "happy_kitchen"}).insert(ignore_permissions=True)
-	for dt in ("check_area", "checklist_template_item", "checklist_template", "checklist_schedule",
-	           "checklist_run_answer", "checklist_run", "corrective_action_preset", "compliance_settings"):
-		frappe.reload_doc("hk_compliance", "doctype", dt)
+		frappe.get_doc({"doctype": "Module Def", "module_name": "HK Compliance", "app_name": "happy_kitchen"}).insert(
+			ignore_permissions=True)
+	for doctype in ("check_area", "checklist_template_item", "checklist_template", "checklist_schedule",
+	                "checklist_run_answer", "checklist_run", "corrective_action_preset", "compliance_settings"):
+		frappe.reload_doc("hk_compliance", "doctype", doctype)
 
 	if not frappe.db.exists("Role", "Compliance Manager"):
 		frappe.get_doc({"doctype": "Role", "role_name": "Compliance Manager", "desk_access": 1}).insert(ignore_permissions=True)
