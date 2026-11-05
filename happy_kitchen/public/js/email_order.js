@@ -182,7 +182,10 @@ frappe.ui.form.on("Email Order", {
 				});
 			}).addClass("btn-primary");
 		};
-		if (!["Needs review", "Failed"].includes(frm.doc.status)) return confirmOrder();
+		if (!["Needs review", "Failed"].includes(frm.doc.status)) {
+			frm.add_custom_button(__("Enter order"), () => hk_eo_enter(frm));
+			return confirmOrder();
+		}
 		if (!frm.doc.sales_order) {
 			frm.add_custom_button(__("Read again"), async () => {
 				const status = await frappe.xcall(HK_EO + "reprocess", { name: frm.doc.name });
@@ -190,6 +193,7 @@ frappe.ui.form.on("Email Order", {
 				frm.reload_doc();
 			});
 		}
+		frm.add_custom_button(__("Enter order"), () => hk_eo_enter(frm)).addClass("btn-primary");
 		frm.add_custom_button(__("Mark as entered by hand"), () => {
 			frappe.prompt(
 				[{ fieldname: "sales_order", fieldtype: "Link", options: "Sales Order", label: __("Sales Order you made (optional)") }],
