@@ -240,6 +240,7 @@ Daily,日常
 Daily Sales Overview,每日送貨總覽
 Daily tasks,日常工作
 Date sent,送出日期
+Day,日期
 Day after,後天
 Day after tomorrow,後日
 Day of month,每月第幾日
@@ -516,6 +517,7 @@ Made by (bottom of label),製造商（標籤底部）
 Made on,生產日期
 Made-on date,生產日期依據
 Make {0},製作 {0}
+Man hours,工時
 Manager review needed,需經理覆核
 Manufacture entries that move ingredients out of stock and add the batch preparations to their warehouse (e.g. Freezer).,生產記錄會扣除食材庫存，並將半成品加入其倉庫（例如冰格）。
 Manufacturer,製造商
@@ -920,6 +922,7 @@ Sales Order you made (optional),你建立的銷售訂單（可選）
 Sales Order {0} could not be submitted: {1},銷售訂單 {0} 無法提交：{1}
 Sales Order {0} does not exist.,銷售訂單 {0} 不存在。
 Sales Orders,銷售訂單
+"Sales, next 2 weeks",未來兩週銷售
 Sample Sent,樣辦送出
 Save PIN,儲存密碼
 Save the sheet first.,請先儲存盤點表。
@@ -1230,6 +1233,7 @@ expected today,預計今日到貨
 failed,失敗
 failed: say what was done about it,不合格：請填寫跟進措施
 from recipe {0},來自食譜 {0}
+h,小時
 in since {0},{0} 上班
 ingredients,食材
 ingredients {0},食材 {0}
@@ -1285,6 +1289,8 @@ waiting for the printer,等待打印機
 {0} drafts,{0} 張草稿
 "{0} drafts: check quantities and dates, then submit",{0} 張草稿：核對數量和日期後提交
 {0} due today · {1} late,今日到期 {0} 張 · 逾期 {1} 張
+{0} edited,{0} 張已修改
+{0} edited after they came in,{0} 張收單後已修改
 {0} emails with no order made,{0} 封電郵未能建立訂單
 {0} entries,{0} 項
 {0} entries are saved on this iPad and will be sent when you're back online.,{0} 項已存於此 iPad，恢復網絡後會自動傳送。

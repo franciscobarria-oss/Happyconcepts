@@ -20,5 +20,6 @@ def today() -> dict:
 	data = board.merge_today(dashboard.kitchen_today(), today_board.today_board())
 	data["email"] = email_card.card()
 	data["week"] = today_board.week_ahead()
+	data["fortnight"] = today_board.sales_fortnight()
 	data["dates"] = dates_api.expiring() if dates_api.can_handle_dates() else None
 	return data
