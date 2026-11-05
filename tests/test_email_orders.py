@@ -279,6 +279,13 @@ def test_review_reasons_order_confirmed():
 	assert eo.review_reasons("Order confirmed", 2, 0, True, 1, True)
 
 
+def test_search_query_to_address_and_blank_label():
+	q = eo.search_query("Orders", 14, "to:Orders@Happyconceptsfood.hk plaza-network.com")
+	assert q == '(label:"Orders" OR to:orders@happyconceptsfood.hk OR deliveredto:orders@happyconceptsfood.hk OR from:plaza-network.com) newer_than:14d'
+	assert eo.search_query("", 7, "to:orders@x.hk") == '(to:orders@x.hk OR deliveredto:orders@x.hk) newer_than:7d'
+	assert eo.search_query("", 7) == "newer_than:7d"
+
+
 def test_unit_price_column_is_read():
 	rows = [["Item Code", "Description", "Qty", "Unit Price (HKD)", "Amount"],
 	        ["CK-001", "Butter cookie", "12", "1,050.50", "12,606.00"],

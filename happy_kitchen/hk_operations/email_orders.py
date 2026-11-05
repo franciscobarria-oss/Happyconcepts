@@ -79,17 +79,28 @@ def skip_reply(address: str, subject: str, payload: dict, has_pdf: bool, skip_se
 
 def search_query(label: str, look_back_days, extra_senders: str | None = None) -> str:
 	"""The Gmail search: mail under the label, plus anything from the extra senders (addresses or @domains,
-	comma / space / line separated), from the last `look_back_days` days."""
+	comma / space / line separated), from the last `look_back_days` days. An entry written `to:address` matches
+	everything sent or delivered to that address (a shared orders@ mailbox); a blank label drops the label term."""
 	label = (label or "").replace('"', "").strip()
-	senders = []
+	terms = [f'label:"{label}"'] if label else []
+	seen = []
 	for e in re.split(r"[,\s;]+", extra_senders or ""):
-		e = e.strip().lower().lstrip("@")
-		if e and ("." in e or "@" in e) and re.fullmatch(r"[a-z0-9._+\-]+(@[a-z0-9.\-]+)?", e) and e not in senders:
-			senders.append(e)
+		e = e.strip().lower()
+		to = e.startswith("to:")
+		e = e[3:] if to else e
+		e = e.lstrip("@")
+		if not (e and ("." in e or "@" in e) and re.fullmatch(r"[a-z0-9._+\-]+(@[a-z0-9.\-]+)?", e)):
+			continue
+		if (to, e) in seen:
+			continue
+		seen.append((to, e))
+		terms += [f"to:{e}", f"deliveredto:{e}"] if to else [f"from:{e}"]
 	days = int(look_back_days or 14)
-	if not senders:
-		return f'label:"{label}" newer_than:{days}d'
-	return "(" + " OR ".join([f'label:"{label}"'] + [f"from:{e}" for e in senders]) + f") newer_than:{days}d"
+	if not terms:
+		return f"newer_than:{days}d"
+	if len(terms) == 1:
+		return f"{terms[0]} newer_than:{days}d"
+	return "(" + " OR ".join(terms) + f") newer_than:{days}d"
 
 
 def review_reasons(status: str, lines: int, unparsed: int, has_sales_order: bool, pdfs: int, pdf_lines_found: bool,
