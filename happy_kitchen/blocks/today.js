@@ -11,6 +11,7 @@
 	const num = (v, p = 2) => format_number(v, null, p).replace(/\.0+$|(\.\d*?)0+$/, "$1");
 	const day = (d) => `${__(moment(d).format("ddd"))} ${frappe.datetime.str_to_user(d)}`;
 	const SHEET = "/api/method/happy_kitchen.recipe_management.production_sheet.sheet";
+	const OVERVIEW = "/api/method/happy_kitchen.hk_operations.daily_overview_sheet.sheet";
 	const REFRESH_MS = 5 * 60 * 1000;
 	const WAIT_SIMPLE = 4; // rows on "Waiting on you" in the simple view
 	const TONES = { success: 1, info: 1, warning: 1, danger: 1 };
@@ -167,7 +168,7 @@
 						<div class="day-head"><span class="badge ${TONE[g.key] || "info"}">${esc(g.label)}</span><span class="cap">${when}${
 							g.count ? `<span class="only-simple"> · ${esc(money(g.amount))}</span>` : ""
 						}</span>${
-							g.date ? `<a class="print" href="${SHEET}?date=${esc(g.date)}" target="_blank" rel="noopener" title="${esc(__("Production sheet"))}">${esc(__("Print A4"))}</a>` : ""
+							g.date ? `<a class="print" href="${SHEET}?date=${esc(g.date)}" target="_blank" rel="noopener" title="${esc(__("Production sheet"))}">${esc(__("Print A4"))}</a><a class="print" href="${OVERVIEW}?date=${esc(g.date)}" target="_blank" rel="noopener" title="${esc(__("Daily Sales Overview"))}">${esc(__("Overview"))}</a>` : ""
 						}<span class="count">${g.count}</span></div>
 						<div class="only-detail">${rows || `<p class="cap none">${esc(__("No orders"))}</p>`}${more}</div>
 					</div>`;
@@ -248,6 +249,20 @@
 					<span class="lv">${x.level === "busy" ? esc(__("Busy day")) : x.level === "quiet" ? esc(__("Quiet day")) : "&nbsp;"}</span>
 				</div>`;
 			}).join("");
+		}
+
+		// --- sales, next 2 weeks: orders and value per delivery day, edited orders marked, man hours per day ---
+		const fn = d.fortnight;
+		$('[data-part="fortnight"]').hidden = !fn;
+		if (fn) {
+			$('[data-part="fortnight"] .legend').textContent = `${__("{0} orders", [fn.orders])} · ${money(fn.amount)}` +
+				(fn.edited ? ` · ${__("{0} edited", [fn.edited])}` : "") + (fn.hours != null ? ` · ${fn.hours} ${__("h")}` : "");
+			$(".fn").innerHTML = `<div class="fn-row fn-head"><span>${esc(__("Day"))}</span><span class="num">${esc(__("Orders"))}</span><span class="num">${esc(__("Value"))}</span><span class="num">${esc(__("Man hours"))}</span></div>` +
+				fn.days.map((x, i) => `<div class="fn-row${i === 0 ? " today" : ""}${x.orders ? "" : " zero"}">
+					<span>${esc(i === 0 ? __("Today") : day(x.date))}</span>
+					<span class="num">${x.orders}${x.edited ? ` <a class="badge warning" title="${esc(__("{0} edited after they came in", [x.edited]))}" href="/app/sales-order?hk_revision_count=%5B%22%3E%22%2C0%5D&docstatus=1">${esc(__("{0} edited", [x.edited]))}</a>` : ""}</span>
+					<span class="num">${x.orders ? esc(money(x.amount)) : "–"}</span>
+					<span class="num">${x.hours == null ? "–" : esc(x.hours + " " + __("h"))}</span></div>`).join("");
 		}
 
 		// --- tasks ---

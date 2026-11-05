@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Sales Overview {{ day_fmt }} · {{ b.brand_name|e }}</title>
+<style>
+	:root { --brand: {{ b.primary_color or "#6f5245" }}; --ink: #211f20; --muted: #5e5e5e; --line: #888; --head: #e8e0dc; --draft: #b4560b; --bad: #a3361a; }
+	@page { size: A4 landscape; margin: 8mm; }
+	* { box-sizing: border-box; }
+	html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+	body { margin: 0; background: #ebe6e4; color: var(--ink); font: 400 9px/1.25 Arial, "PingFang HK", "Microsoft JhengHei", "Noto Sans TC", sans-serif; }
+	.pg { width: 281mm; min-height: 194mm; margin: 14px auto; background: #fff; padding: 4mm; box-shadow: 0 2px 12px rgba(0,0,0,.12); }
+	h1 { font-size: 15px; margin: 0 0 4px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+	h1 small { font-size: 9px; font-weight: 400; color: var(--muted); text-align: right; }
+	table { border-collapse: collapse; width: 100%; }
+	th, td { border: .6px solid var(--line); padding: 1.5px 3px; }
+	th { background: var(--head); font-size: 7.5px; white-space: pre-line; text-align: center; }
+	td.q, td.num { text-align: center; font-variant-numeric: tabular-nums; }
+	td.d { font-style: italic; color: var(--draft); font-weight: 700; }
+	td.tot, th.tot { font-weight: 700; background: #f1e6e0; text-align: center; }
+	td.nm span, td.nm .zh { display: block; color: var(--muted); font-size: 7.5px; }
+	tfoot td { background: #eee; vertical-align: top; font-size: 7.5px; text-align: center; }
+	tfoot td.l { text-align: left; font-weight: 700; white-space: nowrap; }
+	.note { font-size: 8px; color: var(--muted); margin-top: 4px; }
+	.needs { width: auto; min-width: 70%; font-size: 10px; }
+	.needs th { font-size: 9px; }
+	.short { font-weight: 700; color: var(--bad); }
+	.tick { width: 34px; }
+	.bar { position: sticky; top: 0; z-index: 2; background: #211f20; color: #fff; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 16px; font: 13px Arial, sans-serif; }
+	.bar a, .bar button { color: #fff; border: 1px solid rgba(255,255,255,.5); background: none; border-radius: 6px; padding: 5px 10px; font: 600 13px Arial, sans-serif; text-decoration: none; cursor: pointer; }
+	.bar button.print { background: var(--brand); border-color: var(--brand); }
+	.bar input[type=date] { font: inherit; padding: 4px 6px; border-radius: 6px; border: 0; }
+	.bar .grow { flex: 1; }
+	@media print { body { background: #fff; } .bar { display: none; } .pg { width: auto; min-height: 0; margin: 0; padding: 0; box-shadow: none; break-after: page; } .pg:last-of-type { break-after: auto; } }
+	@media (max-width: 820px) { .pg { width: auto; margin: 0; } .pgin { overflow-x: auto; } }
+</style>
+</head>
+<body>
+<form class="bar" method="get">
+	<a href="/app/today">← Today 今日</a>
+	<a href="?date={{ prev_day }}">‹</a>
+	<input type="date" name="date" value="{{ day }}" onchange="this.form.submit()">
+	<a href="?date={{ next_day }}">›</a>
+	<a href="?date={{ today }}">Today 今日</a>
+	<span class="grow"></span>
+	<span>Print double-sided, flip on the short edge 雙面列印（短邊翻頁）</span>
+	<button type="button" class="print" onclick="window.print()">Print A4 列印</button>
+</form>
+
+<div class="pg"><div class="pgin">
+	<h1><span>送貨日 Delivery: {{ weekday }} {{ day_fmt }}</span>
+		<small>{{ b.brand_name|e }} · orange italic = draft order · printed {{ printed }} · 1 of 2</small></h1>
+	{% if not d.rows %}
+	<p>No orders are due on this day. 當日沒有訂單。</p>
+	{% else %}
+	<table>
+		<thead>
+			<tr><th rowspan="2">Item Code</th><th rowspan="2">Description 產品</th><th rowspan="2">Best before
+此日期前最佳</th><th class="tot" rowspan="2">Total
+總數</th>
+			{% for g, n in d.group_spans %}<th colspan="{{ n }}">{{ g|e }}</th>{% endfor %}</tr>
+			<tr>{% for c in d.columns %}<th>{{ c.label|e }}{% if c.label_zh %}
+{{ c.label_zh|e }}{% endif %}</th>{% endfor %}</tr>
+		</thead>
+		<tbody>
+		{% for r in d.rows %}
+		<tr>
+			<td>{{ r.sheet_code|e }}</td>
+			<td class="nm">{{ r.item_name|e }}{% if r.item_name_zh %}<span>{{ r.item_name_zh|e }}</span>{% endif %}</td>
+			<td>{{ fmt_date(r.best_before) }}</td>
+			<td class="tot">{{ fmt_qty(r.total) }}</td>
+			{% for q in r.qtys %}<td class="q{% if q and r.drafts[loop.index0] %} d{% endif %}">{{ fmt_qty(q) if q else "" }}</td>{% endfor %}
+		</tr>
+		{% endfor %}
+		</tbody>
+		<tfoot>
+			<tr><td class="l" colspan="3">Total Qty</td><td class="tot">{{ fmt_qty(d.grand_total) }}</td>{% for f in d.footer %}<td class="tot">{{ fmt_qty(f.qty) }}</td>{% endfor %}</tr>
+			<tr><td class="l" colspan="3">Invoice Number</td><td></td>{% for f in d.footer %}<td>{% for i in f.invoices %}{{ i|e }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td>{% endfor %}</tr>
+			<tr><td class="l" colspan="3">Reference</td><td></td>{% for f in d.footer %}<td>{% for p in f.po_refs %}{{ p|e }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td>{% endfor %}</tr>
+			<tr><td class="l" colspan="3">Invoice Total</td><td>{{ fmt_money(d.invoice_total) }}</td>{% for f in d.footer %}<td>{{ fmt_money(f.amount) }}</td>{% endfor %}</tr>
+			<tr><td class="l" colspan="3">No. of Invoices</td><td>{{ d.invoice_count }}</td>{% for f in d.footer %}<td>{{ f.invoice_count }}</td>{% endfor %}</tr>
+		</tfoot>
+	</table>
+	<div class="note">Invoice Total shows the order value where no invoice has been raised yet. 未開發票時顯示訂單金額。</div>
+	{% endif %}
+</div></div>
+
+<div class="pg"><div class="pgin">
+	<h1><span>需要 What's needed: {{ weekday }} {{ day_fmt }}</span>
+		<small>Full ordered quantity against stock on hand · 2 of 2</small></h1>
+	{% if d.needs %}
+	<table class="needs">
+		<thead><tr><th>Type</th><th>Item Code</th><th>Description 產品</th><th>Need 需要</th><th>In stock 庫存</th><th>Short 欠</th><th class="tick">✓</th></tr></thead>
+		<tbody>
+		{% for r in d.needs %}
+		<tr><td>{{ r.kind|e }}</td><td>{{ r.code|e }}</td><td class="nm">{{ r.name|e }}{% if r.zh %}<span>{{ r.zh|e }}</span>{% endif %}</td>
+			<td class="num">{{ r.need }}</td><td class="num">{{ r.stock }}</td><td class="num{% if r.is_short %} short{% endif %}">{{ r.short or "–" }}</td><td class="tick"></td></tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	<div class="note">Products without a recipe show only the quantity ordered. Link each sold item to its recipe (Item → Made From Recipe) and the batches and ingredients appear here.</div>
+	{% else %}<p>No orders are due on this day. 當日沒有訂單。</p>{% endif %}
+</div></div>
+
+<script>
+// Shrink each page's table to fit one A4 landscape page when printing.
+function fit() {
+	var W = (297 - 16) / 25.4 * 96, H = (210 - 16) / 25.4 * 96 - 6;
+	document.querySelectorAll(".pgin").forEach(function (el) {
+		el.style.zoom = ""; el.style.width = "max-content";
+		var w = el.scrollWidth, h = el.scrollHeight;
+		el.style.width = ""; el.style.zoom = Math.min(1, W / w, H / h);
+	});
+}
+window.addEventListener("beforeprint", fit); window.addEventListener("afterprint", function () { document.querySelectorAll(".pgin").forEach(function (e) { e.style.zoom = ""; }); });
+</script>
+</body>
+</html>

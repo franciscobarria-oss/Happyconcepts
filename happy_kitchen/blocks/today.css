@@ -146,3 +146,10 @@ a.row:hover { background: var(--k-sunken); text-decoration: none; color: inherit
 .wk .lv { font: 600 11px/14px var(--k-sans); letter-spacing: .5px; text-transform: uppercase; color: var(--k-muted); }
 .wk.busy .lv { color: var(--k-brand); }
 .wk.busy .n { color: var(--k-brand); }
+
+/* sales, next 2 weeks */
+.fn-row { display: grid; grid-template-columns: 1.2fr 1.6fr 1fr 1fr; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--k-line); font: 400 13px/18px var(--k-sans); }
+.fn-row.fn-head { font-weight: 600; color: var(--k-muted); }
+.fn-row.today { font-weight: 600; }
+.fn-row.zero { color: var(--k-muted); }
+.fn-row .num { text-align: right; }

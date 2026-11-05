@@ -16,6 +16,7 @@
   "area",
   "department",
   "active",
+  "active_from",
   "title",
   "column_break_1",
   "frequency",
@@ -74,6 +75,14 @@
    "label": "Active",
    "default": "1",
    "in_list_view": 1
+  },
+  {
+   "fieldname": "active_from",
+   "fieldtype": "Datetime",
+   "label": "Active from",
+   "read_only": 1,
+   "no_copy": 1,
+   "description": "Set when the schedule is switched on. Runs are only created for windows that start from this time."
   },
   {
    "fieldname": "title",

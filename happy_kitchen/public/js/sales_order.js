@@ -1,8 +1,10 @@
 // Product labels for a submitted order: a summary line, "Print labels" and the label queue.
 frappe.ui.form.on("Sales Order", {
 	refresh(frm) {
+		hk_hide_side_panel(frm);
 		hk_order_stage(frm);
 		hk_revision_buttons(frm);
+		hk_price_warnings(frm);
 		if (frm.doc.docstatus !== 1) return;
 		frappe.call("happy_kitchen.hk_operations.labels.sales_order_labels", { sales_order: frm.doc.name }).then(({ message: jobs }) => {
 			jobs = jobs || [];
@@ -119,10 +121,35 @@ function hk_order_stage(frm) {
 
 	// The one main button in the top bar: Confirm on a draft, Complete on a confirmed order.
 	if (frm.is_dirty()) return;
-	if (s.next === "confirm" && frm.has_perm("submit"))
-		frm.page.set_primary_action(__("Confirm"), () => frm.savesubmit(), "check");
+	if (s.next === "confirm" && frm.has_perm("submit")) {
+		if (frm.doc.hk_email_order)
+			frm.page.set_primary_action(__("Confirm and next"), () => hk_confirm_and_next(frm), "check");
+		else frm.page.set_primary_action(__("Confirm"), () => frm.savesubmit(), "check");
+	}
 	if (s.next === "deliver" && frappe.model.can_create("Delivery Note"))
 		frm.page.set_primary_action(__("Complete"), () => hk_mark_delivered(frm), "check");
+}
+
+// Confirm this draft from an email, then open the next draft from email that still needs checking
+// (oldest delivery date first). Nothing is left to do when there is none.
+function hk_confirm_and_next(frm) {
+	const name = frm.doc.name;
+	frm.savesubmit(null, () => {
+		frappe.call({
+			method: "frappe.client.get_list",
+			args: {
+				doctype: "Sales Order",
+				filters: { docstatus: 0, hk_email_order: ["is", "set"], name: ["!=", name] },
+				fields: ["name"],
+				order_by: "delivery_date asc, creation asc",
+				limit_page_length: 1,
+			},
+		}).then(({ message }) => {
+			const next = message && message[0];
+			if (next) frappe.set_route("Form", "Sales Order", next.name);
+			else frappe.show_alert({ message: __("Confirmed. No more draft orders from email to check."), indicator: "green" });
+		});
+	});
 }
 
 function hk_mark_delivered(frm) {
@@ -144,4 +171,30 @@ function hk_mark_delivered(frm) {
 			frm.reload_doc();
 		})
 	);
+}
+
+// Price warnings (never blocking): lines whose rate is not the customer's PO price, and draft lines
+// with no price at all. Same rule as hk_operations/order_prices.differs (half a cent tolerance).
+function hk_price_warnings(frm) {
+	if (frm.is_new() || frm.doc.docstatus === 2) return;
+	const money = (v) => format_currency(v, frm.doc.currency, 2);
+	const name = (r) => frappe.utils.escape_html(r.item_name || r.item_code || "");
+	const differs = (frm.doc.items || []).filter((r) => flt(r.hk_po_rate) > 0 && flt(r.rate) > 0 && Math.abs(flt(r.hk_po_rate) - flt(r.rate)) >= 0.005);
+	if (differs.length) {
+		const rows = differs.map((r) => __("{0}: PO {1}, order {2}", [name(r), money(r.hk_po_rate), money(r.rate)])).join("; ");
+		frm.dashboard.add_comment(`<b>${__("Price differs from the customer's PO")}:</b> ${rows}`, "orange", true);
+	}
+	if (frm.doc.docstatus !== 0) return;
+	const missing = (frm.doc.items || []).filter((r) => r.item_code && !flt(r.rate));
+	if (missing.length)
+		frm.dashboard.add_comment(`<b>${__("No price")}:</b> ${missing.map(name).join(", ")}`, "orange", true);
+}
+
+
+// The right-hand panel (Assign, Attachments, Tags, Share) is hidden when an order opens (Francisco,
+// 2026-11-03). Once per form, so the standard "..." > Toggle Sidebar still brings it back.
+function hk_hide_side_panel(frm) {
+	if (frm.__hk_side_panel_hidden || !frm.page || !frm.page.sidebar) return;
+	frm.__hk_side_panel_hidden = true;
+	frm.page.sidebar.hide();
 }
