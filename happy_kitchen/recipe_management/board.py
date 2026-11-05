@@ -139,3 +139,24 @@ def week_load(days: list[str], orders: dict[str, dict], deliveries: dict[str, di
 		r["share"] = round(share, 3)
 		r["level"] = "busy" if peak >= 3 and share >= 0.75 else "quiet" if share <= 0.25 else "normal"
 	return rows
+
+
+def sales_fortnight(days: list[str], orders: dict[str, dict], hours: dict[str, float] | None = None) -> dict:
+	"""Sales for the coming days. `orders` maps a date to {"count", "amount",
+	"edited"} (edited = orders changed after they came in). `hours` maps a date
+	to man hours (rostered, filled in once rosters exist); a day without an
+	entry shows no hours (None), never 0."""
+	hours = hours or {}
+	rows = []
+	for d in days:
+		o = orders.get(d) or {}
+		h = hours.get(d)
+		rows.append({"date": d, "orders": int(o.get("count") or 0), "amount": float(o.get("amount") or 0),
+		             "edited": int(o.get("edited") or 0), "hours": None if h is None else float(h)})
+	return {
+		"days": rows,
+		"orders": sum(r["orders"] for r in rows),
+		"amount": sum(r["amount"] for r in rows),
+		"edited": sum(r["edited"] for r in rows),
+		"hours": sum(r["hours"] for r in rows if r["hours"] is not None) if any(r["hours"] is not None for r in rows) else None,
+	}
