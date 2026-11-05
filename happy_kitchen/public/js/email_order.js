@@ -111,9 +111,56 @@ function hk_eo_render(frm, d) {
 	});
 }
 
+// Full-screen "Enter order": the PDF big on the left, the order fields on the right.
+async function hk_eo_enter(frm) {
+	const d = await frappe.xcall(HK_EO + "manual_order_data", { name: frm.doc.name });
+	if (d.locked) return frappe.msgprint(__("The sales order {0} is already submitted. Change it on the order itself.", [d.sales_order]));
+	const files = ((frm._hk_review && frm._hk_review.files) || []).filter((f) => (f.file_name || "").toLowerCase().endsWith(".pdf"));
+	const tabs = files.map((f, i) => `<button class="btn btn-xs btn-default hk-en-tab" data-i="${i}">${hk_eo_esc(f.file_name)}</button>`).join(" ");
+	const text = (frm._hk_review && frm._hk_review.email_text) || "";
+	const $o = $(`<div class="hk-en" style="position:fixed;inset:0;z-index:1050;background:var(--bg-color);display:flex;flex-direction:column">
+		<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 16px;background:var(--control-bg)">
+			<b>${hk_eo_esc(frm.doc.subject || frm.doc.name)}</b><span><button class="btn btn-sm btn-default hk-en-close">${__("Close")}</button></span></div>
+		<div style="flex:1;display:grid;grid-template-columns:3fr 2fr;gap:12px;padding:12px;min-height:0">
+			<div style="display:flex;flex-direction:column;min-height:0"><div style="margin-bottom:6px">${tabs}</div>
+				${files.length ? '<iframe class="hk-en-pdf" style="flex:1;width:100%;border:1px solid var(--border-color);background:#fff"></iframe>' : `<pre style="white-space:pre-wrap;overflow:auto">${hk_eo_esc(text)}</pre>`}</div>
+			<div style="overflow:auto"><div class="hk-en-form"></div>
+				<table class="table table-sm"><thead><tr><th>${__("Item")}</th><th style="width:90px">${__("Qty")}</th><th style="width:100px">${__("Rate")}</th><th style="width:30px"></th></tr></thead><tbody class="hk-en-rows"></tbody></table>
+				<button class="btn btn-xs btn-default hk-en-add">+ ${__("Add line")}</button>
+				<div style="margin-top:16px"><button class="btn btn-primary hk-en-save">${__("Save draft order")}</button></div></div></div></div>`).appendTo("body");
+	const show = (i) => $o.find(".hk-en-pdf").attr("src", files[i].file_url);
+	if (files.length) show(0);
+	$o.find(".hk-en-tab").on("click", (e) => show($(e.currentTarget).data("i")));
+	const mk = (parent, df, value) => { const c = frappe.ui.form.make_control({ parent, df, render_input: true }); c.set_value(value || ""); return c; };
+	const f = $o.find(".hk-en-form")[0];
+	const customer = mk(f, { fieldtype: "Link", options: "Customer", label: __("Customer"), fieldname: "c" }, d.customer);
+	const po = mk(f, { fieldtype: "Data", label: __("PO number"), fieldname: "p" }, d.po_no);
+	const dd = mk(f, { fieldtype: "Date", label: __("Delivery date"), fieldname: "d" }, d.delivery_date);
+	const rows = [];
+	const add = (r) => {
+		const $tr = $(`<tr><td><div class="i"></div>${r.hint ? `<div class="small text-muted">${hk_eo_esc(r.hint)}</div>` : ""}</td><td><div class="q"></div></td><td><div class="r"></div></td><td><a class="x">&times;</a></td></tr>`).appendTo($o.find(".hk-en-rows"));
+		const row = { item: mk($tr.find(".i")[0], { fieldtype: "Link", options: "Item", fieldname: "i" }, r.item),
+			qty: mk($tr.find(".q")[0], { fieldtype: "Float", fieldname: "q" }, r.qty || ""),
+			rate: mk($tr.find(".r")[0], { fieldtype: "Currency", fieldname: "r" }, r.rate || "") };
+		$tr.find(".x").on("click", () => { rows.splice(rows.indexOf(row), 1); $tr.remove(); });
+		rows.push(row);
+	};
+	(d.rows.length ? d.rows : [{}, {}, {}]).forEach(add);
+	$o.find(".hk-en-add").on("click", () => add({}));
+	$o.find(".hk-en-close").on("click", () => $o.remove());
+	$o.find(".hk-en-save").on("click", async () => {
+		const res = await frappe.xcall(HK_EO + "save_manual_order", { name: frm.doc.name, customer: customer.get_value(), po_no: po.get_value(), delivery_date: dd.get_value(),
+			rows: JSON.stringify(rows.map((r) => ({ item: r.item.get_value(), qty: r.qty.get_value(), rate: r.rate.get_value() }))) });
+		$o.remove();
+		frappe.show_alert({ message: __("Draft order {0} saved", [res.sales_order]), indicator: "green" });
+		frm.reload_doc();
+	});
+}
+
 frappe.ui.form.on("Email Order", {
 	async refresh(frm) {
 		if (frm.is_new()) return;
+		if (frm.page && frm.page.sidebar && !frm.__hk_side_hidden) { frm.__hk_side_hidden = true; frm.page.sidebar.hide(); }
 		try {
 			hk_eo_render(frm, await frappe.xcall(HK_EO + "review_data", { name: frm.doc.name }));
 		} catch (e) {
