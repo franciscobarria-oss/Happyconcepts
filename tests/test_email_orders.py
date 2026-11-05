@@ -414,3 +414,12 @@ def test_match_outlet():
 	assert eo.match_outlet("The Dairy Farm Company Limited", kbs) == "THE DAIRY FARM COMPANY LIMITED"
 	assert eo.match_outlet("L4 Kitchen / L4 Cafe", kbs + [("DFI - KBS CAFE2", [], ["L4 Cafe"])]) == "DFI - KBS KITCHEN"
 	assert eo.order_names("W Hong Kong\n Kowloon Bay, IKEA \n\n") == ["W Hong Kong", "Kowloon Bay, IKEA"]
+
+
+def test_parse_lines_sodexo_row():
+	text = "--- PO P90S6SR5 | 2026-11-07 ---\n1 CA05N4HA Black Sesame Roll 200.00 個 4.00 800.00\n2 RC016 Chocolate Chunk Cookie 1,200.00 pcs 3.00 3,600.00"
+	lines, unparsed = eo.parse_lines(text)
+	assert unparsed == []
+	assert [(l["external_sku"], l["description"], l["qty"], l["po_rate"], l["po_no"], l["delivery_date"]) for l in lines] == [
+		("CA05N4HA", "Black Sesame Roll", 200.0, 4.0, "P90S6SR5", "2026-11-07"),
+		("RC016", "Chocolate Chunk Cookie", 1200.0, 3.0, "P90S6SR5", "2026-11-07")]
