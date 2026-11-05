@@ -48,6 +48,17 @@ ZH_TW = {
 	"Done by hand": "已人手處理",
 	"Entered by hand": "人手輸入",
 	"Lines it could not read": "讀不到的行",
+	"Enter order": "輸入訂單",
+	"Save draft order": "儲存訂單草稿",
+	"Add line": "新增行",
+	"Add at least one item.": "請至少加入一項產品。",
+	"Choose a customer.": "請選擇客戶。",
+	"Draft order {0} saved": "訂單草稿 {0} 已儲存",
+	"This email is already closed.": "此電郵已結案。",
+	"Entered by {0} from the email '{1}' ({2}). Check it before submitting.": "由 {0} 根據電郵「{1}」({2}) 輸入。提交前請檢查。",
+	"Quantity for {0} must be above 0.": "{0} 的數量必須大於 0。",
+	"PO number": "採購單編號",
+	"The sales order {0} is already submitted. Change it on the order itself.": "銷售訂單 {0} 已提交，請在訂單上直接修改。",
 	"Mark as entered by hand": "標為已人手輸入",
 	"Marked as entered by hand by {0}.": "{0} 已標為人手輸入。",
 	"Marked as not an order by {0}.": "{0} 已標為非訂單。",
@@ -1412,7 +1423,7 @@ ZH_TW = {
 # Left to Frappe / ERPNext's own translation, or never translated (unit symbols).
 # Overriding these would change them everywhere in ERPNext.
 LEAVE_AS_IS = {
-	"Email", "Delivery Date",
+	"Email", "Close", "Rate", "Delivery Date",
 	"Description", "Error", "Subject", "Text", "Sender", "New", "Lines",
 	"Actions", "Active", "Amended From", "Approved", "Attendance", "Company", "Department", "Disabled", "Draft",
 	"Employee", "From", "From Date", "Grand Total", "Group", "Holidays", "Home", "Item Name", "Items",

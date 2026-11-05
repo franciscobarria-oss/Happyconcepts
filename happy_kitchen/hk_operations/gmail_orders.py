@@ -775,3 +775,77 @@ def confirm_po(name: str, po_no: str = ""):
 	if changed:
 		order.save(ignore_permissions=True)
 	return changed
+
+
+@frappe.whitelist()
+def manual_order_data(name: str) -> dict:
+	"""Start values for the "Enter order" screen: what the reader found, and the draft order if there is one."""
+	order = frappe.get_doc("Email Order", name)
+	order.check_permission("read")
+	so = frappe.get_doc("Sales Order", order.sales_order) if order.sales_order and frappe.db.exists("Sales Order", order.sales_order) else None
+	if so and so.docstatus == 0:
+		rows = [{"item": r.item_code, "qty": flt(r.qty), "rate": flt(r.rate)} for r in so.items]
+		return {"customer": so.customer, "po_no": so.po_no or "", "delivery_date": str(so.delivery_date or ""),
+		        "rows": rows, "sales_order": so.name, "locked": False}
+	first = order.lines[0] if order.lines else None
+	rows = [{"item": l.item or "", "qty": flt(l.qty), "rate": flt(l.po_rate), "hint": l.external_sku or l.description or ""}
+	        for l in order.lines]
+	return {"customer": order.customer or "", "po_no": (first.po_no if first else "") or "",
+	        "delivery_date": str((first.delivery_date if first else "") or ""), "rows": rows,
+	        "sales_order": so.name if so else "", "locked": bool(so)}
+
+
+@frappe.whitelist()
+def save_manual_order(name: str, customer: str, po_no: str = "", delivery_date: str = "", rows=None):
+	"""Make (or replace the lines of) the draft Sales Order for an email from what a person typed beside the PDF.
+	Never submits; a submitted order is refused. Rows: [{item, qty, rate}]."""
+	frappe.only_for(("Sales Manager", "System Manager"))
+	import json
+	rows = json.loads(rows) if isinstance(rows, str) else (rows or [])
+	rows = [r for r in rows if r.get("item")]
+	order = frappe.get_doc("Email Order", name)
+	if order.status in ("Ignored", "Order confirmed", "Done by hand"):
+		frappe.throw(_("This email is already closed."))
+	if not customer or not frappe.db.exists("Customer", customer):
+		frappe.throw(_("Choose a customer."))
+	if not rows:
+		frappe.throw(_("Add at least one item."))
+	items = []
+	for r in rows:
+		if not frappe.db.exists("Item", r["item"]):
+			frappe.throw(_("Item {0} does not exist.").format(r["item"]))
+		if flt(r.get("qty")) <= 0:
+			frappe.throw(_("Quantity for {0} must be above 0.").format(r["item"]))
+		row = {"item_code": r["item"], "qty": flt(r["qty"]), "hk_po_rate": flt(r.get("rate"))}
+		if delivery_date:
+			row["delivery_date"] = delivery_date
+		items.append(row)
+	delivery = delivery_date or str(add_days(nowdate(), 1))
+	so = frappe.get_doc("Sales Order", order.sales_order) if order.sales_order and frappe.db.exists("Sales Order", order.sales_order) else None
+	if so and so.docstatus != 0:
+		frappe.throw(_("The sales order {0} is already submitted. Change it on the order itself.").format(so.name))
+	if so:
+		so.customer, so.po_no, so.delivery_date = customer, po_no or None, delivery
+		so.set("items", [])
+		for row in items:
+			so.append("items", row)
+		so.save(ignore_permissions=True)
+	else:
+		so = frappe.get_doc({"doctype": "Sales Order", "customer": customer, "delivery_date": delivery,
+		                     "po_no": po_no or None, "transaction_date": nowdate(), "items": items,
+		                     "hk_email_order": order.name})
+		so.insert(ignore_permissions=True)
+	checks = apply_po_prices(so)
+	so.add_comment("Info", _("Entered by {0} from the email '{1}' ({2}). Check it before submitting.").format(
+		frappe.utils.get_fullname(frappe.session.user), order.subject, order.name))
+	order = frappe.get_doc("Email Order", name)
+	order.customer, order.sales_order = customer, so.name
+	order.set("lines", [])
+	for row, chk in zip(items, checks):
+		order.append("lines", {"external_sku": "", "description": "", "qty": row["qty"], "item": row["item_code"],
+		                       "po_no": po_no or "", "delivery_date": delivery_date or None, "sales_order": so.name,
+		                       "item_confirmed": 1, "po_rate": row["hk_po_rate"],
+		                       "our_rate": chk["our_rate"], "price_check": chk["status"]})
+	order.status = "Draft order"
+	order.save(ignore_permissions=True)
+	return {"sales_order": so.name, "price_differs": sum(1 for c in checks if c["status"] == "Price differs")}
