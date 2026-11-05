@@ -16,6 +16,10 @@ from happy_kitchen.hk_operations import order_prices
 NUM = r"\d+(?:\.\d+)?"
 QTY_FIRST = re.compile(rf"^(?P<qty>{NUM})\s*(?:[x×*]\s+|(?:pcs?|pieces?|boxes|box|kg|g)\s+(?:of\s+)?)(?P<rest>.+)$", re.I)
 QTY_LAST = re.compile(rf"^(?P<rest>.+?)\s*(?:[x×*]\s*)(?P<qty>{NUM})\s*(?:pcs?|pieces?|boxes|box|kg|g)?$", re.I)
+# Sodexo PO row: "1 CA05N4HA Black Sesame Roll 200.00 個 4.00 800.00" (line no., code, name, qty, unit, price, total)
+AMT = r"\d[\d,]*(?:\.\d+)?"
+UNIT_ROW = re.compile(rf"^\d{{1,3}}\s+(?P<code>[A-Za-z0-9][A-Za-z0-9._/-]{{2,31}})\s+(?P<name>.+?)\s+(?P<qty>{AMT})\s*"
+                      rf"(?P<unit>個|个|件|盒|包|箱|pcs?|ea|each|kg|g|box)\s+(?P<price>{AMT})\s+(?P<total>{AMT})$", re.I)
 CODE_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]{1,31}$")
 HEADER_WORDS = {"qty", "quantity", "code", "sku", "item", "product", "description", "name"}
 MAX_BODY = 20000
@@ -459,6 +463,15 @@ def parse_lines(text: str) -> tuple[list[dict], list[str]]:
 			if "@" in line or re.search(r"\+\d", line) or (len(cols) >= 4 and digits) or (not digits and " / " in line):
 				continue  # address / branch list / phone / e-mail signature, not an order line
 			unparsed.append(raw.strip())
+			continue
+		u = UNIT_ROW.match(line)
+		if u:
+			qty = float(u.group("qty").replace(",", ""))
+			if qty <= 0:
+				unparsed.append(raw.strip())
+				continue
+			lines.append({"external_sku": u.group("code"), "description": u.group("name").strip(), "qty": qty,
+			              "po_rate": _price(u.group("price")), "po_no": po, "delivery_date": po_date})
 			continue
 		m = QTY_FIRST.match(line)
 		if m:
