@@ -139,3 +139,13 @@ def test_week_load_flat_or_empty_week_is_never_busy():
 	assert {r["level"] for r in board.week_load(days, {}, {})} == {"quiet"}
 	flat = board.week_load(days, {d: {"count": 1} for d in days}, {})
 	assert {r["level"] for r in flat} == {"normal"}  # peak < 3: nothing counts as busy
+
+
+def test_sales_fortnight_totals_and_hours_placeholder():
+	days = ["a", "b", "c"]
+	orders = {"a": {"count": 2, "amount": 100, "edited": 1}, "c": {"count": 1, "amount": 50}}
+	out = board.sales_fortnight(days, orders)
+	assert (out["orders"], out["amount"], out["edited"]) == (3, 150, 1)
+	assert out["hours"] is None and all(r["hours"] is None for r in out["days"])
+	out = board.sales_fortnight(days, orders, {"a": 8, "b": 0})
+	assert out["hours"] == 8 and out["days"][1]["hours"] == 0 and out["days"][2]["hours"] is None

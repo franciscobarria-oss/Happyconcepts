@@ -251,6 +251,20 @@
 			}).join("");
 		}
 
+		// --- sales, next 2 weeks: orders and value per delivery day, edited orders marked, man hours per day ---
+		const fn = d.fortnight;
+		$('[data-part="fortnight"]').hidden = !fn;
+		if (fn) {
+			$('[data-part="fortnight"] .legend').textContent = `${__("{0} orders", [fn.orders])} · ${money(fn.amount)}` +
+				(fn.edited ? ` · ${__("{0} edited", [fn.edited])}` : "") + (fn.hours != null ? ` · ${fn.hours} ${__("h")}` : "");
+			$(".fn").innerHTML = `<div class="fn-row fn-head"><span>${esc(__("Day"))}</span><span class="num">${esc(__("Orders"))}</span><span class="num">${esc(__("Value"))}</span><span class="num">${esc(__("Man hours"))}</span></div>` +
+				fn.days.map((x, i) => `<div class="fn-row${i === 0 ? " today" : ""}${x.orders ? "" : " zero"}">
+					<span>${esc(i === 0 ? __("Today") : day(x.date))}</span>
+					<span class="num">${x.orders}${x.edited ? ` <a class="badge warning" title="${esc(__("{0} edited after they came in", [x.edited]))}" href="/app/sales-order?hk_revision_count=%5B%22%3E%22%2C0%5D&docstatus=1">${esc(__("{0} edited", [x.edited]))}</a>` : ""}</span>
+					<span class="num">${x.orders ? esc(money(x.amount)) : "–"}</span>
+					<span class="num">${x.hours == null ? "–" : esc(x.hours + " " + __("h"))}</span></div>`).join("");
+		}
+
 		// --- tasks ---
 		const ord = d.tasks.ordering;
 		$('[data-task="ordering"]').hidden = !ord;

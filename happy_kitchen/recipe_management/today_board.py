@@ -331,3 +331,39 @@ def week_ahead() -> dict | None:
 	orders = tally("Sales Order", OPEN_SO_STATUSES, "delivery_date", "grand_total") if can_so else {}
 	deliveries = tally("Purchase Order", OPEN_PO_STATUSES, "schedule_date", "grand_total") if can_po else {}
 	return {"days": board.week_load(days, orders, deliveries), "orders": can_so, "deliveries": can_po}
+
+
+FORTNIGHT_DAYS = 14
+
+
+def man_hours(days: list[str]) -> dict[str, float]:
+	"""Man hours per day ({date: hours}). The provision for rosters: nothing is
+	rostered yet, so this returns {} and the card shows a dash. When rosters
+	exist, fill it here from them."""
+	return {}
+
+
+def sales_fortnight() -> dict | None:
+	"""All incoming (submitted, open) sales orders for today and the next 13
+	days by delivery date, late ones on today, with how many were edited
+	(hk_revision_count > 0), plus man hours per day. None without Sales Order
+	read permission."""
+	if not _can("Sales Order"):
+		return None
+	today = nowdate()
+	days = [str(add_days(today, i)) for i in range(FORTNIGHT_DAYS)]
+	edited_field = frappe.get_meta("Sales Order").has_field("hk_revision_count")
+	fields = ["delivery_date", "grand_total"] + (["hk_revision_count"] if edited_field else [])
+	orders: dict = {}
+	for r in frappe.get_all(
+		"Sales Order",
+		filters={"docstatus": 1, "status": ("in", OPEN_SO_STATUSES), "delivery_date": ("<=", days[-1])},
+		fields=fields,
+		limit=2000,
+	):
+		d = max(str(r["delivery_date"] or today), today)
+		t = orders.setdefault(d, {"count": 0, "amount": 0.0, "edited": 0})
+		t["count"] += 1
+		t["amount"] += flt(r["grand_total"])
+		t["edited"] += 1 if edited_field and int(r.get("hk_revision_count") or 0) > 0 else 0
+	return board.sales_fortnight(days, orders, man_hours(days))
