@@ -342,4 +342,8 @@ def kitchen_today() -> dict:
 
 	out["waiting"].extend(waiting_lines())
 
+	from happy_kitchen.hk_operations.continuous_api import waiting_lines as continuous_lines
+
+	out["waiting"].extend(continuous_lines())
+
 	return out
