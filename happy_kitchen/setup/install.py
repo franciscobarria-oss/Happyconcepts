@@ -30,6 +30,7 @@ INSTALL_PATCHES = [
 	"happy_kitchen.patches.daily_overview_fields",
 	"happy_kitchen.patches.customer_order_names",
 	"happy_kitchen.patches.compliance_setup",
+	"happy_kitchen.patches.continuous_fields",
 ]
 
 
