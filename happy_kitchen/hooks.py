@@ -91,7 +91,8 @@ doc_events = {
 }
 
 scheduler_events = {
-	"daily": ["happy_kitchen.recipe_management.doctype.recipe.recipe.recost_recipes"],
+	"daily": ["happy_kitchen.recipe_management.doctype.recipe.recipe.recost_recipes",
+	          "happy_kitchen.hk_operations.continuous_api.scheduled_check"],
 	"cron": {"*/15 * * * *": [
 		"happy_kitchen.hk_operations.gmail_orders.scheduled_fetch",
 		"happy_kitchen.hk_compliance.api.scheduled_runs",  # Kitchen Checks: due runs, overdue alerts
