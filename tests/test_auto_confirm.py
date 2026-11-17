@@ -16,3 +16,8 @@ def test_a_line_without_price_is_held():
 
 def test_duplicate_is_held():
 	assert hold_reason(50, [50], True) == DUPLICATE
+
+
+def test_sample_orders_may_have_no_value():
+	assert hold_reason(0, [0], False, True) == ""
+	assert hold_reason(0, [0], True, True) == DUPLICATE

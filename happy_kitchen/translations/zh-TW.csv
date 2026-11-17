@@ -27,6 +27,7 @@ A line has no price,有項目沒有價格
 A newer email proposes changes to this submitted order ({0}): {1},較新的電郵建議修改這張已提交的訂單({0}):{1}
 "A pack or container opened in the kitchen, with its use-by time (logged from the Opened screen).",廚房內開封的包裝或容器及其使用期限（由「開封」畫面記錄）。
 A place in the kitchen where checklists are done (Kitchen Checks).,廚房內進行檢查的區域（廚房檢查）。
+A sample sent to a customer: no price is needed and it is confirmed without a person checking the value.,送給客戶的樣品：不需要價格，確認時不必人員檢查金額。
 A signed checklist is an audit record and can't be cancelled.,已簽署的檢查表是審核記錄，不能取消。
 A time before the start means the next day (e.g. 22:00 to 01:00).,早於開始時間即表示翌日（例如 22:00 至 01:00）。
 Accent Colour,強調色
@@ -944,6 +945,7 @@ Sales Order {0} does not exist.,銷售訂單 {0} 不存在。
 Sales Orders,銷售訂單
 "Sales, next 2 weeks",未來兩週銷售
 Sample Sent,樣辦送出
+Sample order,樣品訂單
 Save PIN,儲存密碼
 Save draft order,儲存訂單草稿
 Save the sheet first.,請先儲存盤點表。

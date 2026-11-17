@@ -322,7 +322,8 @@ def _auto_confirm(order, so_names):
 		dup = frappe.db.exists("Sales Order", {
 			"customer": so.customer, "delivery_date": so.delivery_date, "docstatus": ("<", 2),
 			"name": ("!=", so.name), "grand_total": so.grand_total})
-		why = auto_confirm.hold_reason(so.grand_total, [r.rate for r in so.items], bool(dup))
+		why = auto_confirm.hold_reason(so.grand_total, [r.rate for r in so.items], bool(dup),
+		                              bool(so.get("hk_is_sample")))
 		if why:
 			order.add_comment("Info", _("Not confirmed automatically: {0} ({1}).").format(_(why), so.name))
 			return

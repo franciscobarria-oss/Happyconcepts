@@ -18,8 +18,11 @@ def _num(v) -> float:
 		return 0.0
 
 
-def hold_reason(total, rates, duplicate: bool) -> str:
-	"""'' when the order can be confirmed automatically, else why a person must check it."""
+def hold_reason(total, rates, duplicate: bool, is_sample: bool = False) -> str:
+	"""'' when the order can be confirmed automatically, else why a person must check it.
+	A sample order (Sales Order `hk_is_sample`) is kept at no value on purpose, so only a duplicate holds it."""
+	if is_sample:
+		return DUPLICATE if duplicate else ""
 	if _num(total) <= 0:
 		return ZERO_VALUE
 	if any(_num(r) <= 0 for r in rates):

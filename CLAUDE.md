@@ -143,4 +143,5 @@ Guidance for Claude Code working in this repository: the `happy_kitchen` Frappe 
 - `hk_operations/timesheet_load.py` loads a timesheet JSON (names, rates, shifts; kept in project files, not the repo) as Employees + check-ins, idempotent. Placeholder DOB 1990-01-01 / gender "Prefer not to say" until HR fills them in. No bank details are loaded.
 
 ## Auto-confirm email orders
+- Sales Order `hk_is_sample` (patch `sales_order_sample_field`): a sample order stays at 0 and auto-confirm lets it through (only a duplicate holds it).
 - Recipe Settings `auto_confirm_email_orders` (off by default; Francisco turns it on "until I tell you otherwise", 2026-11-17): `gmail_orders._auto_confirm` submits the new draft Sales Orders of an email right after they are made, unless the pure `hk_operations/auto_confirm.hold_reason` says a person should look (total 0, a row with rate 0, or another open order for the same customer, delivery date and total). Held orders stay drafts with an Info comment on the Email Order. All or nothing per email (savepoint). Tests: tests/test_auto_confirm.py.

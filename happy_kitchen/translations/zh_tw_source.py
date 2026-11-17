@@ -37,6 +37,8 @@ ZH_TW = {
 	"No value": "沒有金額",
 	"A line has no price": "有項目沒有價格",
 	"Looks like a duplicate": "疑似重複",
+	"Sample order": "樣品訂單",
+	"A sample sent to a customer: no price is needed and it is confirmed without a person checking the value.": "送給客戶的樣品：不需要價格，確認時不必人員檢查金額。",
 	"Order confirmed by {0}.": "{0} 已確認訂單。",
 	"Matched by the reader": "系統已配對",
 	"Confirm item": "確認產品",
