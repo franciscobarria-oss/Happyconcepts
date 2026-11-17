@@ -28,6 +28,7 @@
   "create_stock_entry_on_submit",
   "complete_with_delivery_note",
   "auto_confirm_email_orders",
+  "auto_complete_email_orders",
   "stock_take_section",
   "variance_tolerance_pct",
   "column_break_stock_take",
@@ -174,6 +175,13 @@
    "fieldtype": "Check",
    "label": "Confirm email orders automatically",
    "description": "New draft orders made from email are confirmed at once. Orders with no value, a line with no price, or that look like a duplicate stay as drafts for a person."
+  },
+  {
+   "default": "0",
+   "fieldname": "auto_complete_email_orders",
+   "fieldtype": "Check",
+   "label": "Complete email orders after their delivery date",
+   "description": "Confirmed orders from email are assumed prepared and sent: the day after the delivery date they are completed. Revised, on-hold and unreadable orders stay for a person."
   },
   {
    "fieldname": "stock_take_section",
