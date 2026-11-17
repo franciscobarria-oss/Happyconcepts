@@ -428,3 +428,26 @@ html.hk-theme .hk-cc-card { border-radius: 12px; }
 	.hk-lang--head { display: none; }
 	.hk-lang--sidebar { display: inline-flex; }
 }
+
+/* ---------- Home button, top left of every page header ---------- */
+.hk-home {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	height: 30px;
+	margin-right: 10px;
+	padding: 0 10px;
+	border: 1px solid var(--hk-line-strong, var(--dark-border-color, #c7c7c7));
+	border-radius: 8px;
+	background: var(--hk-surface-raised, var(--fg-color, #fff));
+	color: var(--hk-ink, var(--text-color));
+	font: 600 12px/16px var(--hk-font-sans, inherit);
+	text-decoration: none;
+	flex: none;
+}
+.hk-home:hover { background: var(--hk-brand-soft, var(--btn-default-hover-bg, #eee)); color: var(--hk-ink, var(--text-color)); text-decoration: none; }
+.hk-home:focus-visible { outline: 2px solid var(--hk-focus, currentColor); outline-offset: 2px; }
+@media (max-width: 767.98px) {
+	.hk-home span { display: none; }
+	.hk-home { padding: 0 9px; margin-right: 6px; }
+}
