@@ -34,6 +34,7 @@ INSTALL_PATCHES = [
 	"happy_kitchen.patches.continuous_fields",
 	"happy_kitchen.patches.hr_fields",
 	"happy_kitchen.patches.hr_setup",
+	"happy_kitchen.patches.hr_templates_fix",
 ]
 
 

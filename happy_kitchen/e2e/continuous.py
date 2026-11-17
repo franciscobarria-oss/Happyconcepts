@@ -17,7 +17,7 @@ def run():
 	try:
 		emp = frappe.get_doc({"doctype": "Employee", "first_name": "E2E-Part", "gender": "Prefer not to say",
 		                      "date_of_birth": "1990-01-01", "date_of_joining": add_days(nowdate(), -40), "company": company,
-		                      "status": "Active", "hk_hourly_rate": 80}).insert()
+		                      "status": "Active", "hk_hourly_rate": 80}).insert(set_name="E2E-CONT-EMP-1")
 		for i in range(1, 7):  # 6 x 9 h = 54 h
 			day = add_days(nowdate(), -i)
 			for t, lt in (("07:30:00", "IN"), ("16:30:00", "OUT")):
