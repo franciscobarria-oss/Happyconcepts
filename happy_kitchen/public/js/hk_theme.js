@@ -69,7 +69,14 @@
 		switchTo(btn.dataset.lang);
 	});
 
+	// Home button: first thing in every page header, goes to the desk home.
+	const HOME_SVG = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7.5 8 2.5l6 5M3.5 6.5V13.5h3.5V9.5h2v4h3.5V6.5"/></svg>';
+	const homeHtml = () => `<a class="hk-home" href="/desk" title="${__("Home")}" aria-label="${__("Home")}">${HOME_SVG}<span>${__("Home")}</span></a>`;
+
 	function placeToggles() {
+		document.querySelectorAll(".page-head .page-head-content").forEach((el) => {
+			if (!el.querySelector(":scope > .hk-home")) el.insertAdjacentHTML("afterbegin", homeHtml());
+		});
 		// desktop: right-hand side of each page header, before the "..." menu
 		document.querySelectorAll(".page-head .standard-items-section").forEach((el) => {
 			if (!el.querySelector(".hk-lang")) el.insertAdjacentHTML("afterbegin", toggleHtml("head"));
