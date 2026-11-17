@@ -180,6 +180,7 @@ Closed at,結束時間
 Closing,期末
 Closing Count,期末盤點
 Code,代碼
+Complete email orders after their delivery date,送貨日後自動完成電郵訂單
 Complete on a Sales Order makes a Delivery Note (needs stock),銷售訂單按「完成」時建立送貨單（需要庫存）
 Complete {0}? This marks everything not yet delivered as delivered.,要完成 {0} 嗎？這會把所有未送的貨品標為已送。
 Completed by {0} without a delivery note (stock is not tracked yet).,{0} 已完成訂單，沒有送貨單（尚未追蹤庫存）。
@@ -195,6 +196,7 @@ Confirm email orders automatically,自動確認電郵訂單
 Confirm item,確認產品
 Confirmed (late),已確認（逾期）
 Confirmed automatically: {0}.,已自動確認：{0}。
+"Confirmed orders from email are assumed prepared and sent: the day after the delivery date they are completed. Revised, on-hold and unreadable orders stay for a person.",電郵訂單確認後，視為已準備及送出：送貨日翌日自動完成。已修訂、暫停及無法閱讀的訂單仍由人員處理。
 Confirmed. No more draft orders from email to check.,已確認。沒有其他待檢查的電郵草稿訂單。
 Connected to {0}. Read-only access.,已連接 {0}(唯讀)。
 Continue a count,繼續盤點
@@ -1309,6 +1311,7 @@ short {0},欠 {0}
 some already on order,部分已訂購
 suggested price,建議售價
 target {0}%,目標 {0}%
+the system (auto-complete),系統（自動完成）
 today,今日
 units,件
 use by,使用期限
