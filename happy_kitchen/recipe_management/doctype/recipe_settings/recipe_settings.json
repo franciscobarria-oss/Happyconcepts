@@ -27,6 +27,7 @@
   "default_warehouse",
   "create_stock_entry_on_submit",
   "complete_with_delivery_note",
+  "auto_confirm_email_orders",
   "stock_take_section",
   "variance_tolerance_pct",
   "column_break_stock_take",
@@ -166,6 +167,13 @@
    "fieldtype": "Check",
    "label": "Complete on a Sales Order makes a Delivery Note (needs stock)",
    "description": "Off: Complete closes the order without moving stock. Turn on once stock is counted."
+  },
+  {
+   "default": "0",
+   "fieldname": "auto_confirm_email_orders",
+   "fieldtype": "Check",
+   "label": "Confirm email orders automatically",
+   "description": "New draft orders made from email are confirmed at once. Orders with no value, a line with no price, or that look like a duplicate stay as drafts for a person."
   },
   {
    "fieldname": "stock_take_section",

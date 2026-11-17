@@ -13,7 +13,7 @@ import frappe
 from frappe import _
 from frappe.utils import add_days, flt, get_datetime, getdate, now_datetime, nowdate
 
-from happy_kitchen.hk_operations import email_orders, order_prices, revisions_api, sku
+from happy_kitchen.hk_operations import auto_confirm, email_orders, order_prices, revisions_api, sku
 
 GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
 GMAIL_API = "https://gmail.googleapis.com/gmail/v1/users/me"
@@ -307,7 +307,36 @@ def process(order, lead_days: int = 1, prior=None):
 		return
 	order.sales_order = made[0]
 	order.status = "Needs review" if unparsed or notes else "Draft order"
+	if order.status == "Draft order":
+		_auto_confirm(order, made)
 	order.save(ignore_permissions=True)
+
+
+def _auto_confirm(order, so_names):
+	"""Recipe Settings `auto_confirm_email_orders`: submit the new draft orders unless a person should look
+	(no value, a line without price, or a copy of an order we already have). All or nothing per email."""
+	if not frappe.db.get_single_value("Recipe Settings", "auto_confirm_email_orders"):
+		return
+	docs = [frappe.get_doc("Sales Order", n) for n in so_names]
+	for so in docs:
+		dup = frappe.db.exists("Sales Order", {
+			"customer": so.customer, "delivery_date": so.delivery_date, "docstatus": ("<", 2),
+			"name": ("!=", so.name), "grand_total": so.grand_total})
+		why = auto_confirm.hold_reason(so.grand_total, [r.rate for r in so.items], bool(dup),
+		                              bool(so.get("hk_is_sample")))
+		if why:
+			order.add_comment("Info", _("Not confirmed automatically: {0} ({1}).").format(_(why), so.name))
+			return
+	frappe.db.savepoint("hk_auto_confirm")
+	try:
+		for so in docs:
+			so.submit()
+	except Exception as e:
+		frappe.db.rollback(save_point="hk_auto_confirm")
+		order.add_comment("Info", _("Not confirmed automatically: {0}").format(str(e)[:300]))
+		return
+	order.status = "Order confirmed"
+	order.add_comment("Comment", _("Confirmed automatically: {0}.").format(", ".join(so_names)))
 
 
 def _make_sales_order(order, customer, po, items, lead_days):
