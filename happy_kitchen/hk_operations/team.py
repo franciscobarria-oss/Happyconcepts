@@ -39,7 +39,12 @@ TABLET_ROLE = "Kitchen Tablet"
 MANAGER_ROLES = ["System Manager", "HR Manager"]
 LEAVE_APPROVER = "francisco.barria@gmail.com"
 
-# Labour Department statutory holidays (Christmas Day chosen over the Winter Solstice).
+# Labour Department statutory holidays (Christmas Day chosen over the Winter Solstice, which the
+# law lets the employer pick instead). CHECKED 2026-11-17 against labour.gov.hk/eng/news/
+# latest_holidays2026.htm and latest_holidays2027.htm: all 15 dates for each year match. The
+# lists keep Sunday dates (5 Apr, 24 May, 18 Oct 2026); an employee whose rest day is that day
+# gets the next day that is not a holiday or rest day. Good Friday and the Saturday after are
+# general holidays, not statutory, so they are not in this list. Review every January.
 HOLIDAY_LIST = "HK Statutory 2026-27"
 HOLIDAY_LIST_RANGE = ("2026-01-01", "2027-12-31")
 HOLIDAYS = {
