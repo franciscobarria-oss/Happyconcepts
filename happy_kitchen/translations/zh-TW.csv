@@ -18,6 +18,7 @@
 4-digit PIN,4 位數密碼
 468 Status,468 狀態
 6 months,6 個月
+60 days after the joining date. Worked out by the system.,入職日起 60 天。由系統計算。
 <b>{0}</b> is used in {1} recipes. Choose what to use instead and where.,<b>{0}</b> 用於 {1} 個食譜。請選擇取代的材料及食譜。
 A client spec sheet may change shelf life and storage for that client.,客戶規格表可為該客戶更改保質期及儲存方法。
 "A desk notification to every Compliance Manager, once per run.",每次向每位合規經理發出一個系統通知。
@@ -107,6 +108,7 @@ Best before = made-on date + the product's shelf life.,此日期前最佳 = 製�
 Blank = default labour rate from Recipe Settings.,留空 = 使用食譜設定中的預設人工費率。
 Blank = item name.,留空 = 物料名稱。
 Blank = no limit.,留空 = 不設限制。
+Blank = not enrolled yet.,留空 = 尚未加入。
 Blank = offered on every checklist.,留空 = 所有檢查表都可選。
 Blank = the recipe's unit weight.,留空 = 食譜的單位重量。
 Brand Name,品牌名稱
@@ -196,6 +198,7 @@ Confirmed automatically: {0}.,已自動確認：{0}。
 Confirmed. No more draft orders from email to check.,已確認。沒有其他待檢查的電郵草稿訂單。
 Connected to {0}. Read-only access.,已連接 {0}(唯讀)。
 Continue a count,繼續盤點
+Contract Type,合約類別
 Cooking Yield %,成品率
 Copied into every new recipe. Edit them per recipe as needed.,會複製到每個新食譜，可按需要逐個食譜修改。
 Copy last week's shifts into this week's empty days?,將上星期的更次複製到本星期未排更的日子？
@@ -301,6 +304,7 @@ Enter order,輸入訂單
 Enter what arrived for at least one line.,請最少輸入一行的實收數量。
 Entered by hand,人手輸入
 Entered by {0} from the email '{1}' ({2}). Check it before submitting.,由 {0} 根據電郵「{1}」({2}) 輸入。提交前請檢查。
+Entitlements Today,現時假期權益
 Entries,項數
 Est. Cost,估計成本
 Estimated Cost,估計成本
@@ -340,6 +344,7 @@ Food Cost %,食材成本率
 Food Cost per Unit,每件食物成本
 Food cost,食材成本率
 Food safety,食物安全
+Food-handler certificate expires,食物處理員證書到期
 "For delivery charges, services and other non-food lines.",用於運費、服務及其他非食品項目。
 "For sales items sold under another code than the recipe's own item, e.g. a customer's article number or a box.",用於以食譜物品以外編號出售的銷售物品，例如客戶的貨號或一盒裝。
 For someone who is not a customer yet (name or company).,給尚未成為客戶的人（姓名或公司）。
@@ -377,12 +382,14 @@ HK Team Roster,HK 團隊更表
 HK Team Today,HK 今日團隊
 HK Today,HK 今日
 "HK$ per hour (Fixed), or how many times the person's own hourly wage (1.5 = time and a half).",每小時港幣（固定），或員工本身時薪的倍數（1.5 = 一點五倍）。
+HKID / Passport No.,香港身份證／護照號碼
 Happening today,今日進行中
 Happy Concepts desk theme,Happy Concepts 介面主題
 Happy Kitchen,快樂廚房
 "Have you read the whole label, including allergens, storage and shelf life, and is it correct?",你是否已閱讀整張標籤（包括致敏物、儲存方法及保質期），並確認正確？
 Help text,說明
 Highest allowed,最高容許
+Hong Kong HR,香港人事
 Hourly Labour Cost (incl. MPF),每小時人工成本（包括強積金）
 Hourly Wage,時薪
 Hours,時數
@@ -501,6 +508,7 @@ Late: the delivery date has passed.,逾期：已過送貨日期。
 Later,稍後
 Leave balances,假期結餘
 Leave blank to use the cheapest supplier on the buying price list.,留空即使用採購價格表中最便宜的供應商。
+Leave to approve,待批假期
 Less,收起
 Line ID,行編號
 Line {0} not found.,找不到第 {0} 行。
@@ -525,6 +533,10 @@ Lot,批次
 "Lot printed on the label (the batch, or a lot from the production log).",標籤上印的批號（批次，或生產紀錄的批號）。
 "Lower numbers first. Blank = after the numbered ones, by heading and name.",數字小的排先。留空＝排在有數字的後面，按標題及名稱。
 Lowest allowed,最低容許
+MPF Enrolment Due,強積金加入限期
+MPF Member No.,強積金成員編號
+MPF Scheme,強積金計劃
+MPF enrolment due,強積金加入限期
 Made From Recipe,按食譜製作
 Made by (bottom of label),製造商（標籤底部）
 Made on,生產日期
@@ -562,6 +574,7 @@ Must be answered,必須回答
 Name in ingredient lists,配料表名稱
 Name is required.,必須填寫名稱。
 Names in order emails,訂單電郵中的名稱
+Nationality,國籍
 Need,需要
 Need a look,需檢查
 Needed {0},需要日期 {0}
@@ -818,6 +831,8 @@ Printing,列印中
 Prints,打印張數
 Prints as,標籤上顯示為
 Prints opened-product and batch labels. Blank = the first enabled printer set to Kitchen date labels.,用於打印開封及批次標籤。留空 = 第一部設為「廚房日期標籤」的啟用打印機。
+Probation Ends,試用期完結
+Probation ends,試用期完結
 Produced,已生產
 Produced today,今日已生產
 Product,產品
@@ -1185,6 +1200,9 @@ Variance Cost,差異成本
 Variance Qty,差異數量
 Variance Tolerance %,差異容差 %
 View all,查看全部
+Visa / work permit expires,簽證／工作許可證到期
+Visa Expiry,簽證到期日
+Visa or work permit. A reminder shows on Today 30 days before.,簽證或工作許可證。到期前 30 天於「今日」提醒。
 Wages,工資
 Wages (Labour) - {0} h,工資（人工）－ {0} 小時
 Waiting because,等待原因
@@ -1208,6 +1226,7 @@ Week of {0},{0} 當週
 Weight Tolerance (± g),重量誤差（± 克）
 Weight per Piece (g),每件重量（克）
 Weights & Cooking Yield,重量及成品率
+What applies today under the Employment Ordinance. Worked out by the system.,根據僱傭條例現時適用的權益。由系統計算。
 What changed,修改內容
 "What customers read, without brand or pack size, e.g. Wheat flour, Unsalted butter. Blank = item name.",顧客看到的名稱，不含品牌或包裝尺寸，例如 Wheat flour、Unsalted butter。留空 = 物料名稱。
 "What the extra time was for (big order, stock count, cover).",加班原因（大訂單、盤點、代更）。
@@ -1260,6 +1279,7 @@ failed: say what was done about it,不合格：請填寫跟進措施
 from recipe {0},來自食譜 {0}
 h,小時
 in since {0},{0} 上班
+in {0} days,{0} 天後
 ingredients,食材
 ingredients {0},食材 {0}
 labour,人工
@@ -1278,6 +1298,7 @@ of which Packaging,其中包裝
 only if different,只在不同時
 orders out,出貨訂單
 out at {0},{0} 下班
+overdue,已逾期
 overheads,雜費
 part week,不完整的一週
 photo needed,需要相片
@@ -1302,6 +1323,7 @@ waiting for the printer,等待打印機
 {0} already exists as {1} and is measured in {2}. Choose {2} as the UOM.,{0} 已存在為 {1}，以 {2} 計量。請選擇 {2} 作為單位。
 {0} already exists as {1}. Link it to {2} and add this price?,{0} 已存在為 {1}。是否連結到 {2} 並加入此價格？
 {0} already has a price from {1}. Edit it on the Item Price list instead.,{0} 已有來自 {1} 的價格。請在物品價格列表中修改。
+{0} applications,{0} 份申請
 {0} archived recipes are left as they were.,{0} 個已封存食譜保持不變。
 {0} batches,{0} 批
 {0} batches · short {1},{0} 批 · 欠 {1}

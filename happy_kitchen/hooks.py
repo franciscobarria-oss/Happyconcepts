@@ -51,6 +51,7 @@ doctype_js = {
 
 # Draft / Confirmed / Completed badge on the Sales Order list and form (hk_operations/order_stage.py)
 doctype_list_js = {
+	"Item": "public/js/item_list.js",
 	"Sales Order": "public/js/sales_order_list.js",
 }
 
@@ -66,14 +67,20 @@ doc_events = {
 		"validate": [
 			"happy_kitchen.hk_operations.sku_api.item_validate",
 			"happy_kitchen.hk_operations.current_flag_api.item_validate",
+			"happy_kitchen.hk_operations.list_price_api.item_validate",
 		],
 		"on_update": "happy_kitchen.recipe_management.doctype.recipe.recipe.recost_recipes_for_item_weight",
 	},
 	"Item Price": {
-		"on_update": "happy_kitchen.recipe_management.doctype.recipe.recipe.recost_recipes_for_item",
+		"after_delete": "happy_kitchen.hk_operations.list_price_api.item_price_changed",
+		"on_update": [
+			"happy_kitchen.recipe_management.doctype.recipe.recipe.recost_recipes_for_item",
+			"happy_kitchen.hk_operations.list_price_api.item_price_changed",
+		],
 	},
 	"Employee": {
-		"validate": "happy_kitchen.hk_operations.team_api.employee_validate",
+		"validate": ["happy_kitchen.hk_operations.team_api.employee_validate",
+		             "happy_kitchen.hk_operations.hr_api.employee_validate"],
 		"on_update": "happy_kitchen.hk_operations.team_api.employee_on_update",
 	},
 	"Sales Order": {
@@ -92,7 +99,8 @@ doc_events = {
 
 scheduler_events = {
 	"daily": ["happy_kitchen.recipe_management.doctype.recipe.recipe.recost_recipes",
-	          "happy_kitchen.hk_operations.continuous_api.scheduled_check"],
+	          "happy_kitchen.hk_operations.continuous_api.scheduled_check",
+	          "happy_kitchen.hk_operations.hr_api.scheduled_allocation"],
 	"cron": {"*/15 * * * *": [
 		"happy_kitchen.hk_operations.gmail_orders.scheduled_fetch",
 		"happy_kitchen.hk_compliance.api.scheduled_runs",  # Kitchen Checks: due runs, overdue alerts
