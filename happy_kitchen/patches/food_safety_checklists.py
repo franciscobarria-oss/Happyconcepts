@@ -9,6 +9,8 @@ def execute():
 	area = d.AREA[0]
 	if not frappe.db.exists("Check Area", area):
 		return  # compliance_setup makes the area; nothing to attach the schedules to without it
+	if frappe.get_all("Checklist Template", filters={"title": ("like", "FS %")}, limit=1):
+		return  # food safety checklists were already set up on this site (hcl-erp, by hand 2026-11-17)
 	for t in d.FOOD_SAFETY:
 		if frappe.db.exists("Checklist Template", t["title"]):
 			continue
