@@ -43,13 +43,14 @@ def _leave_types():
 		frappe.get_doc({"doctype": "Leave Type", "leave_type_name": name, **fields}).insert(ignore_permissions=True)
 
 
-def _template(doctype, name, activities):
-	if frappe.db.exists(doctype, name):
+def _template(doctype, title, activities):
+	"""The templates are named by a series (HR-EMP-ONT-.#####) and need a title, so look them up by title."""
+	if frappe.db.exists(doctype, {"title": title}):
 		return
 	company = frappe.defaults.get_global_default("company")
-	doc = frappe.get_doc({"doctype": doctype, "company": company, "activities": [
+	doc = frappe.get_doc({"doctype": doctype, "title": title, "company": company, "activities": [
 		{"activity_name": a, "role": "HR Manager", "duration": 7} for a in activities]})
-	doc.insert(ignore_permissions=True, set_name=name)
+	doc.insert(ignore_permissions=True)
 
 
 def _employees():
