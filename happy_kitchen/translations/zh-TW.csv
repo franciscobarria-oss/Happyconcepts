@@ -23,6 +23,7 @@ A client spec sheet may change shelf life and storage for that client.,客戶規
 "A desk notification to every Compliance Manager, once per run.",每次向每位合規經理發出一個系統通知。
 A draft sales order was made from the lines that could be read. Check it against the PDF.,已用讀得到的行建立銷售訂單草稿。請對照 PDF 檢查。
 A fail is shown in red to managers.,不合格會以紅色顯示給經理。
+A line has no price,有項目沒有價格
 A newer email proposes changes to this submitted order ({0}): {1},較新的電郵建議修改這張已提交的訂單({0}):{1}
 "A pack or container opened in the kitchen, with its use-by time (logged from the Opened screen).",廚房內開封的包裝或容器及其使用期限（由「開封」畫面記錄）。
 A place in the kitchen where checklists are done (Kitchen Checks).,廚房內進行檢查的區域（廚房檢查）。
@@ -187,8 +188,10 @@ Compliance Settings,合規設定
 Component,組件
 Confirm PO items,確認此採購單的產品
 Confirm and next,確認並下一張
+Confirm email orders automatically,自動確認電郵訂單
 Confirm item,確認產品
 Confirmed (late),已確認（逾期）
+Confirmed automatically: {0}.,已自動確認：{0}。
 Confirmed. No more draft orders from email to check.,已確認。沒有其他待檢查的電郵草稿訂單。
 Connected to {0}. Read-only access.,已連接 {0}(唯讀)。
 Continue a count,繼續盤點
@@ -516,6 +519,7 @@ Log production,記錄生產
 Log {0} recipe(s) as produced on {1}?,確認記錄於 {1} 生產 {0} 個食譜？
 Logged By,記錄人
 Look back (days),回溯日數
+Looks like a duplicate,疑似重複
 Lot,批次
 "Lot printed on the label (the batch, or a lot from the production log).",標籤上印的批號（批次，或生產紀錄的批號）。
 "Lower numbers first. Blank = after the numbered ones, by heading and name.",數字小的排先。留空＝排在有數字的後面，按標題及名稱。
@@ -568,6 +572,7 @@ Net Qty Used,淨用量
 Net weight per piece (g),每件淨重（克）
 New count,新盤點
 "New customer {0} made from the original sender of a forwarded email: check it, or add the outlet's name under the customer's Names in order emails.",已按轉寄電郵的原寄件人建立新客戶 {0}：請檢查，或在客戶的「訂單電郵中的名稱」加入分店名稱。
+"New draft orders made from email are confirmed at once. Orders with no value, a line with no price, or that look like a duplicate stay as drafts for a person.",由電郵建立的新草稿訂單會即時確認。沒有金額、有項目沒有價格或疑似重複的訂單會保留為草稿，由人員檢查。
 New item,新貨品
 New product made,已新增產品
 No Price,未有價格
@@ -603,6 +608,7 @@ No sales in this range.,此期間沒有銷售。
 No selling price,未有售價
 No shifts on the roster today.,今日更表沒有人當值。
 "No storage area set on these items, so nothing was taken out of stock.",這些物品未設定儲存位置，所以未有扣除庫存。
+No value,沒有金額
 Not allowed,不允許
 Not an order,非訂單
 Not changed,未更改
@@ -610,6 +616,8 @@ Not checked,未核對
 Not checked for over an hour,已超過一小時沒有檢查
 Not checked yet,尚未檢查
 Not checked yet. Labels asked for on an order wait until a manager checks this label.,尚未檢查。訂單上要求列印的標籤會等候經理檢查此標籤。
+Not confirmed automatically: {0},未能自動確認：{0}
+Not confirmed automatically: {0} ({1}).,未自動確認：{0}（{1}）。
 Not finished yet,尚未完成
 Not invoiced yet.,未開發票。
 Not now,暫不
