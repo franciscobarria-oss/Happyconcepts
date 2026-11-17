@@ -79,7 +79,8 @@ doc_events = {
 		],
 	},
 	"Employee": {
-		"validate": "happy_kitchen.hk_operations.team_api.employee_validate",
+		"validate": ["happy_kitchen.hk_operations.team_api.employee_validate",
+		             "happy_kitchen.hk_operations.hr_api.employee_validate"],
 		"on_update": "happy_kitchen.hk_operations.team_api.employee_on_update",
 	},
 	"Sales Order": {
@@ -98,7 +99,8 @@ doc_events = {
 
 scheduler_events = {
 	"daily": ["happy_kitchen.recipe_management.doctype.recipe.recipe.recost_recipes",
-	          "happy_kitchen.hk_operations.continuous_api.scheduled_check"],
+	          "happy_kitchen.hk_operations.continuous_api.scheduled_check",
+	          "happy_kitchen.hk_operations.hr_api.scheduled_allocation"],
 	"cron": {"*/15 * * * *": [
 		"happy_kitchen.hk_operations.gmail_orders.scheduled_fetch",
 		"happy_kitchen.hk_compliance.api.scheduled_runs",  # Kitchen Checks: due runs, overdue alerts

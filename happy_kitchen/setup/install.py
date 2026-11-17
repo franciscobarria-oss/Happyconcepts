@@ -32,6 +32,8 @@ INSTALL_PATCHES = [
 	"happy_kitchen.patches.compliance_setup",
 	"happy_kitchen.patches.item_list_columns",
 	"happy_kitchen.patches.continuous_fields",
+	"happy_kitchen.patches.hr_fields",
+	"happy_kitchen.patches.hr_setup",
 ]
 
 
