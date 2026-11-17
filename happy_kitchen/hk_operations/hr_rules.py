@@ -1,32 +1,38 @@
 """HR Phase 1 rules: Employment Ordinance (EO, Cap. 57) leave entitlements, MPF enrolment and
 expiry reminders. Plain Python, no frappe (tests/test_hr_rules.py).
 
-SOURCES / STATUS: every rule below is from general knowledge of the EO and Labour Department
-guidance (2026-11-17). Each is marked TO CONFIRM until Francisco has checked it against the
-Labour Department's current guide; then replace the marker with "Confirmed <date>, <source>"."""
+SOURCES: checked 2026-11-17 against the Labour Department "Concise Guide to the Employment Ordinance"
+(labour.gov.hk/eng/public/wcp/ConciseGuide/, Dec 2025 version; chapter 4 leave and holidays, chapter 5
+sickness allowance) and the MPFA pages (mpfa.org.hk, enrolment and contributions). Francisco signs
+off. Review every January."""
 
 from __future__ import annotations
 
 from datetime import date, timedelta
 
-from happy_kitchen.hk_operations.team import annual_leave_days  # EO s.41AC scale, TO CONFIRM
+from happy_kitchen.hk_operations.team import annual_leave_days  # guide ch.4: 7 days yrs 1-2, +1 a year, 14 from yr 9 (confirmed)
 
 MONTHLY = "Monthly"
 HOURLY = "Hourly part-timer"
 CONTRACT_TYPES = (MONTHLY, HOURLY)
 
-# Sickness allowance (EO s.33, 33A): TO CONFIRM
+# Sickness allowance, guide ch.5 (confirmed): 2 days per completed month in the first 12 months, 4 after,
+# up to 120 at any one time, paid at four fifths of the average daily wages.
 SICK_FIRST_YEAR_PER_MONTH = 2
 SICK_AFTER_PER_MONTH = 4
 SICK_CAP = 120
 SICK_PAY_FRACTION = 0.8  # four fifths of the average daily wages
 
-MATERNITY_DAYS = 98  # 14 weeks (EO s.12), TO CONFIRM
-PATERNITY_DAYS = 5  # EO s.15B, TO CONFIRM
+MATERNITY_DAYS = 98  # 14 weeks (guide ch.6; the guide text is garbled, so inferred)
+PATERNITY_DAYS = 5  # 5 days: Francisco set this 2026-11-17 (the guide text was only seen as a summary)
 
-MPF_WAIT_DAYS = 60  # employee must join a scheme within 60 days of starting, TO CONFIRM
-SUBSTITUTE_HOLIDAY_DAYS = 60  # substitute holiday within 60 days before or after the SH, TO CONFIRM
-SH_QUALIFY_MONTHS = 3  # holiday pay after 3 months on a continuous contract, TO CONFIRM
+MPF_WAIT_DAYS = 60  # MPFA: register within the first 60 calendar days (confirmed). If day 60 is a Saturday, public
+# holiday or eMPF outage the deadline moves to the next working day; the reminder uses plain day 60.
+# The employee has a 30-day contribution-free period (for the MPF sheet later).
+SUBSTITUTE_HOLIDAY_DAYS = 60  # alternative holiday within 60 days before or after the SH (guide ch.4, confirmed);
+# by agreement a substituted holiday may be any day within 30 days
+SH_QUALIFY_MONTHS = 3  # holiday pay after 3 months on a continuous contract (guide ch.4, confirmed)
+# Continuous contract (guide ch.1, from 18 Jan 2026): 4 weeks, and 17 hours a week or 68 hours in 4 weeks
 
 REMIND_DAYS = 30  # expiry reminders start this many days ahead
 MPF_REMIND_DAYS = 14
@@ -52,9 +58,16 @@ def sick_days_per_month(joined: date, on: date) -> int:
 	return SICK_FIRST_YEAR_PER_MONTH if full_years(joined, on) < 1 else SICK_AFTER_PER_MONTH
 
 
+def month_completed(joined: date, on: date) -> bool:
+	"""Called on the 1st of a month: was the whole previous calendar month worked? Sick days
+	are earned per completed month, so a new starter gets the first ones after a full month."""
+	prev_first = date(on.year - (on.month == 1), 12 if on.month == 1 else on.month - 1, 1)
+	return joined <= prev_first
+
+
 def sick_days_to_add(joined: date, on: date, balance: float, continuous: bool = True) -> float:
 	"""Days to add on the 1st of a month: the monthly accrual, never taking the balance over the cap."""
-	if not continuous:
+	if not continuous or not month_completed(joined, on):
 		return 0
 	return max(0, min(sick_days_per_month(joined, on), SICK_CAP - balance))
 

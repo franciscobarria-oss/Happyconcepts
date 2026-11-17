@@ -19,6 +19,15 @@ def test_sick_cap():
 	assert h.sick_days_to_add(D(2020, 1, 1), D(2026, 1, 1), 5, continuous=False) == 0
 
 
+def test_sick_days_need_a_completed_month():
+	assert not h.month_completed(D(2026, 10, 2), D(2026, 11, 1))
+	assert h.month_completed(D(2026, 10, 1), D(2026, 11, 1))
+	assert h.month_completed(D(2025, 12, 15), D(2026, 1, 1)) is False
+	assert h.month_completed(D(2025, 12, 1), D(2026, 1, 1))
+	assert h.sick_days_to_add(D(2026, 10, 2), D(2026, 11, 1), 0) == 0
+	assert h.sick_days_to_add(D(2026, 10, 1), D(2026, 11, 1), 0) == 2
+
+
 def test_continuous_rule():
 	assert h.is_continuous(h.MONTHLY, None)
 	assert not h.is_continuous(h.HOURLY, "Close")
