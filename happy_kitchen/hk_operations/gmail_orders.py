@@ -295,6 +295,11 @@ def process(order, lead_days: int = 1, prior=None):
 			items.append((ln, item, created))
 		so = _make_sales_order(order, customer, po, items, lead_days)
 		made.append(so.name)
+		if not any(ln["delivery_date"] and getdate(ln["delivery_date"]) >= getdate(nowdate()) for ln, _i, _c in items):
+			# No usable date on the PO: the order sits on the lead-time date, so a person must check it
+			# (this also keeps it from being confirmed automatically).
+			notes.append(_("PO {0}: no delivery date read from the PO, order dated {1}: check the delivery date.").format(
+				po or so.name, so.delivery_date))
 		for (ln, item, created), chk in zip(items, so.flags.hk_price_checks):
 			order.append("lines", {**ln, "item": item, "item_created": 1 if created else 0,
 			                       "delivery_date": ln["delivery_date"] or None, "sales_order": so.name,

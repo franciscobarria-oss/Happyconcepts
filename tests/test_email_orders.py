@@ -236,6 +236,8 @@ def test_parse_date_ranges_and_compact():
 	assert eo.parse_date("21 Oct 2026") == "2026-10-21"
 	assert eo.delivery_date_of("Order Date 20 Oct 2026\nDelivery Date 25. October 2026\n") == "2026-10-25"
 	assert eo.delivery_date_of("no dates") == ""
+	clipped = "Document Date 16. November 2026\nExpected Receipt Dat 21. November 202\n"
+	assert eo.delivery_date_of(clipped) == "2026-11-21"
 
 
 def test_po_markers_split_lines_by_po():

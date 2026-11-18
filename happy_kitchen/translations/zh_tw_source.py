@@ -37,6 +37,7 @@ ZH_TW = {
 	"New draft orders made from email are confirmed at once. Orders with no value, a line with no price, or that look like a duplicate stay as drafts for a person.": "由電郵建立的新草稿訂單會即時確認。沒有金額、有項目沒有價格或疑似重複的訂單會保留為草稿，由人員檢查。",
 	"Not confirmed automatically: {0}": "未能自動確認：{0}",
 	"Not confirmed automatically: {0} ({1}).": "未自動確認：{0}（{1}）。",
+	"PO {0}: no delivery date read from the PO, order dated {1}: check the delivery date.": "採購單 {0}：讀不到送貨日期，訂單日期為 {1}，請檢查送貨日期。",
 	"No value": "沒有金額",
 	"A line has no price": "有項目沒有價格",
 	"Looks like a duplicate": "疑似重複",
