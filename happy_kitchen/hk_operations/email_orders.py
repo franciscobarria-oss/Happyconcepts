@@ -342,6 +342,18 @@ def delivery_date_of(page_text: str) -> str:
 		d = parse_date(m.group(1))
 		if d:
 			return d
+	# IKEA / Dairy Farm POs print "Expected Receipt Dat 21. November 202" (label and year clipped):
+	# read day and month, take the year from the "Document Date" (not clipped) or any 20yy in the text.
+	m = re.search(r"(?i)expected\s+receipt\s+dat\w*\W{0,4}(\d{1,2})\.?\s*([A-Za-z]{3,9})", page_text or "")
+	if m:
+		doc = re.search(r"(?i)document\s+date\W{0,4}(.{0,32})", page_text)
+		ref = parse_date(doc.group(1)) if doc else ""
+		if not ref:
+			y = re.search(r"\b(20\d\d)\b", page_text)
+			ref = y.group(1) + "-01-01" if y else ""
+		d = parse_date("%s %s" % (m.group(1), m.group(2)) + " " + ref[:4], ref) if ref else ""
+		if d:
+			return d
 	return ""
 
 
