@@ -22,3 +22,8 @@ def test_marker_is_unparsed_so_order_needs_review():
 
 	lines, unparsed = email_orders.parse_lines("--- PO X12345 | 2026-11-21 ---\nRJ0056 | Dough | 2\n" + pdf_ocr.MARKER)
 	assert len(lines) == 1 and unparsed == [pdf_ocr.MARKER]
+
+
+def test_default_model_is_not_the_retired_one():
+	assert pdf_ocr.DEFAULT_MODEL not in pdf_ocr.RETIRED_MODELS
+	assert "gemini-2.5-flash" in pdf_ocr.RETIRED_MODELS
