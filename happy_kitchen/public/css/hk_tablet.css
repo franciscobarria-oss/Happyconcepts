@@ -1,0 +1,147 @@
+/* Tablet layout for the desk. Every rule sits under html.hk-device-tablet
+   (class set by public/js/hk_device.js); desktop and phone stay as they are. */
+
+html.hk-device-tablet { -webkit-tap-highlight-color: transparent; }
+html.hk-device-tablet body { -webkit-text-size-adjust: 100%; }
+
+/* ---------- top tab bar replaces the side menu ---------- */
+html.hk-device-tablet .body-sidebar-container,
+html.hk-device-tablet .body-sidebar,
+html.hk-device-tablet .desk-sidebar { display: none !important; }
+html.hk-device-tablet .navbar { display: none !important; }
+html.hk-device-tablet .main-section,
+html.hk-device-tablet .page-container { margin-left: 0 !important; padding-top: 0 !important; }
+
+.hk-tabbar { display: none; }
+html.hk-device-tablet .hk-tabbar {
+	display: flex;
+	align-items: center;
+	gap: 24px;
+	position: sticky;
+	top: 0;
+	z-index: 1030;
+	height: 80px;
+	padding: 0 32px;
+	background: var(--hk-surface-raised, var(--fg-color, #fff));
+	border-bottom: 1px solid var(--hk-line, var(--border-color, #e2e2e2));
+}
+.hk-tabbar-brand {
+	font: 700 15px/20px var(--hk-font-display, inherit);
+	letter-spacing: 0.5px;
+	color: var(--hk-ink, var(--text-color));
+	text-decoration: none;
+	min-width: 220px;
+}
+.hk-tabbar-tabs { display: flex; gap: 8px; }
+.hk-tab {
+	display: inline-flex;
+	align-items: center;
+	height: 48px;
+	padding: 0 26px;
+	border: 0;
+	border-radius: 10px;
+	background: transparent;
+	color: var(--hk-ink-muted, var(--text-muted));
+	font: 600 16px/20px var(--hk-font-sans, inherit);
+	text-decoration: none;
+	cursor: pointer;
+}
+.hk-tab:hover { color: var(--hk-ink, var(--text-color)); text-decoration: none; }
+.hk-tab.active { background: var(--hk-brand-soft, #e7d8d1); color: var(--hk-brand, #6f5245); }
+.hk-tab:focus-visible { outline: 2px solid var(--hk-focus, currentColor); outline-offset: 2px; }
+.hk-more-wrap { position: relative; }
+.hk-more {
+	position: absolute;
+	top: 56px;
+	left: 0;
+	min-width: 240px;
+	padding: 8px;
+	border: 1px solid var(--hk-line, #e2e2e2);
+	border-radius: 12px;
+	background: var(--hk-surface-raised, #fff);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+.hk-more a {
+	display: flex;
+	align-items: center;
+	min-height: 48px;
+	padding: 0 16px;
+	border-radius: 8px;
+	color: var(--hk-ink, var(--text-color));
+	font: 600 16px/20px var(--hk-font-sans, inherit);
+	text-decoration: none;
+}
+.hk-more a:hover { background: var(--hk-brand-soft, #e7d8d1); }
+
+/* ---------- bigger touch targets (44 px minimum) ---------- */
+html.hk-device-tablet .btn,
+html.hk-device-tablet .btn-sm,
+html.hk-device-tablet .btn-xs { min-height: 44px; padding: 10px 18px; font-size: 15px; }
+html.hk-device-tablet .form-control,
+html.hk-device-tablet .input-with-feedback,
+html.hk-device-tablet select.form-control { min-height: 44px; font-size: 16px; } /* 16 px stops iPad zoom on focus */
+html.hk-device-tablet .dropdown-menu .dropdown-item,
+html.hk-device-tablet .awesomplete ul li { min-height: 44px; padding-top: 10px; padding-bottom: 10px; }
+html.hk-device-tablet .list-row { min-height: 52px; padding-top: 12px; padding-bottom: 12px; }
+html.hk-device-tablet .checkbox input[type="checkbox"],
+html.hk-device-tablet .grid-row-check { width: 22px; height: 22px; }
+html.hk-device-tablet .hk-lang button { height: 40px; min-width: 48px; }
+html.hk-device-tablet .hk-home { display: none; } /* the tab bar is the way home */
+
+html.hk-device-tablet .page-head { top: 80px; padding-top: 8px; padding-bottom: 8px; }
+html.hk-device-tablet .page-head .page-title .title-text { font-size: 28px; }
+html.hk-device-tablet .container,
+html.hk-device-tablet .layout-main-section-wrapper { max-width: 100%; }
+
+/* ---------- Orders area: lists and forms as cards (Figma "tablet simplified") ----------
+   CSS only, on Frappe's own list and form pages, so it needs no per-screen JS and survives upgrades
+   better than rebuilding them. Selectors are Frappe's stable class names. */
+html.hk-device-tablet body { background: var(--hk-surface-sunken, #f8f2f1); }
+
+/* lists: no filter sidebar, rows as a white card, bigger view targets */
+html.hk-device-tablet .layout-side-section { display: none !important; }
+html.hk-device-tablet .layout-main-section-wrapper { width: 100% !important; max-width: 100% !important; flex: 1 1 100%; }
+html.hk-device-tablet .frappe-list .result,
+html.hk-device-tablet .frappe-list .list-paging-area {
+	background: var(--hk-surface-raised, #fff);
+	border-radius: 14px;
+}
+html.hk-device-tablet .frappe-list .result { padding: 8px 20px; border: 0; }
+html.hk-device-tablet .list-row-head { min-height: 48px; font-size: 13px; }
+html.hk-device-tablet .list-row-container .list-row { min-height: 64px; font-size: 15px; }
+html.hk-device-tablet .list-row-container .list-row .level-item { font-size: 15px; }
+html.hk-device-tablet .list-row-container .list-row .bold,
+html.hk-device-tablet .list-row-container .list-row .ellipsis > a { font-weight: 600; }
+html.hk-device-tablet .list-paging-area { padding: 12px 20px; }
+html.hk-device-tablet .standard-filter-section .form-control,
+html.hk-device-tablet .filter-selector .btn,
+html.hk-device-tablet .sort-selector .btn { min-height: 48px; border-radius: 10px; }
+html.hk-device-tablet .indicator-pill { padding: 6px 12px; font-size: 13px; }
+
+/* forms: no side panel, sections as white cards, primary action brown and large */
+html.hk-device-tablet .form-sidebar,
+html.hk-device-tablet .layout-side-section .form-sidebar { display: none !important; }
+html.hk-device-tablet .form-layout .form-page { background: transparent; border: 0; box-shadow: none; }
+html.hk-device-tablet .form-layout .form-section,
+html.hk-device-tablet .form-layout .form-dashboard-section {
+	background: var(--hk-surface-raised, #fff);
+	border: 1px solid var(--hk-line, #e2e2e2);
+	border-radius: 14px;
+	margin: 0 0 16px;
+	padding: 20px 22px;
+}
+html.hk-device-tablet .form-layout .section-head { font-size: 20px; line-height: 28px; font-weight: 600; }
+html.hk-device-tablet .form-control[disabled],
+html.hk-device-tablet .control-value { font-size: 16px; }
+html.hk-device-tablet .page-actions .btn-primary,
+html.hk-device-tablet .page-actions .primary-action {
+	background: var(--hk-brand, #6f5245);
+	border-color: var(--hk-brand, #6f5245);
+	color: var(--hk-on-brand, #fff);
+	min-height: 48px;
+	padding: 0 26px;
+	border-radius: 10px;
+}
+html.hk-device-tablet .page-actions .btn-default { min-height: 48px; border-radius: 10px; }
+html.hk-device-tablet .grid-body .rows .grid-row { min-height: 56px; }
+html.hk-device-tablet .form-grid .grid-heading-row { min-height: 48px; }

@@ -18,11 +18,13 @@ after_migrate = [
 # Desk-wide CSS/JS. /assets is served with a long cache lifetime and these files are not
 # bundled, so each URL carries ?v=<_HK_ASSET_VERSION>.
 # Bump _HK_ASSET_VERSION whenever any file listed in app_include_css / app_include_js changes.
-_HK_ASSET_VERSION = "0.3.1"
+_HK_ASSET_VERSION = "0.4.2"
 # Happy Concepts desk theme: always loaded, only active under html.hk-theme, which
 # hk_theme.js sets from boot (Recipe Settings > "Happy Concepts desk theme", see theme.py).
-_APP_CSS = ["css/hk_theme.css"]
+_APP_CSS = ["css/hk_theme.css", "css/hk_tablet.css"]
 _APP_JS = [
+	"js/hk_device.js",  # desktop / tablet / phone class on <html>
+	"js/hk_tablet.js",  # tablet top tab bar (Today / Production / Orders / Stock / More)
 	"js/hk_theme.js",  # theme switch, EN / 中 toggle, sidebar and workspace text through __()
 	"js/hk_replace_ingredient.js",  # "Replace in recipes" dialog, used by the Recipe and Item forms
 ]
