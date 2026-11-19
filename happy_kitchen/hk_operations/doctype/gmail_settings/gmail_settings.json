@@ -1,7 +1,7 @@
 {
  "actions": [],
  "creation": "2026-10-20 12:00:00.000000",
- "modified": "2026-10-20 12:00:00.000000",
+ "modified": "2026-11-19 10:30:00.000000",
  "modified_by": "Administrator",
  "owner": "Administrator",
  "doctype": "DocType",
@@ -26,6 +26,8 @@
   "client_id",
   "client_secret",
   "refresh_token",
+  "gemini_api_key",
+  "gemini_model",
   "section_status",
   "last_checked",
   "last_error"
@@ -120,6 +122,18 @@
    "fieldtype": "Small Text",
    "label": "Last error",
    "read_only": 1
+  },
+  {
+   "fieldname": "gemini_api_key",
+   "fieldtype": "Password",
+   "label": "Gemini API key",
+   "description": "Optional. Reads scanned PDF orders (no text layer) with Google Gemini; such orders always need review. Blank = scans are not read."
+  },
+  {
+   "fieldname": "gemini_model",
+   "fieldtype": "Data",
+   "label": "Gemini model",
+   "default": "gemini-2.5-flash"
   }
  ],
  "permissions": [

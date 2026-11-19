@@ -187,7 +187,7 @@ def _pdf_files(client, message_id: str, payload: dict) -> list[tuple[str, bytes]
 
 def pdf_text(raw: bytes) -> str:
 	"""What the order reader gets from a PDF: the lines of its tables when it has a table with a
-	quantity column, else its page text. Needs no network; a scanned PDF has no text (no OCR)."""
+	quantity column, else its page text. Needs no network; a scanned PDF goes to Gemini (pdf_ocr) when a key is set."""
 	import io
 
 	import pdfplumber
@@ -202,6 +202,13 @@ def pdf_text(raw: bytes) -> str:
 	except Exception:
 		rows = []
 	lines = email_orders.table_to_lines(rows)
+	if not lines and not any(t.strip() for t in texts):
+		# a scan (no text layer at all): read it with Gemini when a key is set in Gmail Settings
+		from happy_kitchen.hk_operations import pdf_ocr
+
+		ocr = pdf_ocr.ocr_text(raw)
+		if ocr:
+			return ocr
 	if lines:
 		# a table PDF is one purchase order: its number and delivery date come from the page text
 		whole = "\n".join(texts)
