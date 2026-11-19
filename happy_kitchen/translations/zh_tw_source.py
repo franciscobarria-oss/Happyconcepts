@@ -7,6 +7,8 @@
 # to list the strings that still need a translation here.
 
 ZH_TW = {
+	"Main": "主選單",
+	"Full desk": "完整桌面",
 	"Confirm and next": "確認並下一張",
 	"Confirmed. No more draft orders from email to check.": "已確認。沒有其他待檢查的電郵草稿訂單。",
 	"Forwarded through {0} without the original sender's address, and no outlet name was found: enter it by hand, or add the outlet's name under the customer's Names in order emails and Read again.": "經 {0} 轉寄，沒有原寄件人地址，也找不到分店名稱：請手動輸入，或在客戶的「訂單電郵中的名稱」加入分店名稱後再讀一次。",
