@@ -106,6 +106,7 @@ Below / Close / Reached: 68 hours in the last 4 weeks (Hong Kong continuous cont
 Best before,此日期前最佳
 Best before = made-on date + the product's shelf life.,此日期前最佳 = 製造日期 + 產品保質期。
 Blank = default labour rate from Recipe Settings.,留空 = 使用食譜設定中的預設人工費率。
+Blank = gemini-flash-latest. A retired model name is replaced by it.,留空 = gemini-flash-latest。已停用的模型名稱會改用此預設。
 Blank = item name.,留空 = 物料名稱。
 Blank = no limit.,留空 = 不設限制。
 Blank = not enrolled yet.,留空 = 尚未加入。

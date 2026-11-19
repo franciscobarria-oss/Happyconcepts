@@ -13,7 +13,11 @@ import re
 from happy_kitchen.hk_operations import email_orders
 
 MAX_BYTES = 15 * 1024 * 1024
-DEFAULT_MODEL = "gemini-2.5-flash"
+DEFAULT_MODEL = "gemini-flash-latest"
+# Google stopped serving these to new keys (404); a setting saved with one of them uses the default instead.
+RETIRED_MODELS = {"gemini-2.5-flash"}
+RETRY_STATUS = {429, 500, 502, 503, 504}
+RETRY_WAIT = (5, 20)
 ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 MARKER = "OCR | read by Gemini from a scan: check every line against the PDF"
 
@@ -70,29 +74,50 @@ def _settings():
 	import frappe
 
 	s = frappe.get_single("Gmail Settings")
-	return s.get_password("gemini_api_key", raise_exception=False), (s.get("gemini_model") or DEFAULT_MODEL)
+	model = (s.get("gemini_model") or "").strip()
+	return s.get_password("gemini_api_key", raise_exception=False), (DEFAULT_MODEL if not model or model in RETIRED_MODELS else model)
+
+
+def _call(key: str, model: str, raw: bytes):
+	"""POST the PDF to Gemini, trying again when Google is busy or slow. Returns (response or None, error text)."""
+	import time
+
+	import requests
+
+	body = {"contents": [{"parts": [
+		{"inline_data": {"mime_type": "application/pdf", "data": base64.b64encode(raw).decode()}},
+		{"text": PROMPT}]}],
+		"generationConfig": {"temperature": 0, "responseMimeType": "application/json", "responseSchema": SCHEMA}}
+	error = ""
+	for attempt in range(len(RETRY_WAIT) + 1):
+		try:
+			r = requests.post(ENDPOINT.format(model=model), headers={"x-goog-api-key": key, "Content-Type": "application/json"},
+			                  json=body, timeout=90)
+			if r.status_code == 200:
+				return r, ""
+			error = "HTTP %s: %s" % (r.status_code, r.text[:500])
+			if r.status_code not in RETRY_STATUS:
+				return None, error
+		except requests.RequestException as e:
+			error = "%s: %s" % (type(e).__name__, str(e)[:300])
+		if attempt < len(RETRY_WAIT):
+			time.sleep(RETRY_WAIT[attempt])
+	return None, error
 
 
 def ocr_text(raw: bytes) -> str:
 	key, model = _settings()
 	if not key or not raw or len(raw) > MAX_BYTES:
 		return ""
-	try:
-		import requests
+	import frappe
 
-		r = requests.post(
-			ENDPOINT.format(model=model),
-			headers={"x-goog-api-key": key, "Content-Type": "application/json"},
-			json={"contents": [{"parts": [
-				{"inline_data": {"mime_type": "application/pdf", "data": base64.b64encode(raw).decode()}},
-				{"text": PROMPT}]}],
-				"generationConfig": {"temperature": 0, "responseMimeType": "application/json", "responseSchema": SCHEMA}},
-			timeout=120)
-		r.raise_for_status()
+	r, error = _call(key, model, raw)
+	if r is None:
+		frappe.log_error(message="Model %s. %s" % (model, error), title="Email order OCR: Gemini read failed")
+		return ""
+	try:
 		text = r.json()["candidates"][0]["content"]["parts"][0]["text"]
 		return to_lines(json.loads(text))
 	except Exception:
-		import frappe
-
-		frappe.log_error("Gemini PDF read failed", "Email order OCR")
+		frappe.log_error(message="Model %s. Unreadable answer: %s" % (model, r.text[:500]), title="Email order OCR: bad answer")
 		return ""

@@ -1198,6 +1198,7 @@ ZH_TW = {
 	"Gmail Settings": "Gmail 設定",
 	"Gemini API key": "Gemini API 金鑰",
 	"Gemini model": "Gemini 模型",
+	"Blank = gemini-flash-latest. A retired model name is replaced by it.": "留空 = gemini-flash-latest。已停用的模型名稱會改用此預設。",
 	"Optional. Reads scanned PDF orders (no text layer) with Google Gemini; such orders always need review. Blank = scans are not read.": "選填。使用 Google Gemini 讀取掃描的 PDF 訂單(無文字層);此類訂單一律需人工檢查。留空 = 不讀取掃描檔。",
 	"Gmail Settings needs the Google client ID, secret and refresh token first.": "請先在 Gmail 設定填寫 Google 用戶端 ID、密鑰及更新權杖。",
 	"Gmail answered {0}.": "Gmail 回應 {0}。",
