@@ -1,0 +1,3 @@
+/* Tablet layout for the desk. Every rule must sit under html.hk-device-tablet
+   (class set by public/js/hk_device.js); desktop and phone stay as they are.
+   Intentionally empty until the tablet layout is specified. */
