@@ -361,6 +361,8 @@ From the one-time sign-in on your own computer (deploy/gmail_orders.md). Read-on
 Frozen,冷凍
 Full-time only. Leave empty for hourly staff.,只適用於全職員工。時薪員工請留空。
 "Gas, electricity, packaging, cleaning, rent share... New recipes start with the defaults from Recipe Settings.",煤氣、電費、包裝、清潔、租金分攤…… 新食譜會以食譜設定中的預設值開始。
+Gemini API key,Gemini API 金鑰
+Gemini model,Gemini 模型
 Gmail Settings,Gmail 設定
 Gmail Settings is missing the Google sign-in,Gmail 設定缺少 Google 登入資料
 Gmail Settings is missing: {0}.,Gmail 設定缺少:{0}。
@@ -702,6 +704,7 @@ Opened. Use by {0},已開封。請於 {0} 前使用
 Opening,期初
 Opening Count,期初盤點
 "Opening, closing, cleaning and food safety checklists, signed on the kitchen tablet with the staff PIN.",開店、收舖、清潔及食物安全檢查表，在廚房平板以員工密碼簽署。
+Optional. Reads scanned PDF orders (no text layer) with Google Gemini; such orders always need review. Blank = scans are not read.,選填。使用 Google Gemini 讀取掃描的 PDF 訂單(無文字層);此類訂單一律需人工檢查。留空 = 不讀取掃描檔。
 Optional. Used to work out the cooking yield.,選填。用於計算烹煮後份量。
 "Optional: count in up to 3 pack sizes (Bag, Box, Bottle) plus loose units. Each pack must have a UOM conversion on the Item.",可選：最多以 3 種包裝規格（袋、箱、瓶）加散裝數量盤點。每種包裝須在物品的單位換算中設定。
 Optional: the batch the pack came from.,可選：該包裝所屬的批次。
