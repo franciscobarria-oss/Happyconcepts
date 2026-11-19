@@ -5,10 +5,10 @@
 	const root = document.documentElement;
 	const __ = window.__ || ((s) => s); // literal __("...") calls are what the translation checker reads
 	const tabs = () => [
-		{ key: "today", label: __("Today"), route: "/app/today", match: ["today", "recipes"] },
-		{ key: "production", label: __("Production"), route: "/app/kitchen-production", match: ["kitchen-production", "kitchen-opened", "recipe", "recipe-production-log", "wastage-log"] },
-		{ key: "orders", label: __("Orders"), route: "/app/sales-order", match: ["sales-order", "email-order", "purchase-order", "receive-delivery", "purchase-receipt", "customer", "supplier"] },
-		{ key: "stock", label: __("Stock"), route: "/app/stock-take", match: ["stock-take", "stock-take-count", "stock-take-sheet", "item", "stock-ledger", "stock-reconciliation"] },
+		{ key: "today", label: __("Today"), route: "/app/today", match: ["today"] },
+		{ key: "production", label: __("Production"), route: "/app/kitchen-production", match: ["kitchen-production", "kitchen-opened", "recipe", "recipes", "recipe-production-log", "wastage-log"] },
+		{ key: "orders", label: __("Orders"), route: "/app/sales-order", match: ["sales-order", "email-order", "customer"] },
+		{ key: "stock", label: __("Stock"), route: "/app/stock-take", match: ["stock-take", "stock-take-count", "stock-take-sheet", "item", "stock-ledger", "stock-reconciliation", "purchase-order", "purchase-receipt", "receive-delivery", "supplier"] },
 	];
 	// "More" opens this list (all pages that stay reachable on a tablet)
 	const more = () => [
@@ -24,8 +24,11 @@
 		const p = location.pathname.replace(/^\/(app|desk)\/?/, "").split("/")[0];
 		return p || "today";
 	};
+	// pages under the More tab (Figma: Team roster, Clock in and Kitchen checks sit there)
+	const MORE_ROUTES = ["team", "clock-in", "kitchen-checks", "checklist-run", "checklist-template", "checklist-schedule", "employee", "roster"];
 	const activeKey = () => {
 		const r = routePart();
+		if (MORE_ROUTES.includes(r)) return "more";
 		const t = tabs().find((x) => x.match.includes(r));
 		return t ? t.key : "";
 	};
