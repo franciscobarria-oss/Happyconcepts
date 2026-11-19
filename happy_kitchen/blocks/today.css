@@ -153,3 +153,25 @@ a.row:hover { background: var(--k-sunken); text-decoration: none; color: inherit
 .fn-row.today { font-weight: 600; }
 .fn-row.zero { color: var(--k-muted); }
 .fn-row .num { text-align: right; }
+
+/* tablet (class set in today.js from <html data-hk-device>): Figma "Today, tablet simplified" */
+.hk.tablet { gap: 24px; font-size: 15px; line-height: 22px; }
+.hk.tablet h1 { font-size: 36px; line-height: 40px; }
+.hk.tablet .btn { height: 48px; padding: 0 22px; font-size: 15px; }
+.hk.tablet .btn.small { height: 44px; padding: 0 18px; font-size: 14px; }
+.hk.tablet .seg button { height: 48px; padding: 0 20px; font-size: 15px; }
+.hk.tablet .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.hk.tablet .tile { flex-direction: row; flex-wrap: wrap; align-items: center; column-gap: 16px; padding: 18px 20px; border-radius: 12px; min-height: 88px; }
+.hk.tablet .tile .value { order: 1; font-size: 40px; line-height: 44px; margin: 0; }
+.hk.tablet .tile .label { order: 2; flex: 1; min-width: 0; text-transform: none; letter-spacing: 0; font-size: 16px; line-height: 20px; color: var(--k-ink); }
+.hk.tablet .tile .detail { order: 3; flex: 1 0 100%; font-size: 14px; line-height: 18px; margin-left: 0; }
+.hk.tablet .card { border-radius: 14px; padding: 22px; }
+.hk.tablet h3 { font-size: 22px; line-height: 28px; margin-bottom: 12px; }
+.hk.tablet h3 .more { font-size: 14px; line-height: 44px; padding: 0 4px; }
+.hk.tablet .row { min-height: 56px; padding: 12px 4px; align-items: center; }
+.hk.tablet .grid.now { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.hk.tablet .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.hk.tablet .grid.tasks { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.hk.tablet .chip { padding: 8px 14px; font-size: 15px; }
+.hk.tablet .badge { height: 28px; padding: 0 12px; font-size: 13px; }
+.hk.tablet .day-head .print { line-height: 36px; padding: 0 12px; font-size: 13px; }

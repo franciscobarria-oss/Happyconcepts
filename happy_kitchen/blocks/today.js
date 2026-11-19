@@ -41,9 +41,12 @@
 	}
 	const apply = () => {
 		$(".hk").classList.toggle("detailed", view === "detailed");
+		// tablet layout: the page class comes from public/js/hk_device.js (shadow DOM can't see it in CSS)
+		$(".hk").classList.toggle("tablet", document.documentElement.dataset.hkDevice === "tablet");
 		$$(".seg button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.view === view));
 	};
 	apply();
+	window.addEventListener("resize", apply);
 
 	let data = null;
 	root_element.addEventListener("click", (e) => {
