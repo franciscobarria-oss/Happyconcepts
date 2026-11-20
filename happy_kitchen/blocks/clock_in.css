@@ -24,3 +24,17 @@
 .hk-clock .done-mark { font-size: 64px; color: var(--green-600, #2f855a); }
 .hk-clock .done-view.out .done-mark { color: var(--text-muted); }
 .hk-clock .done-title { font-size: 28px; }
+
+/* tablet (class set in clock_in.js): Figma "Clock in, tablet simplified" */
+.hk-clock.tablet { max-width: 100%; text-align: center; }
+.hk-clock.tablet .top { align-items: center; }
+.hk-clock.tablet h3 { font-size: 32px; margin: 8px 0; }
+.hk-clock.tablet .clock { font-size: 40px; }
+.hk-clock.tablet .sub { font-size: 16px; margin-bottom: 18px; }
+.hk-clock.tablet .tiles { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+.hk-clock.tablet .tile { min-height: 116px; border-radius: 14px; font-size: 16px; }
+.hk-clock.tablet .tile .nm { font-size: 24px; }
+.hk-clock.tablet .back { min-height: 52px; padding: 0 22px; font-size: 16px; }
+.hk-clock.tablet .keys { grid-template-columns: repeat(3, 104px); gap: 16px; }
+.hk-clock.tablet .key { height: 88px; font-size: 34px; border-radius: 18px; }
+.hk-clock.tablet .dot { width: 22px; height: 22px; }

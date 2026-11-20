@@ -9,7 +9,16 @@
 	const money = (v) => "$" + Math.round(v).toLocaleString();
 	const today = frappe.datetime.get_today();
 	const monday = (d) => frappe.datetime.add_days(d, -((frappe.datetime.str_to_obj(d).getDay() + 6) % 7));
+	// tablet layout: class comes from public/js/hk_device.js (html[data-hk-device]); CSS in team_roster.css
+	const tab = () => $(".hk-roster").classList.toggle("tablet", document.documentElement.dataset.hkDevice === "tablet");
+	tab();
+	window.addEventListener("resize", tab);
 	let weekStart = monday(today);
+	// Day view (big rows, one day at a time) is the default on tablets; Week view elsewhere. Remembered per device.
+	const VIEW_KEY = "hk_roster_view";
+	let view = document.documentElement.dataset.hkDevice === "tablet" ? "day" : "week";
+	try { view = localStorage.getItem(VIEW_KEY) || view; } catch (e) { /* not remembered */ }
+	let day = today;
 	let state = { emps: [], cells: {}, leave: {} };
 	let busy = false;
 
@@ -45,7 +54,32 @@
 		render();
 	}
 
+	function renderDay() {
+		const dates = DAYS.map((_, i) => frappe.datetime.add_days(weekStart, i));
+		if (!dates.includes(day)) day = dates.includes(today) ? today : dates[0];
+		$(".daybar").innerHTML = dates.map((d, i) =>
+			`<button class="dbtn ${d === day ? "on" : ""} ${d === today ? "today" : ""}" data-day="${d}"><small>${DAYS[i]}</small><b>${frappe.datetime.str_to_obj(d).getDate()}</b></button>`).join("");
+		const esc = frappe.utils.escape_html;
+		$(".dayrows").innerHTML = state.emps.map((e) => {
+			const k = key(e.name, day);
+			const nm = `<span class="nm">${esc(e.hk_short_name || e.employee_name)}</span>`;
+			if (state.leave[k]) return `<div class="drow">${nm}<span class="cell lv">Time off</span></div>`;
+			const s = state.cells[k];
+			if (!s) return `<div class="drow">${nm}<button class="cell off" data-emp="${e.name}" data-date="${day}">Off</button></div>`;
+			return `<div class="drow">${nm}<button class="cell ${s.shift_type === "Early" ? "am" : "pm"}" data-emp="${e.name}" data-date="${day}">${s.shift_type}</button></div>`;
+		}).join("") || `<p class="muted">No staff yet</p>`;
+	}
+
+	function applyView() {
+		$(".grid").hidden = view !== "week";
+		$(".dayrows").hidden = view !== "day";
+		$(".daybar").hidden = view !== "day";
+		root_element.querySelectorAll(".view-switch [data-view]").forEach((b) => b.classList.toggle("btn-primary", b.dataset.view === view));
+	}
+
 	function render() {
+		applyView();
+		if (view === "day") renderDay();
 		const dates = DAYS.map((_, i) => frappe.datetime.add_days(weekStart, i));
 		const dayTotals = dates.map(() => ({ h: 0, c: 0 }));
 		let weekCost = 0;
@@ -105,6 +139,14 @@
 			finally { busy = false; }
 			return;
 		}
+		const vs = ev.target.closest(".view-switch [data-view]");
+		if (vs) {
+			view = vs.dataset.view;
+			try { localStorage.setItem(VIEW_KEY, view); } catch (e) { /* not remembered */ }
+			return render();
+		}
+		const db = ev.target.closest("[data-day]");
+		if (db) { day = db.dataset.day; return render(); }
 		const nav = ev.target.closest("[data-nav]");
 		if (nav) {
 			const n = nav.dataset.nav;

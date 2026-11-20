@@ -167,6 +167,7 @@ Choose a reason,請選擇原因
 Choose an opening and a closing approved stock take.,請選擇已批准的期初及期末盤點。
 Choose at least one recipe and a number of batches,請選擇最少一個食譜及批數
 Cleaning,清潔
+Cleaning and food safety,清潔及食品安全
 Click a SKU to see its weeks and busiest days.,按一個產品編號，查看它的每週數量和最忙日子。
 Client,客戶
 Client Spec Sheets,客戶規格表
@@ -181,6 +182,7 @@ Closed at,結束時間
 Closing,期末
 Closing Count,期末盤點
 Code,代碼
+Complete checklists on this tablet and sign with your staff PIN.,在此平板完成檢查表，並以員工密碼簽署。
 Complete email orders after their delivery date,送貨日後自動完成電郵訂單
 Complete on a Sales Order makes a Delivery Note (needs stock),銷售訂單按「完成」時建立送貨單（需要庫存）
 Complete {0}? This marks everything not yet delivered as delivered.,要完成 {0} 嗎？這會把所有未送的貨品標為已送。
@@ -351,6 +353,7 @@ Food-handler certificate expires,食物處理員證書到期
 "For delivery charges, services and other non-food lines.",用於運費、服務及其他非食品項目。
 "For sales items sold under another code than the recipe's own item, e.g. a customer's article number or a box.",用於以食譜物品以外編號出售的銷售物品，例如客戶的貨號或一盒裝。
 For someone who is not a customer yet (name or company).,給尚未成為客戶的人（姓名或公司）。
+For the kitchen team,供廚房團隊使用
 Forwarded by,轉寄者
 "Forwarded through {0} without the original sender's address, and no outlet name was found: enter it by hand, or add the outlet's name under the customer's Names in order emails and Read again.",經 {0} 轉寄，沒有原寄件人地址，也找不到分店名稱：請手動輸入，或在客戶的「訂單電郵中的名稱」加入分店名稱後再讀一次。
 "From Item > Weight Per Unit. Lets a recipe use grams for an item priced per piece, or pieces for one priced per gram.",取自物品 > 每單位重量。讓食譜可用克計算按件定價的物品，或用件計算按克定價的物品。
@@ -384,6 +387,7 @@ Grams per Piece,每件克數
 Gross Base Qty,毛用量（基本單位）
 Gross Qty (issue),毛用量（發料）
 HK Clock In,HK 打卡
+HK Kitchen Checks Home,廚房檢查首頁
 HK Team Roster,HK 團隊更表
 HK Team Today,HK 今日團隊
 HK Today,HK 今日
@@ -550,6 +554,7 @@ Made-on date,生產日期依據
 Main,主選單
 Make {0},製作 {0}
 Man hours,工時
+Manage kitchen checks,管理廚房檢查
 Manager review needed,需經理覆核
 Manufacture entries that move ingredients out of stock and add the batch preparations to their warehouse (e.g. Freezer).,生產記錄會扣除食材庫存，並將半成品加入其倉庫（例如冰格）。
 Manufacturer,製造商
@@ -695,6 +700,7 @@ Open Count Screen,開啟盤點畫面
 Open and print label,開封並打印標籤
 Open on the tablet screen,在平板畫面開啟
 Open purchase orders,未完成採購單
+Open tablet checks,開啟平板檢查
 Open without a label,開封（不打印標籤）
 Opened,已開封
 Opened Item,開封貨品
@@ -706,6 +712,7 @@ Opened today,今日開封
 Opened. Use by {0},已開封。請於 {0} 前使用
 Opening,期初
 Opening Count,期初盤點
+Opening and closing,開店及收店
 "Opening, closing, cleaning and food safety checklists, signed on the kitchen tablet with the staff PIN.",開店、收舖、清潔及食物安全檢查表，在廚房平板以員工密碼簽署。
 Optional. Reads scanned PDF orders (no text layer) with Google Gemini; such orders always need review. Blank = scans are not read.,選填。使用 Google Gemini 讀取掃描的 PDF 訂單(無文字層);此類訂單一律需人工檢查。留空 = 不讀取掃描檔。
 Optional. Used to work out the cooking yield.,選填。用於計算烹煮後份量。
@@ -961,6 +968,7 @@ Row {0}: recipe {1} yields {2} but item {3} is stocked in {4}. Make them the sam
 Row {0}: {1} is already on the sheet for {2},第 {0} 行：{1} 已在 {2} 的盤點表上
 Run,記錄
 Run key,記錄鍵
+Run kitchen checks,進行廚房檢查
 SKU,產品編號
 SKUs sold,已售產品編號
 Sales Order you made (optional),你建立的銷售訂單（可選）
@@ -1005,6 +1013,7 @@ Set to 0 at submit,提交時設為 0
 Set when the count is approved.,盤點獲審批時設定。
 Set when the schedule is switched on. Runs are only created for windows that start from this time.,切換為啟用時記錄此時間。只會為此時間之後開始的時段建立記錄。
 Set when this email changes an order picked up from an earlier email in the same thread.,當此電郵修改同一對話中較早電郵所建立的訂單時填寫。
+"Setup, records and reporting",設定、紀錄及報告
 Share of Ingredient Cost,佔食材成本比例
 Sheet Name,盤點表名稱
 Sheet column name,總覽欄名
@@ -1038,6 +1047,7 @@ Someone entered this order by hand and closed the email.,此訂單已由人手�
 Source must be one of {0},來源必須是 {0} 其中之一
 Specification,規格
 Staff,員工
+Staff PIN required to sign,簽署需要員工密碼
 Staff Role,職位
 Start Stock Take,開始盤點
 Start a new count,開始新盤點
