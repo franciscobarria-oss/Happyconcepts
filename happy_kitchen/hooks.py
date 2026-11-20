@@ -13,6 +13,7 @@ after_migrate = [
 	"happy_kitchen.setup.blocks.sync",
 	"happy_kitchen.setup.blocks.place",  # "HK Sales" on top of the Selling workspace
 	"happy_kitchen.patches.encryption_key_setup.ensure_key",
+	"happy_kitchen.setup.desk_layout.apply",  # hides the standard desktop icons: the desk is ten workspaces
 ]
 
 # Desk-wide CSS/JS. /assets is served with a long cache lifetime and these files are not

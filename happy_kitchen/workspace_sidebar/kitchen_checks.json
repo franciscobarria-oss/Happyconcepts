@@ -1,6 +1,6 @@
 {
  "app": "happy_kitchen",
- "creation": "2026-11-03 10:00:00.000000",
+ "creation": "2026-11-20 12:00:00.000000",
  "docstatus": 0,
  "doctype": "Workspace Sidebar",
  "header_icon": "list-checks",
@@ -21,6 +21,17 @@
   {
    "child": 0,
    "collapsible": 1,
+   "icon": "",
+   "indent": 1,
+   "keep_closed": 0,
+   "label": "Check lists",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Section Break"
+  },
+  {
+   "child": 1,
+   "collapsible": 1,
    "icon": "tablet",
    "indent": 0,
    "keep_closed": 0,
@@ -31,9 +42,9 @@
    "type": "Link"
   },
   {
-   "child": 0,
+   "child": 1,
    "collapsible": 1,
-   "icon": "list-checks",
+   "icon": "clipboard-check",
    "indent": 0,
    "keep_closed": 0,
    "label": "Checklist runs",
@@ -43,9 +54,9 @@
    "type": "Link"
   },
   {
-   "child": 0,
+   "child": 1,
    "collapsible": 1,
-   "icon": "clipboard-list",
+   "icon": "list-checks",
    "indent": 0,
    "keep_closed": 0,
    "label": "Checklists",
@@ -55,9 +66,9 @@
    "type": "Link"
   },
   {
-   "child": 0,
+   "child": 1,
    "collapsible": 1,
-   "icon": "calendar",
+   "icon": "calendar-clock",
    "indent": 0,
    "keep_closed": 0,
    "label": "Schedules",
@@ -67,21 +78,9 @@
    "type": "Link"
   },
   {
-   "child": 0,
+   "child": 1,
    "collapsible": 1,
-   "icon": "map-pin",
-   "indent": 0,
-   "keep_closed": 0,
-   "label": "Areas",
-   "link_to": "Check Area",
-   "link_type": "DocType",
-   "show_arrow": 0,
-   "type": "Link"
-  },
-  {
-   "child": 0,
-   "collapsible": 1,
-   "icon": "file-text",
+   "icon": "",
    "indent": 0,
    "keep_closed": 0,
    "label": "Kitchen Checks Log",
@@ -93,7 +92,30 @@
   {
    "child": 0,
    "collapsible": 1,
-   "icon": "list",
+   "icon": "",
+   "indent": 1,
+   "keep_closed": 0,
+   "label": "Setup",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Section Break"
+  },
+  {
+   "child": 1,
+   "collapsible": 1,
+   "icon": "map-pin",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Areas",
+   "link_to": "Check Area",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "child": 1,
+   "collapsible": 1,
+   "icon": "zap",
    "indent": 0,
    "keep_closed": 0,
    "label": "Quick picks",
@@ -103,7 +125,7 @@
    "type": "Link"
   },
   {
-   "child": 0,
+   "child": 1,
    "collapsible": 1,
    "icon": "settings",
    "indent": 0,
@@ -115,11 +137,11 @@
    "type": "Link"
   }
  ],
- "modified": "2026-11-03 10:00:00.000000",
+ "modified": "2026-11-20 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "HK Compliance",
  "name": "Kitchen Checks",
  "owner": "Administrator",
  "standard": 1,
- "title": "Kitchen Checks"
+ "title": "Check lists"
 }

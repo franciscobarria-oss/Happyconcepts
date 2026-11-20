@@ -154,3 +154,7 @@ Guidance for Claude Code working in this repository: the `happy_kitchen` Frappe 
 
 ## Auto-complete email orders
 - Recipe Settings `auto_complete_email_orders` (patch `auto_complete_email_orders_on` ticks it once; Francisco, 2026-11-17, "for the time being"): daily `order_stage_api.auto_complete_due` closes confirmed Sales Orders that came from email (`hk_email_order` set) the day AFTER their delivery date, same as the Complete button without a delivery note (comment says "the system"). Revised-unchecked, On Hold and already completed orders are left; skipped while `complete_with_delivery_note` is on. Pure rule `hk_operations/auto_complete.py` (tests/test_auto_complete.py). No e2e yet.
+
+## Desk layout (ten workspaces)
+- The desk shows ten workspaces in this order (Francisco, 2026-11-20): Recipes, Suppliers, Sales, HR (workspace `Team`), Clock in / Clock out (`Clock In`), Check lists (`Kitchen Checks`), Accounting, Recipe costing and testing (`Recipe Costing`, marked in development; the Cake Costing page lives here), Reports, Today / This week (`Today`). **Stock Take** is its own workspace outside the ten. Workspace names (ids) are kept; only titles changed.
+- Each has a Workspace, Workspace Sidebar and Desktop Icon file; `setup/desk_layout.py` (tests/test_desk_layout.py) lists them and hides every other standard desktop icon on each migrate (hidden, not deleted; site_config `hk_show_standard_workspaces` 1 turns that off). A new page or report must be added to its workspace's shortcuts and sidebar.
