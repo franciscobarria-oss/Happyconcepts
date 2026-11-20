@@ -1,0 +1,67 @@
+{
+ "actions": [],
+ "creation": "2026-11-20 12:00:00.000000",
+ "modified": "2026-11-20 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "Recipe Management",
+ "name": "Cake Costing Ingredient",
+ "istable": 1,
+ "editable_grid": 1,
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "fields": [
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Item",
+   "in_list_view": 1,
+   "columns": 3
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Ingredient",
+   "in_list_view": 1,
+   "columns": 3
+  },
+  {
+   "fieldname": "qty_g",
+   "fieldtype": "Float",
+   "label": "Grams",
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "unit_cost",
+   "fieldtype": "Currency",
+   "label": "Cost per gram",
+   "precision": "4",
+   "read_only": 1
+  },
+  {
+   "fieldname": "line_cost",
+   "fieldtype": "Currency",
+   "label": "Line cost",
+   "precision": "4",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "ai_guess",
+   "fieldtype": "Check",
+   "label": "Guessed from photo"
+  },
+  {
+   "fieldname": "price_note",
+   "fieldtype": "Data",
+   "label": "Price note",
+   "read_only": 1
+  }
+ ]
+}

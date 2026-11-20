@@ -1,0 +1,219 @@
+{
+ "actions": [],
+ "creation": "2026-11-20 12:00:00.000000",
+ "modified": "2026-11-20 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "module": "Recipe Management",
+ "name": "Cake Costing",
+ "autoname": "CCS-.YYYY.-.#####",
+ "naming_rule": "Expression (old style)",
+ "title_field": "cake_name",
+ "image_field": "photo",
+ "track_changes": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "search_fields": "cake_name",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  },
+  {
+   "role": "Stock Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  },
+  {
+   "role": "Stock User",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  },
+  {
+   "role": "Manufacturing User",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  },
+  {
+   "role": "Manufacturing Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  }
+ ],
+ "fields": [
+  {
+   "fieldname": "cake_name",
+   "fieldtype": "Data",
+   "label": "Cake name",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "step",
+   "fieldtype": "Select",
+   "label": "Step",
+   "options": "Photo\nSize\nIngredients\nCost",
+   "default": "Photo",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "photo",
+   "fieldtype": "Attach Image",
+   "label": "Photo"
+  },
+  {
+   "fieldname": "sb_size",
+   "fieldtype": "Section Break",
+   "label": "Size"
+  },
+  {
+   "fieldname": "shape",
+   "fieldtype": "Select",
+   "label": "Shape",
+   "options": "Round\nSquare\nLoaf",
+   "default": "Round"
+  },
+  {
+   "fieldname": "height_cm",
+   "fieldtype": "Float",
+   "label": "Height (cm)"
+  },
+  {
+   "fieldname": "width_cm",
+   "fieldtype": "Float",
+   "label": "Width (cm)"
+  },
+  {
+   "fieldname": "length_cm",
+   "fieldtype": "Float",
+   "label": "Length (cm)",
+   "depends_on": "eval:doc.shape=='Loaf'"
+  },
+  {
+   "fieldname": "weight_g",
+   "fieldtype": "Float",
+   "label": "Weight (g)"
+  },
+  {
+   "fieldname": "slices",
+   "fieldtype": "Int",
+   "label": "Slices"
+  },
+  {
+   "fieldname": "volume_cm3",
+   "fieldtype": "Float",
+   "label": "Volume (cm\u00b3)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_ing",
+   "fieldtype": "Section Break",
+   "label": "Ingredients"
+  },
+  {
+   "fieldname": "ingredients",
+   "fieldtype": "Table",
+   "label": "Ingredients",
+   "options": "Cake Costing Ingredient"
+  },
+  {
+   "fieldname": "sb_cost",
+   "fieldtype": "Section Break",
+   "label": "Cost"
+  },
+  {
+   "fieldname": "labour_cost",
+   "fieldtype": "Currency",
+   "label": "Labour",
+   "precision": "4"
+  },
+  {
+   "fieldname": "packaging_cost",
+   "fieldtype": "Currency",
+   "label": "Packaging",
+   "precision": "4"
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ingredient_cost",
+   "fieldtype": "Currency",
+   "label": "Ingredient cost",
+   "precision": "4",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_cost",
+   "fieldtype": "Currency",
+   "label": "Total cost",
+   "precision": "4",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "cost_per_slice",
+   "fieldtype": "Currency",
+   "label": "Cost per slice",
+   "precision": "4",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cost_per_100g",
+   "fieldtype": "Currency",
+   "label": "Cost per 100 g",
+   "precision": "4",
+   "read_only": 1
+  },
+  {
+   "fieldname": "unpriced",
+   "fieldtype": "Small Text",
+   "label": "Not counted (no price or pack size)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ]
+}
