@@ -1,8 +1,8 @@
 {
  "app": "happy_kitchen",
  "charts": [],
- "content": "[{\"id\": \"hk-b0\", \"type\": \"custom_block\", \"data\": {\"custom_block_name\": \"HK Team Today\", \"col\": 12}}, {\"id\": \"hk-b1\", \"type\": \"custom_block\", \"data\": {\"custom_block_name\": \"HK Team Roster\", \"col\": 12}}, {\"id\": \"hk-sh\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h5\\\"><b>More</b></span>\", \"col\": 12}}, {\"id\": \"hk-s0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Staff\", \"col\": 3}}, {\"id\": \"hk-s1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Time off\", \"col\": 3}}, {\"id\": \"hk-s2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Attendance\", \"col\": 3}}, {\"id\": \"hk-s3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Clock-ins\", \"col\": 3}}, {\"id\": \"hk-s4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Overtime\", \"col\": 3}}, {\"id\": \"hk-s5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Overtime Summary\", \"col\": 3}}, {\"id\": \"hk-s6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Holidays\", \"col\": 3}}, {\"id\": \"hk-s7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Shifts\", \"col\": 3}}]",
- "creation": "2026-10-19 09:00:00.000000",
+ "content": "[{\"id\": \"hk-b0\", \"type\": \"custom_block\", \"data\": {\"custom_block_name\": \"HK Team Today\", \"col\": 12}}, {\"id\": \"hk-b1\", \"type\": \"custom_block\", \"data\": {\"custom_block_name\": \"HK Team Roster\", \"col\": 12}}, {\"id\": \"hk-h0\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h5\\\"><b>People</b></span>\", \"col\": 12}}, {\"id\": \"hk-s1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Staff\", \"col\": 3}}, {\"id\": \"hk-s2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Time off\", \"col\": 3}}, {\"id\": \"hk-s3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Attendance\", \"col\": 3}}, {\"id\": \"hk-s4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Holidays\", \"col\": 3}}, {\"id\": \"hk-s5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Shifts\", \"col\": 3}}, {\"id\": \"hk-h1\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h5\\\"><b>Overtime and pay</b></span>\", \"col\": 12}}, {\"id\": \"hk-s6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Overtime\", \"col\": 3}}, {\"id\": \"hk-s7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Overtime Rates\", \"col\": 3}}, {\"id\": \"hk-s8\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Overtime Summary\", \"col\": 3}}, {\"id\": \"hk-s9\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Monthly Pay Sheet\", \"col\": 3}}]",
+ "creation": "2026-11-20 12:00:00.000000",
  "custom_blocks": [
   {
    "custom_block_name": "HK Team Today",
@@ -22,7 +22,7 @@
  "is_hidden": 0,
  "label": "Team",
  "links": [],
- "modified": "2026-10-19 09:00:00.000000",
+ "modified": "2026-11-20 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "HK Operations",
  "name": "Team",
@@ -38,6 +38,7 @@
    "role": "HR Manager"
   }
  ],
+ "sequence_id": 4.0,
  "shortcuts": [
   {
    "type": "DocType",
@@ -59,24 +60,6 @@
   },
   {
    "type": "DocType",
-   "label": "Clock-ins",
-   "link_to": "Employee Checkin",
-   "doc_view": ""
-  },
-  {
-   "type": "DocType",
-   "label": "Overtime",
-   "link_to": "Overtime Entry",
-   "doc_view": ""
-  },
-  {
-   "type": "Report",
-   "label": "Overtime Summary",
-   "link_to": "Overtime Summary",
-   "doc_view": ""
-  },
-  {
-   "type": "DocType",
    "label": "Holidays",
    "link_to": "Holiday List",
    "doc_view": ""
@@ -86,7 +69,31 @@
    "label": "Shifts",
    "link_to": "Shift Type",
    "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Overtime",
+   "link_to": "Overtime Entry",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Overtime Rates",
+   "link_to": "Overtime Rate",
+   "doc_view": ""
+  },
+  {
+   "type": "Report",
+   "label": "Overtime Summary",
+   "link_to": "Overtime Summary",
+   "doc_view": ""
+  },
+  {
+   "type": "Report",
+   "label": "Monthly Pay Sheet",
+   "link_to": "Monthly Pay Sheet",
+   "doc_view": ""
   }
  ],
- "title": "Team"
+ "title": "HR"
 }

@@ -1,8 +1,8 @@
 {
  "app": "happy_kitchen",
  "charts": [],
- "content": "[{\"id\": \"hk-b0\", \"type\": \"custom_block\", \"data\": {\"custom_block_name\": \"HK Clock In\", \"col\": 12}}]",
- "creation": "2026-10-19 09:00:00.000000",
+ "content": "[{\"id\": \"hk-b0\", \"type\": \"custom_block\", \"data\": {\"custom_block_name\": \"HK Clock In\", \"col\": 12}}, {\"id\": \"hk-h0\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h5\\\"><b>Records</b></span>\", \"col\": 12}}, {\"id\": \"hk-s1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Clock-ins\", \"col\": 3}}]",
+ "creation": "2026-11-20 12:00:00.000000",
  "custom_blocks": [
   {
    "custom_block_name": "HK Clock In",
@@ -18,7 +18,7 @@
  "is_hidden": 0,
  "label": "Clock In",
  "links": [],
- "modified": "2026-10-19 09:00:00.000000",
+ "modified": "2026-11-20 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "HK Operations",
  "name": "Clock In",
@@ -37,6 +37,14 @@
    "role": "Kitchen Tablet"
   }
  ],
- "shortcuts": [],
- "title": "Clock In"
+ "sequence_id": 5.0,
+ "shortcuts": [
+  {
+   "type": "DocType",
+   "label": "Clock-ins",
+   "link_to": "Employee Checkin",
+   "doc_view": ""
+  }
+ ],
+ "title": "Clock in / Clock out"
 }

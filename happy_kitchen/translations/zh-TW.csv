@@ -33,8 +33,10 @@ A signed checklist is an audit record and can't be cancelled.,已簽署的檢查
 A time before the start means the next day (e.g. 22:00 to 01:00).,早於開始時間即表示翌日（例如 22:00 至 01:00）。
 A4 sheet (PDF),A4 工作表 (PDF)
 Accent Colour,強調色
+Accounting,會計
 Active Ingredients,啟用材料
 Active from,啟用起算
+Active recipes,使用中的食譜
 Actual Used,實際用量
 Add,加入
 Add Batch Preparations to Stock,半成品入庫
@@ -117,6 +119,7 @@ Blank = no limit.,留空 = 不設限制。
 Blank = not enrolled yet.,留空 = 尚未加入。
 Blank = offered on every checklist.,留空 = 所有檢查表都可選。
 Blank = the recipe's unit weight.,留空 = 食譜的單位重量。
+Books,賬簿
 Brand Name,品牌名稱
 Brand line,品牌行
 Branding (A4 recipe print),品牌（A4 食譜列印）
@@ -144,6 +147,7 @@ Check Area,檢查區域
 Check connection,檢查連線
 Check delivery from {0},檢查 {0} 的送貨
 Check ingredients,檢查材料
+Check lists,檢查清單
 Check product labels,核對產品標籤
 Check the label,核對標籤
 Check these against the email and add them to the draft order by hand.,"請對照電郵,把這些行手動加到訂單草稿。"
@@ -183,6 +187,7 @@ Client,客戶
 Client Spec Sheets,客戶規格表
 Clock In,打卡
 Clock in,打卡
+Clock in / Clock out,上班打卡 / 下班打卡
 Clock-in PIN,打卡密碼
 Clock-in PIN Hash,打卡密碼雜湊
 Clock-in tablet,打卡平板
@@ -312,6 +317,7 @@ Each changed recipe is re-costed and gets a comment. Products with labels will n
 Each recipe's quantity is multiplied by this. Keep 1 to use the same amount (e.g. 0.8 if the new product is stronger).,每個食譜的用量會乘以此數。保持 1 即用量不變（例如新產品味道較濃可用 0.8）。
 Email Order,電郵訂單
 Email Order Line,電郵訂單行
+Email Orders,電郵訂單
 Email customer,電郵客戶
 Email text,電郵內容
 Emails to read by hand,需人手處理的電郵
@@ -412,6 +418,7 @@ HK Team Today,HK 今日團隊
 HK Today,HK 今日
 "HK$ per hour (Fixed), or how many times the person's own hourly wage (1.5 = time and a half).",每小時港幣（固定），或員工本身時薪的倍數（1.5 = 一點五倍）。
 HKID / Passport No.,香港身份證／護照號碼
+HR,人力資源
 Happening today,今日進行中
 Happy Concepts desk theme,Happy Concepts 介面主題
 Happy Kitchen,快樂廚房
@@ -432,6 +439,7 @@ Hygiene Cert Expiry,衞生證書到期日
 Ignore Changes Under %,忽略低於此 % 的變動
 Ignored,已略過
 In Stock,現有庫存
+In development: these tools are still being built and tested.,開發中：這些工具仍在製作和測試。
 In stock,現有庫存
 "In the UOM above, e.g. 12 for eggs by the dozen. 0 = any quantity.",以上面的單位計，例如雞蛋按打訂為 12。0 = 任何數量。
 In the UOM above. 0 = no minimum.,以上面的單位計。0 = 沒有最低數量。
@@ -458,6 +466,7 @@ Ingredient usage from Recipe Production Log {0},生產紀錄 {0} 的食材用量
 Ingredients,使用食材
 Ingredients & Packaging,食材及包裝
 Ingredients & Packaging by Supplier,按供應商列出食材及包裝
+Ingredients (Items),食材（貨品）
 Ingredients + packaging + working recipes.,食材 + 包裝 + 半成品食譜。
 Ingredients / Unit,每件食材
 Ingredients Used (kg),食材用量（公斤）
@@ -476,6 +485,7 @@ Invoice price,發票價
 Item (internal SKU),貨品(內部貨號)
 Item Allergen,物料致敏物
 Item ID,物品編號
+Item Prices,貨品價格
 Item confirmed,產品已確認
 Item {0} does not exist.,產品 {0} 不存在。
 Items after,修改後貨品
@@ -484,6 +494,7 @@ Items in these groups (or their sub-groups) count as Packaging.,屬於這些組�
 Just over target,略高於目標
 Keeps {0} {1} once opened,開封後可存放 {0} {1}
 Keywords,關鍵字
+Kitchen,廚房
 Kitchen Checks,廚房檢查
 Kitchen Checks Log,廚房檢查記錄表
 Kitchen Checks settings.,廚房檢查設定。
@@ -603,6 +614,8 @@ Minutes after the due time before it shows as Overdue.,過了限時多少分鐘�
 Minutes per Batch,每批分鐘
 Missed,已錯過
 "Monday to Sunday, by delivery date",星期一至星期日，按送貨日期
+Money in,收款
+Money out,付款
 Month (YYYY-MM),月份（YYYY-MM）
 Monthly Base Salary,每月底薪
 Monthly Pay Sheet,每月薪酬表
@@ -738,6 +751,7 @@ Open tablet checks,開啟平板檢查
 Open without a label,開封（不打印標籤）
 Opened,已開封
 Opened Item,開封貨品
+Opened Item records,已開封記錄
 Opened Items,開封貨品
 Opened at,開封時間
 Opened by,開封人
@@ -756,6 +770,7 @@ Optional: the batch the pack came from.,可選：該包裝所屬的批次。
 Optional: the team that works in this area.,可選：在此區域工作的組別。
 "Optional: who does it. Blank = the area's department, or anyone.",可選：由誰負責。留空 = 該區域的組別或任何人。
 Order Revision,訂單修訂
+Order Revisions,訂單修訂
 Order completed.,訂單已完成。
 Order confirmed,訂單已確認
 Order confirmed by {0}.,{0} 已確認訂單。
@@ -767,6 +782,7 @@ Order quantity not allowed,訂貨數量不符
 Ordered,訂購
 Ordering,訂貨
 Ordering (optional),訂貨（選填）
+Ordering and receiving,訂貨與收貨
 "Orders due that day, what to make, dough to top up and short ingredients",當日訂單、需生產的產品、需補做的麵糰及不足的材料
 Orders going out,今日出貨訂單
 Orders to deliver,待送貨訂單
@@ -791,6 +807,7 @@ Overtime Rate,加班費率
 Overtime Rate {0} is disabled.,加班費率 {0} 已停用。
 Overtime Rates,加班費率
 Overtime Summary,加班摘要
+Overtime and pay,加班與薪酬
 Overtime hours,加班時數
 "Overtime hours worked, e.g. 1.5",加班時數，例如 1.5
 Overtime to approve,待審批加班
@@ -943,6 +960,7 @@ Recipe,食譜
 Recipe Component,食譜組件
 Recipe Components,食譜組件
 Recipe Cost Analysis,食譜成本分析
+Recipe Costing,食譜成本
 Recipe Ingredient,食譜食材
 Recipe Ingredient Usage,食譜食材用量
 Recipe Labour,食譜人工
@@ -956,6 +974,7 @@ Recipe Step,製作步驟
 Recipe Type,食譜類型
 Recipe Units per Sales Unit,每銷售單位的食譜單位數
 Recipe Utensil,食譜器具
+Recipe costing and testing,食譜成本與測試
 Recipes,食譜
 Recipes Produced,已生產食譜
 Recorded Wastage,已記錄報廢
@@ -1017,6 +1036,7 @@ Sales Orders,銷售訂單
 "Sales, next 2 weeks",未來兩週銷售
 Sample Sent,樣辦送出
 Sample order,樣品訂單
+Samples Sent,已送樣本
 Save PIN,儲存密碼
 Save draft order,儲存訂單草稿
 Save the sheet first.,請先儲存盤點表。
@@ -1206,6 +1226,7 @@ To fix,待修正
 To make today,今日待生產
 To submit,待提交
 Today,今日
+Today / This week,今日 / 本週
 Today in the kitchen,今日廚房
 Today's run,今日生產
 Tolerance,容差
