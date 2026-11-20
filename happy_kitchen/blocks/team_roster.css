@@ -27,3 +27,22 @@
 .hk-roster.tablet .cell { min-height: 56px; font-size: 14px; border-radius: 10px; }
 .hk-roster.tablet .dh, .hk-roster.tablet .ft { font-size: 13px; }
 .hk-roster.tablet .nm { font-size: 16px; }
+
+/* Day view (default on tablets; Figma "Team roster, tablet simplified") */
+.hk-roster [hidden] { display: none !important; }
+.hk-roster .view-switch { display: flex; gap: 6px; margin: 8px 0; }
+.hk-roster .daybar { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; margin: 8px 0 12px; }
+.hk-roster .dbtn { display: flex; flex-direction: column; align-items: center; min-height: 56px; padding: 6px 0; border-radius: 10px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); }
+.hk-roster .dbtn small { color: var(--text-muted); font-size: 12px; }
+.hk-roster .dbtn b { font-size: 18px; }
+.hk-roster .dbtn.today small { color: var(--primary); }
+.hk-roster .dbtn.on { background: var(--hk-brand-soft, var(--control-bg, #e7d8d1)); border-color: var(--hk-brand, var(--primary)); }
+.hk-roster .drow { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 60px; border-bottom: 1px solid var(--border-color); }
+.hk-roster .drow .nm { font-size: 16px; font-weight: 600; }
+.hk-roster .drow .cell { min-width: 140px; min-height: 48px; font-size: 15px; }
+.hk-roster.tablet .view-switch .btn { min-height: 48px; padding: 0 22px; }
+.hk-roster.tablet .drow { min-height: 68px; }
+.hk-roster.tablet .drow .nm { font-size: 18px; }
+.hk-roster.tablet .drow .cell { min-width: 180px; min-height: 52px; font-size: 16px; }
+.hk-roster.tablet .dbtn { min-height: 68px; }
+.hk-roster.tablet .dbtn b { font-size: 22px; }
