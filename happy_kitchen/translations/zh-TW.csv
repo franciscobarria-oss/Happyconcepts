@@ -31,6 +31,7 @@ A place in the kitchen where checklists are done (Kitchen Checks).,廚房內進�
 A sample sent to a customer: no price is needed and it is confirmed without a person checking the value.,送給客戶的樣品：不需要價格，確認時不必人員檢查金額。
 A signed checklist is an audit record and can't be cancelled.,已簽署的檢查表是審核記錄，不能取消。
 A time before the start means the next day (e.g. 22:00 to 01:00).,早於開始時間即表示翌日（例如 22:00 至 01:00）。
+A4 sheet (PDF),A4 工作表 (PDF)
 Accent Colour,強調色
 Active Ingredients,啟用材料
 Active from,啟用起算
@@ -38,9 +39,11 @@ Actual Used,實際用量
 Add,加入
 Add Batch Preparations to Stock,半成品入庫
 Add Product from {0},從 {0} 新增產品
+Add a photo first,請先加入相片
 Add all stocked ingredients,加入所有庫存材料
 Add at least one item,請最少加入一項物品
 Add at least one item.,請至少加入一項產品。
+Add ingredient,加入材料
 Add line,新增行
 "Addresses or @domains, separated by commas or lines. Blank = anyone whose mail carries the label.","電郵地址或 @網域,以逗號或換行分隔。留空 = 凡帶有此標籤的郵件皆可。"
 "Addresses or domains (happyconceptsfood.hk), separated by commas or lines. A reply (Re:) from them without a PDF is skipped; forwards and replies with a PDF are still read.",地址或網域（happyconceptsfood.hk），以逗號或換行分隔。其不含 PDF 的回覆（Re:）會略過；轉寄及附有 PDF 的回覆仍會讀取。
@@ -125,9 +128,13 @@ Busy day,繁忙
 Buying Price,採購價
 Buying Price List,採購價目表
 By,經手人
+Cake Costing,蛋糕成本
+Cake Costing Ingredient,蛋糕成本材料
+Cake name,蛋糕名稱
 Can't reach the server.,未能連接伺服器。
 Change clock-in PIN,更改打卡密碼
 Change item,更改產品
+Change photo,更換相片
 Changed by,修改者
 Changed since check,核對後有更改
 Cheapest,最便宜
@@ -219,9 +226,12 @@ Cost / kg,每公斤成本
 Cost Analysis,成本分析
 Cost Card,成本卡
 Cost Summary,成本摘要
+Cost per 100 g,每100克成本
 "Cost per Unit (all-in, incl. services)",每件總成本（連服務）
 Cost per Unit (excl. Labour),每件成本（不連人工）
 Cost per Unit (incl. Labour),每件成本（連人工）
+Cost per gram,每克成本
+Cost per slice,每件成本
 Cost per unit,每件成本
 Costing,成本
 Costs appear after the first save.,儲存後顯示成本。
@@ -371,6 +381,7 @@ Full-time only. Leave empty for hourly staff.,只適用於全職員工。時薪�
 "Gas, electricity, packaging, cleaning, rent share... New recipes start with the defaults from Recipe Settings.",煤氣、電費、包裝、清潔、租金分攤…… 新食譜會以食譜設定中的預設值開始。
 Gemini API key,Gemini API 金鑰
 Gemini model,Gemini 模型
+Give the cake a name,請為蛋糕命名
 Gmail Settings,Gmail 設定
 Gmail Settings is missing the Google sign-in,Gmail 設定缺少 Google 登入資料
 Gmail Settings is missing: {0}.,Gmail 設定缺少:{0}。
@@ -386,9 +397,12 @@ Google client secret,Google 用戶端密鑰
 Google refresh token,Google 更新權杖
 Google refused the sign-in ({0}). Run the Google sign-in step again.,Google 拒絕登入({0})。請重新進行 Google 登入步驟。
 Grace (minutes),寬限（分鐘）
+Grams,克數
 Grams per Piece,每件克數
 Gross Base Qty,毛用量（基本單位）
 Gross Qty (issue),毛用量（發料）
+Guess from photo,由相片推測
+Guessed from photo,由相片推測
 HK Clock In,HK 打卡
 HK Kitchen Checks Home,廚房檢查首頁
 HK Team Roster,HK 團隊更表
@@ -400,6 +414,7 @@ Happening today,今日進行中
 Happy Concepts desk theme,Happy Concepts 介面主題
 Happy Kitchen,快樂廚房
 "Have you read the whole label, including allergens, storage and shelf life, and is it correct?",你是否已閱讀整張標籤（包括致敏物、儲存方法及保質期），並確認正確？
+Height (cm),高度 (厘米)
 Help text,說明
 Highest allowed,最高容許
 Hong Kong HR,香港人事
@@ -425,7 +440,7 @@ Include Archived,包括已封存
 Include drafts,包括草稿
 Include items with no price,包括未有價格的物品
 Includes {0} draft orders in this range (not yet confirmed).,已包括此期間 {0} 張草稿訂單（尚未確認）。
-Ingredient,食材
+Ingredient,材料
 Ingredient (Item),食材（物品）
 Ingredient (heaviest first),配料（按重量排列）
 Ingredient / Packaging,食材／包裝
@@ -522,8 +537,10 @@ Later,稍後
 Leave balances,假期結餘
 Leave blank to use the cheapest supplier on the buying price list.,留空即使用採購價格表中最便宜的供應商。
 Leave to approve,待批假期
+Length (cm),長度 (厘米)
 Less,收起
 Line ID,行編號
+Line cost,項目成本
 Line {0} not found.,找不到第 {0} 行。
 Lines it could not read,讀不到的行
 Lines that could not be read,無法讀取的行
@@ -534,6 +551,7 @@ Loaded Cost / Batch,全成本（每批）
 Loaded Cost / Unit,全成本（每件）
 Loading count sheet...,載入盤點表中…
 Loading products...,正在載入產品...
+Loaf,長條形
 Log,紀錄
 Log Production,記錄生產
 Log Wastage,報廢
@@ -601,16 +619,19 @@ Net Base Qty,淨用量（基本單位）
 Net Qty,淨用量
 Net Qty Used,淨用量
 Net weight per piece (g),每件淨重（克）
+New cake,新蛋糕
 New count,新盤點
 "New customer {0} made from the original sender of a forwarded email: check it, or add the outlet's name under the customer's Names in order emails.",已按轉寄電郵的原寄件人建立新客戶 {0}：請檢查，或在客戶的「訂單電郵中的名稱」加入分店名稱。
 "New draft orders made from email are confirmed at once. Orders with no value, a line with no price, or that look like a duplicate stay as drafts for a person.",由電郵建立的新草稿訂單會即時確認。沒有金額、有項目沒有價格或疑似重複的訂單會保留為草稿，由人員檢查。
 New item,新貨品
 New product made,已新增產品
+No Gemini key is set in Gmail Settings,Gmail 設定中未填寫 Gemini 金鑰
 No Price,未有價格
 No Price Found,找不到價格
 No SKU matches.,沒有相符的產品編號。
 No allergen keywords found in the name. Check the supplier's pack or spec sheet.,名稱中找不到致敏物關鍵字。請查看供應商包裝或規格表。
 No batch,無批次
+No cakes saved yet,尚未儲存任何蛋糕
 No checklist is due at that time.,該時間沒有需要做的檢查。
 "No count was entered, so it was counted as 0 when the count was submitted.","未輸入盤點數量,提交盤點時按 0 計算。"
 No date,未有日期
@@ -625,6 +646,7 @@ No open orders,沒有未完成訂單
 No order lines were read.,沒有讀到訂單行。
 No orders,沒有訂單
 No orders going out today.,今日沒有出貨訂單。
+No pack size,沒有包裝規格
 No price,沒有價格
 No price of ours: PO price {0} used,我們沒有價格：已用採購單價 {0}
 No price on the PO or ours,採購單和我們都沒有價格
@@ -650,6 +672,7 @@ Not checked yet,尚未檢查
 Not checked yet. Labels asked for on an order wait until a manager checks this label.,尚未檢查。訂單上要求列印的標籤會等候經理檢查此標籤。
 Not confirmed automatically: {0},未能自動確認：{0}
 Not confirmed automatically: {0} ({1}).,未自動確認：{0}（{1}）。
+Not counted (no price or pack size),未計算 (沒有價格或包裝規格)
 Not finished yet,尚未完成
 Not invoiced yet.,未開發票。
 Not now,暫不
@@ -809,6 +832,7 @@ Photo needed,需要相片
 Pi reports a problem,Raspberry Pi 報告問題
 Pick a method: {0} or {1}.,請選擇計算方法：{0} 或 {1}。
 Pick a rate (or set a default overtime rate on the Employee).,請選擇費率（或在員工資料設定預設加班費率）。
+Pick an item,請選擇貨品
 Pick the lines to print. Pieces = how many pieces the labels cover; the item's Pieces per label decides how many labels that is.,選擇要列印的行。件數 = 標籤涵蓋的件數；物料的「每張標籤件數」決定共印多少張。
 Pick up orders from Gmail,從 Gmail 讀取訂單
 Pick up orders now,立即讀取訂單
@@ -827,6 +851,7 @@ Price check,價格核對
 Price differs from the customer's PO,價格與客戶採購單不同
 Price for Target,目標售價
 Price must be greater than zero.,價格必須大於零。
+Price note,價格備註
 "Price on the supplier's delivery note / invoice, typed on Receive Delivery. Stock is still received at the PO price.",供應商送貨單／發票上的價格，於收貨畫面輸入。庫存仍按採購單價格入帳。
 Price per unit. Kg prices are stored per gram (price ÷ 1000).,每單位價格。以公斤計的價格會按每克儲存（價格 ÷ 1000）。
 Prices checked against the customer's PO:,已按客戶採購單核對價格：
@@ -963,6 +988,7 @@ Revision checked by {0}.,{0} 已檢查修訂。
 Revision history,修訂記錄
 Revisions,修訂次數
 Roster,更表
+Round,圓形
 Row not found,找不到該行
 Row {0} ({1}): add {2} to the Item's Units of Measure (with how many {3} it holds) before counting in it,第 {0} 行（{1}）：以 {2} 盤點前，請先在物品的計量單位加入 {2}（註明每個等於多少 {3}）
 Row {0} ({1}): set a storage area,第 {0} 行（{1}）：請設定儲存位置
@@ -991,6 +1017,7 @@ Save PIN,儲存密碼
 Save draft order,儲存訂單草稿
 Save the sheet first.,請先儲存盤點表。
 Save the supplier to see its products.,請先儲存供應商才可查看其產品。
+Saved cakes,已儲存的蛋糕
 "Saved, but no kitchen label printer is set up",已儲存，但尚未設定廚房標籤打印機
 Saving {0}…,儲存中（{0}）…
 Say who the sample went to: pick a customer or type a name.,請寫明樣辦送給誰：選擇客戶或輸入姓名。
@@ -1050,11 +1077,13 @@ Signed by (name),簽署人（姓名）
 Signed checklists wait on Today until a Compliance Manager marks them reviewed.,已簽署的檢查表會在「今日」等待，直至合規經理標為已覆核。
 Simple,簡易
 Skip plain replies from these senders,略過這些寄件人的純回覆郵件
+Slices,件數
 Some counts aren't saved yet. Check the connection and try again.,部分盤點未儲存。請檢查網絡後再試。
 Someone checked this order against the PDF and confirmed it.,已有人對照 PDF 檢查並確認此訂單。
 Someone entered this order by hand and closed the email.,此訂單已由人手輸入並關閉電郵。
 Source must be one of {0},來源必須是 {0} 其中之一
 Specification,規格
+Square,方形
 Staff,員工
 Staff PIN required to sign,簽署需要員工密碼
 Staff Role,職位
@@ -1106,6 +1135,7 @@ Supplier delivery note / invoice no.,送貨單號／發票號碼
 Suppliers,供應商
 Tablet screen,平板畫面
 Tagline,標語
+Take or upload photo,拍照或上傳相片
 "Takes up to 3 pack sizes from each item's units of measure, biggest first. Rows without pack sizes are always filled.",從每項物品的計量單位取最多 3 種包裝規格，由大至小。未設定包裝規格的行一定會填入。
 Tap a recipe to add it.,點選食譜加入。
 Target Food Cost %,目標食材成本率
@@ -1127,6 +1157,7 @@ The email this order was picked up from.,建立此訂單的電郵。
 The last check failed,上次檢查失敗
 "The lines were read but the order is held back, usually because it follows an order already submitted. Check it by hand.",行已讀取但訂單被擱置，通常因為它跟隨一張已提交的訂單。請人手檢查。
 The order matches the PDF? This confirms the items and submits the draft sales order.,訂單與 PDF 相符？這會確認產品並提交銷售訂單草稿。
+The photo could not be read. Add the ingredients by hand.,無法讀取相片，請手動加入材料。
 The photo is too large.,相片太大。
 The quantity factor must be more than 0.,數量倍數必須大於 0。
 "The questions of a checklist (Kitchen Checks). Runs keep their own copy, so editing never changes past records.",檢查表的問題（廚房檢查）。每次記錄都保存自己的副本，修改範本不會改變過往記錄。
@@ -1205,6 +1236,7 @@ Unknown action,未知操作
 Unknown kind,未知類型
 Unknown label printer {0},未知的標籤打印機 {0}
 Untick to stop the 15-minute job creating new runs.,取消剔選可停止每 15 分鐘建立新記錄。
+Untitled cake,未命名蛋糕
 Upcoming,即將到期
 Update ERPNext stock when a count is approved,盤點批准後更新 ERPNext 庫存
 Updated {0},更新於 {0}
@@ -1232,6 +1264,8 @@ View all,查看全部
 Visa / work permit expires,簽證／工作許可證到期
 Visa Expiry,簽證到期日
 Visa or work permit. A reminder shows on Today 30 days before.,簽證或工作許可證。到期前 30 天於「今日」提醒。
+Volume (cm³),體積 (立方厘米)
+Volume {0} cm³,體積 {0} 立方厘米
 Wages,工資
 Wages (Labour) - {0} h,工資（人工）－ {0} 小時
 Waiting because,等待原因
@@ -1252,6 +1286,7 @@ Wasted Items,報廢物品
 Week ahead,未來一週
 Week of,週
 Week of {0},{0} 當週
+Weight (g),重量 (克)
 Weight Tolerance (± g),重量誤差（± 克）
 Weight per Piece (g),每件重量（克）
 Weights & Cooking Yield,重量及成品率
@@ -1267,6 +1302,7 @@ What was sent,收到的內容
 When and where a checklist is due (Kitchen Checks). Runs are created every 15 minutes.,檢查表在何時何地要做（廚房檢查）。每 15 分鐘建立記錄。
 Why is it rejected?,退回原因？
 "Why it was sent, who to follow up with.",送出原因、需要跟進的對象。
+Width (cm),闊度 (厘米)
 With a recipe: show usage for this many batches instead of the date range.,選擇食譜時：顯示此批數的用量，而非日期範圍內的用量。
 Within Tolerance,在容差內
 Within tolerance,在容差內
@@ -1306,6 +1342,7 @@ expected today,預計今日到貨
 failed,失敗
 failed: say what was done about it,不合格：請填寫跟進措施
 from recipe {0},來自食譜 {0}
+guess,推測
 h,小時
 in since {0},{0} 上班
 in {0} days,{0} 天後
@@ -1330,6 +1367,8 @@ out at {0},{0} 下班
 overdue,已逾期
 overheads,雜費
 part week,不完整的一週
+per 100 g,每100克
+per slice,每件
 photo needed,需要相片
 printed,已列印
 received,已收
