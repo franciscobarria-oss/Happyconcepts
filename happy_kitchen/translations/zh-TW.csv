@@ -89,8 +89,10 @@ Areas,區域
 "As it appears in ""This product contains ... and their products."", e.g. cereals containing gluten.",用於「This product contains ... and their products.」句中，例如 cereals containing gluten。
 "As printed after CONTAINS: on labels, e.g. Milk.",標籤上 CONTAINS: 之後的寫法，例如 Milk。
 Back to orders,返回採購單
+Bank account,銀行戶口
 Base Unit,基本單位
 Based On,計算基礎
+Basic,基本薪酬
 Basis,計算方式
 Batch Preparation,半成品
 Batch Preparation Stock Entries,半成品入庫紀錄
@@ -163,6 +165,7 @@ Choices that fail,不合格的選項
 Choose a Stock Take Sheet or a Stock Take.,請選擇盤點表或盤點紀錄。
 Choose a customer.,請選擇客戶。
 Choose a different ingredient to replace {0} with.,請選擇另一項材料取代 {0}。
+Choose a month (YYYY-MM).,請選擇月份（YYYY-MM）。
 Choose a reason,請選擇原因
 Choose an opening and a closing approved stock take.,請選擇已批准的期初及期末盤點。
 Choose at least one recipe and a number of batches,請選擇最少一個食譜及批數
@@ -579,7 +582,9 @@ Minutes after the due time before it shows as Overdue.,過了限時多少分鐘�
 Minutes per Batch,每批分鐘
 Missed,已錯過
 "Monday to Sunday, by delivery date",星期一至星期日，按送貨日期
+Month (YYYY-MM),月份（YYYY-MM）
 Monthly Base Salary,每月底薪
+Monthly Pay Sheet,每月薪酬表
 Most emails per run,每次最多電郵數
 Multiple of own hourly wage,本人時薪倍數
 Must be answered,必須回答
@@ -634,6 +639,7 @@ No sales in this range.,此期間沒有銷售。
 No selling price,未有售價
 No shifts on the roster today.,今日更表沒有人當值。
 "No storage area set on these items, so nothing was taken out of stock.",這些物品未設定儲存位置，所以未有扣除庫存。
+No such employee for that month.,該月沒有此員工。
 No value,沒有金額
 Not allowed,不允許
 Not an order,非訂單
@@ -684,6 +690,7 @@ One per line.,每行一個。
 One per line; picking one of these asks what was done about it.,每行一個；選了這些會要求填寫跟進措施。
 One row per ingredient and storage area. Drag rows to change the counting order; the count screen groups them by storage area in this order. Untick Active to hide a row.,每項食材及儲存位置一行。拖動行可更改盤點次序；盤點畫面會按此次序以儲存位置分組。取消勾選「使用中」可隱藏該行。
 Online,在線
+Only HR Manager or System Manager can open pay figures.,只有人事經理或系統管理員可查看薪酬數字。
 Only Out of Tolerance,只顯示超出容差
 Only Price Changes,只顯示價格變動
 Only Recipes That Need a Look,只顯示需檢查的食譜
@@ -757,6 +764,7 @@ Overtime Rate,加班費率
 Overtime Rate {0} is disabled.,加班費率 {0} 已停用。
 Overtime Rates,加班費率
 Overtime Summary,加班摘要
+Overtime hours,加班時數
 "Overtime hours worked, e.g. 1.5",加班時數，例如 1.5
 Overtime to approve,待審批加班
 Overview,總覽
@@ -788,6 +796,7 @@ Pass when,合格條件
 Past use-by,已過期
 Pay,薪酬
 Pay Method,計算方法
+Payment slip,薪酬單
 Per,每
 Per Batch,每批
 Per Hour (HK$),每小時（港元）
@@ -1158,6 +1167,7 @@ Time off to approve,待審批假期
 Times sent,發送次數
 To approve,待審批
 To do,待辦
+To fix,待修正
 To make today,今日待生產
 To submit,待提交
 Today,今日
