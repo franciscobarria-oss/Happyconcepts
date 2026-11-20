@@ -1,0 +1,26 @@
+<html><head><meta charset="utf-8"><style>
+body{font-family:sans-serif;font-size:12px;color:#222}
+h2{margin:0}table{width:100%;border-collapse:collapse;margin:10px 0}
+td,th{border-bottom:1px solid #ccc;padding:5px;text-align:left}.n{text-align:right}
+.total td{font-weight:bold;border-top:2px solid #222}.small{color:#666;font-size:10px}
+</style></head><body>
+<h2>{{ company }}</h2>
+<div>Payment Slip 薪酬單 &mdash; {{ month }}</div>
+<table>
+<tr><td>Name 姓名</td><td>{{ r.employee_name }} ({{ r.employee }})</td>
+<td>Type 類別</td><td>{{ r.type }}</td></tr>
+<tr><td>Bank 銀行</td><td>{{ r.bank_name or "" }}</td><td>Account 戶口</td><td>{{ r.bank_ac_no or "" }}</td></tr>
+</table>
+<table>
+<tr><th>Item 項目</th><th class="n">Hours 時數</th><th class="n">Rate 時薪/月薪</th><th class="n">HK$</th></tr>
+<tr><td>{{ "Monthly salary 月薪" if r.type == "Monthly" else "Hours worked 工作時數" }}</td>
+<td class="n">{{ "%.2f"|format(r.hours) }}</td><td class="n">{{ "%.2f"|format(r.rate) }}</td><td class="n">{{ "%.2f"|format(r.basic) }}</td></tr>
+<tr><td>Overtime 超時</td><td class="n">{{ "%.2f"|format(r.ot_hours) }}</td><td class="n"></td><td class="n">{{ "%.2f"|format(r.overtime) }}</td></tr>
+<tr class="total"><td>Total 總額</td><td></td><td></td><td class="n">{{ "%.2f"|format(r.total) }}</td></tr>
+</table>
+{% if leave %}<div>Leave taken 已放假期: {% for t, d in leave %}{{ t }} {{ d }} day(s){% if not loop.last %}, {% endif %}{% endfor %}</div>{% endif %}
+{% if balances %}<div>Leave allocated this period 本期假期: {% for t, d in balances %}{{ t }} {{ d }}{% if not loop.last %}, {% endif %}{% endfor %}</div>{% endif %}
+{% if holidays %}<div>Statutory holidays 法定假日: {% for h in holidays %}{{ formatdate(h.holiday_date) }} {{ h.description }}{% if not loop.last %}; {% endif %}{% endfor %}</div>{% endif %}
+<p class="small">Information only. Statutory holiday pay, MPF and other items are on the payroll provider's payslip.
+僅供參考。法定假日薪酬及強積金以薪酬服務商的薪金單為準。</p>
+</body></html>

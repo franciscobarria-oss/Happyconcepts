@@ -7,6 +7,16 @@
 # to list the strings that still need a translation here.
 
 ZH_TW = {
+	"Bank account": "銀行戶口",
+	"Basic": "基本薪酬",
+	"Choose a month (YYYY-MM).": "請選擇月份（YYYY-MM）。",
+	"Month (YYYY-MM)": "月份（YYYY-MM）",
+	"Monthly Pay Sheet": "每月薪酬表",
+	"No such employee for that month.": "該月沒有此員工。",
+	"Only HR Manager or System Manager can open pay figures.": "只有人事經理或系統管理員可查看薪酬數字。",
+	"Overtime hours": "加班時數",
+	"Payment slip": "薪酬單",
+	"To fix": "待修正",
 	"HK Kitchen Checks Home": "廚房檢查首頁",
 	"Run kitchen checks": "進行廚房檢查",
 	"Complete checklists on this tablet and sign with your staff PIN.": "在此平板完成檢查表，並以員工密碼簽署。",
@@ -1492,6 +1502,7 @@ ZH_TW = {
 # Left to Frappe / ERPNext's own translation, or never translated (unit symbols).
 # Overriding these would change them everywhere in ERPNext.
 LEAVE_AS_IS = {
+	"Bank",
 	"Email", "Note", "Close", "Rate", "Delivery Date",
 	"Description", "Error", "Subject", "Text", "Sender", "New", "Lines",
 	"Actions", "Active", "Amended From", "Approved", "Attendance", "Company", "Department", "Disabled", "Draft",
