@@ -13,6 +13,7 @@ BLOCKS = {
 	"HK Clock In": "clock_in",
 	"HK Today": "today",
 	"HK Sales": "sales",
+	"HK Kitchen Checks Home": "kitchen_checks_home",
 }
 
 

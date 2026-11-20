@@ -1,9 +1,14 @@
 {
  "app": "happy_kitchen",
  "charts": [],
- "content": "[{\"id\": \"hk-h0\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Kitchen Checks</b></span>\", \"col\": 12}}, {\"id\": \"hk-p0\", \"type\": \"paragraph\", \"data\": {\"text\": \"Opening, closing, cleaning and food safety checklists, signed on the kitchen tablet with the staff PIN.\", \"col\": 12}}, {\"id\": \"hk-s0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Tablet screen\", \"col\": 3}}, {\"id\": \"hk-s1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Checklist runs\", \"col\": 3}}, {\"id\": \"hk-s2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Checklists\", \"col\": 3}}, {\"id\": \"hk-s3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Schedules\", \"col\": 3}}, {\"id\": \"hk-s4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Areas\", \"col\": 3}}, {\"id\": \"hk-s5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Kitchen Checks Log\", \"col\": 3}}, {\"id\": \"hk-s6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Quick picks\", \"col\": 3}}, {\"id\": \"hk-s7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Settings\", \"col\": 3}}]",
+ "content": "[{\"id\": \"hk-kc0\", \"type\": \"custom_block\", \"data\": {\"custom_block_name\": \"HK Kitchen Checks Home\", \"col\": 12}}]",
  "creation": "2026-11-03 10:00:00.000000",
- "custom_blocks": [],
+ "custom_blocks": [
+  {
+   "custom_block_name": "HK Kitchen Checks Home",
+   "label": "HK Kitchen Checks Home"
+  }
+ ],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
@@ -13,7 +18,7 @@
  "is_hidden": 0,
  "label": "Kitchen Checks",
  "links": [],
- "modified": "2026-11-03 10:00:00.000000",
+ "modified": "2026-11-20 10:00:00.000000",
  "modified_by": "Administrator",
  "module": "HK Compliance",
  "name": "Kitchen Checks",

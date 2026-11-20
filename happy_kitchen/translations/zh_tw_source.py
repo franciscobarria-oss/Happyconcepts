@@ -7,6 +7,16 @@
 # to list the strings that still need a translation here.
 
 ZH_TW = {
+	"HK Kitchen Checks Home": "廚房檢查首頁",
+	"Run kitchen checks": "進行廚房檢查",
+	"Complete checklists on this tablet and sign with your staff PIN.": "在此平板完成檢查表，並以員工密碼簽署。",
+	"Open tablet checks": "開啟平板檢查",
+	"For the kitchen team": "供廚房團隊使用",
+	"Opening and closing": "開店及收店",
+	"Cleaning and food safety": "清潔及食品安全",
+	"Staff PIN required to sign": "簽署需要員工密碼",
+	"Manage kitchen checks": "管理廚房檢查",
+	"Setup, records and reporting": "設定、紀錄及報告",
 	"Main": "主選單",
 	"Full desk": "完整桌面",
 	"Confirm and next": "確認並下一張",
