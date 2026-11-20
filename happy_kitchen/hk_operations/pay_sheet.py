@@ -12,6 +12,17 @@ from datetime import date, datetime
 
 MONTHLY, HOURLY = "Monthly", "Hourly"
 
+# MPF (Mandatory Provident Fund), MPFA mandatory contribution rules: 5 % each from employer and
+# employee on relevant income (basic + overtime); the employee pays nothing when the month's
+# relevant income is below HK$7,100 (employer still pays); the base is capped at HK$30,000
+# (so at most HK$1,500 each); the employee has a 30-day contribution-free period at the start
+# (the employer's share is due from day 1). Minimum figure seen on mpfa.org.hk (2026-11-20);
+# Francisco / the provider confirm the figures before they are relied on. Review each January.
+MPF_RATE = 0.05
+MPF_MIN_INCOME = 7100.0
+MPF_MAX_INCOME = 30000.0
+MPF_FREE_DAYS = 30
+
 
 def flt(value) -> float:
 	try:
@@ -51,16 +62,41 @@ def contract_type(declared, monthly_base, hourly_rate) -> str:
 	return MONTHLY if flt(monthly_base) else HOURLY
 
 
-def pay_row(kind, monthly_base=0, hourly_rate=0, hours=0, ot_hours=0, ot_amount=0) -> dict:
-	"""Pay for the month. Monthly: base salary (hours shown for information). Hourly: hours x rate."""
+def mpf(relevant_income, joined=None, last_day=None) -> dict:
+	"""Employee and employer MPF for the month. `joined` / `last_day` (dates) apply the 30-day
+	contribution-free period when the whole month falls inside it (a month that only partly
+	does is flagged for a person to check, not guessed)."""
+	income = flt(relevant_income)
+	base = min(income, MPF_MAX_INCOME)
+	employer = money(base * MPF_RATE)
+	employee = money(base * MPF_RATE) if income >= MPF_MIN_INCOME else 0.0
+	note = "" if income >= MPF_MIN_INCOME else "Below HK$7,100: no employee MPF"
+	if joined and last_day:
+		free_until = date.fromordinal(joined.toordinal() + MPF_FREE_DAYS - 1)
+		first = date(last_day.year, last_day.month, 1)
+		if last_day <= free_until:
+			employee, note = 0.0, "First 30 days: no employee MPF"
+		elif first <= free_until:
+			note = "30-day free period ends this month: check employee MPF"
+	return {"mpf_employee": employee, "mpf_employer": employer, "mpf_note": note}
+
+
+def pay_row(kind, monthly_base=0, hourly_rate=0, hours=0, ot_hours=0, ot_amount=0, joined=None,
+            last_day=None) -> dict:
+	"""Pay for the month. Monthly: base salary (hours shown for information). Hourly: hours x rate.
+	Total is the relevant income for MPF; net is total less the employee MPF."""
 	hours, ot_hours = round(flt(hours), 2), round(flt(ot_hours), 2)
 	if kind == MONTHLY:
 		rate, basic = money(monthly_base), money(monthly_base)
 	else:
 		rate, basic = flt(hourly_rate), money(flt(hours) * flt(hourly_rate))
 	overtime = money(ot_amount)
-	return {"type": kind, "hours": hours, "rate": rate, "basic": basic, "ot_hours": ot_hours,
-	        "overtime": overtime, "total": money(basic + overtime)}
+	total = money(basic + overtime)
+	row = {"type": kind, "hours": hours, "rate": rate, "basic": basic, "ot_hours": ot_hours,
+	       "overtime": overtime, "total": total}
+	row.update(mpf(total, joined, last_day))
+	row["net"] = money(total - row["mpf_employee"])
+	return row
 
 
 def problems(row: dict) -> list[str]:

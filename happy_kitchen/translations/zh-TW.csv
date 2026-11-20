@@ -305,7 +305,9 @@ Email Order Line,電郵訂單行
 Email customer,電郵客戶
 Email text,電郵內容
 Emails to read by hand,需人手處理的電郵
+Employee MPF,僱員強積金
 Employee Name,員工姓名
+Employer MPF,僱主強積金
 Enter a quantity,請輸入數量
 Enter how much was thrown away.,請輸入丟棄的數量。
 Enter order,輸入訂單
@@ -550,6 +552,7 @@ MPF Enrolment Due,強積金加入限期
 MPF Member No.,強積金成員編號
 MPF Scheme,強積金計劃
 MPF enrolment due,強積金加入限期
+MPF note,強積金備註
 Made From Recipe,按食譜製作
 Made by (bottom of label),製造商（標籤底部）
 Made on,生產日期
@@ -600,6 +603,7 @@ Needs review,待檢查
 Net Base Qty,淨用量（基本單位）
 Net Qty,淨用量
 Net Qty Used,淨用量
+Net pay,實發薪酬
 Net weight per piece (g),每件淨重（克）
 New count,新盤點
 "New customer {0} made from the original sender of a forwarded email: check it, or add the outlet's name under the customer's Names in order emails.",已按轉寄電郵的原寄件人建立新客戶 {0}：請檢查，或在客戶的「訂單電郵中的名稱」加入分店名稱。

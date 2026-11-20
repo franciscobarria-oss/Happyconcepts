@@ -7,6 +7,10 @@
 # to list the strings that still need a translation here.
 
 ZH_TW = {
+	"Employee MPF": "僱員強積金",
+	"Employer MPF": "僱主強積金",
+	"MPF note": "強積金備註",
+	"Net pay": "實發薪酬",
 	"Bank account": "銀行戶口",
 	"Basic": "基本薪酬",
 	"Choose a month (YYYY-MM).": "請選擇月份（YYYY-MM）。",
