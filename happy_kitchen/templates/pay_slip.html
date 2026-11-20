@@ -16,11 +16,14 @@ td,th{border-bottom:1px solid #ccc;padding:5px;text-align:left}.n{text-align:rig
 <tr><td>{{ "Monthly salary 月薪" if r.type == "Monthly" else "Hours worked 工作時數" }}</td>
 <td class="n">{{ "%.2f"|format(r.hours) }}</td><td class="n">{{ "%.2f"|format(r.rate) }}</td><td class="n">{{ "%.2f"|format(r.basic) }}</td></tr>
 <tr><td>Overtime 超時</td><td class="n">{{ "%.2f"|format(r.ot_hours) }}</td><td class="n"></td><td class="n">{{ "%.2f"|format(r.overtime) }}</td></tr>
-<tr class="total"><td>Total 總額</td><td></td><td></td><td class="n">{{ "%.2f"|format(r.total) }}</td></tr>
+<tr class="total"><td>Total (relevant income) 總額</td><td></td><td></td><td class="n">{{ "%.2f"|format(r.total) }}</td></tr>
+<tr><td>Employee MPF 強積金（僱員）</td><td></td><td></td><td class="n">-{{ "%.2f"|format(r.mpf_employee) }}</td></tr>
+<tr class="total"><td>Net pay 實發薪酬</td><td></td><td></td><td class="n">{{ "%.2f"|format(r.net) }}</td></tr>
 </table>
+<div>Employer MPF (not deducted) 僱主強積金（不從薪酬扣除）: HK$ {{ "%.2f"|format(r.mpf_employer) }}{% if r.mpf_note %} &mdash; {{ r.mpf_note }}{% endif %}</div>
 {% if leave %}<div>Leave taken 已放假期: {% for t, d in leave %}{{ t }} {{ d }} day(s){% if not loop.last %}, {% endif %}{% endfor %}</div>{% endif %}
 {% if balances %}<div>Leave allocated this period 本期假期: {% for t, d in balances %}{{ t }} {{ d }}{% if not loop.last %}, {% endif %}{% endfor %}</div>{% endif %}
 {% if holidays %}<div>Statutory holidays 法定假日: {% for h in holidays %}{{ formatdate(h.holiday_date) }} {{ h.description }}{% if not loop.last %}; {% endif %}{% endfor %}</div>{% endif %}
-<p class="small">Information only. Statutory holiday pay, MPF and other items are on the payroll provider's payslip.
+<p class="small">Information only. Statutory holiday pay and other items are on the payroll provider's payslip.
 僅供參考。法定假日薪酬及強積金以薪酬服務商的薪金單為準。</p>
 </body></html>

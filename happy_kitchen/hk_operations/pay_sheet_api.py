@@ -40,7 +40,7 @@ def sheet_rows(month, employee=None) -> list[dict]:
 			"where docstatus=1 and employee=%s and date between %s and %s", (e.name, first, last))[0]
 		kind = rules.contract_type(e.hk_contract_type, e.hk_monthly_base, e.hk_hourly_rate)
 		row = rules.pay_row(kind, e.hk_monthly_base, e.hk_hourly_rate, rules.worked_hours(checkins, first, last),
-		                    ot[0], ot[1])
+		                    ot[0], ot[1], getdate(e.date_of_joining) if e.date_of_joining else None, last)
 		row.update({"employee": e.name, "employee_name": e.employee_name, "bank_name": e.bank_name,
 		            "bank_ac_no": e.bank_ac_no})
 		row["problems"] = ", ".join(rules.problems(row))
