@@ -9,6 +9,10 @@
 	const money = (v) => "$" + Math.round(v).toLocaleString();
 	const today = frappe.datetime.get_today();
 	const monday = (d) => frappe.datetime.add_days(d, -((frappe.datetime.str_to_obj(d).getDay() + 6) % 7));
+	// tablet layout: class comes from public/js/hk_device.js (html[data-hk-device]); CSS in team_roster.css
+	const tab = () => $(".hk-roster").classList.toggle("tablet", document.documentElement.dataset.hkDevice === "tablet");
+	tab();
+	window.addEventListener("resize", tab);
 	let weekStart = monday(today);
 	let state = { emps: [], cells: {}, leave: {} };
 	let busy = false;

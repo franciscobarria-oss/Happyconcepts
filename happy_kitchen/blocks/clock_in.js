@@ -7,6 +7,10 @@
 	const SHIFT_LABEL = { Early: "Early 早更 07:00", Late: "Late 晚更 11:00" };
 	const hhmm = (dt) => (dt || "").slice(11, 16);
 	const esc = (s) => frappe.utils.escape_html(s == null ? "" : String(s));
+	// tablet layout: class comes from public/js/hk_device.js (html[data-hk-device]); CSS in clock_in.css
+	const tab = () => $(".hk-clock").classList.toggle("tablet", document.documentElement.dataset.hkDevice === "tablet");
+	tab();
+	window.addEventListener("resize", tab);
 	let emps = [];
 	let current = null;
 	let pin = "";
