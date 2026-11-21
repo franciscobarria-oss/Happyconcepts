@@ -1,3 +1,11 @@
 Recipe Management
 HK Operations
 HK Compliance
+HK Suppliers
+HK Sales
+HK Clock In
+HK Accounting
+HK Costing
+HK Reports
+HK Today
+HK Stock Take

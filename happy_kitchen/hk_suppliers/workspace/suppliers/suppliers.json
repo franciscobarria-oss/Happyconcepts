@@ -1,0 +1,77 @@
+{
+ "app": "happy_kitchen",
+ "charts": [],
+ "content": "[{\"id\": \"hk-h0\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h5\\\"><b>Suppliers</b></span>\", \"col\": 12}}, {\"id\": \"hk-s1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Suppliers\", \"col\": 3}}, {\"id\": \"hk-s2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Ingredients (Items)\", \"col\": 3}}, {\"id\": \"hk-s3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Item Prices\", \"col\": 3}}, {\"id\": \"hk-h1\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h5\\\"><b>Ordering and receiving</b></span>\", \"col\": 12}}, {\"id\": \"hk-s4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Purchase Orders\", \"col\": 3}}, {\"id\": \"hk-s5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Receive Delivery\", \"col\": 3}}, {\"id\": \"hk-s6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Purchase Receipts\", \"col\": 3}}, {\"id\": \"hk-h2\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h5\\\"><b>Reports</b></span>\", \"col\": 12}}, {\"id\": \"hk-s7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Price Variance\", \"col\": 3}}, {\"id\": \"hk-s8\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Ingredients and Packaging by Supplier\", \"col\": 3}}]",
+ "creation": "2026-11-20 12:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "truck",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Suppliers",
+ "links": [],
+ "modified": "2026-11-20 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "HK Suppliers",
+ "name": "Suppliers",
+ "number_cards": [],
+ "owner": "Administrator",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 2.0,
+ "shortcuts": [
+  {
+   "type": "DocType",
+   "label": "Suppliers",
+   "link_to": "Supplier",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Ingredients (Items)",
+   "link_to": "Item",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Item Prices",
+   "link_to": "Item Price",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Purchase Orders",
+   "link_to": "Purchase Order",
+   "doc_view": ""
+  },
+  {
+   "type": "Page",
+   "label": "Receive Delivery",
+   "link_to": "receive-delivery",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Purchase Receipts",
+   "link_to": "Purchase Receipt",
+   "doc_view": ""
+  },
+  {
+   "type": "Report",
+   "label": "Price Variance",
+   "link_to": "Price Variance",
+   "doc_view": ""
+  },
+  {
+   "type": "Report",
+   "label": "Ingredients and Packaging by Supplier",
+   "link_to": "Ingredients and Packaging by Supplier",
+   "doc_view": ""
+  }
+ ],
+ "title": "Suppliers"
+}

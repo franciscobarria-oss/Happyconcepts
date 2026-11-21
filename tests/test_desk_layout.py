@@ -17,7 +17,7 @@ def test_ten_in_order_plus_stock_take_outside():
 def test_every_workspace_has_workspace_sidebar_and_icon():
 	for n in d.OURS:
 		stem = n.lower().replace(" ", "_")
-		assert (APP / "workspace_sidebar" / f"{stem}.json").exists(), n
+		assert len(list(APP.glob(f"*/sidebar/{stem}/{stem}.json"))) == 1, n
 		assert (APP / "desktop_icon" / f"{stem}.json").exists(), n
 		ws = list(APP.glob(f"*/workspace/*/{stem}.json"))
 		assert len(ws) == 1, n
@@ -38,3 +38,17 @@ def test_hides_the_rest_but_keeps_ours_parent_and_admin():
 	         {"name": "Stock", "parent_icon": "ERPNext"}, {"name": "Buying", "parent_icon": "ERPNext", "hidden": 1},
 	         {"name": "Settings", "parent_icon": ""}, {"name": "Payroll", "parent_icon": "Frappe HR"}]
 	assert d.to_hide(icons) == ["Stock", "Payroll"]
+
+
+def test_every_icon_has_its_own_module_and_sidebar_in_it():
+	"""The desk finds an icon's sidebar by the module of its workspace: shared modules open the wrong screen."""
+	mods = {}
+	for n in d.OURS:
+		stem = n.lower().replace(" ", "_")
+		ws = json.loads(next(APP.glob(f"*/workspace/*/{stem}.json")).read_text())
+		sb = json.loads(next(APP.glob(f"*/sidebar/{stem}/{stem}.json")).read_text())
+		assert sb["doctype"] == "Sidebar" and sb["module"] == ws["module"], n
+		mods[n] = ws["module"]
+	assert len(set(mods.values())) == len(mods), mods
+	listed = (APP / "modules.txt").read_text().split("\n")
+	assert all(m in listed for m in mods.values())
