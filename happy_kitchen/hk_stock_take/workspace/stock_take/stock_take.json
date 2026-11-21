@@ -1,0 +1,59 @@
+{
+ "app": "happy_kitchen",
+ "charts": [],
+ "content": "[{\"id\": \"hk-h0\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h5\\\"><b>Stock Take</b></span>\", \"col\": 12}}, {\"id\": \"hk-s1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Count Screen (iPad)\", \"col\": 3}}, {\"id\": \"hk-s2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Stock Takes\", \"col\": 3}}, {\"id\": \"hk-s3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Count Sheets\", \"col\": 3}}, {\"id\": \"hk-s4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Inventory Variance\", \"col\": 3}}, {\"id\": \"hk-s5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Wastage Logs\", \"col\": 3}}]",
+ "creation": "2026-11-20 12:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "clipboard-list",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Stock Take",
+ "links": [],
+ "modified": "2026-11-20 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "HK Stock Take",
+ "name": "Stock Take",
+ "number_cards": [],
+ "owner": "Administrator",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 11.0,
+ "shortcuts": [
+  {
+   "type": "Page",
+   "label": "Count Screen (iPad)",
+   "link_to": "stock-take-count",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Stock Takes",
+   "link_to": "Stock Take",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Count Sheets",
+   "link_to": "Stock Take Sheet",
+   "doc_view": ""
+  },
+  {
+   "type": "Report",
+   "label": "Inventory Variance",
+   "link_to": "Inventory Variance",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Wastage Logs",
+   "link_to": "Wastage Log",
+   "doc_view": ""
+  }
+ ],
+ "title": "Stock Take"
+}

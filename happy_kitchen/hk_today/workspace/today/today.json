@@ -1,0 +1,33 @@
+{
+ "app": "happy_kitchen",
+ "charts": [],
+ "content": "[{\"id\": \"hk-b0\", \"type\": \"custom_block\", \"data\": {\"custom_block_name\": \"HK Today\", \"col\": 12}}]",
+ "creation": "2026-11-20 12:00:00.000000",
+ "custom_blocks": [
+  {
+   "custom_block_name": "HK Today",
+   "label": "HK Today"
+  }
+ ],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 1,
+ "icon": "calendar-check",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Today",
+ "links": [],
+ "modified": "2026-11-20 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "HK Today",
+ "name": "Today",
+ "number_cards": [],
+ "owner": "Administrator",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 10.0,
+ "shortcuts": [],
+ "title": "Today / This week"
+}

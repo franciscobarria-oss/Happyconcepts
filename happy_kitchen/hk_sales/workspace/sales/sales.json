@@ -1,0 +1,77 @@
+{
+ "app": "happy_kitchen",
+ "charts": [],
+ "content": "[{\"id\": \"hk-h0\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h5\\\"><b>Orders</b></span>\", \"col\": 12}}, {\"id\": \"hk-s1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Email Orders\", \"col\": 3}}, {\"id\": \"hk-s2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Sales Orders\", \"col\": 3}}, {\"id\": \"hk-s3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Order Revisions\", \"col\": 3}}, {\"id\": \"hk-s4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Delivery Notes\", \"col\": 3}}, {\"id\": \"hk-s5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Samples Sent\", \"col\": 3}}, {\"id\": \"hk-h1\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h5\\\"><b>Customers</b></span>\", \"col\": 12}}, {\"id\": \"hk-s6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Customers\", \"col\": 3}}, {\"id\": \"hk-s7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Client Spec Sheets\", \"col\": 3}}, {\"id\": \"hk-h2\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h5\\\"><b>Settings</b></span>\", \"col\": 12}}, {\"id\": \"hk-s8\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Gmail Settings\", \"col\": 3}}]",
+ "creation": "2026-11-20 12:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "shopping-cart",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Sales",
+ "links": [],
+ "modified": "2026-11-20 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "HK Sales",
+ "name": "Sales",
+ "number_cards": [],
+ "owner": "Administrator",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 3.0,
+ "shortcuts": [
+  {
+   "type": "DocType",
+   "label": "Email Orders",
+   "link_to": "Email Order",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Sales Orders",
+   "link_to": "Sales Order",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Order Revisions",
+   "link_to": "Order Revision",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Delivery Notes",
+   "link_to": "Delivery Note",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Samples Sent",
+   "link_to": "Sample Sent",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Customers",
+   "link_to": "Customer",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Client Spec Sheets",
+   "link_to": "OEM Spec Sheet",
+   "doc_view": ""
+  },
+  {
+   "type": "DocType",
+   "label": "Gmail Settings",
+   "link_to": "Gmail Settings",
+   "doc_view": ""
+  }
+ ],
+ "title": "Sales"
+}
