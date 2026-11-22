@@ -8,6 +8,14 @@ TEN = ["Recipes", "Suppliers", "Sales", "Team", "Clock In", "Kitchen Checks", "A
        "Recipe Costing", "Reports", "Today"]
 OUTSIDE = ["Stock Take"]  # shown after the ten, not one of them
 OURS = TEN + OUTSIDE
+# Workspace -> module. Each icon needs its own: the desk finds an icon's sidebar by its workspace's module.
+# Frappe skips workspace files whose `modified` did not change, so a module moved in the JSON never reached
+# existing sites (Sales kept opening HR); `apply()` sets it on every migrate.
+WORKSPACE_MODULE = {
+	"Recipes": "Recipe Management", "Suppliers": "HK Suppliers", "Sales": "HK Sales", "Team": "HK Operations",
+	"Clock In": "HK Clock In", "Kitchen Checks": "HK Compliance", "Accounting": "HK Accounting",
+	"Recipe Costing": "HK Costing", "Reports": "HK Reports", "Today": "HK Today", "Stock Take": "HK Stock Take",
+}
 # Never hidden: the folder our icons sit in is kept by `to_hide`, these are admin screens.
 KEEP = {"Settings", "Users", "Home", "Build", "Integrations"}
 
@@ -23,9 +31,14 @@ def to_hide(icons):
 def apply():
 	import frappe
 
-	if frappe.conf.get("hk_show_standard_workspaces") or not frappe.db.exists("DocType", "Desktop Icon"):
+	if not frappe.db.exists("DocType", "Desktop Icon"):
 		return
-	icons = frappe.get_all("Desktop Icon", fields=["name", "parent_icon", "hidden"])
-	for name in to_hide(icons):
-		frappe.db.set_value("Desktop Icon", name, "hidden", 1, update_modified=False)
+	if frappe.db.exists("DocType", "Workspace"):
+		for name, module in WORKSPACE_MODULE.items():
+			if frappe.db.get_value("Workspace", name, "module") not in (None, module) and frappe.db.exists("Module Def", module):
+				frappe.db.set_value("Workspace", name, "module", module, update_modified=False)
+	if not frappe.conf.get("hk_show_standard_workspaces"):
+		icons = frappe.get_all("Desktop Icon", fields=["name", "parent_icon", "hidden"])
+		for name in to_hide(icons):
+			frappe.db.set_value("Desktop Icon", name, "hidden", 1, update_modified=False)
 	frappe.db.commit()
