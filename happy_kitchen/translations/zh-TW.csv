@@ -70,6 +70,7 @@ Ambient,常溫
 Amount (HK$),金額（港元）
 Amount / Batch,每批金額
 An approved stock take is locked.,已批准的盤點已鎖定。
+Another photo,另一張相片
 Answer,答案
 Answer and sign this checklist on the Kitchen Checks screen with your PIN.,請在廚房檢查畫面回答並用你的密碼簽署此檢查表。
 Answer type,答案類型
@@ -94,6 +95,7 @@ Areas,區域
 "As it appears in ""This product contains ... and their products."", e.g. cereals containing gluten.",用於「This product contains ... and their products.」句中，例如 cereals containing gluten。
 "As printed after CONTAINS: on labels, e.g. Milk.",標籤上 CONTAINS: 之後的寫法，例如 Milk。
 Back to orders,返回採購單
+"Backup reader for photos of handwritten recipes (English / Chinese), used when Gemini (key in Gmail Settings) fails. Blank = no backup.",手寫食譜相片（中英文）的後備讀取，Gemini（金鑰在 Gmail 設定）失敗時使用。留空 = 不設後備。
 Bank account,銀行戶口
 Base Unit,基本單位
 Based On,計算基礎
@@ -112,6 +114,7 @@ Below / Close / Reached: 68 hours in the last 4 weeks (Hong Kong continuous cont
 "Below {0}'s minimum order of {1} ({2} more needed). You can keep the draft, but it can't be submitted yet.",低於 {0} 的最低訂貨額 {1}（尚欠 {2}）。可以保留草稿，但暫時不能提交。
 Best before,此日期前最佳
 Best before = made-on date + the product's shelf life.,此日期前最佳 = 製造日期 + 產品保質期。
+Blank = claude-sonnet-5-5.,留空 = claude-sonnet-5-5。
 Blank = default labour rate from Recipe Settings.,留空 = 使用食譜設定中的預設人工費率。
 Blank = gemini-flash-latest. A retired model name is replaced by it.,留空 = gemini-flash-latest。已停用的模型名稱會改用此預設。
 Blank = item name.,留空 = 物料名稱。
@@ -180,6 +183,8 @@ Choose a month (YYYY-MM).,請選擇月份（YYYY-MM）。
 Choose a reason,請選擇原因
 Choose an opening and a closing approved stock take.,請選擇已批准的期初及期末盤點。
 Choose at least one recipe and a number of batches,請選擇最少一個食譜及批數
+Claude API key,Claude API 金鑰
+Claude model,Claude 模型
 Cleaning,清潔
 Cleaning and food safety,清潔及食品安全
 Click a SKU to see its weeks and busiest days.,按一個產品編號，查看它的每週數量和最忙日子。
@@ -264,6 +269,7 @@ Create a Stock Take Sheet first.,請先建立盤點表。
 Create checklist runs,建立檢查記錄
 Create draft Material Issue when a Production Log is submitted,提交生產紀錄時建立發料草稿
 Create draft order,建立採購單草稿
+Create draft recipe,建立食譜草稿
 Create labels when a sales order is submitted,提交銷售訂單時建立標籤
 Critical,重要
 Critical fails,重要項目不合格
@@ -309,6 +315,7 @@ Draft order,訂單草稿
 Draft order {0} saved,訂單草稿 {0} 已儲存
 Draft orders from email to check,待核對的電郵訂單草稿
 Draft orders get this delivery date; change it on the order.,訂單草稿會用這個送貨日期;可在訂單上修改。
+"Draft recipe made: {0} lines added, {1} left in the notes",已建立食譜草稿：加入 {0} 行，{1} 行留在備註
 Draft sales order,銷售訂單草稿
 Draft {0} created. Check it and submit it to send.,已建立草稿 {0}。請檢查後提交發送。
 Drawing the label...,正在生成標籤…
@@ -423,6 +430,7 @@ HR,人力資源
 Happening today,今日進行中
 Happy Concepts desk theme,Happy Concepts 介面主題
 Happy Kitchen,快樂廚房
+Hard to read,難以辨認
 "Have you read the whole label, including allergens, storage and shelf life, and is it correct?",你是否已閱讀整張標籤（包括致敏物、儲存方法及保質期），並確認正確？
 Height (cm),高度 (厘米)
 Help text,說明
@@ -488,6 +496,7 @@ Item Allergen,物料致敏物
 Item ID,物品編號
 Item Prices,貨品價格
 Item confirmed,產品已確認
+Item the recipe is for,食譜所屬貨品
 Item {0} does not exist.,產品 {0} 不存在。
 Items after,修改後貨品
 Items before,修改前貨品
@@ -559,6 +568,7 @@ Line {0} not found.,找不到第 {0} 行。
 Lines it could not read,讀不到的行
 Lines that could not be read,無法讀取的行
 Lines were found in the PDF but none could be turned into an order. Enter the order by hand.,PDF 內有行但無法轉成訂單。請人手輸入訂單。
+"Lines with no matching item, quantity or unit are kept in the recipe notes.",找不到對應貨品、數量或單位的行會保留在食譜備註。
 Lines without a PO number,沒有採購單號的行
 List Price,牌價
 Loaded Cost / Batch,全成本（每批）
@@ -589,6 +599,7 @@ Made by (bottom of label),製造商（標籤底部）
 Made on,生產日期
 Made-on date,生產日期依據
 Main,主選單
+Make a draft recipe for item,為貨品建立食譜草稿
 Make {0},製作 {0}
 Man hours,工時
 Manage kitchen checks,管理廚房檢查
@@ -656,6 +667,7 @@ No checklist is due at that time.,該時間沒有需要做的檢查。
 No date,未有日期
 No default supplier,未設預設供應商
 No deliveries expected today.,今日沒有預計收貨。
+No ingredients found,找不到材料
 No ingredients to issue: this log only has Batch Preparation recipes.,沒有食材需要發料：此紀錄只有半成品食譜。
 No item found,找不到貨品
 No kitchen label printer is set up (Label Printer > Use = Kitchen date labels).,尚未設定廚房標籤打印機（標籤打印機 > 用途 = 廚房日期標籤）。
@@ -672,6 +684,7 @@ No price on the PO or ours,採購單和我們都沒有價格
 No product,沒有產品
 No products are linked to this supplier yet.,此供應商尚未連結任何產品。
 No purchase orders waiting for delivery.,沒有待收貨的採購單。
+No reader is set up: add a Claude key in Recipe Settings or a Gemini key in Gmail Settings.,尚未設定讀取功能：請在食譜設定加入 Claude 金鑰，或在 Gmail 設定加入 Gemini 金鑰。
 No reason,未註明原因
 No recipe found for this product. Link one with Made From Recipe on the Sales tab.,找不到此產品的食譜。請在「銷售」分頁的「Made From Recipe」連結一個。
 No recipes found,找不到食譜
@@ -856,6 +869,7 @@ Pi reports a problem,Raspberry Pi 報告問題
 Pick a method: {0} or {1}.,請選擇計算方法：{0} 或 {1}。
 Pick a rate (or set a default overtime rate on the Employee).,請選擇費率（或在員工資料設定預設加班費率）。
 Pick an item,請選擇貨品
+Pick the item this recipe is for,請選擇此食譜所屬貨品
 Pick the lines to print. Pieces = how many pieces the labels cover; the item's Pieces per label decides how many labels that is.,選擇要列印的行。件數 = 標籤涵蓋的件數；物料的「每張標籤件數」決定共印多少張。
 Pick up orders from Gmail,從 Gmail 讀取訂單
 Pick up orders now,立即讀取訂單
@@ -947,7 +961,10 @@ Rate Name,費率名稱
 Rates,費率
 Re-cost recipes when an Item Price changes,物品價格變動時重新計算食譜成本
 Read again,重新讀取
+Read by {0},由 {0} 讀取
+Read recipe photo,讀取食譜相片
 "Reading the email failed (see the error below). Use Read again, or enter the order by hand.",讀取電郵失敗（見下方錯誤）。請按「再讀一次」或人手輸入訂單。
+Reading the recipe...,正在讀取食譜…
 Reason,原因
 Reason (Chinese),原因（中文）
 Receipt,收貨單
@@ -977,6 +994,7 @@ Recipe Type,食譜類型
 Recipe Units per Sales Unit,每銷售單位的食譜單位數
 Recipe Utensil,食譜器具
 Recipe costing and testing,食譜成本與測試
+Recipe photo reader,食譜相片讀取
 Recipes,食譜
 Recipes Produced,已生產食譜
 Recorded Wastage,已記錄報廢
@@ -1161,6 +1179,7 @@ Supplier delivery note / invoice no.,送貨單號／發票號碼
 Suppliers,供應商
 Tablet screen,平板畫面
 Tagline,標語
+Take a photo of a handwritten recipe (English or Chinese). The system reads it into text and a draft recipe you can check.,拍下手寫食譜（中文或英文），系統會讀成文字及食譜草稿供你檢查。
 Take or upload photo,拍照或上傳相片
 "Takes up to 3 pack sizes from each item's units of measure, biggest first. Rows without pack sizes are always filled.",從每項物品的計量單位取最多 3 種包裝規格，由大至小。未設定包裝規格的行一定會填入。
 Tap a recipe to add it.,點選食譜加入。
@@ -1173,6 +1192,8 @@ Team & Clients,員工及客戶
 Temperature,溫度
 Test label,測試標籤
 Test label {0} sent. It prints within a few seconds if the Pi is online.,測試標籤 {0} 已送出。如 Pi 在線，數秒內會列印。
+Test the reader,測試讀取功能
+Testing...,測試中…
 "The PDF has no table or item lines this reader knows yet. Enter the order by hand from the PDF, then mark it entered by hand.",系統尚未認得此 PDF 的表格或項目行。請按 PDF 人手輸入訂單，然後標為已人手輸入。
 The PIN must be exactly 4 digits.,密碼必須是 4 位數字。
 The Raspberry Pi has never connected.,Raspberry Pi 從未連線。
@@ -1184,6 +1205,7 @@ The last check failed,上次檢查失敗
 "The lines were read but the order is held back, usually because it follows an order already submitted. Check it by hand.",行已讀取但訂單被擱置，通常因為它跟隨一張已提交的訂單。請人手檢查。
 The order matches the PDF? This confirms the items and submits the draft sales order.,訂單與 PDF 相符？這會確認產品並提交銷售訂單草稿。
 The photo could not be read. Add the ingredients by hand.,無法讀取相片，請手動加入材料。
+"The photo could not be read. Try a sharper, well-lit photo, or type the recipe by hand.",無法讀取相片。請拍攝更清晰、光線充足的相片，或手動輸入食譜。
 The photo is too large.,相片太大。
 The quantity factor must be more than 0.,數量倍數必須大於 0。
 "The questions of a checklist (Kitchen Checks). Runs keep their own copy, so editing never changes past records.",檢查表的問題（廚房檢查）。每次記錄都保存自己的副本，修改範本不會改變過往記錄。
@@ -1196,6 +1218,7 @@ The sender's email belongs to several customers ({0}); {1} was used: check it.,�
 The sheet {0} has no active ingredients,盤點表 {0} 沒有啟用的材料
 The start date is after the end date.,開始日期晚於結束日期。
 The supplier's own product code. Our SKU is the item code the system gives it.,供應商自己的產品編號。我們的貨號是系統給此貨品的貨品編號。
+The test failed: check the keys in Gmail Settings and Recipe Settings.,測試失敗：請檢查 Gmail 設定及食譜設定內的金鑰。
 The unit price on the customer's PO (orders picked up from email).,客戶採購單上的單價（由電郵讀取的訂單）。
 The user whose API key the Pi uses. It only needs the Label Printer role.,Pi 使用其 API 金鑰的用戶。只需要 Label Printer 角色。
 This checklist is already signed.,此檢查表已簽署。
@@ -1222,6 +1245,7 @@ Tick the last-purchased version of a repeated item. Its name then ends in (curre
 Time off,休假
 Time off to approve,待審批假期
 Times sent,發送次數
+"Tip: flat page, good light, whole page in the picture.",提示：紙張放平、光線充足、整頁入鏡。
 To approve,待審批
 To do,待辦
 To fix,待修正
@@ -1250,6 +1274,7 @@ Total Used (kg),總用量（公斤）
 Total Variance Cost,總差異成本
 Total cost,總成本率
 Try again,重試
+Try another photo,試另一張相片
 Unexplained Cost,未能解釋成本
 Unexplained Loss,未能解釋損失
 Unit / Basis,單位／計算方式
@@ -1337,6 +1362,7 @@ Wording on labels,標籤用語
 "Words in an ingredient name that suggest this allergen, one per line. Only used for suggestions; a person still reviews every ingredient.",材料名稱中提示此致敏物的字詞，每行一個。只用作建議；每種材料仍須由人審核。
 Working,運作中
 Working Days per Month,每月工作日數
+"Works: read by {0}, {1} ingredients ({2})",正常：由 {0} 讀取，{1} 項材料（{2}）
 Yes/No,是／否
 Yield,份量
 Yield %,可用率
@@ -1419,6 +1445,7 @@ waiting for the printer,等待打印機
 {0} already exists as {1} and is measured in {2}. Choose {2} as the UOM.,{0} 已存在為 {1}，以 {2} 計量。請選擇 {2} 作為單位。
 {0} already exists as {1}. Link it to {2} and add this price?,{0} 已存在為 {1}。是否連結到 {2} 並加入此價格？
 {0} already has a price from {1}. Edit it on the Item Price list instead.,{0} 已有來自 {1} 的價格。請在物品價格列表中修改。
+{0} already has a recipe,{0} 已有食譜
 {0} applications,{0} 份申請
 {0} archived recipes are left as they were.,{0} 個已封存食譜保持不變。
 {0} batches,{0} 批
