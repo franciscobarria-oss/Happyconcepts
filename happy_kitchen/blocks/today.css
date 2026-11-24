@@ -175,3 +175,16 @@ a.row:hover { background: var(--k-sunken); text-decoration: none; color: inherit
 .hk.tablet .chip { padding: 8px 14px; font-size: 15px; }
 .hk.tablet .badge { height: 28px; padding: 0 12px; font-size: 13px; }
 .hk.tablet .day-head .print { line-height: 36px; padding: 0 12px; font-size: 13px; }
+/* Figma: Production today (wide, left) beside Orders going out and Deliveries in (right); On shift is already a tile */
+.hk.tablet .grid.now { grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); align-items: start; }
+.hk.tablet .grid.now [data-part="production"] { grid-column: 1; grid-row: 1 / span 2; }
+.hk.tablet .grid.now [data-part="orders"] { grid-column: 2; grid-row: 1; }
+.hk.tablet .grid.now [data-part="deliveries"] { grid-column: 2; grid-row: 2; }
+.hk.tablet .grid.now [data-part="team"] { grid-column: 1 / -1; grid-row: 3; }
+.hk.tablet h2.section { display: none; }
+.hk.tablet .tile .value { font-family: var(--k-sans); font-weight: 600; }
+.hk.tablet h1 { font-family: var(--k-sans); }
+.hk.tablet .card { border: 0; }
+.hk.tablet .tile { border: 0; }
+.log-batch { display: none; }
+.hk.tablet .log-batch { display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 24px; border-radius: 8px; background: var(--k-brand); color: var(--k-on-brand); font: 600 15px/20px var(--k-sans); white-space: nowrap; align-self: center; }
