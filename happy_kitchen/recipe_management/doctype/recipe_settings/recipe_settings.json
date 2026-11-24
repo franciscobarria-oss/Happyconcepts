@@ -32,7 +32,10 @@
   "stock_take_section",
   "variance_tolerance_pct",
   "column_break_stock_take",
-  "stock_take_sync_stock"
+  "stock_take_sync_stock",
+  "photo_reader_section",
+  "anthropic_api_key",
+  "anthropic_model"
  ],
  "fields": [
   {
@@ -205,6 +208,23 @@
    "label": "Update ERPNext stock when a count is approved",
    "default": "1",
    "description": "Approving a Stock Take posts a Stock Reconciliation so ERPNext stock matches the count."
+  },
+  {
+   "fieldname": "photo_reader_section",
+   "fieldtype": "Section Break",
+   "label": "Recipe photo reader"
+  },
+  {
+   "fieldname": "anthropic_api_key",
+   "fieldtype": "Password",
+   "label": "Claude API key",
+   "description": "Reads photos of handwritten recipes (English / Chinese). Blank = Gemini only (key in Gmail Settings)."
+  },
+  {
+   "fieldname": "anthropic_model",
+   "fieldtype": "Data",
+   "label": "Claude model",
+   "description": "Blank = claude-sonnet-5-5."
   }
  ],
  "index_web_pages_for_search": 0,
