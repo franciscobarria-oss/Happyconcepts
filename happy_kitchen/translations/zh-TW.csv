@@ -1190,6 +1190,8 @@ Team & Clients,員工及客戶
 Temperature,溫度
 Test label,測試標籤
 Test label {0} sent. It prints within a few seconds if the Pi is online.,測試標籤 {0} 已送出。如 Pi 在線，數秒內會列印。
+Test the reader,測試讀取功能
+Testing...,測試中…
 "The PDF has no table or item lines this reader knows yet. Enter the order by hand from the PDF, then mark it entered by hand.",系統尚未認得此 PDF 的表格或項目行。請按 PDF 人手輸入訂單，然後標為已人手輸入。
 The PIN must be exactly 4 digits.,密碼必須是 4 位數字。
 The Raspberry Pi has never connected.,Raspberry Pi 從未連線。
@@ -1214,6 +1216,7 @@ The sender's email belongs to several customers ({0}); {1} was used: check it.,�
 The sheet {0} has no active ingredients,盤點表 {0} 沒有啟用的材料
 The start date is after the end date.,開始日期晚於結束日期。
 The supplier's own product code. Our SKU is the item code the system gives it.,供應商自己的產品編號。我們的貨號是系統給此貨品的貨品編號。
+The test failed: check the keys in Gmail Settings and Recipe Settings.,測試失敗：請檢查 Gmail 設定及食譜設定內的金鑰。
 The unit price on the customer's PO (orders picked up from email).,客戶採購單上的單價（由電郵讀取的訂單）。
 The user whose API key the Pi uses. It only needs the Label Printer role.,Pi 使用其 API 金鑰的用戶。只需要 Label Printer 角色。
 This checklist is already signed.,此檢查表已簽署。
@@ -1357,6 +1360,7 @@ Wording on labels,標籤用語
 "Words in an ingredient name that suggest this allergen, one per line. Only used for suggestions; a person still reviews every ingredient.",材料名稱中提示此致敏物的字詞，每行一個。只用作建議；每種材料仍須由人審核。
 Working,運作中
 Working Days per Month,每月工作日數
+"Works: read by {0}, {1} ingredients ({2})",正常：由 {0} 讀取，{1} 項材料（{2}）
 Yes/No,是／否
 Yield,份量
 Yield %,可用率

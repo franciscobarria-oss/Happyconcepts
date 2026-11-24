@@ -35,7 +35,16 @@ class RecipePhoto {
 			<p>${__("Take a photo of a handwritten recipe (English or Chinese). The system reads it into text and a draft recipe you can check.")}</p>
 			<p class="text-muted">${__("Tip: flat page, good light, whole page in the picture.")}</p>
 			${none ? `<p><span class="hkrp-flag">${__("No reader is set up: add a Claude key in Recipe Settings or a Gemini key in Gmail Settings.")}</span></p>` : ""}
-			<button class="btn btn-primary hkrp-big hkrp-take" ${none ? "disabled" : ""}>${__("Take or upload photo")}</button></div></div>`);
+			<button class="btn btn-primary hkrp-big hkrp-take" ${none ? "disabled" : ""}>${__("Take or upload photo")}</button>
+			<button class="btn btn-default hkrp-big hkrp-test" ${none ? "disabled" : ""}>${__("Test the reader")}</button><p class="hkrp-test-out text-muted" style="margin-top:8px"></p></div></div>`);
+		this.$b.find(".hkrp-test").on("click", async (e) => {
+			const $o = this.$b.find(".hkrp-test-out").text(__("Testing...")); $(e.currentTarget).prop("disabled", true);
+			try {
+				const t = await frappe.xcall(API + "self_test");
+				$o.text(__("Works: read by {0}, {1} ingredients ({2})", [t.engine, t.ingredients, t.names.join(", ")]) + (t.problems.length ? " | " + t.problems.join("; ") : ""));
+			} catch (err) { $o.text(__("The test failed: check the keys in Gmail Settings and Recipe Settings.")); }
+			$(e.currentTarget).prop("disabled", false);
+		});
 		this.$b.find(".hkrp-take").on("click", () => this.pick());
 	}
 	pick() {

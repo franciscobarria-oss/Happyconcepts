@@ -1585,6 +1585,10 @@ ZH_TW = {
 	"Tip: flat page, good light, whole page in the picture.": "提示：紙張放平、光線充足、整頁入鏡。",
 	"Try another photo": "試另一張相片",
 	"{0} already has a recipe": "{0} 已有食譜",
+	"Test the reader": "測試讀取功能",
+	"Testing...": "測試中…",
+	"Works: read by {0}, {1} ingredients ({2})": "正常：由 {0} 讀取，{1} 項材料（{2}）",
+	"The test failed: check the keys in Gmail Settings and Recipe Settings.": "測試失敗：請檢查 Gmail 設定及食譜設定內的金鑰。",
 }
 
 

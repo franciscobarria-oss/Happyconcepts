@@ -185,3 +185,26 @@ def create_draft(item: str, data, file_url: str | None = None):
 	doc.notes = "\n".join(notes)
 	doc.insert()
 	return {"name": doc.name, "added": len(doc.ingredients), "left_out": len(left)}
+
+
+def sample_image() -> bytes:
+	"""A plain printed test recipe (Pillow's built-in font, English only) for the screen's test button."""
+	from PIL import Image, ImageDraw
+
+	im = Image.new("RGB", (900, 520), "white")
+	d = ImageDraw.Draw(im)
+	lines = ["Test Cookie", "", "Butter 250 g", "Sugar 150 g", "Eggs 2 pcs", "Flour 1 kg", "", "1. Mix butter and sugar.", "2. Bake 12 min."]
+	for n, t in enumerate(lines):
+		d.text((40, 30 + n * 50), t, fill="black", font_size=34) if hasattr(d, "textbbox") else d.text((40, 30 + n * 50), t, fill="black")
+	out = io.BytesIO()
+	im.save(out, "PNG")
+	return out.getvalue()
+
+
+@frappe.whitelist()
+def self_test():
+	"""Run the whole reading chain on a printed sample and say which reader answered. Saves nothing."""
+	_check()
+	r = read_image(sample_image())
+	return {"engine": r["engine"], "ingredients": len(r["ingredients"]), "names": [i["name"] for i in r["ingredients"]],
+	        "problems": r["fallback_errors"]}
