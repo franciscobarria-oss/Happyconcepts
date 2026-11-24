@@ -12,6 +12,17 @@ html.hk-device-tablet .navbar { display: none !important; }
 html.hk-device-tablet .main-section,
 html.hk-device-tablet .page-container { margin-left: 0 !important; padding-top: 0 !important; }
 
+/* Figma "tablet simplified" palette, light theme only (dark keeps the theme's own colours) */
+html.hk-device-tablet:not([data-theme="dark"]) {
+	--hk-surface-sunken: #f7f6f3;
+	--hk-brand: #72584c;
+	--hk-brand-hover: #5f483e;
+	--hk-brand-soft: #ede4dd;
+	--hk-line: #e4e6df;
+	--hk-ink: #292c28;
+	--hk-ink-muted: #62685f;
+}
+
 .hk-tabbar { display: none; }
 html.hk-device-tablet .hk-tabbar {
 	display: flex;
@@ -26,8 +37,7 @@ html.hk-device-tablet .hk-tabbar {
 	border-bottom: 1px solid var(--hk-line, var(--border-color, #e2e2e2));
 }
 .hk-tabbar-brand {
-	font: 700 15px/20px var(--hk-font-display, inherit);
-	letter-spacing: 0.5px;
+	font: 700 17px/20px var(--hk-font-sans, inherit);
 	color: var(--hk-ink, var(--text-color));
 	text-decoration: none;
 	min-width: 220px;
@@ -39,15 +49,18 @@ html.hk-device-tablet .hk-tabbar {
 	height: 48px;
 	padding: 0 26px;
 	border: 0;
-	border-radius: 10px;
+	border-radius: 8px;
 	background: transparent;
-	color: var(--hk-ink-muted, var(--text-muted));
-	font: 600 16px/20px var(--hk-font-sans, inherit);
+	color: #6d7169;
+	font: 500 16px/20px var(--hk-font-sans, inherit);
 	text-decoration: none;
 	cursor: pointer;
 }
 .hk-tab:hover { color: var(--hk-ink, var(--text-color)); text-decoration: none; }
-.hk-tab.active { background: var(--hk-brand-soft, #e7d8d1); color: var(--hk-brand, #6f5245); }
+.hk-tab.active { background: var(--hk-brand-soft, #e7d8d1); color: var(--hk-brand, #6f5245); font-weight: 600; }
+.hk-tabbar .hk-lang { margin-left: auto; }
+.hk-tabbar .hk-lang button { font-size: 14px; font-weight: 600; color: #6d7169; }
+html.hk-device-tablet .hk-lang--head { display: none !important; } /* the bar has the toggle */
 .hk-tab:focus-visible { outline: 2px solid var(--hk-focus, currentColor); outline-offset: 2px; }
 .hk-more-wrap { position: relative; }
 .hk-more {
@@ -145,3 +158,12 @@ html.hk-device-tablet .page-actions .primary-action {
 html.hk-device-tablet .page-actions .btn-default { min-height: 48px; border-radius: 10px; }
 html.hk-device-tablet .grid-body .rows .grid-row { min-height: 56px; }
 html.hk-device-tablet .form-grid .grid-heading-row { min-height: 48px; }
+
+/* ---------- list screens: Figma Sales orders / Email orders ---------- */
+html.hk-device-tablet .page-head .page-title .title-text { font-weight: 600; letter-spacing: 0; }
+html.hk-device-tablet .standard-filter-section .form-control { background: #fff; border: 0; }
+html.hk-device-tablet .list-row-head, html.hk-device-tablet .list-row-head .list-row-col { color: var(--hk-ink-muted); font-weight: 400; background: transparent; border-bottom: 1px solid var(--hk-line); }
+html.hk-device-tablet .list-row-container .list-row { border-bottom: 1px solid var(--hk-line); }
+html.hk-device-tablet .list-paging-area .btn { min-width: 112px; min-height: 48px; border-radius: 8px; background: #fff; border: 1px solid var(--hk-line); color: var(--hk-brand); font-weight: 600; }
+html.hk-device-tablet .list-paging-area .btn.btn-info, html.hk-device-tablet .list-paging-area .btn-paging.btn-info { background: #fff; color: var(--hk-brand); }
+html.hk-device-tablet .indicator-pill { background: var(--hk-brand-soft); color: var(--hk-brand); border-radius: 6px; }

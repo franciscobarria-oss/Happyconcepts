@@ -35,6 +35,7 @@
 	const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 	function build() {
+		const zh = String((window.frappe && frappe.boot && frappe.boot.lang) || "en").toLowerCase().startsWith("zh");
 		const nav = document.createElement("nav");
 		nav.className = "hk-tabbar";
 		nav.setAttribute("aria-label", __("Main"));
@@ -42,7 +43,13 @@
 			`<a class="hk-tabbar-brand" href="/app/today">HAPPY KITCHEN</a><div class="hk-tabbar-tabs">` +
 			tabs().map((t) => `<a class="hk-tab" data-key="${t.key}" href="${t.route}">${esc(t.label)}</a>`).join("") +
 			`<span class="hk-more-wrap"><button type="button" class="hk-tab hk-tab-more" data-key="more" aria-expanded="false">${esc(__("More"))}</button>` +
-			`<div class="hk-more" hidden>${more().map(([l, h]) => `<a href="${h}">${esc(l)}</a>`).join("")}</div></span></div>`;
+			`<div class="hk-more" hidden>${more().map(([l, h]) => `<a href="${h}">${esc(l)}</a>`).join("")}</div></span></div>` +
+			// EN / 中 toggle at the right end of the bar (Figma); hk_theme.js handles the click on .hk-lang button[data-lang]
+			`<div class="hk-lang hk-lang--bar" role="group" aria-label="Language / 語言">` +
+			[["en", "EN", "English"], ["zh-TW", "中", "繁體中文"]]
+				.map(([c, t, n]) => `<button type="button" data-lang="${c}" aria-pressed="${(c === "zh-TW") === zh}" title="${n}">${t}</button>`)
+				.join("") +
+			`</div>`;
 		nav.querySelector(".hk-tab-more").addEventListener("click", (e) => {
 			e.stopPropagation();
 			const box = nav.querySelector(".hk-more");

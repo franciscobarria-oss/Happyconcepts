@@ -326,6 +326,7 @@ Email Order,電郵訂單
 Email Order Line,電郵訂單行
 Email Orders,電郵訂單
 Email customer,電郵客戶
+Email orders,電郵訂單
 Email text,電郵內容
 Emails to read by hand,需人手處理的電郵
 Employee MPF,僱員強積金
@@ -578,6 +579,7 @@ Loaf,長條形
 Log,紀錄
 Log Production,記錄生產
 Log Wastage,報廢
+Log batch,記錄批次
 Log production,記錄生產
 Log {0} recipe(s) as produced on {1}?,確認記錄於 {1} 生產 {0} 個食譜？
 Logged By,記錄人

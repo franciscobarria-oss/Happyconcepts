@@ -388,6 +388,8 @@ ZH_TW = {
 	"By": "經手人",
 	"Nothing logged this week.": "本週未有生產紀錄。",
 	"Log production": "記錄生產",
+	"Log batch": "記錄批次",
+	"Email orders": "電郵訂單",
 	"Log Production": "記錄生產",
 	"Waiting on you": "待處理",
 	"Sales Orders": "銷售訂單",

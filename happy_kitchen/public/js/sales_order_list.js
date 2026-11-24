@@ -7,6 +7,13 @@
 		settings.add_fields = settings.add_fields || [];
 		if (!settings.add_fields.includes(f)) settings.add_fields.push(f);
 	});
+	// tablet (Figma "Sales orders"): shortcut to the Email orders list next to Add order
+	const erpnext_onload = settings.onload;
+	settings.onload = function (listview) {
+		if (erpnext_onload) erpnext_onload.call(this, listview);
+		if (document.documentElement.dataset.hkDevice === "tablet" && frappe.model.can_read("Email Order"))
+			listview.page.add_inner_button(__("Email orders"), () => frappe.set_route("List", "Email Order"));
+	};
 	settings.get_indicator = function (doc) {
 		if (doc.docstatus === 1) {
 			const delivered = flt(doc.per_delivered);
