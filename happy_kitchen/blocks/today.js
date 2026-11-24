@@ -125,7 +125,7 @@
 				<span class="grow"><b>${esc(x.name)}</b>
 					<span class="cap">${esc(__("{0} of {1} made", [x.made_fmt, x.units_fmt]))} · ${esc(__("{0} batches", [x.batches]))}</span>
 					<span class="bar"><i style="width:${pct}%"></i></span></span>
-				${x.done ? `<span class="badge success">${esc(__("Done"))}</span>` : ""}
+				${x.done ? `<span class="badge success">${esc(__("Done"))}</span>` : `<span class="log-batch">${esc(__("Log batch"))}</span>`}
 			</a>`;
 		}).join(""), __("Nothing to make for today's orders."));
 
