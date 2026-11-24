@@ -95,6 +95,7 @@ Areas,區域
 "As it appears in ""This product contains ... and their products."", e.g. cereals containing gluten.",用於「This product contains ... and their products.」句中，例如 cereals containing gluten。
 "As printed after CONTAINS: on labels, e.g. Milk.",標籤上 CONTAINS: 之後的寫法，例如 Milk。
 Back to orders,返回採購單
+"Backup reader for photos of handwritten recipes (English / Chinese), used when Gemini (key in Gmail Settings) fails. Blank = no backup.",手寫食譜相片（中英文）的後備讀取，Gemini（金鑰在 Gmail 設定）失敗時使用。留空 = 不設後備。
 Bank account,銀行戶口
 Base Unit,基本單位
 Based On,計算基礎
@@ -962,7 +963,6 @@ Read by {0},由 {0} 讀取
 Read recipe photo,讀取食譜相片
 "Reading the email failed (see the error below). Use Read again, or enter the order by hand.",讀取電郵失敗（見下方錯誤）。請按「再讀一次」或人手輸入訂單。
 Reading the recipe...,正在讀取食譜…
-Reads photos of handwritten recipes (English / Chinese). Blank = Gemini only (key in Gmail Settings).,讀取手寫食譜相片（中英文）。留空 = 只用 Gemini（金鑰在 Gmail 設定）。
 Reason,原因
 Reason (Chinese),原因（中文）
 Receipt,收貨單

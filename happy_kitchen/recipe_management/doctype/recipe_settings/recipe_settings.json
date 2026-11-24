@@ -218,7 +218,7 @@
    "fieldname": "anthropic_api_key",
    "fieldtype": "Password",
    "label": "Claude API key",
-   "description": "Reads photos of handwritten recipes (English / Chinese). Blank = Gemini only (key in Gmail Settings)."
+   "description": "Backup reader for photos of handwritten recipes (English / Chinese), used when Gemini (key in Gmail Settings) fails. Blank = no backup."
   },
   {
    "fieldname": "anthropic_model",

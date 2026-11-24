@@ -1578,7 +1578,7 @@ ZH_TW = {
 	"Read by {0}": "由 {0} 讀取",
 	"Read recipe photo": "讀取食譜相片",
 	"Reading the recipe...": "正在讀取食譜…",
-	"Reads photos of handwritten recipes (English / Chinese). Blank = Gemini only (key in Gmail Settings).": "讀取手寫食譜相片（中英文）。留空 = 只用 Gemini（金鑰在 Gmail 設定）。",
+	"Backup reader for photos of handwritten recipes (English / Chinese), used when Gemini (key in Gmail Settings) fails. Blank = no backup.": "手寫食譜相片（中英文）的後備讀取，Gemini（金鑰在 Gmail 設定）失敗時使用。留空 = 不設後備。",
 	"Recipe photo reader": "食譜相片讀取",
 	"Take a photo of a handwritten recipe (English or Chinese). The system reads it into text and a draft recipe you can check.": "拍下手寫食譜（中文或英文），系統會讀成文字及食譜草稿供你檢查。",
 	"The photo could not be read. Try a sharper, well-lit photo, or type the recipe by hand.": "無法讀取相片。請拍攝更清晰、光線充足的相片，或手動輸入食譜。",

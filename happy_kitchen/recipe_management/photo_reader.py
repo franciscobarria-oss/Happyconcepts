@@ -1,4 +1,4 @@
-"""Read a photo of a handwritten recipe (English / Chinese): Claude first, Gemini as the backup, then a draft Recipe.
+"""Read a photo of a handwritten recipe (English / Chinese): Gemini first, Claude as the backup, then a draft Recipe.
 
 Keys: Recipe Settings `anthropic_api_key` / `anthropic_model` (Claude) and Gmail Settings `gemini_api_key` (shared with the
 scanned-PDF reader). Nothing is saved by reading; a draft Recipe is only made by `create_draft`, status Draft, and lines the
@@ -102,10 +102,10 @@ def read_with_gemini(img: bytes, mime: str):
 
 
 def read_image(raw: bytes) -> dict:
-	"""Claude first; Gemini when Claude has no key, fails or finds nothing. Returns the cleaned reading plus engine / errors."""
+	"""Gemini first; Claude when Gemini has no key, fails or finds nothing. Returns the cleaned reading plus engine / errors."""
 	img, mime = prepare_image(raw)
 	errors, result, engine = [], None, ""
-	for name, fn in (("Claude", read_with_claude), ("Gemini", read_with_gemini)):
+	for name, fn in (("Gemini", read_with_gemini), ("Claude", read_with_claude)):
 		data, error = fn(img, mime)
 		if data is not None:
 			cleaned = pr.clean(data)
