@@ -52,3 +52,11 @@ def test_every_icon_has_its_own_module_and_sidebar_in_it():
 	assert len(set(mods.values())) == len(mods), mods
 	listed = (APP / "modules.txt").read_text().split("\n")
 	assert all(m in listed for m in mods.values())
+
+
+def test_workspace_module_map_matches_the_files():
+	for n, module in d.WORKSPACE_MODULE.items():
+		stem = n.lower().replace(" ", "_")
+		ws = json.loads(next(APP.glob(f"*/workspace/*/{stem}.json")).read_text())
+		assert ws["module"] == module, n
+	assert sorted(d.WORKSPACE_MODULE) == sorted(d.OURS)
