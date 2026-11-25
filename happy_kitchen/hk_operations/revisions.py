@@ -41,3 +41,27 @@ def summary(diff, names: dict[str, str] | None = None) -> str:
 		else:
 			parts.append(f"{label}: {_n(was)} → {_n(now)}")
 	return "; ".join(parts)
+
+
+# What to do when an email restates a PO that already has a Sales Order.
+UNCHANGED, APPLY, MANUAL = "unchanged", "apply", "manual"
+
+
+def po_action(diff, docstatus: int, status: str = "", per_delivered: float = 0, per_billing: float = 0):
+	"""(action, reason) for a PO email that matches an existing order.
+
+	unchanged: same items and quantities. apply: change the order itself (a draft, or a submitted order
+	nothing has left yet). manual: the order is delivered, invoiced, closed or cancelled, so a person decides."""
+	if not diff:
+		return UNCHANGED, ""
+	if docstatus == 2:
+		return MANUAL, "the order is cancelled"
+	if docstatus == 0:
+		return APPLY, ""
+	if (per_delivered or 0) > EPS:
+		return MANUAL, "the order is already delivered"
+	if (per_billing or 0) > EPS:
+		return MANUAL, "the order is already invoiced"
+	if status in ("Closed", "Completed"):
+		return MANUAL, f"the order is {status.lower()}"
+	return APPLY, ""

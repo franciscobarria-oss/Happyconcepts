@@ -839,7 +839,11 @@ PO unit price,採購單單價
 PO {0},採購單 {0}
 PO {0} already has a sales order.,採購單 {0} 已有銷售訂單。
 PO {0} already has sales order {1} under {2}: check the customer.,採購單 {0} 已有銷售訂單 {1}（客戶 {2}）：請檢查客戶。
+"PO {0} already has sales order {1}, same lines: nothing to change.",採購單 {0} 已有銷售訂單 {1}，內容相同，無需更改。
+PO {0} changed ({1}) but {2} could not be amended automatically: {3},採購單 {0} 有更改（{1}），但銷售訂單 {2} 無法自動修訂：{3}
+PO {0} changed ({1}) but {2}: check {3} by hand.,採購單 {0} 有更改（{1}），但{2}：請手動檢查 {3}。
 "PO {0}: no delivery date read from the PO, order dated {1}: check the delivery date.",採購單 {0}：讀不到送貨日期，訂單日期為 {1}，請檢查送貨日期。
+PO {0}: sales order {1} amended automatically ({2}).,採購單 {0}：銷售訂單 {1} 已自動修訂（{2}）。
 Pack Size 1,包裝規格 1
 Pack Size 2,包裝規格 2
 Pack Size 3,包裝規格 3
