@@ -65,3 +65,13 @@ def po_action(diff, docstatus: int, status: str = "", per_delivered: float = 0, 
 	if status in ("Closed", "Completed"):
 		return MANUAL, f"the order is {status.lower()}"
 	return APPLY, ""
+
+
+def keep_unmentioned(old_lines, new_lines):
+	"""new_lines plus every item of old_lines the email does not mention, at its old quantity.
+	An email never removes an item by leaving it out (it may list only what changed), and ERPNext's
+	Update Items deletes any row missing from its payload, so the full list is always sent."""
+	mentioned = {l.get("item_code") for l in new_lines or []}
+	kept = [{"item_code": c, "qty": q} for c, q in normalize(
+		[l for l in old_lines or [] if l.get("item_code") not in mentioned]).items()]
+	return list(new_lines or []) + kept

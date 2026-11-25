@@ -346,6 +346,7 @@ def amend_existing(order, customer, po, group, so_name) -> dict:
 	for ln in group:
 		item, _created = find_or_create_item(customer, ln["external_sku"], ln["description"])
 		new_items.append({"item_code": item, "qty": ln["qty"], "hk_po_rate": flt(ln.get("po_rate"))})
+	new_items = revisions.keep_unmentioned(revisions_api.lines(so.items), new_items)
 	diff = revisions.changes(revisions_api.lines(so.items), new_items)
 	action, why = revisions.po_action(diff, so.docstatus, so.status, so.per_delivered, so.get("per_billing"))
 	if action == revisions.UNCHANGED:
@@ -377,9 +378,15 @@ def _apply_items(so, new_items, email_order):
 	if so.docstatus == 0:
 		so.flags.hk_revision_source = "Email"
 		so.flags.hk_revision_email_order = email_order
+		old_rates = {}
+		for r in so.items:
+			old_rates.setdefault(r.item_code, r.rate)
 		so.set("items", [])
 		for i in new_items:
-			so.append("items", i)
+			row = dict(i)
+			if old_rates.get(i["item_code"]):
+				row["rate"] = old_rates[i["item_code"]]
+			so.append("items", row)
 		so.save(ignore_permissions=True)
 		apply_po_prices(so)
 	else:
@@ -396,7 +403,7 @@ def _apply_items(so, new_items, email_order):
 			else:
 				data.append({"item_code": i["item_code"], "qty": i["qty"], "rate": i["hk_po_rate"] or 0,
 				             "delivery_date": str(so.delivery_date)})
-		# rows of items no longer in the email are left out of `data`, which ERPNext deletes
+		# update_child_qty_rate replaces the whole list: every existing row must be in `data` or it is deleted
 		update_child_qty_rate("Sales Order", json.dumps(data), so.name)
 		so.reload()
 	if not frappe.db.exists("Order Revision", {"sales_order": so.name, "email_order": email_order}):

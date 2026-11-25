@@ -30,3 +30,12 @@ def test_po_action():
 	assert r.po_action(d, 1, "To Deliver", per_billing=10)[0] == r.MANUAL
 	assert r.po_action(d, 1, "Closed")[0] == r.MANUAL
 	assert r.po_action(d, 2)[0] == r.MANUAL
+
+
+def test_keep_unmentioned_never_drops_rows():
+	old = [{"item_code": "RV", "qty": 4}, {"item_code": "PB", "qty": 2}, {"item_code": "AP", "qty": 6}]
+	new = [{"item_code": "RV", "qty": 10}]
+	full = r.keep_unmentioned(old, new)
+	assert r.normalize(full) == {"RV": 10.0, "PB": 2.0, "AP": 6.0}
+	assert r.changes(old, full) == [("RV", 4.0, 10.0)]
+	assert r.changes(old, r.keep_unmentioned(old, [])) == []
