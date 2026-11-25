@@ -286,10 +286,17 @@ def process(order, lead_days: int = 1, prior=None):
 	groups = {}
 	for ln in lines:
 		groups.setdefault(ln["po_no"], []).append(ln)
-	notes, made = ([customer_note] if customer_note else []), []
+	notes, made, amended, manual = ([customer_note] if customer_note else []), [], [], False
 	for po, group in groups.items():
-		if po and frappe.db.exists("Sales Order", {"customer": customer, "po_no": po, "docstatus": ("<", 2)}):
-			notes.append(_("PO {0} already has a sales order.").format(po))
+		existing = po and frappe.db.get_value(
+			"Sales Order", {"customer": customer, "po_no": po, "docstatus": ("<", 2)}, "name")
+		if existing:
+			result = amend_existing(order, customer, po, group, existing)
+			notes.append(result["note"])
+			if result["applied"]:
+				amended.append(existing)
+			elif result["manual"]:
+				manual = True
 			continue
 		other = po and len(po) >= MIN_SHARED_PO and frappe.db.get_value(
 			"Sales Order", {"po_no": po, "docstatus": ("<", 2)}, ["name", "customer"], as_dict=True)
@@ -314,7 +321,11 @@ def process(order, lead_days: int = 1, prior=None):
 	if notes:
 		order.unparsed = "\n".join(([order.unparsed] if order.unparsed else []) + notes)
 	if not made:
-		order.status = "Ignored"
+		if amended or manual:
+			order.sales_order = amended[0] if amended else order.sales_order
+			order.status = "Needs review" if (manual or unparsed) else "Revised"
+		else:
+			order.status = "Ignored"
 		order.save(ignore_permissions=True)
 		return
 	order.sales_order = made[0]
@@ -322,6 +333,84 @@ def process(order, lead_days: int = 1, prior=None):
 	if order.status == "Draft order":
 		_auto_confirm(order, made)
 	order.save(ignore_permissions=True)
+
+
+def amend_existing(order, customer, po, group, so_name) -> dict:
+	"""The email restates a PO that already has a Sales Order: compare the lines. Same lines -> nothing
+	to do. Different -> the order is amended (a draft is rewritten; a submitted order that nothing has left
+	yet goes through ERPNext's own "Update Items", so versions and an Order Revision keep the history).
+	Delivered, invoiced, closed -> only proposed on the order, a person decides.
+	Returns {"note", "applied", "manual"}."""
+	so = frappe.get_doc("Sales Order", so_name)
+	new_items = []
+	for ln in group:
+		item, _created = find_or_create_item(customer, ln["external_sku"], ln["description"])
+		new_items.append({"item_code": item, "qty": ln["qty"], "hk_po_rate": flt(ln.get("po_rate"))})
+	new_items = revisions.keep_unmentioned(revisions_api.lines(so.items), new_items)
+	diff = revisions.changes(revisions_api.lines(so.items), new_items)
+	action, why = revisions.po_action(diff, so.docstatus, so.status, so.per_delivered, so.get("per_billing"))
+	if action == revisions.UNCHANGED:
+		return {"note": _("PO {0} already has sales order {1}, same lines: nothing to change.").format(po, so_name),
+		        "applied": False, "manual": False}
+	summary = revisions.summary(diff, revisions_api.names(c for c, _a, _b in diff))
+	if action == revisions.MANUAL:
+		rev = revisions_api.record(so_name, revisions_api.lines(so.items), new_items, "Email", applied=0, email_order=order.name)
+		if rev:
+			revisions_api.flag_proposal(so_name, rev)
+		return {"note": _("PO {0} changed ({1}) but {2}: check {3} by hand.").format(po, summary, _(why), so_name),
+		        "applied": False, "manual": True}
+	frappe.db.savepoint("hk_amend")
+	try:
+		_apply_items(so, new_items, order.name)
+	except Exception as e:
+		frappe.db.rollback(save_point="hk_amend")
+		return {"note": _("PO {0} changed ({1}) but {2} could not be amended automatically: {3}").format(
+			po, summary, so_name, str(e)[:200]), "applied": False, "manual": True}
+	return {"note": _("PO {0}: sales order {1} amended automatically ({2}).").format(po, so_name, summary),
+	        "applied": True, "manual": False}
+
+
+def _apply_items(so, new_items, email_order):
+	"""Make the order's items match new_items, keeping the prices already on the rows. The change is
+	kept in Order Revision and is not flagged for review: the email itself is the authority."""
+	import json
+	before = revisions_api.lines(so.items)
+	if so.docstatus == 0:
+		so.flags.hk_revision_source = "Email"
+		so.flags.hk_revision_email_order = email_order
+		old_rates = {}
+		for r in so.items:
+			old_rates.setdefault(r.item_code, r.rate)
+		so.set("items", [])
+		for i in new_items:
+			row = dict(i)
+			if old_rates.get(i["item_code"]):
+				row["rate"] = old_rates[i["item_code"]]
+			so.append("items", row)
+		so.save(ignore_permissions=True)
+		apply_po_prices(so)
+	else:
+		from erpnext.controllers.accounts_controller import update_child_qty_rate
+		rows = {}
+		for r in so.items:
+			rows.setdefault(r.item_code, []).append(r)
+		data = []
+		for i in new_items:
+			old = (rows.get(i["item_code"]) or [None]).pop(0)
+			if old:
+				data.append({"docname": old.name, "item_code": old.item_code, "qty": i["qty"], "rate": old.rate,
+				             "delivery_date": str(old.delivery_date or so.delivery_date)})
+			else:
+				data.append({"item_code": i["item_code"], "qty": i["qty"], "rate": i["hk_po_rate"] or 0,
+				             "delivery_date": str(so.delivery_date)})
+		# update_child_qty_rate replaces the whole list: every existing row must be in `data` or it is deleted
+		update_child_qty_rate("Sales Order", json.dumps(data), so.name)
+		so.reload()
+	if not frappe.db.exists("Order Revision", {"sales_order": so.name, "email_order": email_order}):
+		revisions_api.record(so.name, before, revisions_api.lines(so.items), "Email", email_order=email_order)
+		frappe.db.set_value("Sales Order", so.name, "hk_revision_count", int(so.get("hk_revision_count") or 0) + 1,
+		                    update_modified=False)
+	frappe.db.set_value("Sales Order", so.name, "hk_needs_review", 0, update_modified=False)
 
 
 def _auto_confirm(order, so_names):
