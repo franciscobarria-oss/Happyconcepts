@@ -64,3 +64,18 @@ def to_csv(table: dict) -> str:
 def to_tsv(table: dict) -> str:
 	"""Tab-separated text that pastes into Excel / Sheets as cells."""
 	return "\n".join("\t".join(c.replace("\t", " ").replace("\n", " ") for c in row) for row in grid(table))
+
+
+# Reading queue rules (Document Reading records).
+RETRY_WAIT = (60, 180)  # seconds to wait before attempt 2 and 3
+MAX_ATTEMPTS = len(RETRY_WAIT) + 1
+STALE_AFTER = 30 * 60  # a read still "Reading" after this many seconds lost its worker
+KEEP_DAYS = 30
+
+
+def is_stale(status: str, started_ts: float | None, now_ts: float, limit: int = STALE_AFTER) -> bool:
+	return status == "Reading" and started_ts is not None and now_ts - started_ts > limit
+
+
+def is_expired(created_ts: float, now_ts: float, days: int = KEEP_DAYS) -> bool:
+	return now_ts - created_ts > days * 86400

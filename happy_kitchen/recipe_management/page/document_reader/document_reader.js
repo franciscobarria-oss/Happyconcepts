@@ -42,43 +42,54 @@ async function copy(text) {
 	frappe.show_alert({ message: __("Copied"), indicator: "green" }, 3);
 }
 
+function statusMap() { return { Queued: __("Waiting"), Reading: __("Reading"), Done: __("Ready"), Failed: __("Failed") }; }
+
 class DocReader {
-	constructor(wrapper) { this.$b = $(wrapper).find(".layout-main-section"); this.r = null; }
+	constructor(wrapper) { this.$b = $(wrapper).find(".layout-main-section"); this.r = null; this.timer = null; }
+	stop() { if (this.timer) { clearTimeout(this.timer); this.timer = null; } }
 	async start() {
-		this.r = null;
+		this.stop(); this.r = null;
 		const st = await frappe.xcall(API + "status");
 		this.$b.html(`<div class="hkdr"><div class="hkdr-card">
-			<p>${__("Upload a PDF or a picture (English or Chinese). Gemini reads it like OCR and gives you the text and any tables, ready to copy or download.")}</p>
-			<p class="text-muted">${__("Nothing is saved except the uploaded file. Check the result against the original.")}</p>
+			<p>${__("Upload PDFs or pictures (English or Chinese). Gemini reads them like OCR in the background: you can close this page and come back to the list below.")}</p>
+			<p class="text-muted">${__("Results are kept for 30 days. Check the result against the original.")}</p>
 			${st.gemini ? "" : `<p><span class="hkdr-flag">${__("No Gemini key is set up: add it in Gmail Settings.")}</span></p>`}
-			<button class="btn btn-primary hkdr-big hkdr-take" ${st.gemini ? "" : "disabled"}>${__("Upload PDF or picture")}</button></div></div>`);
+			<button class="btn btn-primary hkdr-big hkdr-take" ${st.gemini ? "" : "disabled"}>${__("Upload PDF or picture")}</button></div>
+			<div class="hkdr-list"></div></div>`);
 		this.$b.find(".hkdr-take").on("click", () => this.pick());
+		this.refresh();
 	}
 	pick() {
-		new frappe.ui.FileUploader({
-			folder: "Home", make_attachments_public: 0, allow_multiple: false, allow_take_photo: true,
+		const uploader = new frappe.ui.FileUploader({
+			folder: "Home", make_attachments_public: 0, allow_multiple: true, allow_take_photo: true,
 			restrictions: { allowed_file_types: ["image/*", ".pdf"] },
-			on_success: (f) => this.read(f.file_url, f.file_name),
+			on_success: async (f) => { await frappe.xcall(API + "submit", { file_url: f.file_url }); this.refresh(); },
 		});
 	}
-	async read(url, name) {
-		this.$b.html(`<div class="hkdr"><div class="hkdr-card"><p>${__("Reading {0}... this can take up to a minute for long documents.", [esc(name)])}</p></div></div>`);
-		try {
-			const job = await frappe.xcall(API + "start_read", { file_url: url });
-			for (let i = 0; i < 200; i++) {
-				await new Promise((ok) => setTimeout(ok, 3000));
-				const res = await frappe.xcall(API + "result", { job_id: job });
-				if (!res.done) continue;
-				if (res.error) throw new Error(res.error);
-				this.r = res.data; break;
-			}
-			if (!this.r) throw new Error("timeout");
-		} catch (e) {
-			this.$b.html(`<div class="hkdr"><div class="hkdr-card"><p>${__("The file could not be read. Try again, or try a sharper file.")}</p><p class="text-muted">${esc(e && e.message || "")}</p>
-				<button class="btn btn-primary hkdr-big hkdr-again">${__("Try another file")}</button></div></div>`);
-			this.$b.find(".hkdr-again").on("click", () => this.start());
-			return;
-		}
+	async refresh() {
+		this.stop();
+		const $l = this.$b.find(".hkdr-list");
+		if (!$l.length) return;
+		let rows = [];
+		try { rows = await frappe.xcall(API + "list_jobs"); } catch (e) { return; }
+		$l.html(rows.length ? `<div class="hkdr-card"><h6>${__("Your documents")}</h6><div class="hkdr-wrap"><table>
+			<tr><th>${__("File")}</th><th>${__("Status")}</th><th>${__("Sent")}</th><th></th></tr>
+			${rows.map((x) => `<tr data-n="${esc(x.name)}"><td>${esc(x.file_name)}</td>
+			<td>${esc(statusMap()[x.status] || x.status)}${x.status === "Reading" && x.attempts > 1 ? ` (${__("try {0}", [x.attempts])})` : ""}
+			${x.status === "Failed" ? `<br><small class="text-muted">${esc(x.error)}</small>` : ""}</td>
+			<td>${esc(frappe.datetime.str_to_user(x.creation))}</td>
+			<td>${x.status === "Done" ? `<button class="btn btn-primary btn-xs hkdr-open">${__("Open")}</button> ` : ""}
+			${x.status === "Failed" || x.status === "Done" ? `<button class="btn btn-default btn-xs hkdr-retry">${__("Read again")}</button> ` : ""}
+			<button class="btn btn-default btn-xs hkdr-del">${__("Delete")}</button></td></tr>`).join("")}</table></div></div>` : "");
+		$l.find(".hkdr-open").on("click", (e) => this.open($(e.currentTarget).closest("tr").data("n")));
+		$l.find(".hkdr-retry").on("click", async (e) => { await frappe.xcall(API + "retry", { name: $(e.currentTarget).closest("tr").data("n") }); this.refresh(); });
+		$l.find(".hkdr-del").on("click", async (e) => { await frappe.xcall(API + "remove", { name: $(e.currentTarget).closest("tr").data("n") }); this.refresh(); });
+		if (this.$b.is(":visible") && rows.some((x) => x.status === "Queued" || x.status === "Reading")) this.timer = setTimeout(() => this.refresh(), 5000);
+	}
+	async open(name) {
+		const j = await frappe.xcall(API + "get_job", { name });
+		if (!j.data) return;
+		this.r = { ...j.data, filename: j.file_name };
 		this.draw();
 	}
 	draw() {
@@ -95,7 +106,7 @@ class DocReader {
 			<button class="btn btn-default hkdr-big hkdr-copytext">${__("Copy text")}</button>
 			<button class="btn btn-default hkdr-big hkdr-txt">${__("Download text")}</button>
 			<button class="btn btn-default hkdr-big hkdr-xlsx">${__("Download Excel (all)")}</button>
-			<button class="btn btn-primary hkdr-big hkdr-again">${__("Read another file")}</button></div>${tables}</div>`);
+			<button class="btn btn-primary hkdr-big hkdr-again">${__("Back to the list")}</button></div>${tables}</div>`);
 		const text = () => this.$b.find(".hkdr-text").val();
 		this.$b.find(".hkdr-copytext").on("click", () => copy(text()));
 		this.$b.find(".hkdr-txt").on("click", () => save("document.txt", new Blob(["﻿" + text()], { type: "text/plain;charset=utf-8" })));

@@ -20,3 +20,10 @@ def test_csv_and_tsv():
 	t = {"headers": ["Name", "Qty"], "rows": [['a,"b"', "1"], ["牛奶", "2\t3"]]}
 	assert r.to_csv(t) == 'Name,Qty\r\n"a,""b""",1\r\n牛奶,2\t3\r\n'
 	assert r.to_tsv(t) == "Name\tQty\na,\"b\"\t1\n牛奶\t2 3"
+
+
+def test_queue_rules():
+	assert r.MAX_ATTEMPTS == 3
+	assert r.is_stale("Reading", 0, 2000) and not r.is_stale("Reading", 0, 100)
+	assert not r.is_stale("Done", 0, 99999) and not r.is_stale("Reading", None, 99999)
+	assert r.is_expired(0, 31 * 86400) and not r.is_expired(0, 29 * 86400)

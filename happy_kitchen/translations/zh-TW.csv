@@ -95,6 +95,7 @@ Areas,區域
 "As it appears in ""This product contains ... and their products."", e.g. cereals containing gluten.",用於「This product contains ... and their products.」句中，例如 cereals containing gluten。
 "As printed after CONTAINS: on labels, e.g. Milk.",標籤上 CONTAINS: 之後的寫法，例如 Milk。
 Back to orders,返回採購單
+Back to the list,返回清單
 "Backup reader for photos of handwritten recipes (English / Chinese), used when Gemini (key in Gmail Settings) fails. Blank = no backup.",手寫食譜相片（中英文）的後備讀取，Gemini（金鑰在 Gmail 設定）失敗時使用。留空 = 不設後備。
 Bank account,銀行戶口
 Base Unit,基本單位
@@ -311,6 +312,7 @@ Details,詳情
 Differs from Order,與訂單不符
 Discard {0},丟棄 {0}
 Discarded,已丟棄
+Document Reading,文件讀取記錄
 Document reader,文件讀取
 Don't print labels for this item,此項目不列印標籤
 Done,完成
@@ -982,9 +984,11 @@ Read again,重新讀取
 Read another file,讀取另一個檔案
 Read by {0},由 {0} 讀取
 Read recipe photo,讀取食譜相片
+Reading,讀取中
 "Reading the email failed (see the error below). Use Read again, or enter the order by hand.",讀取電郵失敗（見下方錯誤）。請按「再讀一次」或人手輸入訂單。
 Reading the recipe...,正在讀取食譜…
 Reading {0}... this can take up to a minute for long documents.,正在讀取 {0}…長文件最多需要一分鐘。
+Ready,已完成
 Reason,原因
 Reason (Chinese),原因（中文）
 Receipt,收貨單
@@ -1035,6 +1039,7 @@ Replace in selected recipes,在已選食譜中取代
 Replace with,取代為
 Replaced in {0} recipes.,已在 {0} 個食譜中取代。
 Reports,報表
+Results are kept for 30 days. Check the result against the original.,結果保留 30 天。請對照原件檢查結果。
 Review,檢查
 Review note,覆核備註
 Reviewed,已覆核
@@ -1096,6 +1101,7 @@ Selling Price List,銷售價目表
 Selling price,售價
 Send to printer,送往打印機
 Sender email,寄件人電郵
+Sent,上傳時間
 Sent back,已退回
 Sent by,送出者
 Sent to,送給
@@ -1252,6 +1258,7 @@ This count is {0} and can't be changed.,此盤點狀態為 {0}，不能修改。
 This email cannot be marked as order confirmed.,這封電郵不能標為訂單已確認。
 This email changed an earlier order. The draft sales order now shows the new lines.,這封電郵修改了先前的訂單，銷售訂單草稿已顯示新的行。
 This email is already closed.,此電郵已結案。
+This file is already being read.,此檔案正在讀取中。
 This ingredient appears on product labels as <b>{0}</b>.,此材料在產品標籤上顯示為 <b>{0}</b>。
 This job belongs to another printer.,此工作屬於另一部打印機。
 This label is waiting for its product to be checked.,此標籤正等候其產品被檢查。
@@ -1319,6 +1326,7 @@ Upcoming,即將到期
 Update ERPNext stock when a count is approved,盤點批准後更新 ERPNext 庫存
 Updated {0},更新於 {0}
 Upload PDF or picture,上傳 PDF 或圖片
+Upload PDFs or pictures (English or Chinese). Gemini reads them like OCR in the background: you can close this page and come back to the list below.,上傳 PDF 或圖片（中文或英文）。Gemini 會在背景像 OCR 一樣讀取，你可以關閉此頁，稍後回到下方清單查看。
 "Upload a PDF or a picture (English or Chinese). Gemini reads it like OCR and gives you the text and any tables, ready to copy or download.",上傳 PDF 或圖片（中文或英文）。Gemini 會像 OCR 一樣讀取，並提供文字和表格，可複製或下載。
 "Usable share of what is bought, after trimming or other losses.",購入後經修剪或其他損耗後可用的比例。
 Usage & Inventory,用量及庫存
@@ -1348,6 +1356,7 @@ Volume (cm³),體積 (立方厘米)
 Volume {0} cm³,體積 {0} 立方厘米
 Wages,工資
 Wages (Labour) - {0} h,工資（人工）－ {0} 小時
+Waiting,等待中
 Waiting because,等待原因
 Waiting for Approval,等候審批
 Waiting on you,待處理
@@ -1400,6 +1409,7 @@ You are not allowed to submit a Delivery Note.,你沒有權限提交送貨單。
 You can't create purchase orders.,你沒有權限建立採購單。
 You replaced <b>{0}</b> with <b>{1}</b>. {0} is also used in {2} other recipes. Replace it there too?,你已將 <b>{0}</b> 取代為 <b>{1}</b>。{0} 亦用於另外 {2} 個食譜。是否一併取代？
 "You submitted this count, so another approver has to approve or reject it.",此盤點由你提交，須由另一位審批人批准或退回。
+Your documents,你的文件
 ZPL for Zebra and other thermal printers that speak ZPL. PNG sends a picture through the Pi's printer driver (CUPS) for anything else.,ZPL 適用於 Zebra 及其他支援 ZPL 的熱感打印機。其他打印機用 PNG，經 Pi 的打印驅動（CUPS）傳送圖片。
 all SKUs,所有產品編號
 and {0} more,另有 {0} 張
@@ -1460,6 +1470,7 @@ suggested price,建議售價
 target {0}%,目標 {0}%
 the system (auto-complete),系統（自動完成）
 today,今日
+try {0},第 {0} 次嘗試
 units,件
 use by,使用期限
 vs Cheapest %,對比最便宜 %
