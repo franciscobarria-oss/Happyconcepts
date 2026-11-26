@@ -94,6 +94,7 @@ Area (Chinese),區域（中文）
 Areas,區域
 "As it appears in ""This product contains ... and their products."", e.g. cereals containing gluten.",用於「This product contains ... and their products.」句中，例如 cereals containing gluten。
 "As printed after CONTAINS: on labels, e.g. Milk.",標籤上 CONTAINS: 之後的寫法，例如 Milk。
+Assumed price,假設價格
 Back to orders,返回採購單
 Back to the list,返回清單
 "Backup reader for photos of handwritten recipes (English / Chinese), used when Gemini (key in Gmail Settings) fails. Blank = no backup.",手寫食譜相片（中英文）的後備讀取，Gemini（金鑰在 Gmail 設定）失敗時使用。留空 = 不設後備。
@@ -128,6 +129,7 @@ Brand Name,品牌名稱
 Brand line,品牌行
 Branding (A4 recipe print),品牌（A4 食譜列印）
 "Brown / blush Happy Concepts colours and Oswald headings on every screen, in Light and Dark. Untick to go back to the standard look. Applies after each user reloads the page.",所有畫面使用 Happy Concepts 啡色／粉紅色及 Oswald 標題，淺色及深色模式皆適用。取消勾選即回復標準外觀。每位用戶重新載入頁面後生效。
+Bulk price,整包價格
 Busiest date,最忙日期
 "Busiest days, last 4 weeks",最忙日子（最近 4 週）
 Busiest weekday,最忙星期
@@ -245,6 +247,7 @@ Cost per 100 g,每100克成本
 Cost per Unit (excl. Labour),每件成本（不連人工）
 Cost per Unit (incl. Labour),每件成本（連人工）
 Cost per gram,每克成本
+Cost per piece,每件成本
 Cost per slice,每件成本
 Cost per unit,每件成本
 Costing,成本
@@ -329,6 +332,7 @@ Draft sales order,銷售訂單草稿
 Draft {0} created. Check it and submit it to send.,已建立草稿 {0}。請檢查後提交發送。
 Drawing the label...,正在生成標籤…
 Due by,限時
+ERP buying price,系統採購價
 Each changed recipe is re-costed and gets a comment. Products with labels will need their label checked again.,每個已更改的食譜會重新計算成本並加上備註。有標籤的產品需要重新檢查標籤。
 Each recipe's quantity is multiplied by this. Keep 1 to use the same amount (e.g. 0.8 if the new product is stronger).,每個食譜的用量會乘以此數。保持 1 即用量不變（例如新產品味道較濃可用 0.8）。
 Email Order,電郵訂單
@@ -758,6 +762,7 @@ One checklist done (or due) in one area at one time. Signed with the staff PIN; 
 One per line.,每行一個。
 "One per line: how this outlet is named on its purchase orders (e.g. W Hong Kong, IKEA Kowloon Bay). Email order pick-up files an order under the customer whose name, one of these names or a shipping address line appears in the email or its PDF.",每行一個：此分店在採購單上的名稱（例如 W Hong Kong、IKEA Kowloon Bay）。電郵訂單會歸入名稱、這些名稱或送貨地址出現在電郵或 PDF 中的客戶。
 One per line; picking one of these asks what was done about it.,每行一個；選了這些會要求填寫跟進措施。
+One piece (g),每件重量 (克)
 One row per ingredient and storage area. Drag rows to change the counting order; the count screen groups them by storage area in this order. Untick Active to hide a row.,每項食材及儲存位置一行。拖動行可更改盤點次序；盤點畫面會按此次序以儲存位置分組。取消勾選「使用中」可隱藏該行。
 Online,在線
 Only HR Manager or System Manager can open pay figures.,只有人事經理或系統管理員可查看薪酬數字。
@@ -863,7 +868,9 @@ PO {0}: sales order {1} amended automatically ({2}).,採購單 {0}：銷售訂�
 Pack Size 1,包裝規格 1
 Pack Size 2,包裝規格 2
 Pack Size 3,包裝規格 3
+Pack size,包裝規格
 Pack sizes set on {0} ingredients.,已為 {0} 項材料設定包裝規格。
+Pack unit,包裝單位
 Packaging,包裝
 Packaging Item Groups,包裝物品組別
 Packaging and Case Pack,包裝及箱規
@@ -894,6 +901,7 @@ Pick the lines to print. Pieces = how many pieces the labels cover; the item's P
 Pick up orders from Gmail,從 Gmail 讀取訂單
 Pick up orders now,立即讀取訂單
 Picked up from the email '{0}' from {1} ({2}). Check it before submitting.,"由電郵「{0}」(來自 {1},{2})讀取。提交前請先檢查。"
+Piece weight (g),每件重量 (克)
 Pieces,件數
 Pieces per label,每張標籤件數
 Planned Batches,計劃批數
@@ -907,6 +915,8 @@ Price Variance,價格差異
 Price check,價格核對
 Price differs from the customer's PO,價格與客戶採購單不同
 Price for Target,目標售價
+Price from,價格來源
+Price is an assumption,價格為假設
 Price must be greater than zero.,價格必須大於零。
 Price note,價格備註
 "Price on the supplier's delivery note / invoice, typed on Receive Delivery. Stock is still received at the PO price.",供應商送貨單／發票上的價格，於收貨畫面輸入。庫存仍按採購單價格入帳。
@@ -967,6 +977,7 @@ Quantity factor,數量倍數
 Quantity for {0} must be above 0.,{0} 的數量必須大於 0。
 Quantity in stock unit,庫存單位數量
 Quantity must be more than zero.,數量必須大於零。
+Quantity unit,數量單位
 Question,問題
 Question (Chinese),問題（中文）
 Question {0} not found,找不到問題 {0}
@@ -1019,6 +1030,7 @@ Recipe Units per Sales Unit,每銷售單位的食譜單位數
 Recipe Utensil,食譜器具
 Recipe costing and testing,食譜成本與測試
 Recipe photo reader,食譜相片讀取
+Recipe weight (g),配方重量 (克)
 Recipes,食譜
 Recipes Produced,已生產食譜
 Recorded Wastage,已記錄報廢
@@ -1308,13 +1320,17 @@ Total cost,總成本率
 Try again,重試
 Try another file,試另一個檔案
 Try another photo,試另一張相片
+Typed,手動輸入
+Typed price,手動輸入價格
 Unexplained Cost,未能解釋成本
 Unexplained Loss,未能解釋損失
 Unit / Basis,單位／計算方式
 Unit Cost,單位成本
 Unit Cost (per Stock UOM),單位成本（每庫存單位）
+Unit cost (per g or per piece),單位成本 (每克或每件)
 Units,件數
 "Units by delivery day, {0} to {1}",按送貨日的數量，{0} 至 {1}
+Units differ (pcs vs weight),單位不符 (件 vs 重量)
 Units sold,已售數量
 Units sold per week,每週銷售數量
 Unknown action,未知操作
@@ -1377,6 +1393,7 @@ Week of,週
 Week of {0},{0} 當週
 Weight (g),重量 (克)
 Weight Tolerance (± g),重量誤差（± 克）
+Weight of one piece (g),每件重量 (克)
 Weight per Piece (g),每件重量（克）
 Weights & Cooking Yield,重量及成品率
 What applies today under the Employment Ordinance. Worked out by the system.,根據僱傭條例現時適用的權益。由系統計算。
@@ -1414,6 +1431,7 @@ ZPL for Zebra and other thermal printers that speak ZPL. PNG sends a picture thr
 all SKUs,所有產品編號
 and {0} more,另有 {0} 張
 archived,已封存
+assumed price,假設價格
 batch,批
 batch cost,每批成本
 batches,批
@@ -1458,11 +1476,14 @@ out at {0},{0} 下班
 overdue,已逾期
 overheads,雜費
 part week,不完整的一週
+pcs,件
 per 100 g,每100克
+per piece,每件
 per slice,每件
 photo needed,需要相片
 printed,已列印
 received,已收
+recipe weight,配方重量
 same,相同
 short {0},欠 {0}
 some already on order,部分已訂購

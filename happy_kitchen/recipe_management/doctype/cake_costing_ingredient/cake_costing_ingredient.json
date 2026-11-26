@@ -32,14 +32,14 @@
   {
    "fieldname": "qty_g",
    "fieldtype": "Float",
-   "label": "Grams",
+   "label": "Quantity",
    "in_list_view": 1,
    "columns": 1
   },
   {
    "fieldname": "unit_cost",
    "fieldtype": "Currency",
-   "label": "Cost per gram",
+   "label": "Unit cost (per g or per piece)",
    "precision": "4",
    "read_only": 1
   },
@@ -61,6 +61,54 @@
    "fieldname": "price_note",
    "fieldtype": "Data",
    "label": "Price note",
+   "read_only": 1
+  },
+  {
+   "fieldname": "qty_unit",
+   "fieldtype": "Select",
+   "label": "Quantity unit",
+   "options": "g\npcs",
+   "default": "g"
+  },
+  {
+   "fieldname": "piece_g",
+   "fieldtype": "Float",
+   "label": "Weight of one piece (g)"
+  },
+  {
+   "fieldname": "bulk_price",
+   "fieldtype": "Currency",
+   "label": "Bulk price",
+   "precision": "4"
+  },
+  {
+   "fieldname": "pack_size",
+   "fieldtype": "Float",
+   "label": "Pack size"
+  },
+  {
+   "fieldname": "pack_unit",
+   "fieldtype": "Select",
+   "label": "Pack unit",
+   "options": "g\nkg\nlb\noz\nml\nL\npcs",
+   "default": "kg"
+  },
+  {
+   "fieldname": "price_source",
+   "fieldtype": "Select",
+   "label": "Price from",
+   "options": "ERP\nTyped",
+   "default": "ERP"
+  },
+  {
+   "fieldname": "assumed",
+   "fieldtype": "Check",
+   "label": "Price is an assumption"
+  },
+  {
+   "fieldname": "weight_g",
+   "fieldtype": "Float",
+   "label": "Weight (g)",
    "read_only": 1
   }
  ]
