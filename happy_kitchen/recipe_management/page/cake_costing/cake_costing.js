@@ -9,7 +9,7 @@ const STEPS = ["Photo", "Size", "Ingredients", "Cost"];
 function css() {
 	if (document.getElementById("hkcc-css")) return;
 	$(`<style id="hkcc-css">
-	.hkcc { max-width: 560px; margin: 0 auto; padding-bottom: 80px; }
+	.hkcc { max-width: 560px; width: 100%; box-sizing: border-box; margin: 0 auto; padding-bottom: 80px; }
 	.hkcc-card { border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; background: var(--card-bg); margin-bottom: 12px; }
 	.hkcc-in { min-height: 48px; font-size: 17px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--control-bg); width: 100%; }
 	.hkcc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
@@ -26,6 +26,9 @@ function css() {
 	.hkcc-tot { font-size: 34px; font-weight: 700; }
 	.hkcc-flag { background: var(--hk-warning-soft, #feebc8); border-radius: 8px; padding: 2px 8px; font-size: 12px; margin-left: 4px; }
 	.hkcc-t td { padding: 6px 0; border-bottom: 1px solid var(--border-color); } .hkcc-t td:last-child { text-align: right; }
+	.hkcc input, .hkcc select { max-width: 100%; box-sizing: border-box; min-width: 0; }
+	@media (max-width: 480px) { .hkcc-r2, .hkcc-r2[style] { grid-template-columns: 1fr 1fr !important; } .hkcc-grid { grid-template-columns: 1fr 1fr; } .hkcc-tot { font-size: 28px; } }
+	@media (min-width: 768px) { .hkcc { max-width: 860px; } .hkcc-row { padding: 10px 4px; } }
 	</style>`).appendTo("head");
 }
 
