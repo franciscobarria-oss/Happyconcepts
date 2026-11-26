@@ -8,6 +8,7 @@ TEN = ["Recipes", "Suppliers", "Sales", "Team", "Clock In", "Kitchen Checks", "A
        "Recipe Costing", "Reports", "Today"]
 OUTSIDE = ["Stock Take"]  # shown after the ten, not one of them
 OURS = TEN + OUTSIDE
+PAGE_ICONS = ["Document reader"]  # icons that open a page directly (no workspace), shown after Stock Take
 # Workspace -> module. Each icon needs its own: the desk finds an icon's sidebar by its workspace's module.
 # Frappe skips workspace files whose `modified` did not change, so a module moved in the JSON never reached
 # existing sites (Sales kept opening HR); `apply()` sets it on every migrate.
@@ -23,9 +24,9 @@ KEEP = {"Settings", "Users", "Home", "Build", "Integrations"}
 def to_hide(icons):
 	"""icons: [{"name", "parent_icon", "hidden"}]. Names to hide: every icon that is not ours, not the
 	folder one of ours sits in, and not in KEEP. Already hidden ones are left out."""
-	parents = {i.get("parent_icon") for i in icons if i["name"] in OURS and i.get("parent_icon")}
+	parents = {i.get("parent_icon") for i in icons if i["name"] in OURS + PAGE_ICONS and i.get("parent_icon")}
 	return [i["name"] for i in icons
-	        if i["name"] not in OURS and i["name"] not in parents and i["name"] not in KEEP and not i.get("hidden")]
+	        if i["name"] not in OURS + PAGE_ICONS and i["name"] not in parents and i["name"] not in KEEP and not i.get("hidden")]
 
 
 def apply():
