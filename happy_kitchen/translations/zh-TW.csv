@@ -225,8 +225,11 @@ Connected to {0}. Read-only access.,已連接 {0}(唯讀)。
 Continue a count,繼續盤點
 Contract Type,合約類別
 Cooking Yield %,成品率
+Copied,已複製
 Copied into every new recipe. Edit them per recipe as needed.,會複製到每個新食譜，可按需要逐個食譜修改。
+Copy (paste into Excel),複製（可貼到 Excel）
 Copy last week's shifts into this week's empty days?,將上星期的更次複製到本星期未排更的日子？
+Copy text,複製文字
 Corrective Action Preset,跟進措施快選
 Cost,成本
 Cost / Batch,每批成本
@@ -308,9 +311,13 @@ Details,詳情
 Differs from Order,與訂單不符
 Discard {0},丟棄 {0}
 Discarded,已丟棄
+Document reader,文件讀取
 Don't print labels for this item,此項目不列印標籤
 Done,完成
 Done by hand,已人手處理
+Download CSV,下載 CSV
+Download Excel (all),下載 Excel（全部）
+Download text,下載文字
 Draft order,訂單草稿
 Draft order {0} saved,訂單草稿 {0} 已儲存
 Draft orders from email to check,待核對的電郵訂單草稿
@@ -396,7 +403,9 @@ Full desk,完整桌面
 Full-time only. Leave empty for hourly staff.,只適用於全職員工。時薪員工請留空。
 "Gas, electricity, packaging, cleaning, rent share... New recipes start with the defaults from Recipe Settings.",煤氣、電費、包裝、清潔、租金分攤…… 新食譜會以食譜設定中的預設值開始。
 Gemini API key,Gemini API 金鑰
+Gemini could not read the file. Try again in a minute.,Gemini 無法讀取此檔案，請稍後再試。
 Gemini model,Gemini 模型
+Gemini sent an answer that could not be understood. Try again.,Gemini 的回覆無法解讀，請再試一次。
 Give the cake a name,請為蛋糕命名
 Gmail Settings,Gmail 設定
 Gmail Settings is missing the Google sign-in,Gmail 設定缺少 Google 登入資料
@@ -656,6 +665,7 @@ New count,新盤點
 New item,新貨品
 New product made,已新增產品
 No Gemini key is set in Gmail Settings,Gmail 設定中未填寫 Gemini 金鑰
+No Gemini key is set up: add it in Gmail Settings.,尚未設定 Gemini 金鑰：請在 Gmail 設定中加入。
 No Price,未有價格
 No Price Found,找不到價格
 No SKU matches.,沒有相符的產品編號。
@@ -717,11 +727,14 @@ Nothing due today,今日沒有待收貨
 Nothing found,找不到
 Nothing is left to deliver on this order.,此訂單沒有未送的貨品。
 Nothing is near its use-by date.,沒有接近使用期限的貨品。
+Nothing is saved except the uploaded file. Check the result against the original.,除上傳的檔案外不會儲存任何內容。請對照原件檢查結果。
 Nothing left to make today.,今日生產已完成。
 Nothing logged this week.,本週未有生產紀錄。
 Nothing opened yet today,今日尚未開封任何貨品
+Nothing readable was found in the file.,檔案中找不到可讀取的內容。
 Nothing to copy,沒有可複製的更次
 "Nothing to do: the sender is not allowed, nothing changed, or every PO already has an order.",無需處理：寄件人不在許可名單、沒有更改，或每張採購單已有訂單。
+Nothing to export,沒有可匯出的內容
 Nothing to make for today's orders.,今日訂單不需生產。
 Nothing to order for the next 3 days.,未來3日不需訂貨。
 Nothing to order.,沒有需要訂購的項目。
@@ -747,6 +760,7 @@ One row per ingredient and storage area. Drag rows to change the counting order;
 Online,在線
 Only HR Manager or System Manager can open pay figures.,只有人事經理或系統管理員可查看薪酬數字。
 Only Out of Tolerance,只顯示超出容差
+Only PDF files and pictures can be read.,只能讀取 PDF 檔案和圖片。
 Only Price Changes,只顯示價格變動
 Only Recipes That Need a Look,只顯示需檢查的食譜
 Only a confirmed order can be marked as delivered.,只有已確認的訂單才可標為已送貨。
@@ -965,10 +979,12 @@ Rate Name,費率名稱
 Rates,費率
 Re-cost recipes when an Item Price changes,物品價格變動時重新計算食譜成本
 Read again,重新讀取
+Read another file,讀取另一個檔案
 Read by {0},由 {0} 讀取
 Read recipe photo,讀取食譜相片
 "Reading the email failed (see the error below). Use Read again, or enter the order by hand.",讀取電郵失敗（見下方錯誤）。請按「再讀一次」或人手輸入訂單。
 Reading the recipe...,正在讀取食譜…
+Reading {0}... this can take up to a minute for long documents.,正在讀取 {0}…長文件最多需要一分鐘。
 Reason,原因
 Reason (Chinese),原因（中文）
 Receipt,收貨單
@@ -1181,6 +1197,7 @@ Supplier SKUs,供應商貨號
 "Supplier and customer part numbers from the tables on this form, so the item is found by any of them.","來自此表單內表格的供應商及客戶貨號,令貨品可用其中任何一個搜尋。"
 Supplier delivery note / invoice no.,送貨單號／發票號碼
 Suppliers,供應商
+Table,表格
 Tablet screen,平板畫面
 Tagline,標語
 Take a photo of a handwritten recipe (English or Chinese). The system reads it into text and a draft recipe you can check.,拍下手寫食譜（中文或英文），系統會讀成文字及食譜草稿供你檢查。
@@ -1205,6 +1222,8 @@ The address the email came through (a Google Group or one of our own mailboxes) 
 The closing stock take must be after the opening one,期末盤點必須在期初盤點之後
 The customer's unit price on the PO (0 = none).,客戶採購單上的單價（0 = 沒有）。
 The email this order was picked up from.,建立此訂單的電郵。
+"The file could not be read. Try again, or try a sharper file.",無法讀取檔案。請再試一次，或使用更清晰的檔案。
+The file is empty or larger than 15 MB.,檔案是空的或超過 15 MB。
 The last check failed,上次檢查失敗
 "The lines were read but the order is held back, usually because it follows an order already submitted. Check it by hand.",行已讀取但訂單被擱置，通常因為它跟隨一張已提交的訂單。請人手檢查。
 The order matches the PDF? This confirms the items and submits the draft sales order.,訂單與 PDF 相符？這會確認產品並提交銷售訂單草稿。
@@ -1262,6 +1281,7 @@ Today's run,今日生產
 Tolerance,容差
 Tomorrow,明日
 Too many wrong PINs. Wait 5 minutes or ask your manager.,密碼錯誤次數過多。請等 5 分鐘或聯絡主管。
+Tools,工具
 "Top of the right column, e.g. For immediate consumption after opening. A product's ""Extra line on label"" replaces it.",右欄頂部，例如 For immediate consumption after opening。產品的「標籤額外一行」會取代它。
 Top up {0},補充 {0}
 Total / Unit,每件總成本
@@ -1278,6 +1298,7 @@ Total Used (kg),總用量（公斤）
 Total Variance Cost,總差異成本
 Total cost,總成本率
 Try again,重試
+Try another file,試另一個檔案
 Try another photo,試另一張相片
 Unexplained Cost,未能解釋成本
 Unexplained Loss,未能解釋損失
@@ -1296,6 +1317,8 @@ Untitled cake,未命名蛋糕
 Upcoming,即將到期
 Update ERPNext stock when a count is approved,盤點批准後更新 ERPNext 庫存
 Updated {0},更新於 {0}
+Upload PDF or picture,上傳 PDF 或圖片
+"Upload a PDF or a picture (English or Chinese). Gemini reads it like OCR and gives you the text and any tables, ready to copy or download.",上傳 PDF 或圖片（中文或英文）。Gemini 會像 OCR 一樣讀取，並提供文字和表格，可複製或下載。
 "Usable share of what is bought, after trimming or other losses.",購入後經修剪或其他損耗後可用的比例。
 Usage & Inventory,用量及庫存
 Usage for how many batches?,計算多少批的用量？
