@@ -37,3 +37,25 @@ def test_parse_guess_drops_bad_rows():
 def test_weight_gap():
 	assert c.ingredient_weight_gap([{"qty_g": 1200}], 1000) == 20.0
 	assert c.ingredient_weight_gap([], 0) is None
+
+
+def test_pack_cost_weight_units():
+	r = c.pack_cost(475, 13.6, "kg", 100, "g")
+	assert math.isclose(r["unit_cost"], 475 / 13600) and math.isclose(r["line_cost"], round(100 * 475 / 13600, 4)) and r["weight_g"] == 100
+	assert math.isclose(c.pack_cost(330, 24, "lb", 34)["unit_cost"], 330 / (24 * 453.592))
+
+
+def test_pack_cost_pieces():
+	r = c.pack_cost(300, 360, "pcs", 4, "pcs", 48.75)
+	assert math.isclose(r["line_cost"], round(4 * 300 / 360, 4)) and r["weight_g"] == 195
+
+
+def test_pack_cost_errors():
+	assert "error" in c.pack_cost(6, 1, "pcs", 1, "g")
+	assert c.pack_cost(5, 0, "kg", 10)["error"] == "No pack size"
+
+
+def test_per_piece():
+	assert c.per_piece(100, 800, 80) == (10.0, 10.0)
+	assert c.per_piece(100, 800, 0, slices=4) == (4.0, 25.0)
+	assert c.per_piece(100, 0, 0) == (0.0, 0.0)

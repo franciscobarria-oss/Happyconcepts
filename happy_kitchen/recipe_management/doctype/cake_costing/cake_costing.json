@@ -138,9 +138,20 @@
    "label": "Slices"
   },
   {
+   "fieldname": "piece_weight_g",
+   "fieldtype": "Float",
+   "label": "Piece weight (g)"
+  },
+  {
+   "fieldname": "recipe_weight_g",
+   "fieldtype": "Float",
+   "label": "Recipe weight (g)",
+   "read_only": 1
+  },
+  {
    "fieldname": "volume_cm3",
    "fieldtype": "Float",
-   "label": "Volume (cm\u00b3)",
+   "label": "Volume (cm³)",
    "read_only": 1
   },
   {
@@ -194,6 +205,13 @@
    "fieldname": "cost_per_slice",
    "fieldtype": "Currency",
    "label": "Cost per slice",
+   "precision": "4",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cost_per_piece",
+   "fieldtype": "Currency",
+   "label": "Cost per piece",
    "precision": "4",
    "read_only": 1
   },

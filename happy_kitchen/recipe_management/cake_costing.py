@@ -12,7 +12,7 @@ from happy_kitchen.recipe_management.costing import pick_price
 
 ROLES = ("System Manager", "Stock Manager", "Stock User", "Manufacturing User", "Manufacturing Manager")
 STEPS = ("Photo", "Size", "Ingredients", "Cost")
-FIELDS = ("cake_name", "shape", "height_cm", "width_cm", "length_cm", "weight_g", "slices", "labour_cost", "packaging_cost", "notes")
+FIELDS = ("cake_name", "shape", "height_cm", "width_cm", "length_cm", "weight_g", "slices", "piece_weight_g", "labour_cost", "packaging_cost", "notes")
 
 
 def _check():
@@ -40,14 +40,42 @@ def gram_price(item_code: str):
 
 
 def price_lines(doc):
+	"""Unit cost per row. Typed rows (bulk price + pack size) use those; others take the ERP buying price,
+	which is also written into the bulk price / pack size boxes so staff can see and override it."""
 	for r in doc.get("ingredients") or []:
-		if not r.item:
-			r.unit_cost, r.price_note = 0, "No price"
-		else:
+		r.qty_unit = r.qty_unit or "g"
+		r.price_note = ""
+		if r.item:
 			r.item_name = r.item_name or frappe.db.get_value("Item", r.item, "item_name")
-			c, note = gram_price(r.item)
-			r.unit_cost, r.price_note = c or 0, note
-		r.line_cost = m.line_cost(r.qty_g, r.unit_cost) if not r.price_note else 0
+		if r.price_source == "Typed" or (not r.item and flt_(r.bulk_price)):
+			r.price_source = "Typed"
+			c = m.pack_cost(r.bulk_price, r.pack_size, r.pack_unit, r.qty_g, r.qty_unit, r.piece_g)
+			if c.get("error"):
+				r.unit_cost, r.line_cost, r.weight_g, r.price_note = 0, 0, 0, c["error"]
+			else:
+				r.unit_cost, r.line_cost, r.weight_g = c["unit_cost"], c["line_cost"], c["weight_g"]
+			continue
+		r.price_source = "ERP"
+		if not r.item:
+			r.unit_cost, r.line_cost, r.weight_g, r.price_note = 0, 0, 0, "No price"
+			continue
+		per_g, note = gram_price(r.item)
+		if per_g is None:
+			r.unit_cost, r.line_cost, r.weight_g, r.price_note = 0, 0, 0, note
+			continue
+		pcs = r.qty_unit == "pcs"
+		if pcs and not flt_(r.piece_g):
+			r.unit_cost, r.line_cost, r.weight_g, r.price_note = 0, 0, 0, "No pack size"
+			continue
+		r.unit_cost = per_g * flt_(r.piece_g) if pcs else per_g
+		r.line_cost = m.line_cost(r.qty_g, r.unit_cost)
+		r.weight_g = flt_(r.qty_g) * flt_(r.piece_g) if pcs else flt_(r.qty_g)
+		if not pcs:
+			r.bulk_price, r.pack_size, r.pack_unit = round(per_g * 1000, 4), 1, "kg"
+
+
+def flt_(v):
+	return m.flt(v)
 
 
 @frappe.whitelist()
@@ -78,7 +106,7 @@ def save_step(data, name: str | None = None, step: str | None = None):
 	if "ingredients" in d:
 		doc.set("ingredients", [])
 		for r in d["ingredients"]:
-			doc.append("ingredients", {k: r.get(k) for k in ("item", "item_name", "qty_g", "ai_guess")})
+			doc.append("ingredients", {k: r.get(k) for k in ("item", "item_name", "qty_g", "qty_unit", "piece_g", "bulk_price", "pack_size", "pack_unit", "price_source", "assumed", "ai_guess")})
 	doc.save()
 	return doc.as_dict()
 

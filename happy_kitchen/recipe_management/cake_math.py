@@ -68,3 +68,28 @@ def parse_guess(data) -> list[dict]:
 		if name and g > 0:
 			out.append({"name": name, "grams": round(g, 1)})
 	return out
+
+
+# Pack units -> grams (ml counts as 1 g, as in the costing sheet). "pcs" is counted, not weighed.
+UNITS = {"g": 1.0, "kg": 1000.0, "lb": 453.592, "oz": 28.3495, "ml": 1.0, "L": 1000.0, "pcs": 0.0}
+
+
+def pack_cost(price, pack_size, pack_unit, qty, qty_unit="g", piece_g=0) -> dict:
+	"""Bulk price + pack size -> unit cost (per g, or per piece for pcs), line cost and weight in g.
+	Returns {"error": ...} when the units do not fit or the pack size is missing."""
+	qty_pcs, pack_pcs = qty_unit == "pcs", pack_unit == "pcs"
+	if qty_pcs != pack_pcs:
+		return {"error": "Units differ (pcs vs weight)"}
+	base = flt(pack_size) if pack_pcs else flt(pack_size) * UNITS.get(pack_unit, 0.0)
+	if base <= 0:
+		return {"error": "No pack size"}
+	unit = flt(price) / base
+	q = flt(qty)
+	return {"unit_cost": unit, "line_cost": line_cost(q, unit), "weight_g": q * flt(piece_g) if qty_pcs else q}
+
+
+def per_piece(total, recipe_weight_g, piece_weight_g, slices=0) -> tuple[float, float]:
+	"""(pieces per batch, cost per piece). Piece weight wins; else the slice count."""
+	pw, w = flt(piece_weight_g), flt(recipe_weight_g)
+	n = w / pw if pw > 0 and w > 0 else flt(slices)
+	return (round(n, 2), round(flt(total) / n, 4) if n > 0 else 0.0)
