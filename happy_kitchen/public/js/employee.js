@@ -22,6 +22,9 @@ frappe.ui.form.on("Employee", {
 
 	refresh(frm) {
 		if (frm.is_new() || !frappe.user.has_role(["System Manager", "HR Manager", "HR User"])) return;
+		if (frappe.user.has_role(["System Manager", "HR Manager"])) {
+			frm.add_custom_button(__("Final pay"), () => hk_final_pay(frm), __("Leaver"));
+		}
 		frm.add_custom_button(frm.doc.hk_pin_hash ? __("Change clock-in PIN") : __("Set clock-in PIN"), () => {
 			frappe.prompt(
 				[{ fieldname: "pin", label: __("4-digit PIN"), fieldtype: "Password", reqd: 1 }],
@@ -37,3 +40,32 @@ frappe.ui.form.on("Employee", {
 		});
 	},
 });
+
+function hk_final_pay(frm) {
+	frappe.prompt(
+		[
+			{ fieldname: "last_day", label: __("Last working day"), fieldtype: "Date", reqd: 1, default: frm.doc.relieving_date || frappe.datetime.get_today() },
+			{ fieldname: "sh_given", label: __("Statutory holidays already given this year"), fieldtype: "Int", default: 0 },
+			{ fieldname: "rest_days_owed", label: __("Rest days still owed (roster)"), fieldtype: "Float", default: 0 },
+			{ fieldname: "annual_unused_before", label: __("Unused annual leave from earlier years"), fieldtype: "Float", default: 0 },
+			{ fieldname: "avg_daily_wage", label: __("Average daily wage (blank = estimate)"), fieldtype: "Currency" },
+		],
+		async (v) => {
+			const r = await frappe.xcall("happy_kitchen.hk_operations.hr_api.final_pay", { employee: frm.doc.name, ...v });
+			const fmt = (x) => (x == null ? "-" : format_currency(x));
+			const rows = r.lines
+				.map((l) => `<tr><td>${__(l.item)}</td><td class="text-right">${l.days}</td><td class="text-right">${fmt(l.amount)}</td><td class="text-muted small">${frappe.utils.escape_html(l.note)}</td></tr>`)
+				.join("");
+			frappe.msgprint({
+				title: __("Final pay: {0}", [r.employee_name]),
+				wide: true,
+				message: `<p>${__("Joined")} ${r.joined} &middot; ${__("Last day")} ${r.last_day} &middot; ${__("Daily wage")} ${fmt(r.daily_wage)}</p>
+				<table class="table table-bordered"><thead><tr><th>${__("Item")}</th><th>${__("Days")}</th><th>${__("Amount")}</th><th>${__("Basis")}</th></tr></thead><tbody>${rows}
+				<tr><th>${__("Total")}</th><th class="text-right">${r.total_days}</th><th class="text-right">${fmt(r.total_amount)}</th><th></th></tr></tbody></table>
+				<p class="text-muted small">${__("Estimate for HR to check. Nothing is posted. Annual leave uses completed months and rounds to the nearest day.")}</p>`,
+			});
+		},
+		__("Final pay calculation"),
+		__("Work out")
+	);
+}

@@ -70,6 +70,7 @@ Ambient,常溫
 Amount (HK$),金額（港元）
 Amount / Batch,每批金額
 An approved stock take is locked.,已批准的盤點已鎖定。
+Annual leave owed (net),應付年假（淨額）
 Another photo,另一張相片
 Answer,答案
 Answer and sign this checklist on the Kitchen Checks screen with your PIN.,請在廚房檢查畫面回答並用你的密碼簽署此檢查表。
@@ -95,6 +96,7 @@ Areas,區域
 "As it appears in ""This product contains ... and their products."", e.g. cereals containing gluten.",用於「This product contains ... and their products.」句中，例如 cereals containing gluten。
 "As printed after CONTAINS: on labels, e.g. Milk.",標籤上 CONTAINS: 之後的寫法，例如 Milk。
 Assumed price,假設價格
+Average daily wage (blank = estimate),平均日薪（留空則估算）
 Back to orders,返回採購單
 Back to the list,返回清單
 "Backup reader for photos of handwritten recipes (English / Chinese), used when Gemini (key in Gmail Settings) fails. Blank = no backup.",手寫食譜相片（中英文）的後備讀取，Gemini（金鑰在 Gmail 設定）失敗時使用。留空 = 不設後備。
@@ -287,6 +289,7 @@ Customer name,客戶名稱
 Daily,日常
 Daily Sales Overview,每日送貨總覽
 Daily tasks,日常工作
+Daily wage,日薪
 Date sent,送出日期
 Day,日期
 Day after,後天
@@ -354,6 +357,7 @@ Entered by {0} from the email '{1}' ({2}). Check it before submitting.,由 {0} �
 Entitlements Today,現時假期權益
 Entries,項數
 Est. Cost,估計成本
+Estimate for HR to check. Nothing is posted. Annual leave uses completed months and rounds to the nearest day.,供人事核對的估算，不會入帳。年假按已完成月數計算，並四捨五入至最接近的整天。
 Estimated Cost,估計成本
 Every (hours),每（小時）
 Every N hours,每 N 小時
@@ -375,6 +379,9 @@ Fill,填入
 Fill pack sizes from items,從物品填入包裝規格
 Filled from the Supplier Items table above so the item is found by any supplier's SKU.,"由上方「供應商項目」表自動填寫,讓任何供應商的貨號都能搜尋到此貨品。"
 Filled from the selling price list when blank.,留空時會從銷售價格表填入。
+Final pay,離職結算
+Final pay calculation,離職結算計算
+Final pay: {0},離職結算：{0}
 Find ingredient,搜尋材料
 Find item,搜尋物品
 Find recipe,搜尋食譜
@@ -516,6 +523,7 @@ Item {0} does not exist.,產品 {0} 不存在。
 Items after,修改後貨品
 Items before,修改前貨品
 Items in these groups (or their sub-groups) count as Packaging.,屬於這些組別（或其子組別）的物品會計作包裝。
+Joined,入職日期
 Just over target,略高於目標
 Keeps {0} {1} once opened,開封後可存放 {0} {1}
 Keywords,關鍵字
@@ -566,15 +574,18 @@ Last Rejected By,最後退回人
 Last Rejected On,最後退回日期
 Last check {0},上次檢查 {0}
 Last checked,上次檢查
+Last day,最後一天
 Last error,上次錯誤
 Last heard from {0},最後聯絡：{0}
 Last seen,最後連線
+Last working day,最後工作日
 Late,逾期
 Late: the delivery date has passed.,逾期：已過送貨日期。
 Later,稍後
 Leave balances,假期結餘
 Leave blank to use the cheapest supplier on the buying price list.,留空即使用採購價格表中最便宜的供應商。
 Leave to approve,待批假期
+Leaver,離職
 Length (cm),長度 (厘米)
 Less,收起
 Line ID,行編號
@@ -766,6 +777,7 @@ One piece (g),每件重量 (克)
 One row per ingredient and storage area. Drag rows to change the counting order; the count screen groups them by storage area in this order. Untick Active to hide a row.,每項食材及儲存位置一行。拖動行可更改盤點次序；盤點畫面會按此次序以儲存位置分組。取消勾選「使用中」可隱藏該行。
 Online,在線
 Only HR Manager or System Manager can open pay figures.,只有人事經理或系統管理員可查看薪酬數字。
+Only HR Manager or System Manager can work out final pay.,只有人事經理或系統管理員可計算離職結算。
 Only Out of Tolerance,只顯示超出容差
 Only PDF files and pictures can be read.,只能讀取 PDF 檔案和圖片。
 Only Price Changes,只顯示價格變動
@@ -1051,6 +1063,8 @@ Replace in selected recipes,在已選食譜中取代
 Replace with,取代為
 Replaced in {0} recipes.,已在 {0} 個食譜中取代。
 Reports,報表
+Rest days owed,尚欠休息日
+Rest days still owed (roster),尚欠休息日（更表）
 Results are kept for 30 days. Check the result against the original.,結果保留 30 天。請對照原件檢查結果。
 Review,檢查
 Review note,覆核備註
@@ -1173,6 +1187,8 @@ Start Stock Take,開始盤點
 Start a new count,開始新盤點
 Starts at,開始時間
 Status: {0},狀態:{0}
+Statutory holidays already given this year,今年已給予的法定假日
+Statutory holidays not given,未給予的法定假日
 Steps,步驟
 Still to approve,待審批
 Stock,庫存
@@ -1240,6 +1256,7 @@ The address the email came through (a Google Group or one of our own mailboxes) 
 The closing stock take must be after the opening one,期末盤點必須在期初盤點之後
 The customer's unit price on the PO (0 = none).,客戶採購單上的單價（0 = 沒有）。
 The email this order was picked up from.,建立此訂單的電郵。
+The employee needs a joining date first.,員工須先有入職日期。
 "The file could not be read. Try again, or try a sharper file.",無法讀取檔案。請再試一次，或使用更清晰的檔案。
 The file is empty or larger than 15 MB.,檔案是空的或超過 15 MB。
 The last check failed,上次檢查失敗
@@ -1338,6 +1355,7 @@ Unknown kind,未知類型
 Unknown label printer {0},未知的標籤打印機 {0}
 Untick to stop the 15-minute job creating new runs.,取消剔選可停止每 15 分鐘建立新記錄。
 Untitled cake,未命名蛋糕
+Unused annual leave from earlier years,往年未用年假
 Upcoming,即將到期
 Update ERPNext stock when a count is approved,盤點批准後更新 ERPNext 庫存
 Updated {0},更新於 {0}
@@ -1414,6 +1432,7 @@ Within Tolerance,在容差內
 Within tolerance,在容差內
 Wording on labels,標籤用語
 "Words in an ingredient name that suggest this allergen, one per line. Only used for suggestions; a person still reviews every ingredient.",材料名稱中提示此致敏物的字詞，每行一個。只用作建議；每種材料仍須由人審核。
+Work out,計算
 Working,運作中
 Working Days per Month,每月工作日數
 "Works: read by {0}, {1} ingredients ({2})",正常：由 {0} 讀取，{1} 項材料（{2}）
