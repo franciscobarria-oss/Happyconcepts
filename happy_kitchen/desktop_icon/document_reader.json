@@ -5,17 +5,18 @@
  "doctype": "Desktop Icon",
  "hidden": 0,
  "icon": "file-text",
- "icon_type": "Link",
+ "icon_type": "App",
  "idx": 12,
  "label": "Document reader",
- "link_to": "document-reader",
- "link_type": "Page",
- "modified": "2026-11-26 12:00:00.000000",
+ "link_to": "",
+ "link_type": "External",
+ "modified": "2026-11-26 13:00:00.000000",
  "modified_by": "Administrator",
  "name": "Document reader",
  "owner": "Administrator",
  "parent_icon": "ERPNext",
  "restrict_removal": 0,
  "roles": [],
- "standard": 1
+ "standard": 1,
+ "link": "/desk/document-reader"
 }

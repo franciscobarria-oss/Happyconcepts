@@ -1617,6 +1617,7 @@ ZH_TW = {
 	"Results are kept for 30 days. Check the result against the original.": "結果保留 30 天。請對照原件檢查結果。",
 	"This file is already being read.": "此檔案正在讀取中。",
 	"Upload PDFs or pictures (English or Chinese). Gemini reads them like OCR in the background: you can close this page and come back to the list below.": "上傳 PDF 或圖片（中文或英文）。Gemini 會在背景像 OCR 一樣讀取，你可以關閉此頁，稍後回到下方清單查看。",
+	"Uploaded File Record": "已上傳檔案記錄",
 	"Read recipe photo": "讀取食譜相片",
 	"Reading the recipe...": "正在讀取食譜…",
 	"Backup reader for photos of handwritten recipes (English / Chinese), used when Gemini (key in Gmail Settings) fails. Blank = no backup.": "手寫食譜相片（中英文）的後備讀取，Gemini（金鑰在 Gmail 設定）失敗時使用。留空 = 不設後備。",

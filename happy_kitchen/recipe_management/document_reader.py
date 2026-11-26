@@ -108,7 +108,11 @@ def submit(file_url: str):
 	_check()
 	f = frappe.get_doc("File", {"file_url": file_url})
 	f.check_permission("read")
-	doc = frappe.get_doc({"doctype": "Document Reading", "file_url": file_url, "file_name": f.file_name or "", "status": "Queued"})
+	# Only a file uploaded just now for this purpose (not attached to anything) may be deleted by the clean-up later.
+	fresh = (not f.attached_to_doctype and f.owner == frappe.session.user
+	         and (frappe.utils.now_datetime() - f.creation).total_seconds() < 600)
+	doc = frappe.get_doc({"doctype": "Document Reading", "file_url": file_url, "file_name": f.file_name or "", "status": "Queued",
+	                      "file_doc": f.name if fresh else ""})
 	doc.insert()
 	frappe.db.commit()
 	_enqueue(doc.name)
@@ -161,11 +165,11 @@ def remove(name: str):
 def clean_old():
 	"""Daily: delete reads (and their uploaded files) older than 30 days."""
 	now = frappe.utils.now_datetime().timestamp()
-	for r in frappe.get_all("Document Reading", fields=["name", "creation", "file_url"]):
+	for r in frappe.get_all("Document Reading", fields=["name", "creation", "file_doc"]):
 		if rules.is_expired(r.creation.timestamp(), now):
 			frappe.delete_doc("Document Reading", r.name, ignore_permissions=True)
-			for fname in frappe.get_all("File", filters={"file_url": r.file_url}, pluck="name"):
-				frappe.delete_doc("File", fname, ignore_permissions=True)
+			if r.file_doc and frappe.db.exists("File", r.file_doc):  # only the copy this reader uploaded, never a shared file
+				frappe.delete_doc("File", r.file_doc, ignore_permissions=True)
 
 
 @frappe.whitelist()
