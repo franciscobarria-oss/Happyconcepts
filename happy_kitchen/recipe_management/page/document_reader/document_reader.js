@@ -63,8 +63,18 @@ class DocReader {
 	}
 	async read(url, name) {
 		this.$b.html(`<div class="hkdr"><div class="hkdr-card"><p>${__("Reading {0}... this can take up to a minute for long documents.", [esc(name)])}</p></div></div>`);
-		try { this.r = await frappe.xcall(API + "read_document", { file_url: url }); } catch (e) {
-			this.$b.html(`<div class="hkdr"><div class="hkdr-card"><p>${__("The file could not be read. Try again, or try a sharper file.")}</p>
+		try {
+			const job = await frappe.xcall(API + "start_read", { file_url: url });
+			for (let i = 0; i < 200; i++) {
+				await new Promise((ok) => setTimeout(ok, 3000));
+				const res = await frappe.xcall(API + "result", { job_id: job });
+				if (!res.done) continue;
+				if (res.error) throw new Error(res.error);
+				this.r = res.data; break;
+			}
+			if (!this.r) throw new Error("timeout");
+		} catch (e) {
+			this.$b.html(`<div class="hkdr"><div class="hkdr-card"><p>${__("The file could not be read. Try again, or try a sharper file.")}</p><p class="text-muted">${esc(e && e.message || "")}</p>
 				<button class="btn btn-primary hkdr-big hkdr-again">${__("Try another file")}</button></div></div>`);
 			this.$b.find(".hkdr-again").on("click", () => this.start());
 			return;

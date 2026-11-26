@@ -64,13 +64,40 @@ def status():
 	return {"gemini": bool(pdf_ocr._settings()[0])}
 
 
+def _key(job_id: str) -> str:
+	return "hk_docread:%s:%s" % (frappe.session.user, job_id)
+
+
+def _job(job_id: str, file_url: str, user: str):
+	"""Background worker: read the file and park the answer (or the error) in the cache for `result` to hand over."""
+	try:
+		f = frappe.get_doc("File", {"file_url": file_url})
+		f.check_permission("read")
+		out = {"done": True, "data": read_bytes(f.get_content(), f.file_name or "")}
+	except Exception as e:
+		out = {"done": True, "error": (str(e) or type(e).__name__)[:400]}
+	frappe.cache.set_value("hk_docread:%s:%s" % (user, job_id), out, expires_in_sec=3600)
+
+
 @frappe.whitelist()
-def read_document(file_url: str):
-	"""Read an uploaded File (one the caller can open)."""
+def start_read(file_url: str):
+	"""Start reading an uploaded File in the background (a long document takes longer than a web request may last).
+	Returns a job id for `result`."""
 	_check()
 	f = frappe.get_doc("File", {"file_url": file_url})
 	f.check_permission("read")
-	return read_bytes(f.get_content(), f.file_name or "")
+	job_id = frappe.generate_hash(length=12)
+	frappe.cache.set_value(_key(job_id), {"done": False}, expires_in_sec=3600)
+	frappe.enqueue("happy_kitchen.recipe_management.document_reader._job", queue="long", timeout=900,
+	               job_id=job_id, file_url=file_url, user=frappe.session.user)
+	return job_id
+
+
+@frappe.whitelist()
+def result(job_id: str):
+	"""{"done": False} while reading, then {"done": True, "data": reading} or {"done": True, "error": text}."""
+	_check()
+	return frappe.cache.get_value(_key(job_id)) or {"done": True, "error": _("The reading was lost. Please try again.")}
 
 
 @frappe.whitelist()

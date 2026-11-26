@@ -1605,6 +1605,7 @@ ZH_TW = {
 	"Try another file": "試另一個檔案",
 	"Upload PDF or picture": "上傳 PDF 或圖片",
 	"Upload a PDF or a picture (English or Chinese). Gemini reads it like OCR and gives you the text and any tables, ready to copy or download.": "上傳 PDF 或圖片（中文或英文）。Gemini 會像 OCR 一樣讀取，並提供文字和表格，可複製或下載。",
+	"The reading was lost. Please try again.": "讀取結果已遺失，請再試一次。",
 	"Read recipe photo": "讀取食譜相片",
 	"Reading the recipe...": "正在讀取食譜…",
 	"Backup reader for photos of handwritten recipes (English / Chinese), used when Gemini (key in Gmail Settings) fails. Blank = no backup.": "手寫食譜相片（中英文）的後備讀取，Gemini（金鑰在 Gmail 設定）失敗時使用。留空 = 不設後備。",

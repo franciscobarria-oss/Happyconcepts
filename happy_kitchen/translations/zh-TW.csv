@@ -1232,6 +1232,7 @@ The photo could not be read. Add the ingredients by hand.,無法讀取相片，�
 The photo is too large.,相片太大。
 The quantity factor must be more than 0.,數量倍數必須大於 0。
 "The questions of a checklist (Kitchen Checks). Runs keep their own copy, so editing never changes past records.",檢查表的問題（廚房檢查）。每次記錄都保存自己的副本，修改範本不會改變過往記錄。
+The reading was lost. Please try again.,讀取結果已遺失，請再試一次。
 The recipe this client version is made from.,此客戶版本所用的食譜。
 "The recipe, an ingredient or a label field changed since the last check. Labels wait until it is checked again.",自上次檢查後，食譜、材料或標籤欄位已更改。標籤會等候再次檢查。
 The review could not be shown.,無法顯示檢查畫面。
